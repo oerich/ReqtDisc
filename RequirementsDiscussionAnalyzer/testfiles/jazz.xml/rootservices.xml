@@ -1,0 +1,251 @@
+<?xml version="1.0"?><!--
+    Licensed Materials - Property of IBM
+    (c) Copyright IBM Corporation 2010. All Rights Reserved.
+    
+    Note to U.S. Government Users Restricted Rights:  
+    Use, duplication or disclosure restricted by GSA ADP Schedule 
+    Contract with IBM Corp. 
+ -->
+
+<rdf:Description
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:dc="http://purl.org/dc/terms/"
+     xmlns:jfs="http://jazz.net/xmlns/prod/jazz/jfs/1.0/" 
+     xmlns:jd="http://jazz.net/xmlns/prod/jazz/discovery/1.0/"
+     xmlns:jdb="http://jazz.net/xmlns/prod/jazz/dashboard/1.0/"
+     xmlns:jp06="http://jazz.net/xmlns/prod/jazz/process/0.6/"
+	 xmlns:jp="http://jazz.net/xmlns/prod/jazz/process/1.0/"
+	 xmlns:jtp="http://jazz.net/xmlns/prod/jazz/jtp/0.6/"
+     xmlns:ju="http://jazz.net/ns/ui#"
+     xmlns:oslc="http://open-services.net/ns/core#"
+     xmlns:oslc_trs="http://open-services.net/ns/core/trs#"
+     rdf:about="https://jazz.net/jazz/rootservices">
+
+  <!-- 
+  		Default root service registry document for an RTC server.
+  		Contains contributions for core JFS services and components
+  		and OSLC Change Management.
+  		Specification is available at https://jazz.net/wiki/bin/view/Main/RootServicesSpec
+   -->
+
+  <!-- Add descriptive title here -->
+  <dc:title xml:lang="en">Change and Configuration Management</dc:title>
+
+  <!-- List of friends (applications known to this application) -->
+  <jd:friends
+      rdf:resource="https://jazz.net/jazz/friends" />
+       
+  <!-- Discovery service for the JFS server and associated applications -->
+  <jd:discovery
+      rdf:resource="https://jazz.net/jazz/discovery" />
+       
+  <!-- Viewlet-related properties -->
+  <jd:viewletServiceRoot
+  	  rdf:resource="https://jazz.net/jazz" />
+
+  <jd:viewletWebUIRoot
+  	  rdf:resource="https://jazz.net/jazz" />
+
+  <!-- Default root service registry document for a JFS server. -->
+
+  <jfs:oauthRequestTokenUrl
+  	  rdf:resource="https://jazz.net/jazz/oauth-request-token" />
+  
+  <jfs:oauthAccessTokenUrl
+  	  rdf:resource="https://jazz.net/jazz/oauth-access-token" />
+  	  
+  <jfs:oauthRealmName>Jazz</jfs:oauthRealmName>
+  <jfs:oauthDomain>https://jazz.net/jazz</jfs:oauthDomain>
+  	  
+  <jfs:oauthUserAuthorizationUrl
+  	  rdf:resource="https://jazz.net/jazz/oauth-authorize" />
+  	  
+  <jfs:oauthRequestConsumerKeyUrl
+      rdf:resource="https://jazz.net/jazz/oauth-request-consumer" />
+      
+  <jfs:oauthApprovalModuleUrl
+      rdf:resource="https://jazz.net/jazz/_ajax-modules/com.ibm.team.repository.AuthorizeOAuth" />	  
+  
+  <!-- JAuth URLS -->
+  
+  <jfs:jauthIssueTokenUrl
+      rdf:resource="https://jazz.net/jazz/jauth-issue-token" />
+      
+  <jfs:jauthCheckTokenUrl
+      rdf:resource="https://jazz.net/jazz/jauth-check-token" />
+      
+  <jfs:jauthRevokeTokenUrl
+      rdf:resource="https://jazz.net/jazz/jauth-revoke-token" />
+      
+  <jfs:jauthCheckAuthUrl
+      rdf:resource="https://jazz.net/jazz/jauth-check-auth" />
+      
+  <jfs:jauthProxyUrl
+      rdf:resource="https://jazz.net/jazz/jauth-proxy" />
+      
+  <!-- service for finding users and getting user info -->
+  <jfs:users
+  	  rdf:resource="https://jazz.net/jts/users"   />
+  
+  <!-- Service to redirect to the resource that represents the authenticated user -->
+  <jfs:currentUser
+  	  rdf:resource="https://jazz.net/jazz/whoami"   />
+  	  
+  <!-- JFS storage service --> 
+  <jfs:storage
+  	  rdf:resource="https://jazz.net/jazz/storage"   />
+  
+  <!-- JFS SPARQL query service -->
+  <jfs:query
+  	  rdf:resource="https://jazz.net/jazz/query"   />
+
+  <!-- Put RTC changes in here, so we do not have to merge all the time : START -->
+
+  <!-- Change Management service catalog -->
+  <oslc_cm:cmServiceProviders
+	      xmlns:oslc_cm="http://open-services.net/xmlns/cm/1.0/"
+	      rdf:resource="https://jazz.net/jazz/oslc/workitems/catalog" />
+	      
+  <oslc_scm:scmServiceProviders
+	      xmlns:oslc_scm="http://open-services.net/xmlns/scm/1.0/"
+	      rdf:resource="https://jazz.net/jazz/oslc-scm/catalog" />
+	      
+  <jd:oslcCatalogs>
+		<oslc:ServiceProviderCatalog rdf:about="https://jazz.net/jazz/oslc/workitems/catalog">
+			<oslc:domain rdf:resource="http://open-services.net/ns/cm#"/>
+    	</oslc:ServiceProviderCatalog>
+  </jd:oslcCatalogs>
+  
+  <jd:oslcCatalogs>
+		<oslc:ServiceProviderCatalog rdf:about="https://jazz.net/jazz/oslc-scm/catalog">
+			<oslc:domain rdf:resource="http://open-services.net/ns/scm#"/>
+		</oslc:ServiceProviderCatalog>
+  </jd:oslcCatalogs>
+  
+  <!-- Change Management Tracked Resource Set Provider -->
+  <rtc_cm:trackedResourceSetProvider xmlns:rtc_cm="http://jazz.net/xmlns/prod/jazz/rtc/cm/1.0/">
+  		<oslc_trs:TrackedResourceSetProvider>
+			<oslc_trs:trackedResourceSet rdf:resource="https://jazz.net/jazz/oslc/workitems/trs" />
+  		</oslc_trs:TrackedResourceSetProvider>
+  </rtc_cm:trackedResourceSetProvider>
+	      
+  <jd:registration
+     rdf:resource="https://jazz.net/jazz/service/com.ibm.team.repository.service.internal.setup.IRegistrationHandlerService" />
+     
+   <jfs:setupWizardDescriptor
+     rdf:resource="https://jazz.net/jazz/service/com.ibm.team.repository.service.internal.setup.ISetupWizardDescriptorService"/>
+     
+   <jfs:adminWebUI rdf:resource="https://jazz.net/jazz/admin"/>
+
+  <!-- Put RTC changes in here, so we do not have to merge all the time : END -->
+  
+  <!-- JFS indexing service --> 
+  <jfs:indexing
+  	  rdf:resource="https://jazz.net/jazz/indexing"   />
+  	  
+  <!-- JFS revisions and history of storage resources -->  	  
+  <jfs:history
+  	  rdf:resource="https://jazz.net/jazz/history"   />
+  
+  <!-- JFS full text search -->
+  <jfs:search
+  	  rdf:resource="https://jazz.net/jazz/search"   />
+
+  <!-- JFS baseline service --> 
+  <jfs:baselines
+  	  rdf:resource="https://jazz.net/jazz/baselines"   />
+  	  
+  <!-- JFS mailer service --> 
+  <jfs:mailer
+  	  rdf:resource="https://jazz.net/jazz/mailer"   />   	 
+  
+    <!-- JFS bulk operations service --> 
+  <jfs:bulkOperations
+  	  rdf:resource="https://jazz.net/jazz/bulk"   />
+  
+  <!-- JFS changes service -->
+  <jfs:changes
+      rdf:resource="https://jazz.net/jazz/changes" />
+  
+  <!-- Dashboards service (provisional) -->
+  <jdb:dashboards
+  	  rdf:resource="https://jazz.net/jazz/dashboards" />  	 
+
+  <!-- Widget Catalog -->    
+  <ju:widgetCatalog
+      rdf:resource="https://jazz.net/jazz/jfs/WidgetCatalog"/>
+  
+  <!-- Web Welcome -->     
+  <jd:infocenterRoot 
+      rdf:resource="https://jazz.net/help-dev/clm" />
+  
+  <!-- Project areas service. This service is provisional and may change in the next release. -->
+  <jp06:projectAreas
+  	  rdf:resource="https://jazz.net/jazz/process/project-areas" />
+
+  <!-- Process templates service. This service is provisional and may change in the next release. -->
+  <jp06:processTemplates
+  	  rdf:resource="https://jazz.net/jazz/process/templates" />
+
+  <!-- Process security service. This service is provisional and may change in the next release. -->
+  <jp06:processSecurity 
+      rdf:resource="https://jazz.net/jazz/process-security"/>
+  
+  <!-- Process event sources service. This service is provisional. -->
+  <jp:eventSources 
+      rdf:resource="https://jazz.net/jazz/process-events/eventSources"/>
+  
+  <!-- Process event listener registration service. This service is provisional. -->	  
+  <jp:eventListenerRegistrations 
+      rdf:resource="https://jazz.net/jazz/process-events/eventListenerRegistrations"/>
+	  
+  <!-- Process events service. This service is provisional. -->
+  <!--jp:events 
+  	  rdf:resource="https://jazz.net/jazz/process-events/events"/-->
+	  
+  <!-- Process Event Sources Gadget Specification URL. This entry is provisional. -->
+  <jp:eventSourcesGadgetSpecificationUrl 
+  		rdf:resource="https://jazz.net/jazz/process-events-gadget-specification/eventSourcesGadgetSpecification"/>
+				
+  <!-- Project Area Management for registered applications. This entry is provisional. -->
+  <jp:manageProjectAreas 
+        rdf:resource="https://jazz.net/jazz/process/manageProjectAreas"/>
+
+  <!-- Process Template Management for registered applications. This entry is provisional. -->
+  <jp:manageProcessTemplates 
+        rdf:resource="https://jazz.net/jazz/process/manageProcessTemplates"/>
+      
+  <!-- Process configuration data service. This service is provisional and may change in the next release. -->
+  <jp:processConfigurationData 
+      rdf:resource="https://jazz.net/jazz/process-configuration-data"/>
+	  
+   <!-- Process configuration data categories service. This service is provisional and may change in the next release. -->
+  <jp:processConfigurationDataCategories 
+      rdf:resource="https://jazz.net/jazz/process-configuration-data-categories"/>
+
+  <jtp:associations
+      rdf:resource="https://jazz.net/jazz/process-authoring/associations"/>
+  
+  <jtp:defaultPracticeLibraryUrl
+      rdf:resource="https://jazz.net/jazz/process-authoring/libraries/shared"/>
+  
+  <jtp:file
+      rdf:resource="https://jazz.net/jazz/process-authoring/file"/>
+  
+  <jtp:license
+      rdf:resource="https://jazz.net/jazz/process-authoring/license"/>
+  
+  <jtp:practices
+      rdf:resource="https://jazz.net/jazz/process-authoring/practices"/>
+  
+  <jtp:processDescriptions
+      rdf:resource="https://jazz.net/jazz/process-authoring/descriptions"/>
+  
+  <!-- Application about service. -->
+  <oslc:publisher rdf:resource="https://jazz.net/jazz/application-about"/>	  
+  	  
+  <!-- Server Rename Application Status service -->
+  <jfs:serverRenameStatus
+      rdf:resource="https://jazz.net/jazz/appServerRenameStatus"/>
+  	  
+</rdf:Description>

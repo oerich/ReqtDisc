@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?><oslc_disc:ServiceProviderCatalog xmlns:oslc_disc="http://open-services.net/xmlns/discovery/1.0/" rdf:about="https://jazz.net/jazz/oslc/workitems/catalog.xml" xmlns:dc="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:jfs_proc="http://jazz.net/xmlns/prod/jazz/process/1.0/">
+<dc:title>Project Areas</dc:title>
+<oslc_disc:entry>
+<oslc_disc:ServiceProvider>
+<dc:title>Jazz Collaborative ALM</dc:title>
+<oslc_disc:details rdf:resource="https://jazz.net/jazz/process/project-areas/_0rSUcMixEd6A25wBGCmItw"/>
+<oslc_disc:services rdf:resource="https://jazz.net/jazz/oslc/contexts/_0rSUcMixEd6A25wBGCmItw/workitems/services.xml"/>
+<jfs_proc:consumerRegistry rdf:resource="https://jazz.net/jazz/process/project-areas/_0rSUcMixEd6A25wBGCmItw/links"/>
+</oslc_disc:ServiceProvider>
+</oslc_disc:entry>
+<oslc_disc:entry>
+<oslc_disc:ServiceProvider>
+<dc:title>Rational Team Concert</dc:title>
+<oslc_disc:details rdf:resource="https://jazz.net/jazz/process/project-areas/_1w8aQEmJEduIY7C8B09Hyw"/>
+<oslc_disc:services rdf:resource="https://jazz.net/jazz/oslc/contexts/_1w8aQEmJEduIY7C8B09Hyw/workitems/services.xml"/>
+<jfs_proc:consumerRegistry rdf:resource="https://jazz.net/jazz/process/project-areas/_1w8aQEmJEduIY7C8B09Hyw/links"/>
+</oslc_disc:ServiceProvider>
+</oslc_disc:entry>
+<oslc_disc:entry>
+<oslc_disc:ServiceProvider>
+<dc:title>Jazz Foundation</dc:title>
+<oslc_disc:details rdf:resource="https://jazz.net/jazz/process/project-areas/_Q2fMII8EEd2Q-OW8dr3S5w"/>
+<oslc_disc:services rdf:resource="https://jazz.net/jazz/oslc/contexts/_Q2fMII8EEd2Q-OW8dr3S5w/workitems/services.xml"/>
+<jfs_proc:consumerRegistry rdf:resource="https://jazz.net/jazz/process/project-areas/_Q2fMII8EEd2Q-OW8dr3S5w/links"/>
+</oslc_disc:ServiceProvider>
+</oslc_disc:entry>
+<oslc_disc:entry>
+<oslc_disc:ServiceProvider>
+<dc:title>Testing Purposes Only - CLM 2012  (Change Management)</dc:title>
+<oslc_disc:details rdf:resource="https://jazz.net/jazz/process/project-areas/_iMYpMoWtEeGYLb4pp0k1_g"/>
+<oslc_disc:services rdf:resource="https://jazz.net/jazz/oslc/contexts/_iMYpMoWtEeGYLb4pp0k1_g/workitems/services.xml"/>
+<jfs_proc:consumerRegistry rdf:resource="https://jazz.net/jazz/process/project-areas/_iMYpMoWtEeGYLb4pp0k1_g/links"/>
+</oslc_disc:ServiceProvider>
+</oslc_disc:entry>
+<oslc_disc:entry>
+<oslc_disc:ServiceProvider>
+<dc:title>Rational AMC</dc:title>
+<oslc_disc:details rdf:resource="https://jazz.net/jazz/process/project-areas/_lh0fsKIJEd6nV4GVCz8vZg"/>
+<oslc_disc:services rdf:resource="https://jazz.net/jazz/oslc/contexts/_lh0fsKIJEd6nV4GVCz8vZg/workitems/services.xml"/>
+<jfs_proc:consumerRegistry rdf:resource="https://jazz.net/jazz/process/project-areas/_lh0fsKIJEd6nV4GVCz8vZg/links"/>
+</oslc_disc:ServiceProvider>
+</oslc_disc:entry>
+</oslc_disc:ServiceProviderCatalog>
