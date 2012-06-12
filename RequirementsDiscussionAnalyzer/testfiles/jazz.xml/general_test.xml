@@ -1,0 +1,346 @@
+<doorsexport>
+	<object>
+		<column>
+			<p>
+				<span>ID001</span>
+			</p>
+		</column>
+		<column>
+			<p>
+				<span>Text mit unregelmäßigem Whitespace.</span>
+			</p>
+		</column>
+	</object>
+	<object>
+		<column>
+			<p>
+				<span>ID002</span>
+			</p>
+		</column>
+		<column>
+			<p>
+				<span>
+					Hier steht die Beschreibung zu einen Doors-Objekt
+				</span>
+			</p>
+		</column>
+	</object>
+	<object>
+		<column>
+			<p>
+				<span>ID003</span>
+			</p>
+		</column>
+		<column>
+			<p>
+				<span>Text mit unregelmäßigem Whitespace.</span>
+			</p>
+		</column>
+	</object>
+	<object>
+		<column>
+			<p>
+				<span>ID004</span>
+			</p>
+		</column>
+		<column>
+			<p>
+				<span>Text mit unregelmäßigem Whitespace.</span>
+			</p>
+		</column>
+	</object>
+	<object>
+		<column>
+			<p>
+				<span>ID005</span>
+			</p>
+		</column>
+		<column>
+			<p>
+				<span>Text mit unregelmäßigem Whitespace.</span>
+			</p>
+		</column>
+		<object>
+			<column>
+				<p>
+					<span>ID007</span>
+				</p>
+			</column>
+			<column>
+				<p>
+					<span>Text mit unregelmäßigem Whitespace.</span>
+				</p>
+			</column>
+		</object>
+		<object>
+			<column>
+				<p>
+					<span>ID008</span>
+				</p>
+			</column>
+			<column>
+				<heading>
+					<span>Eingänge</span>
+				</heading>
+			</column>
+			<table>
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr></tr>
+				<tr></tr>
+				<tr></tr>
+				<tr></tr>
+				<tr></tr>
+			</table>
+		</object>
+		<object>
+			<column>
+				<p>
+					<span>ID009</span>
+				</p>
+			</column>
+			<column>
+				<heading>
+					<span>Ausgänge</span>
+				</heading>
+			</column>
+			<table>
+				<tr></tr>
+				<tr></tr>
+				<tr></tr>
+				<tr></tr>
+				<tr></tr>
+			</table>
+		</object>
+		<object>
+			<column>
+				<p>
+					<span>ID010</span>
+				</p>
+			</column>
+			<column>
+				<heading>
+					<span>Parameter</span>
+				</heading>
+			</column>
+			<table>
+				<tr></tr>
+				<tr></tr>
+				<tr></tr>
+			</table>
+		</object>
+
+	</object>
+	<module>
+		<meta name="Created By" value="eknauss" />
+		<meta name="Created On" value="2007" />
+		<meta name="Description"
+			value="Testfile mit einigen Pathologischen Fällen" />
+		<meta name="Last Modified By" value="eknauss" />
+		<meta name="Last Modified On" value="15 July 2008" />
+		<meta name="Modulclass" value="common requirements" />
+		<meta name="Name" value="Allgemein_KonPAss" />
+		<meta name="Prefix" value="ID" />
+	</module>
+	<module>
+		<meta name="Created By" value="eknauss" />
+		<meta name="Created On" value="2007" />
+		<meta name="Description"
+			value="Testfile mit einigen Pathologischen Fällen" />
+		<meta name="Last Modified By" value="eknauss" />
+		<meta name="Last Modified On" value="15 July 2008" />
+		<meta name="Modulclass"
+			value="BR-specific requirements KonPAss" />
+		<meta name="Name" value="BRxyz_KonPAss" />
+		<meta name="Prefix" value="ID" />
+		<object>
+			<column>
+				<p>
+					<span>ID011</span>
+				</p>
+			</column>
+			<column>
+				<heading>
+					<span>Eine TOP-Überschrift.</span>
+				</heading>
+			</column>
+			<object>
+				<column>
+					<p>
+						<span>ID012</span>
+					</p>
+				</column>
+				<column>
+					<heading>
+						<span>Eine Überschrift auf 2. Ebene.</span>
+					</heading>
+				</column>
+			</object>
+			<object>
+				<column>
+					<p>
+						<span>ID021</span>
+					</p>
+				</column>
+				<column>
+					<p>
+						<span>Text mit unregelmäßigem Whitespace.</span>
+					</p>
+				</column>
+			</object>
+			<object>
+				<column>
+					<p>
+						<span>ID022</span>
+					</p>
+				</column>
+				<column>
+					<p>
+						<span>
+							Hier steht die Beschreibung zu einen
+							Doors-Objekt
+						</span>
+					</p>
+				</column>
+			</object>
+			<object>
+				<column>
+					<p>
+						<span>ID023</span>
+					</p>
+				</column>
+				<column>
+					<p>
+						<span>Text mit unregelmäßigem Whitespace.</span>
+					</p>
+				</column>
+			</object>
+			<object>
+				<column>
+					<p>
+						<span>ID024</span>
+					</p>
+				</column>
+				<column>
+					<p>
+						<span>Text mit unregelmäßigem Whitespace.</span>
+					</p>
+				</column>
+			</object>
+			<object>
+				<column>
+					<p>
+						<span>ID025</span>
+					</p>
+				</column>
+				<column>
+					<p>
+						<span>Text mit unregelmäßigem Whitespace.</span>
+					</p>
+				</column>
+				<object>
+					<column>
+						<p>
+							<span>ID027</span>
+						</p>
+					</column>
+					<column>
+						<p>
+							<span>
+								Text mit unregelmäßigem Whitespace.
+							</span>
+						</p>
+					</column>
+				</object>
+								<object>
+					<column>
+						<p>
+							<span>ID028</span>
+						</p>
+					</column>
+					<column>
+						<heading>
+							<span>Schnittstellenbeschreibung2</span>
+						</heading>
+					</column>
+				
+				<object>
+					<column>
+						<p>
+							<span>ID028</span>
+						</p>
+					</column>
+					<column>
+						<heading>
+							<span>Eingänge2</span>
+						</heading>
+					</column>
+					<table>
+						<tr>
+							<td><span>Name</span></td>
+							<td><span>Signalquelle</span></td>
+							<td><span>Defaultwert</span></td>
+						</tr>
+						<tr>
+							<td><span>Klemme 15</span></td>
+							<td><span>xycd8517</span></td>
+							<td><span>an</span></td>
+
+						</tr>
+					</table>
+				</object>
+				<object>
+					<column>
+						<p>
+							<span>ID029</span>
+						</p>
+					</column>
+					<column>
+						<heading>
+							<span>Ausgänge2</span>
+						</heading>
+					</column>
+					<table>
+						<tr></tr>
+						<tr></tr>
+						<tr></tr>
+						<tr></tr>
+						<tr></tr>
+					</table>
+				</object>
+				<object>
+					<column>
+						<p>
+							<span>ID030</span>
+						</p>
+					</column>
+					<column>
+						<heading>
+							<span>Parameter2</span>
+						</heading>
+					</column>
+					<table>
+						<tr>
+							<td><span>Name</span></td>
+							<td><span>KMatrix Name</span></td>
+							<td><span>Beschreibung</span></td>
+						</tr>
+						<tr>
+							<td><span>Klemme_15</span></td>
+						</tr>
+						<tr>
+							<td><span>Ein_Signal</span></td>
+							<td><span>Ein_Signal_K</span></td>
+							<td><p><span>Rababa</span></p><p><span>Rababa</span></p></td>
+						</tr>
+					</table>
+				</object>
+		</object>
+			</object>
+
+		</object>
+	</module>
+</doorsexport>
