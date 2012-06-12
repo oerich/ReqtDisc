@@ -17,7 +17,7 @@ public class PushCSVToMySQL {
 
 		Properties p = new Properties();
 		p.setProperty(SQLDiscussionEventDAO.PROP_URL,
-				"jdbc:mysql://db.disi.unitn.it/developers");
+				"");
 		p.setProperty(SQLDiscussionEventDAO.PROP_USER, "");
 		p.setProperty(SQLDiscussionEventDAO.PROP_PWD, "");
 		p.setProperty(CSVDiscussionEventDAO.PROP_FILENAME,
