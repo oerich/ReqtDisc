@@ -24,8 +24,8 @@ public class SQLDiscussionEventDAOTest {
 		Properties p = new Properties();
 		p.setProperty(SQLDiscussionEventDAO.PROP_URL,
 				"jdbc:mysql://db.disi.unitn.it/developers");
-		p.setProperty(SQLDiscussionEventDAO.PROP_USER, "ericknauss");
-		p.setProperty(SQLDiscussionEventDAO.PROP_PWD, "ericknauss");
+		p.setProperty(SQLDiscussionEventDAO.PROP_USER, "mist");
+		p.setProperty(SQLDiscussionEventDAO.PROP_PWD, "mist");
 		this.testDao.configure(p);
 		DiscussionEvent[] events = this.testDao
 				.getDiscussionEventsOfDiscussion(12345);
@@ -47,8 +47,8 @@ public class SQLDiscussionEventDAOTest {
 		Properties p = new Properties();
 		p.setProperty(SQLDiscussionEventDAO.PROP_URL,
 				"jdbc:mysql://db.disi.unitn.it/developers");
-		p.setProperty(SQLDiscussionEventDAO.PROP_USER, "ericknauss");
-		p.setProperty(SQLDiscussionEventDAO.PROP_PWD, "ericknauss");
+		p.setProperty(SQLDiscussionEventDAO.PROP_USER, "mist");
+		p.setProperty(SQLDiscussionEventDAO.PROP_PWD, "mist");
 		this.testDao.configure(p);
 
 		this.testDao.storeDiscussionEvents(new DiscussionEvent[] { de });
