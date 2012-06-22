@@ -4,16 +4,14 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.sql.Date;
-import java.sql.Time;
 import java.util.List;
 import java.util.Properties;
 import java.util.Vector;
 
 import org.computer.knauss.reqtDiscussion.io.IDiscussionEventDAO;
+import org.computer.knauss.reqtDiscussion.io.Util;
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
 import org.computer.knauss.reqtDiscussion.model.IDiscussionEventFilter;
-
 
 public class CSVDiscussionEventDAO implements IDiscussionEventDAO {
 
@@ -135,23 +133,7 @@ public class CSVDiscussionEventDAO implements IDiscussionEventDAO {
 				.getProperty(PROP_CDATE_COL))];
 		// System.out.println(dateString);
 
-		String[] splitDateString = dateString.trim().split(" ");
-		// System.out.println(splitDateString[0] + "----" + splitDateString[1]);
-		Date day = Date.valueOf(splitDateString[0]);
-		// Date day = Date.valueOf(splitDateString[0]);
-		int indexOfTimeMillis = splitDateString[1].indexOf('.');
-		if (indexOfTimeMillis > 0) {
-			Time time = Time.valueOf(splitDateString[1].substring(0,
-					indexOfTimeMillis));
-			ret.setCreationDate(new Date(day.getTime()
-					+ time.getTime()
-					+ Integer.valueOf((splitDateString[1]
-							.substring(indexOfTimeMillis + 1)))));
-		} else {
-			Time time = Time.valueOf(splitDateString[1]);
-			ret.setCreationDate(new Date(day.getTime() + time.getTime()));
-		}
-
+		ret.setCreationDate(Util.parseDate(dateString));
 		ret.setCreator(vals[Integer.valueOf(this.properties
 				.getProperty(PROP_CREATOR_COL))]);
 
