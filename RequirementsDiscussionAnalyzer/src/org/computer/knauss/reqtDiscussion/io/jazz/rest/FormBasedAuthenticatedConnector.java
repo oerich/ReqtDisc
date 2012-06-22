@@ -199,7 +199,9 @@ public class FormBasedAuthenticatedConnector implements IWebConnector {
 		HttpParams params = httpClient.getParams();
 		params.setParameter("http.socket.timeout", new Integer(60000));
 		httpClient.setParams(params);
-		return httpClient.execute(new HttpGet(requestURL));
+		HttpGet getRequest = new HttpGet(requestURL);
+		getRequest.setHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
+		return httpClient.execute(getRequest);
 		// TODO I think I need to set the accept header
 	}
 

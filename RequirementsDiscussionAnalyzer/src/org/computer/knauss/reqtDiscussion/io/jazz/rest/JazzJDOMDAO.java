@@ -19,7 +19,7 @@ import org.jdom2.JDOMException;
 
 public class JazzJDOMDAO implements IJazzDAO {
 
-	private static final String TEN_STORIES = "?oslc_cm.query=dc:type=\"com.ibm.team.apt.workItemType.story\"&oslc_cm.pageSize=10";
+	private static final String TEN_STORIES = "?oslc_cm.query=dc%3Atype=%22com.ibm.team.apt.workItemType.story%22&oslc_cm.pageSize=10";
 
 	private XPathHelper xpathHelper;
 	private IWebConnector webConnector;
@@ -150,9 +150,12 @@ public class JazzJDOMDAO implements IJazzDAO {
 		String simpleQueryURI = ((Element) this.xpathHelper.select(
 				"//simpleQuery/url").get(0)).getValue();
 		simpleQueryURI = simpleQueryURI.trim()
-				+ URLEncoder.encode(TEN_STORIES, "UTF-8");
+				+ TEN_STORIES;
+//		simpleQueryURI = simpleQueryURI.trim()
+//				+ URLEncoder.encode(TEN_STORIES, "UTF-8");
 		System.out.println("Query URL: "
 				+ URLDecoder.decode(simpleQueryURI, "UTF-8"));
+https://jazz.net/jazz/oslc/contexts/_1w8aQEmJEduIY7C8B09Hyw/workitems?oslc_cm.query=dc:type="com.ibm.team.apt.workItemType.story"&oslc_cm.pageSize=10
 		// 2. create a simple query according to
 		// http://open-services.net/bin/view/Main/CmQuerySyntaxV1
 		r = this.webConnector.performHTTPSRequestXML(simpleQueryURI);
