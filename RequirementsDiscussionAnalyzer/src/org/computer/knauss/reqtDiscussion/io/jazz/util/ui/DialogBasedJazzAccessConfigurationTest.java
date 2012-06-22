@@ -12,7 +12,7 @@ public class DialogBasedJazzAccessConfigurationTest {
 		assertEquals("ericKnauss", jac.getUsername());
 		assertEquals("mist", jac.getPassword());
 		assertEquals("jazz.net", jac.getHostname());
-		assertEquals("https://jazz.net/jazz/oauth-authorize", jac.getJazzAuthURL().toString());
+		assertEquals("https://jazz.net/auth/login", jac.getJazzAuthURL().toString());
 	}
 
 }
