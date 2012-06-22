@@ -17,9 +17,9 @@ import org.xml.sax.SAXException;
 
 public class XPathHelperTest {
 
-	private static final String DOORS_GENERAL_EXAMPLE_TESTFILE_PATH = "testfiles/general_test.xml";
+	private static final String DOORS_GENERAL_EXAMPLE_TESTFILE_PATH = "testfiles/jazz.xml/general_test.xml";
 
-	private static final String BOOK_EXAMPLE_TESTFILE_PATH = "testfiles/buchbsp.xml";
+	private static final String BOOK_EXAMPLE_TESTFILE_PATH = "testfiles/jazz.xml/buchbsp.xml";
 
 	private XPathHelper helper;
 
@@ -84,7 +84,7 @@ public class XPathHelperTest {
 	
 	@Test
 	public void testGetResourcesFromRootservices() throws IOException, JDOMException {
-		FileInputStream documentStream = new FileInputStream("testfiles/rootservices");
+		FileInputStream documentStream = new FileInputStream("testfiles/jazz.xml/rootservices.xml");
 		helper.setDocument(documentStream);
 		Attribute queryResource = (Attribute) helper.select("//query/@resource").get(0);
 		assertEquals("https://jazz.net/jazz/query",queryResource.getValue());
