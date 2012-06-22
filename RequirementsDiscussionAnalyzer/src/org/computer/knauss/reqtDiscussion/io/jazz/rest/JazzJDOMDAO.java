@@ -2,12 +2,12 @@ package org.computer.knauss.reqtDiscussion.io.jazz.rest;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.util.List;
 import java.util.Properties;
 
 import org.apache.http.HttpResponse;
+import org.computer.knauss.reqtDiscussion.io.IDiscussionEventDAO;
+import org.computer.knauss.reqtDiscussion.io.Util;
 import org.computer.knauss.reqtDiscussion.io.jazz.IJazzDAO;
 import org.computer.knauss.reqtDiscussion.io.jazz.util.XPathHelper;
 import org.computer.knauss.reqtDiscussion.io.jazz.util.ui.DialogBasedJazzAccessConfiguration;
@@ -17,7 +17,7 @@ import org.jdom2.Attribute;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
 
-public class JazzJDOMDAO implements IJazzDAO {
+public class JazzJDOMDAO implements IJazzDAO, IDiscussionEventDAO {
 
 	private static final String TEN_STORIES = "?oslc_cm.query=dc%3Atype=%22com.ibm.team.apt.workItemType.story%22&oslc_cm.pageSize=10";
 
@@ -26,6 +26,10 @@ public class JazzJDOMDAO implements IJazzDAO {
 	private int limit = 10;
 	private String selectedProjectArea;
 	private List<Object> projectAreaList;
+
+	private XPathHelper changeRequestsXML;
+
+	private XPathHelper commentsXML;
 
 	public JazzJDOMDAO(IJazzAccessConfiguration config) throws IOException {
 		this(new FormBasedAuthenticatedConnector(config));
@@ -149,20 +153,18 @@ public class JazzJDOMDAO implements IJazzDAO {
 		this.xpathHelper.setDocument(r.getEntity().getContent());
 		String simpleQueryURI = ((Element) this.xpathHelper.select(
 				"//simpleQuery/url").get(0)).getValue();
-		simpleQueryURI = simpleQueryURI.trim()
-				+ TEN_STORIES;
-//		simpleQueryURI = simpleQueryURI.trim()
-//				+ URLEncoder.encode(TEN_STORIES, "UTF-8");
-		System.out.println("Query URL: "
-				+ URLDecoder.decode(simpleQueryURI, "UTF-8"));
-https://jazz.net/jazz/oslc/contexts/_1w8aQEmJEduIY7C8B09Hyw/workitems?oslc_cm.query=dc:type="com.ibm.team.apt.workItemType.story"&oslc_cm.pageSize=10
+		simpleQueryURI = simpleQueryURI.trim() + TEN_STORIES;
+		// System.out.println("Query URL: "
+		// + URLDecoder.decode(simpleQueryURI, "UTF-8"));
 		// 2. create a simple query according to
 		// http://open-services.net/bin/view/Main/CmQuerySyntaxV1
 		r = this.webConnector.performHTTPSRequestXML(simpleQueryURI);
 
 		// 3. make sense of the result and return it
-		this.xpathHelper.setDocument(r.getEntity().getContent());
-		List<Object> crElements = this.xpathHelper.select("//ChangeRequest");
+		this.changeRequestsXML = new XPathHelper();
+		this.changeRequestsXML.setDocument(r.getEntity().getContent());
+		List<Object> crElements = this.changeRequestsXML
+				.select("//ChangeRequest");
 		String[] ret = new String[crElements.size()];
 		for (int i = 0; i < ret.length; i++) {
 			Element e = (Element) crElements.get(i);
@@ -220,32 +222,80 @@ https://jazz.net/jazz/oslc/contexts/_1w8aQEmJEduIY7C8B09Hyw/workitems?oslc_cm.qu
 	@Override
 	public void configure(Properties p) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public DiscussionEvent[] getDiscussionEventsOfDiscussion(int discussionId)
 			throws DAOException {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			// 1. make sure that the changerequests are already loaded.
+			// Otherwise
+			// query them.
+			if (this.changeRequestsXML == null) {
+				getWorkitemsForType(null, false);
+			}
+
+			// 2. identify the changerequest with the discussionid and get the
+			// comment-url
+			String commentURL = ((Attribute) this.changeRequestsXML.select(
+					"//ChangeRequest[identifier=" + discussionId
+							+ "]/comments/@collref").get(0)).getValue();
+			// System.out.println(commentURL);
+
+			// 3. query the comments and transform them into DiscussionEvents
+			if (this.commentsXML == null) {
+				this.commentsXML = new XPathHelper();
+			}
+			this.commentsXML.setDocument(this.webConnector
+					.performHTTPSRequestXML(commentURL).getEntity()
+					.getContent());
+
+			List<Object> comments = this.commentsXML.select("//Comment");
+			DiscussionEvent[] ret = new DiscussionEvent[comments.size()];
+			for (int i = 0; i < ret.length; i++) {
+				ret[i] = new DiscussionEvent();
+				ret[i].setDiscussionID(discussionId);
+				ret[i].setCreator(((Attribute) this.commentsXML.select(
+						comments.get(i), "//creator/@resource").get(0))
+						.getValue());
+				ret[i].setContent(((Element) this.commentsXML.select(
+						comments.get(i), "//description").get(0)).getValue());
+				String dateString = ((Element) this.commentsXML.select(
+						comments.get(i), "//created").get(0)).getValue();
+				ret[i].setCreationDate(Util.parseDate(dateString));
+			}
+
+			return ret;
+
+		} catch (JDOMException e) {
+			throw new DAOException("Could not parse XML [" + e.getMessage()
+					+ "]", e);
+		} catch (IOException e) {
+			throw new DAOException(
+					"Could read stream [" + e.getMessage() + "]", e);
+		} catch (Exception e) {
+			throw new DAOException("General error reading discussion events ["
+					+ e.getMessage() + "]", e);
+		}
 	}
 
 	@Override
 	public DiscussionEvent getDiscussionEvent(int id) throws DAOException {
-		// TODO Auto-generated method stub
-		return null;
+		// that is not true, the have a resource-identifier. I am jsut not sure
+		// how to deal with that
+		throw new UnsupportedOperationException(
+				"Not supported: Jazz does not have comment ids.");
 	}
 
 	@Override
 	public void storeDiscussionEvent(DiscussionEvent de) throws DAOException {
-		// TODO Auto-generated method stub
-		
+		throw new UnsupportedOperationException("Read only DAO!");
 	}
 
 	@Override
 	public void storeDiscussionEvents(DiscussionEvent[] des)
 			throws DAOException {
-		// TODO Auto-generated method stub
-		
+		throw new UnsupportedOperationException("Read only DAO!");
 	}
 }
