@@ -41,7 +41,7 @@ import org.apache.http.util.EntityUtils;
 // this might be a valuable resource: https://jazz.net/ccm/rootservices
 public class FormBasedAuthenticatedConnector implements IWebConnector {
 
-	private final IJazzAccessConfiguration config;
+	private IJazzAccessConfiguration config;
 
 	private final InetAddress jazzaddr;
 
@@ -58,6 +58,14 @@ public class FormBasedAuthenticatedConnector implements IWebConnector {
 		this.jazzaddr = InetAddress.getByName(hostname);
 		// first, attempt to create a connection
 		connect();
+	}
+
+	public void setJazzAccessConfiguration(IJazzAccessConfiguration config) {
+		this.config = config;
+	}
+
+	public IJazzAccessConfiguration getJazzAccessConfiguration() {
+		return this.config;
 	}
 
 	/**
@@ -136,8 +144,11 @@ public class FormBasedAuthenticatedConnector implements IWebConnector {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see ca.uvic.segal.jazzClassifier.io.jazz.rest.IWebConnector#performHTTPSRequestXML(java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see ca.uvic.segal.jazzClassifier.io.jazz.rest.IWebConnector#
+	 * performHTTPSRequestXML(java.lang.String)
 	 */
 	@Override
 	public synchronized HttpResponse performHTTPSRequestXML(String requestURL)
@@ -200,7 +211,9 @@ public class FormBasedAuthenticatedConnector implements IWebConnector {
 		params.setParameter("http.socket.timeout", new Integer(60000));
 		httpClient.setParams(params);
 		HttpGet getRequest = new HttpGet(requestURL);
-		getRequest.setHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
+		getRequest
+				.setHeader("Accept",
+						"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
 		return httpClient.execute(getRequest);
 		// TODO I think I need to set the accept header
 	}

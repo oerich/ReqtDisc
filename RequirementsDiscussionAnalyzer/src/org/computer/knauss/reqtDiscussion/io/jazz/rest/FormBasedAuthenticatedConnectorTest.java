@@ -2,6 +2,9 @@ package org.computer.knauss.reqtDiscussion.io.jazz.rest;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.FileInputStream;
+import java.util.Properties;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.util.EntityUtils;
 import org.computer.knauss.reqtDiscussion.io.jazz.util.ui.DialogBasedJazzAccessConfiguration;
@@ -12,8 +15,12 @@ public class FormBasedAuthenticatedConnectorTest {
 	@Test
 	public void test() throws Exception {
 		// https://jazz.net/jazz/oslc/contexts/_1w8aQEmJEduIY7C8B09Hyw/workitems?oslc_cm.pageSize=10
+		DialogBasedJazzAccessConfiguration config = new DialogBasedJazzAccessConfiguration();
+		Properties properties = new Properties();
+		properties.load(new FileInputStream("jazz-properties.txt"));
+		config.configure(properties);
 		IWebConnector fbac = new FormBasedAuthenticatedConnector(
-				new DialogBasedJazzAccessConfiguration());
+				config);
 		HttpResponse response = fbac
 				.performHTTPSRequestXML("https://jazz.net/jazz/rootservices");
 		System.out.println(response);

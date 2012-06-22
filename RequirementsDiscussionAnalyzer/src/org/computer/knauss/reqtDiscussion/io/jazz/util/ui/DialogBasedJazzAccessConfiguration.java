@@ -2,13 +2,14 @@ package org.computer.knauss.reqtDiscussion.io.jazz.util.ui;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Properties;
 
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import org.computer.knauss.reqtDiscussion.io.jazz.IJazzDAO;
 import org.computer.knauss.reqtDiscussion.io.jazz.rest.IJazzAccessConfiguration;
-
 
 public class DialogBasedJazzAccessConfiguration implements
 		IJazzAccessConfiguration {
@@ -22,9 +23,9 @@ public class DialogBasedJazzAccessConfiguration implements
 	private JPasswordField passwordField = new JPasswordField();
 	private JTextField hostNameField = new JTextField("jazz.net");
 	private JTextField authURLField = new JTextField(
-		//	"https://jazz.net/jazz/oauth-authorize");
-//	"https://jazz.net/hub/ccm/oauth-authorize");
-	"https://jazz.net/auth/login");
+	// "https://jazz.net/jazz/oauth-authorize");
+	// "https://jazz.net/hub/ccm/oauth-authorize");
+			"https://jazz.net/auth/login");
 
 	/*
 	 * (non-Javadoc)
@@ -100,4 +101,15 @@ public class DialogBasedJazzAccessConfiguration implements
 		return new String(this.password);
 	}
 
+	@Override
+	public void configure(Properties properties) {
+		this.userName = properties.getProperty(IJazzDAO.JAZZ_USR);
+		this.password = properties.getProperty(IJazzDAO.JAZZ_PWD).toCharArray();
+		this.hostname = properties.getProperty(IJazzDAO.JAZZ_URL);
+		try {
+			this.jazzAuthUrl = new URI(properties.getProperty(IJazzDAO.JAZZ_AUT));
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		}
+	}
 }

@@ -8,7 +8,7 @@ import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
 
 public interface IDiscussionEventDAO {
 
-	public void configure(Properties p);
+	public void configure(Properties p) throws DAOException;
 
 	public DiscussionEvent[] getDiscussionEventsOfDiscussion(int discussionId)
 			throws DAOException;

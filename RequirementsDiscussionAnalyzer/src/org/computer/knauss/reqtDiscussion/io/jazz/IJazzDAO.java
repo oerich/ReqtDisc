@@ -7,12 +7,17 @@ import org.jdom2.JDOMException;
 
 public interface IJazzDAO extends IDiscussionEventDAO {
 
+	public static final String JAZZ_USR = "jazz.usr";
+	public static final String JAZZ_PWD = "jazz.pwd";
+	public static final String JAZZ_AUT = "jazz.aut";
+	public static final String JAZZ_URL = "jazz.url";
+
 	/**
 	 * Workitems are organized in project areas and we need to decide which ones
 	 * we want to go for.
 	 * 
 	 * @return
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public String[] getProjectAreas() throws Exception;
 
@@ -37,14 +42,19 @@ public interface IJazzDAO extends IDiscussionEventDAO {
 	public int getLimit();
 
 	/**
-	 * For simplicity, we start to return workitems as xml fragments with discussion.
-	 * @param type defaults to story
-	 * @param deep should we follow links to subitems?
+	 * For simplicity, we start to return workitems as xml fragments with
+	 * discussion.
+	 * 
+	 * @param type
+	 *            defaults to story
+	 * @param deep
+	 *            should we follow links to subitems?
 	 * @return workitems as xml fragments with discussion
-	 * @throws Exception 
-	 * @throws IOException 
-	 * @throws JDOMException 
+	 * @throws Exception
+	 * @throws IOException
+	 * @throws JDOMException
 	 */
-	public String[] getWorkitemsForType(String type, boolean deep) throws JDOMException, IOException, Exception;
+	public String[] getWorkitemsForType(String type, boolean deep)
+			throws JDOMException, IOException, Exception;
 
 }
