@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.TreeMap;
 
 import javax.net.ssl.SSLContext;
@@ -215,7 +216,6 @@ public class FormBasedAuthenticatedConnector implements IWebConnector {
 				.setHeader("Accept",
 						"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
 		return httpClient.execute(getRequest);
-		// TODO I think I need to set the accept header
 	}
 
 	/**
@@ -299,9 +299,8 @@ public class FormBasedAuthenticatedConnector implements IWebConnector {
 			// (I found trying to extend the factory a bit difficult due to a
 			// call to createSocket with no arguments, a method which doesn't
 			// exist anywhere I can find, but hey-ho).
-			SSLSocketFactory sf = new SSLSocketFactory(sslcontext);
-
-			sf.setHostnameVerifier(SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
+			SSLSocketFactory sf = new SSLSocketFactory(sslcontext,
+					SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
 
 			// If you want a thread safe client, use the ThreadSafeConManager,
 			// but
@@ -330,6 +329,11 @@ public class FormBasedAuthenticatedConnector implements IWebConnector {
 			t.printStackTrace();
 			return null;
 		}
+	}
+
+	@Override
+	public void configure(Properties properties) {
+		getJazzAccessConfiguration().configure(properties);
 	}
 
 }

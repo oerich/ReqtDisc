@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.sql.Date;
+import java.util.Properties;
 
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -134,6 +135,11 @@ public class JazzJDOMDAOTest {
 						"testfiles/jazz.xml/117709-comments.xml");
 			}
 			return response;
+		}
+
+		@Override
+		public void configure(Properties properties) {
+			
 		}
 
 	}

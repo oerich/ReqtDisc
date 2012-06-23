@@ -1,5 +1,6 @@
 package org.computer.knauss.reqtDiscussion.io.jazz.rest;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -210,8 +211,13 @@ public class JazzJDOMDAO implements IJazzDAO, IDiscussionEventDAO {
 
 	public static void main(String[] args) throws JDOMException, IOException,
 			Exception {
+		Properties p = new Properties();
+		p.load(new FileInputStream("jazz-properties.txt"));
+		
+		DialogBasedJazzAccessConfiguration config = new DialogBasedJazzAccessConfiguration();
+		config.configure(p);
 		JazzJDOMDAO dao = new JazzJDOMDAO(
-				new DialogBasedJazzAccessConfiguration());
+				config);
 		dao.setProjectArea("Rational Team Concert");
 
 		for (String element : dao.getWorkitemsForType("any", false)) {
@@ -221,8 +227,7 @@ public class JazzJDOMDAO implements IJazzDAO, IDiscussionEventDAO {
 
 	@Override
 	public void configure(Properties p) {
-		// TODO Auto-generated method stub
-
+		this.webConnector.configure(p);
 	}
 
 	@Override
