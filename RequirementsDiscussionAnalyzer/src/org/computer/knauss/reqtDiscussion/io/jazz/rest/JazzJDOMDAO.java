@@ -7,18 +7,21 @@ import java.util.List;
 import java.util.Properties;
 
 import org.apache.http.HttpResponse;
+import org.computer.knauss.reqtDiscussion.io.IDiscussionDAO;
 import org.computer.knauss.reqtDiscussion.io.IDiscussionEventDAO;
 import org.computer.knauss.reqtDiscussion.io.Util;
 import org.computer.knauss.reqtDiscussion.io.jazz.IJazzDAO;
 import org.computer.knauss.reqtDiscussion.io.jazz.util.XPathHelper;
 import org.computer.knauss.reqtDiscussion.io.jazz.util.ui.DialogBasedJazzAccessConfiguration;
 import org.computer.knauss.reqtDiscussion.io.sql.DAOException;
+import org.computer.knauss.reqtDiscussion.model.Discussion;
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
 import org.jdom2.Attribute;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
 
-public class JazzJDOMDAO implements IJazzDAO, IDiscussionEventDAO {
+public class JazzJDOMDAO implements IJazzDAO, IDiscussionEventDAO,
+		IDiscussionDAO {
 
 	private static final String TEN_STORIES = "?oslc_cm.query=dc%3Atype=%22com.ibm.team.apt.workItemType.story%22&oslc_cm.pageSize=10";
 
@@ -213,11 +216,10 @@ public class JazzJDOMDAO implements IJazzDAO, IDiscussionEventDAO {
 			Exception {
 		Properties p = new Properties();
 		p.load(new FileInputStream("jazz-properties.txt"));
-		
+
 		DialogBasedJazzAccessConfiguration config = new DialogBasedJazzAccessConfiguration();
 		config.configure(p);
-		JazzJDOMDAO dao = new JazzJDOMDAO(
-				config);
+		JazzJDOMDAO dao = new JazzJDOMDAO(config);
 		dao.setProjectArea("Rational Team Concert");
 
 		for (String element : dao.getWorkitemsForType("any", false)) {
@@ -301,6 +303,102 @@ public class JazzJDOMDAO implements IJazzDAO, IDiscussionEventDAO {
 	@Override
 	public void storeDiscussionEvents(DiscussionEvent[] des)
 			throws DAOException {
+		throw new UnsupportedOperationException("Read only DAO!");
+	}
+
+	@Override
+	public Discussion getDiscussion(int discussionID) throws DAOException {
+		try {
+			// 1. make sure that the changerequests are already loaded.
+			// Otherwise
+			// query them.
+			if (this.changeRequestsXML == null) {
+				getWorkitemsForType(null, false);
+			}
+
+			// 2. identify the changerequest with the discussionid and get the
+			// comment-url
+			Object discussionElement = this.changeRequestsXML.select(
+					"//ChangeRequest[identifier=" + discussionID + "]").get(0);
+
+			Discussion d = createDiscussion(discussionElement);
+			return d;
+		} catch (JDOMException e) {
+			throw new DAOException("Could not parse XML [" + e.getMessage()
+					+ "]", e);
+		} catch (IOException e) {
+			throw new DAOException(
+					"Could read stream [" + e.getMessage() + "]", e);
+		} catch (Exception e) {
+			throw new DAOException("General error reading discussion events ["
+					+ e.getMessage() + "]", e);
+		}
+	}
+
+	private Discussion createDiscussion(Object discussionElement) {
+		Discussion d = new Discussion();
+
+		d.setId(Integer.parseInt(((Element) this.xpathHelper.select(
+				discussionElement, "identifier").get(0)).getValue()));
+		d.setDateCreated(Util.parseDate(((Element) this.xpathHelper.select(
+				discussionElement, "created").get(0)).getValue()));
+		d.setCreator(((Attribute) this.xpathHelper.select(
+				discussionElement, "creator/@resource").get(0)).getValue());
+		d.setDescription(((Element) this.xpathHelper.select(
+				discussionElement, "description").get(0)).getValue());
+		d.setSummary(((Element) this.xpathHelper.select(discussionElement,
+				"title").get(0)).getValue());
+		d.setType(((Attribute) this.xpathHelper.select(discussionElement,
+				"type/@resource").get(0)).getValue());
+		return d;
+	}
+
+	@Override
+	public Discussion getNextDiscussion() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Discussion[] getDiscussions() throws DAOException {
+		try {
+			// 1. make sure that the changerequests are already loaded.
+			// Otherwise
+			// query them.
+			if (this.changeRequestsXML == null) {
+				getWorkitemsForType(null, false);
+			}
+
+			// 2. identify the changerequest with the discussionid and get the
+			// comment-url
+			List<Object> discussionElements = this.changeRequestsXML.select(
+					"//ChangeRequest");
+			
+			Discussion[] ret = new Discussion[discussionElements.size()];
+			for (int i = 0; i < ret.length; i++) {
+				ret[i] = createDiscussion(discussionElements.get(i));
+			}
+
+			return ret;
+		} catch (JDOMException e) {
+			throw new DAOException("Could not parse XML [" + e.getMessage()
+					+ "]", e);
+		} catch (IOException e) {
+			throw new DAOException(
+					"Could read stream [" + e.getMessage() + "]", e);
+		} catch (Exception e) {
+			throw new DAOException("General error reading discussion events ["
+					+ e.getMessage() + "]", e);
+		}
+	}
+
+	@Override
+	public void storeDiscussion(Discussion d) {
+		throw new UnsupportedOperationException("Read only DAO!");
+	}
+
+	@Override
+	public void storeDiscussions(Discussion[] ds) {
 		throw new UnsupportedOperationException("Read only DAO!");
 	}
 }

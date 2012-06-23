@@ -1,6 +1,7 @@
 package org.computer.knauss.reqtDiscussion.io.jazz.rest;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -15,8 +16,10 @@ import org.apache.http.HttpResponse;
 import org.apache.http.ProtocolVersion;
 import org.apache.http.StatusLine;
 import org.apache.http.message.BasicHttpResponse;
+import org.computer.knauss.reqtDiscussion.io.Util;
 import org.computer.knauss.reqtDiscussion.io.jazz.IJazzDAO;
 import org.computer.knauss.reqtDiscussion.io.sql.DAOException;
+import org.computer.knauss.reqtDiscussion.model.Discussion;
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
 import org.jdom2.JDOMException;
 import org.junit.Before;
@@ -105,6 +108,59 @@ public class JazzJDOMDAOTest {
 		this.dao.getDiscussionEvent(123);
 	}
 
+	@Test
+	public void testGetDiscussion() throws DAOException {
+		this.dao.setProjectArea("Rational Team Concert");
+
+		Discussion d = this.dao.getDiscussion(117709);
+
+		assertEquals(117709, d.getID());
+		assertEquals(Util.parseDate("2010-06-11T03:44:02.373Z"),
+				d.getDateCreated());
+		assertEquals("https://jazz.net/jts/users/sreerupa", d.getCreator());
+		assertEquals(
+				"We'll look at the application scenario described in plan item 102112 and add some VS specific sources/component to it.<br/><br/>What we could do&nbsp; is to have a separate component altogether with a WPF based application in it that does client authentication or some simple UI work that fits into the application scenario.<br/><br/>This project will need to be install automatically in VS should the user choose to install the sample app. So we'd have to add some code to do that as well.<br/><br/>If we have something like this, @dcustic could use it in his tutorials as well. ",
+				d.getDescription());
+		assertEquals("Add VS projects to the sample app", d.getSummary());
+		assertEquals(
+				"https://jazz.net/jazz/oslc/types/_1w8aQEmJEduIY7C8B09Hyw/com.ibm.team.apt.workItemType.story",
+				d.getType());
+	}
+
+	@Test
+	public void testGetDiscussions() throws DAOException {
+		this.dao.setProjectArea("Rational Team Concert");
+
+		Discussion[] d = this.dao.getDiscussions();
+		assertEquals(50, d.length);
+		assertEquals(117709, d[0].getID());
+	}
+
+	@Test
+	public void testGetNextDiscussion() throws DAOException {
+		this.dao.setProjectArea("Rational Team Concert");
+
+		for (int i = 0; i < 51; i++) {
+			Discussion d = this.dao.getNextDiscussion();
+			// we have 50 stories, before the testframe gives the same file
+			// again
+			if (i == 0 || i == 50)
+				assertEquals(117709, d.getID());
+			else
+				assertFalse(117709 == d.getID());
+		}
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public void testStoreDiscussion() throws DAOException {
+		this.dao.storeDiscussion(new Discussion());
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public void testStoreDiscussions() throws DAOException {
+		this.dao.storeDiscussions(new Discussion[] { new Discussion() });
+	}
+
 	private class ConnectorProbe implements IWebConnector {
 
 		HttpResponseDummy response = new HttpResponseDummy();
@@ -139,7 +195,7 @@ public class JazzJDOMDAOTest {
 
 		@Override
 		public void configure(Properties properties) {
-			
+
 		}
 
 	}
