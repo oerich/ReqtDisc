@@ -1,4 +1,4 @@
-package org.computer.knauss.reqtDiscussion.io.sql;
+package org.computer.knauss.reqtDiscussion.io.sql.mysql;
 
 import static org.junit.Assert.assertEquals;
 
@@ -7,17 +7,18 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
 
+import org.computer.knauss.reqtDiscussion.io.DAOException;
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
 import org.junit.Before;
 import org.junit.Test;
 
-public class SQLDiscussionEventDAOTest {
+public class MySQLDiscussionEventDAOTest {
 
-	private SQLDiscussionEventDAO testDao;
+	private MySQLDiscussionEventDAO testDao;
 
 	@Before
 	public void setUp() throws Exception {
-		this.testDao = new SQLDiscussionEventDAO();
+		this.testDao = new MySQLDiscussionEventDAO();
 	}
 
 	@Test

@@ -1,4 +1,4 @@
-package org.computer.knauss.reqtDiscussion.io.sql;
+package org.computer.knauss.reqtDiscussion.io.sql.mysql;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -11,11 +11,12 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Vector;
 
+import org.computer.knauss.reqtDiscussion.io.DAOException;
 import org.computer.knauss.reqtDiscussion.io.IDiscussionEventDAO;
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
 
 
-public class SQLDiscussionEventDAO implements IDiscussionEventDAO {
+public class MySQLDiscussionEventDAO implements IDiscussionEventDAO {
 
 	public static final String PROP_URL = "url";
 	public static final String PROP_USER = "user";
@@ -102,7 +103,7 @@ public class SQLDiscussionEventDAO implements IDiscussionEventDAO {
 
 		}
 	}
-
+	
 	private PreparedStatement getPreparedStatement(String name)
 			throws SQLException {
 		// Connection still valid?
@@ -115,7 +116,6 @@ public class SQLDiscussionEventDAO implements IDiscussionEventDAO {
 			PreparedStatement stat = this.connection.prepareStatement(name);
 			this.statementCache.put(name, stat);
 		}
-
 		return this.statementCache.get(name);
 	}
 

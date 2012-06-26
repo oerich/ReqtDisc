@@ -7,13 +7,13 @@ import java.util.List;
 import java.util.Properties;
 
 import org.apache.http.HttpResponse;
+import org.computer.knauss.reqtDiscussion.io.DAOException;
 import org.computer.knauss.reqtDiscussion.io.IDiscussionDAO;
 import org.computer.knauss.reqtDiscussion.io.IDiscussionEventDAO;
 import org.computer.knauss.reqtDiscussion.io.Util;
 import org.computer.knauss.reqtDiscussion.io.jazz.IJazzDAO;
 import org.computer.knauss.reqtDiscussion.io.jazz.util.XPathHelper;
 import org.computer.knauss.reqtDiscussion.io.jazz.util.ui.DialogBasedJazzAccessConfiguration;
-import org.computer.knauss.reqtDiscussion.io.sql.DAOException;
 import org.computer.knauss.reqtDiscussion.model.Discussion;
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
 import org.jdom2.Attribute;
@@ -140,9 +140,16 @@ public class JazzJDOMDAO implements IJazzDAO, IDiscussionEventDAO,
 	public synchronized String[] getWorkitemsForType(String type, boolean deep)
 			throws JDOMException, IOException, Exception {
 		// 0. check if project area is set
-		if (this.selectedProjectArea == null)
-			throw new IllegalArgumentException("Select a project area first!");
-
+		if (this.selectedProjectArea == null) {
+			StringBuffer b = new StringBuffer();
+			for (String s : getProjectAreas()) {
+				b.append("<");
+				b.append(s);
+				b.append(">,");
+			}
+			throw new IllegalArgumentException(
+					"Select a project area first! Available: " + b.toString().substring(0, b.length()-1));
+		}
 		// 1. get the services.xml for project area and obtain the query URI
 		String servicesURI = "";
 		for (Object o : getProjectAreaList()) {
@@ -342,10 +349,10 @@ public class JazzJDOMDAO implements IJazzDAO, IDiscussionEventDAO,
 				discussionElement, "identifier").get(0)).getValue()));
 		d.setDateCreated(Util.parseDate(((Element) this.xpathHelper.select(
 				discussionElement, "created").get(0)).getValue()));
-		d.setCreator(((Attribute) this.xpathHelper.select(
-				discussionElement, "creator/@resource").get(0)).getValue());
-		d.setDescription(((Element) this.xpathHelper.select(
-				discussionElement, "description").get(0)).getValue());
+		d.setCreator(((Attribute) this.xpathHelper.select(discussionElement,
+				"creator/@resource").get(0)).getValue());
+		d.setDescription(((Element) this.xpathHelper.select(discussionElement,
+				"description").get(0)).getValue());
 		d.setSummary(((Element) this.xpathHelper.select(discussionElement,
 				"title").get(0)).getValue());
 		d.setType(((Attribute) this.xpathHelper.select(discussionElement,
@@ -371,9 +378,9 @@ public class JazzJDOMDAO implements IJazzDAO, IDiscussionEventDAO,
 
 			// 2. identify the changerequest with the discussionid and get the
 			// comment-url
-			List<Object> discussionElements = this.changeRequestsXML.select(
-					"//ChangeRequest");
-			
+			List<Object> discussionElements = this.changeRequestsXML
+					.select("//ChangeRequest");
+
 			Discussion[] ret = new Discussion[discussionElements.size()];
 			for (int i = 0; i < ret.length; i++) {
 				ret[i] = createDiscussion(discussionElements.get(i));

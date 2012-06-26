@@ -5,9 +5,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
 
+import org.computer.knauss.reqtDiscussion.io.DAOException;
 import org.computer.knauss.reqtDiscussion.io.csv.CSVDiscussionEventDAO;
-import org.computer.knauss.reqtDiscussion.io.sql.DAOException;
-import org.computer.knauss.reqtDiscussion.io.sql.SQLDiscussionEventDAO;
+import org.computer.knauss.reqtDiscussion.io.sql.mysql.MySQLDiscussionEventDAO;
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
 
 public class PushCSVToMySQL {
@@ -34,7 +34,7 @@ public class PushCSVToMySQL {
 		p.setProperty(CSVDiscussionEventDAO.PROP_START_ROW, "1");
 
 		CSVDiscussionEventDAO csvDAO = new CSVDiscussionEventDAO();
-		SQLDiscussionEventDAO sqlDAO = new SQLDiscussionEventDAO();
+		MySQLDiscussionEventDAO sqlDAO = new MySQLDiscussionEventDAO();
 		csvDAO.configure(p);
 		sqlDAO.configure(p);
 

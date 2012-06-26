@@ -1,10 +1,10 @@
-package org.computer.knauss.reqtDiscussion.io.sql;
+package org.computer.knauss.reqtDiscussion.io;
 
 public class DAOException extends Exception {
 
 	private static final long serialVersionUID = 1L;
 
-	DAOException(Exception cause) {
+	public DAOException(Exception cause) {
 		super(cause);
 	}
 

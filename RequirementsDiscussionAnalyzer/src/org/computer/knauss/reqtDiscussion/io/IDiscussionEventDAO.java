@@ -2,7 +2,6 @@ package org.computer.knauss.reqtDiscussion.io;
 
 import java.util.Properties;
 
-import org.computer.knauss.reqtDiscussion.io.sql.DAOException;
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
 
 
