@@ -35,6 +35,8 @@ public class JazzJDOMDAO implements IJazzDAO, IDiscussionEventDAO,
 
 	private XPathHelper commentsXML;
 
+	private int discussionIndex;
+
 	public JazzJDOMDAO(IJazzAccessConfiguration config) throws IOException {
 		this(new FormBasedAuthenticatedConnector(config));
 	}
@@ -148,7 +150,8 @@ public class JazzJDOMDAO implements IJazzDAO, IDiscussionEventDAO,
 				b.append(">,");
 			}
 			throw new IllegalArgumentException(
-					"Select a project area first! Available: " + b.toString().substring(0, b.length()-1));
+					"Select a project area first! Available: "
+							+ b.toString().substring(0, b.length() - 1));
 		}
 		// 1. get the services.xml for project area and obtain the query URI
 		String servicesURI = "";
@@ -243,14 +246,13 @@ public class JazzJDOMDAO implements IJazzDAO, IDiscussionEventDAO,
 	public DiscussionEvent[] getDiscussionEventsOfDiscussion(int discussionId)
 			throws DAOException {
 		try {
-			// 1. make sure that the changerequests are already loaded.
-			// Otherwise
-			// query them.
+			// 1. make sure that the change requests are already loaded.
+			// Otherwise query them.
 			if (this.changeRequestsXML == null) {
 				getWorkitemsForType(null, false);
 			}
 
-			// 2. identify the changerequest with the discussionid and get the
+			// 2. identify the change request with the discussion id and get the
 			// comment-url
 			String commentURL = ((Attribute) this.changeRequestsXML.select(
 					"//ChangeRequest[identifier=" + discussionId
@@ -361,9 +363,21 @@ public class JazzJDOMDAO implements IJazzDAO, IDiscussionEventDAO,
 	}
 
 	@Override
-	public Discussion getNextDiscussion() {
-		// TODO Auto-generated method stub
-		return null;
+	public Discussion getNextDiscussion() throws DAOException {
+		Discussion ret = null;
+
+		if (this.discussionIndex < getDiscussions().length)
+			ret = getDiscussions()[this.discussionIndex];
+		else {
+			// TODO
+			// otherwise: get the link for the next results.
+			// get the next discussions
+			this.discussionIndex = this.discussionIndex
+					- getDiscussions().length;
+			ret = getNextDiscussion();
+		}
+		this.discussionIndex++;
+		return ret;
 	}
 
 	@Override

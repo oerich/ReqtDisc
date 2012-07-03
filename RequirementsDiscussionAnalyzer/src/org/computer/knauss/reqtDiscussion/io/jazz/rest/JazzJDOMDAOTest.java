@@ -91,6 +91,13 @@ public class JazzJDOMDAOTest {
 		assertEquals(
 				"This is an important component of the sample application for Rational User Education. We will want to have lab exercises directed at .NET as well as Eclipse developers.",
 				des[0].getContent());
+
+		des = this.dao.getDiscussionEventsOfDiscussion(50162);
+		assertEquals(1, des.length);
+
+		assertEquals(50162, des[0].getDiscussionID());
+		assertEquals("https://jazz.net/jts/users/csun", des[0].getCreator());
+		assertEquals("verified in m6.", des[0].getContent());
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
@@ -145,7 +152,8 @@ public class JazzJDOMDAOTest {
 			// we have 50 stories, before the testframe gives the same file
 			// again
 			if (i == 0 || i == 50)
-				assertEquals(117709, d.getID());
+				assertEquals("Should be the same for i=0 and i=50 (i=" + i
+						+ ")", 117709, d.getID());
 			else
 				assertFalse(117709 == d.getID());
 		}
@@ -187,8 +195,15 @@ public class JazzJDOMDAOTest {
 			} else if (requestURL.endsWith("comments")) {
 				// if this file is missing, store the comments for the first
 				// story in '50-stories.xml' into that file.
-				this.response.entity.stream = new FileInputStream(
-						"testfiles/jazz.xml/117709-comments.xml");
+				System.out.println(requestURL);
+				if (requestURL
+						.equals("https://jazz.net/jazz/oslc/workitems/_IJb7oHULEd-GXMPQSbP08A/rtc_cm:comments"))
+					this.response.entity.stream = new FileInputStream(
+							"testfiles/jazz.xml/117709-comments.xml");
+				else
+					this.response.entity.stream = new FileInputStream(
+							"testfiles/jazz.xml/50162-comments.xml");
+
 			}
 			return response;
 		}
