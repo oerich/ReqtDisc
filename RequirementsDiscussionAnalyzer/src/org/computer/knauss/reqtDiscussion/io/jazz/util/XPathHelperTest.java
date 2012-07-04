@@ -3,6 +3,7 @@ package org.computer.knauss.reqtDiscussion.io.jazz.util;
 import static org.junit.Assert.assertEquals;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
@@ -10,6 +11,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
 
 import org.jdom2.Attribute;
+import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.junit.Before;
 import org.junit.Test;
@@ -89,5 +91,16 @@ public class XPathHelperTest {
 		Attribute queryResource = (Attribute) helper.select("//query/@resource").get(0);
 		assertEquals("https://jazz.net/jazz/query",queryResource.getValue());
 		documentStream.close();
+	}
+	
+	@Test
+	public void testRelativeSelect() throws FileNotFoundException, JDOMException, IOException {
+		helper.setDocument(new FileInputStream(BOOK_EXAMPLE_TESTFILE_PATH));
+		List<Object> books = helper.select("//book");
+		
+		assertEquals(3, books.size());
+		assertEquals("14.95", ((Element)helper.select(books.get(0), ".//price").get(0)).getValue());
+		assertEquals("5.99", ((Element)helper.select(books.get(1), ".//price").get(0)).getValue());
+		assertEquals("7.50", ((Element)helper.select(books.get(2), ".//price").get(0)).getValue());
 	}
 }

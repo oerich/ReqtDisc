@@ -131,7 +131,7 @@ public class DiscussionVisualizationPanel extends JPanel implements
 				}
 			}
 
-			int size = allDiscussionEventList.getClassificationItemList().size();
+			int size = allDiscussionEventList.getFilteredDiscussionEventList().size();
 			DiscussionEvent[] allDiscussionEvents = new DiscussionEvent[size];
 			for (int i = 0; i < size; i++)
 				allDiscussionEvents[i] = allDiscussionEventList.getWorkitemComment(i);

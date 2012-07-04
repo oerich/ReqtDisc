@@ -91,6 +91,11 @@ public class JazzJDOMDAOTest {
 		assertEquals(
 				"This is an important component of the sample application for Rational User Education. We will want to have lab exercises directed at .NET as well as Eclipse developers.",
 				des[0].getContent());
+		assertEquals(117709, des[1].getDiscussionID());
+		assertEquals("https://jazz.net/jts/users/tfeeney", des[1].getCreator());
+		assertEquals(
+				"@sreerupa, once you get going on this, can we (sample asset/scenario team) get some early visibility into what you have planned? meetings with Ben/JM on the web/Java version have been very helpful in getting the app where it needs to be (or will be) for all stakeholders.",
+				des[1].getContent());
 
 		des = this.dao.getDiscussionEventsOfDiscussion(50162);
 		assertEquals(1, des.length);

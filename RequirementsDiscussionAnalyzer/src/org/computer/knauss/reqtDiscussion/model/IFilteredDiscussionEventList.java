@@ -10,7 +10,7 @@ public interface IFilteredDiscussionEventList {
 	 * A filtered list of classification items
 	 * @return A filtered list of classification items
 	 */
-	public List<DiscussionEvent> getClassificationItemList();
+	public List<DiscussionEvent> getFilteredDiscussionEventList();
 	
 	public DiscussionEvent getWorkitemComment(int i);
 	
@@ -20,7 +20,7 @@ public interface IFilteredDiscussionEventList {
 
 	public void clear();
 
-	public Object[] getFilters();
+	public IDiscussionEventFilter[] getFilters();
 	
 	public void add(DiscussionEvent event);
 }

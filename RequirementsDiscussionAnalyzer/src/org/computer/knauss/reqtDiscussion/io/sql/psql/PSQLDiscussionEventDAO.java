@@ -106,7 +106,7 @@ public class PSQLDiscussionEventDAO extends AbstractSQLDAO implements
 		System.out.println("Created Table discussionEvent.");
 	}
 
-	void dropSchema() throws SQLException {
+	public void dropSchema() throws SQLException {
 		getPreparedStatement(DROP_DISCUSSION_TABLE).execute();
 		System.out.println("Dropped Table discussionEvent.");
 	}

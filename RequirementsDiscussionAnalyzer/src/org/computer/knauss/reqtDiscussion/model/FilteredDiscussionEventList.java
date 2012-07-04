@@ -9,11 +9,10 @@ public class FilteredDiscussionEventList implements
 	private List<IDiscussionEventFilter> filters = new Vector<IDiscussionEventFilter>();
 	private List<DiscussionEvent> unfilteredList = new Vector<DiscussionEvent>();
 	private List<DiscussionEvent> filteredList = new Vector<DiscussionEvent>();
-	private List<DiscussionEvent> classificationItemList = new Vector<DiscussionEvent>();
 
 	@Override
-	public List<DiscussionEvent> getClassificationItemList() {
-		return classificationItemList;
+	public List<DiscussionEvent> getFilteredDiscussionEventList() {
+		return filteredList;
 	}
 
 	@Override
@@ -44,12 +43,6 @@ public class FilteredDiscussionEventList implements
 			if (accept)
 				this.filteredList.add(cwc);
 		}
-
-		// Now update the shadowlist for the statistics panel
-		classificationItemList.clear();
-		for (DiscussionEvent cwc : this.filteredList) {
-			classificationItemList.add(cwc);
-		}
 	}
 
 	@Override
@@ -59,8 +52,8 @@ public class FilteredDiscussionEventList implements
 	}
 
 	@Override
-	public Object[] getFilters() {
-		return this.filters.toArray();
+	public IDiscussionEventFilter[] getFilters() {
+		return this.filters.toArray(new IDiscussionEventFilter[0]);
 	}
 
 	@Override

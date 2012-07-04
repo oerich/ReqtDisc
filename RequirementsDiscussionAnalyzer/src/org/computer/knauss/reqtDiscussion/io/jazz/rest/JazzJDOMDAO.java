@@ -267,18 +267,18 @@ public class JazzJDOMDAO implements IJazzDAO, IDiscussionEventDAO,
 					.performHTTPSRequestXML(commentURL).getEntity()
 					.getContent());
 
-			List<Object> comments = this.commentsXML.select("//Comment");
+			List<Object> comments =  this.commentsXML.select("//Comment");
 			DiscussionEvent[] ret = new DiscussionEvent[comments.size()];
 			for (int i = 0; i < ret.length; i++) {
 				ret[i] = new DiscussionEvent();
 				ret[i].setDiscussionID(discussionId);
 				ret[i].setCreator(((Attribute) this.commentsXML.select(
-						comments.get(i), "//creator/@resource").get(0))
+						comments.get(i), ".//creator/@resource").get(0))
 						.getValue());
 				ret[i].setContent(((Element) this.commentsXML.select(
-						comments.get(i), "//description").get(0)).getValue());
+						comments.get(i), ".//description").get(0)).getValue());
 				String dateString = ((Element) this.commentsXML.select(
-						comments.get(i), "//created").get(0)).getValue();
+						comments.get(i), ".//created").get(0)).getValue();
 				ret[i].setCreationDate(Util.parseDate(dateString));
 			}
 

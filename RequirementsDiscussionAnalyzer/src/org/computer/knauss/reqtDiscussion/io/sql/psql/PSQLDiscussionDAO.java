@@ -139,7 +139,7 @@ public class PSQLDiscussionDAO extends AbstractSQLDAO implements IDiscussionDAO 
 		System.out.println("Created Table " + DISCUSSION_TABLE + ".");
 	}
 
-	void dropSchema() throws SQLException {
+	public void dropSchema() throws SQLException {
 		getPreparedStatement(DROP_DISCUSSION_TABLE).execute();
 		System.out.println("Dropped Table " + DISCUSSION_TABLE + ".");
 	}

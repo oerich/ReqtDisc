@@ -3,6 +3,7 @@ package org.computer.knauss.reqtDiscussion.scripts;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Properties;
 
 import org.computer.knauss.reqtDiscussion.io.DAOException;
@@ -21,9 +22,10 @@ public class FetchJazzToPSQL {
 	 * @throws IOException
 	 * @throws FileNotFoundException
 	 * @throws DAOException
+	 * @throws SQLException 
 	 */
 	public static void main(String[] args) throws FileNotFoundException,
-			IOException, DAOException {
+			IOException, DAOException, SQLException {
 		Properties p = new Properties();
 		p.load(new FileInputStream("jazz-properties.txt"));
 
@@ -32,15 +34,17 @@ public class FetchJazzToPSQL {
 		IDiscussionDAO jazzDiscussions = new JazzJDOMDAO(config);
 		((JazzJDOMDAO) jazzDiscussions)
 				.setProjectArea("Rational Team Concert");
-		IDiscussionDAO psqlDiscussions = new PSQLDiscussionDAO();
+		PSQLDiscussionDAO psqlDiscussions = new PSQLDiscussionDAO();
 
 		IDiscussionEventDAO jazzDiscussionEvents = (IDiscussionEventDAO) jazzDiscussions;
-		IDiscussionEventDAO psqlDiscussionEvents = new PSQLDiscussionEventDAO();
+		PSQLDiscussionEventDAO psqlDiscussionEvents = new PSQLDiscussionEventDAO();
 
+		psqlDiscussionEvents.dropSchema();
+		psqlDiscussions.dropSchema();
+		
 		for (Discussion d : jazzDiscussions.getDiscussions()) {
 			psqlDiscussions.storeDiscussion(d);
-			psqlDiscussionEvents.storeDiscussionEvents(jazzDiscussionEvents
-					.getDiscussionEventsOfDiscussion(d.getID()));
+			psqlDiscussionEvents.storeDiscussionEvents(d.getAllComments());
 		}
 	}
 
