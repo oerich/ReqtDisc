@@ -9,9 +9,9 @@ import org.computer.knauss.reqtDiscussion.io.DAORegistry;
 import org.computer.knauss.reqtDiscussion.io.jazz.JazzDAOManager;
 import org.computer.knauss.reqtDiscussion.ui.DiscussionAnalyzerFrame;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.AbstractCommand;
-import org.computer.knauss.reqtDiscussion.ui.ctrl.InsertOrUpdateCommentClassification;
+import org.computer.knauss.reqtDiscussion.ui.ctrl.InsertOrUpdateDiscussionEventClassification;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.LoadDiscussions;
-import org.computer.knauss.reqtDiscussion.ui.ctrl.LoadWorkItemByID;
+import org.computer.knauss.reqtDiscussion.ui.ctrl.LoadDiscussionByID;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.SetReferenceClassifierName;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.ShowStatistics;
 import org.computer.knauss.reqtDiscussion.ui.uiModel.DiscussionTableModel;
@@ -39,14 +39,14 @@ public class DiscussionAnalyzer {
 					configureCommand(new LoadDiscussions()));
 
 			daFrame.addAction(DiscussionAnalyzerFrame.DATA_MENU,
-					configureCommand(new LoadWorkItemByID()));
+					configureCommand(new LoadDiscussionByID()));
 
 			daFrame.addAction(DiscussionAnalyzerFrame.EDIT_MENU,
 					configureCommand(new SetReferenceClassifierName()));
 
 			daFrame.getEditClassificationFrame()
 					.setInsertOrUpdateCommand(
-							configureCommand(new InsertOrUpdateCommentClassification()));
+							configureCommand(new InsertOrUpdateDiscussionEventClassification()));
 
 			daFrame.addAction(DiscussionAnalyzerFrame.STATISTICS_MENU,
 					configureCommand(new ShowStatistics()));

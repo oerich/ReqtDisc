@@ -23,7 +23,7 @@ public interface IVisualizationStyle {
 	 *            - the offset that should be added to all y-coordinates.
 	 */
 	public void setDiscussionOverTimePartition(
-			ICommentOverTimePartition partition, int xOffset, int yOffset);
+			IDiscussionOverTimePartition partition, int xOffset, int yOffset);
 
 	/**
 	 * Returns a number of shapes that represent this discEvent. Depending on

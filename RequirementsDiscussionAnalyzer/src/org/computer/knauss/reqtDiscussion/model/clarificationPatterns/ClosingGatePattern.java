@@ -1,15 +1,15 @@
 package org.computer.knauss.reqtDiscussion.model.clarificationPatterns;
 
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
-import org.computer.knauss.reqtDiscussion.ui.visualization.ICommentOverTimePartition;
+import org.computer.knauss.reqtDiscussion.ui.visualization.IDiscussionOverTimePartition;
 
 public class ClosingGatePattern implements IPatternClass {
 
 	private final static double LIMIT = 0.75;
-	private ICommentOverTimePartition partition;
+	private IDiscussionOverTimePartition partition;
 
 	@Override
-	public void setCommentPartition(ICommentOverTimePartition p) {
+	public void setCommentPartition(IDiscussionOverTimePartition p) {
 		this.partition = p;
 	}
 
@@ -18,12 +18,12 @@ public class ClosingGatePattern implements IPatternClass {
 		if (comments.length == 0)
 			return false;
 
-		this.partition.setWorkitemComments(comments);
+		this.partition.setDiscussionEvents(comments);
 
 		int limit = (int) (this.partition.getPartitionCount() * LIMIT);
 
 		for (int i = 0; i < limit; i++) {
-			if (this.partition.getWorkitemsForPartition(i).length > 0)
+			if (this.partition.getDiscussionEventForPartition(i).length > 0)
 				return false;
 		}
 

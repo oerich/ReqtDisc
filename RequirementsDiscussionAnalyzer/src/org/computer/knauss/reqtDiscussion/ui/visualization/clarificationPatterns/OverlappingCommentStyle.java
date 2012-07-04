@@ -9,13 +9,13 @@ import java.awt.geom.Area;
 import java.awt.geom.Line2D;
 
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
-import org.computer.knauss.reqtDiscussion.ui.visualization.ICommentOverTimePartition;
+import org.computer.knauss.reqtDiscussion.ui.visualization.IDiscussionOverTimePartition;
 import org.computer.knauss.reqtDiscussion.ui.visualization.IVisualizationStyle;
 
 public class OverlappingCommentStyle extends AbstractVisualizationStyle
 		implements IVisualizationStyle {
 
-	private ICommentOverTimePartition partition;
+	private IDiscussionOverTimePartition partition;
 	private int upperOffset;
 	private int lowerOffset;
 	private int xOffset;
@@ -23,7 +23,7 @@ public class OverlappingCommentStyle extends AbstractVisualizationStyle
 
 	@Override
 	public void setDiscussionOverTimePartition(
-			ICommentOverTimePartition partition, int xOffset, int yOffset) {
+			IDiscussionOverTimePartition partition, int xOffset, int yOffset) {
 		this.partition = partition;
 		this.xOffset = xOffset;
 		this.yOffset = yOffset;
@@ -31,7 +31,7 @@ public class OverlappingCommentStyle extends AbstractVisualizationStyle
 
 	@Override
 	public Shape[] getShape(DiscussionEvent comment) {
-		int x = this.partition.getPartitionForWorkitemComment(comment)
+		int x = this.partition.getPartitionForDiscussionEvent(comment)
 				+ this.xOffset;
 		int y1 = this.yOffset;
 		int y2 = getWorkitemCommentY(comment);

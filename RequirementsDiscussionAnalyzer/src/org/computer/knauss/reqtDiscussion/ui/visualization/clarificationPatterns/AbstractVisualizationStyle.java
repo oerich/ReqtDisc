@@ -6,7 +6,7 @@ import java.awt.Shape;
 import java.awt.Stroke;
 
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
-import org.computer.knauss.reqtDiscussion.ui.visualization.ICommentOverTimePartition;
+import org.computer.knauss.reqtDiscussion.ui.visualization.IDiscussionOverTimePartition;
 import org.computer.knauss.reqtDiscussion.ui.visualization.IVisualizationStyle;
 
 public abstract class AbstractVisualizationStyle implements IVisualizationStyle {
@@ -14,7 +14,7 @@ public abstract class AbstractVisualizationStyle implements IVisualizationStyle 
 	private static final BasicStroke BASIC_STROKE = new BasicStroke(1f);
 	protected int yOffset;
 	protected int xOffset;
-	protected ICommentOverTimePartition partition;
+	protected IDiscussionOverTimePartition partition;
 
 	@Override
 	public abstract Shape[] getShape(DiscussionEvent comment);
@@ -51,7 +51,7 @@ public abstract class AbstractVisualizationStyle implements IVisualizationStyle 
 
 	@Override
 	public void setDiscussionOverTimePartition(
-			ICommentOverTimePartition partition, int xOffset, int yOffset) {
+			IDiscussionOverTimePartition partition, int xOffset, int yOffset) {
 		this.partition = partition;
 		this.xOffset = xOffset;
 		this.yOffset = yOffset;

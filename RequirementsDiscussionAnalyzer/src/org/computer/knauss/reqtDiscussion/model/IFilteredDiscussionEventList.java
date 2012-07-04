@@ -2,7 +2,7 @@ package org.computer.knauss.reqtDiscussion.model;
 
 import java.util.List;
 
-public interface IFilteredWorkitemCommentList {
+public interface IFilteredDiscussionEventList {
 	
 	public void setWorkitemCommentList(List<DiscussionEvent> data);
 	

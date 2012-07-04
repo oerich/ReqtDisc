@@ -13,10 +13,10 @@ public class PixelPartitionTest {
 	public void testGetPartitionCount() {
 		PixelPartition testitem = new PixelPartition();
 
-		assertEquals(ICommentOverTimePartition.TYPE_PIXEL,
+		assertEquals(IDiscussionOverTimePartition.TYPE_PIXEL,
 				testitem.getPartitionType());
 		testitem.setPartitionType(10);
-		assertEquals(ICommentOverTimePartition.TYPE_PIXEL,
+		assertEquals(IDiscussionOverTimePartition.TYPE_PIXEL,
 				testitem.getPartitionType());
 	}
 
@@ -29,10 +29,10 @@ public class PixelPartitionTest {
 		wc.setContent("Testcomment");
 		wc.setCreationDate(new Date(50));
 
-		assertEquals(50, testitem.getPartitionForWorkitemComment(wc));
+		assertEquals(50, testitem.getPartitionForDiscussionEvent(wc));
 
 		testitem.setPartitionCount(600);
-		assertEquals(300, testitem.getPartitionForWorkitemComment(wc));
+		assertEquals(300, testitem.getPartitionForDiscussionEvent(wc));
 	}
 
 	@Test
@@ -44,9 +44,9 @@ public class PixelPartitionTest {
 		wc.setContent("Testcomment");
 		wc.setCreationDate(new Date(50));
 
-		assertEquals(50, testitem.getPartitionForWorkitemComment(wc));
+		assertEquals(50, testitem.getPartitionForDiscussionEvent(wc));
 
 		testitem.setPartitionCount(600);
-		assertEquals(300, testitem.getPartitionForWorkitemComment(wc));
+		assertEquals(300, testitem.getPartitionForDiscussionEvent(wc));
 	}
 }

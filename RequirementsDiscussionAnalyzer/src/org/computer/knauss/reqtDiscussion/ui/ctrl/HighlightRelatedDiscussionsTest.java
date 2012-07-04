@@ -5,13 +5,13 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
-public class HighlightRelatedWorkitemsTest {
+public class HighlightRelatedDiscussionsTest {
 
-	private HighlightRelatedWorkitems hrw;
+	private HighlightRelatedDiscussions hrw;
 
 	@Before
 	public void setUp() throws Exception {
-		this.hrw = new HighlightRelatedWorkitems();
+		this.hrw = new HighlightRelatedDiscussions();
 	}
 
 	@Test

@@ -4,8 +4,8 @@ import java.sql.Date;
 
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
 
-public class TimeIntervalPartition extends AbstractCommentOverTimePartition
-		implements ICommentOverTimePartition {
+public class TimeIntervalPartition extends AbstractDiscussionOverTimePartition
+		implements IDiscussionOverTimePartition {
 
 	private static final long MILLIS_PER_YEAR = 31557600000l;
 	private static final long MILLIS_PER_WEEK = 604800000l;
@@ -75,8 +75,8 @@ public class TimeIntervalPartition extends AbstractCommentOverTimePartition
 	}
 
 	@Override
-	public int getPartitionForWorkitemComment(DiscussionEvent wc) {
-		return this.delegate.getPartitionForWorkitemComment(wc);
+	public int getPartitionForDiscussionEvent(DiscussionEvent wc) {
+		return this.delegate.getPartitionForDiscussionEvent(wc);
 	}
 
 }

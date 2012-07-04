@@ -14,7 +14,7 @@ import org.computer.knauss.reqtDiscussion.model.clarificationPatterns.IPatternCl
 import org.computer.knauss.reqtDiscussion.model.clarificationPatterns.IndifferentPattern;
 import org.computer.knauss.reqtDiscussion.model.clarificationPatterns.NoSharedUnderstandingPattern;
 import org.computer.knauss.reqtDiscussion.model.clarificationPatterns.PerfectPattern;
-import org.computer.knauss.reqtDiscussion.ui.visualization.ICommentOverTimePartition;
+import org.computer.knauss.reqtDiscussion.ui.visualization.IDiscussionOverTimePartition;
 
 public class PatternClassVisualization extends AbstractVisualizationStyle {
 
@@ -63,7 +63,7 @@ public class PatternClassVisualization extends AbstractVisualizationStyle {
 
 	@Override
 	public void setDiscussionOverTimePartition(
-			ICommentOverTimePartition partition, int xOffset, int yOffset) {
+			IDiscussionOverTimePartition partition, int xOffset, int yOffset) {
 		super.setDiscussionOverTimePartition(partition, xOffset, yOffset);
 		for (IPatternClass p : PATTERNS) {
 			p.setCommentPartition(partition);

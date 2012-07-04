@@ -7,7 +7,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
-import org.computer.knauss.reqtDiscussion.ui.visualization.ICommentOverTimePartition;
+import org.computer.knauss.reqtDiscussion.ui.visualization.IDiscussionOverTimePartition;
 import org.computer.knauss.reqtDiscussion.ui.visualization.IVisualizationStyle;
 
 public class AlignedRectangularCommentStyle extends AbstractVisualizationStyle
@@ -20,7 +20,7 @@ public class AlignedRectangularCommentStyle extends AbstractVisualizationStyle
 	private static final Color IN_CLASS_COLOR = new Color(0x9A0008);
 	private static final Color NOT_IN_CLASS_COLOR = new Color(0x00569A);
 
-	private ICommentOverTimePartition partition;
+	private IDiscussionOverTimePartition partition;
 	private int xOffset;
 	private int yOffset;
 	private Set<DiscussionEvent>[] elementsInClassPerPartition;
@@ -28,7 +28,7 @@ public class AlignedRectangularCommentStyle extends AbstractVisualizationStyle
 
 	@Override
 	public void setDiscussionOverTimePartition(
-			ICommentOverTimePartition partition, int xOffset, int yOffset) {
+			IDiscussionOverTimePartition partition, int xOffset, int yOffset) {
 		this.partition = partition;
 		this.xOffset = xOffset;
 		this.yOffset = yOffset;
@@ -39,7 +39,7 @@ public class AlignedRectangularCommentStyle extends AbstractVisualizationStyle
 	@Override
 	public Shape[] getShape(DiscussionEvent comment) {
 		// System.out.print("getShape: ");
-		int partition = this.partition.getPartitionForWorkitemComment(comment);
+		int partition = this.partition.getPartitionForDiscussionEvent(comment);
 		// System.out.print("partition: " + partition + "("
 		// + this.partition.getPartitionCount() + ") ");
 

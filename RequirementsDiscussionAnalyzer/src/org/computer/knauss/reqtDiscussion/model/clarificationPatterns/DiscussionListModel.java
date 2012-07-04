@@ -9,7 +9,7 @@ import javax.swing.event.ListDataListener;
 
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
 
-public class CommentListModel implements ListModel {
+public class DiscussionListModel implements ListModel {
 	private List<ListDataListener> listeners = new Vector<ListDataListener>();
 
 	private DiscussionEvent[] comments;

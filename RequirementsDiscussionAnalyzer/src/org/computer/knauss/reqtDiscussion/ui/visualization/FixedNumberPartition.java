@@ -4,8 +4,8 @@ import java.sql.Date;
 
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
 
-public class FixedNumberPartition extends AbstractCommentOverTimePartition
-		implements ICommentOverTimePartition {
+public class FixedNumberPartition extends AbstractDiscussionOverTimePartition
+		implements IDiscussionOverTimePartition {
 
 	private int partitionCount = 8;
 	private Date to;
@@ -39,7 +39,7 @@ public class FixedNumberPartition extends AbstractCommentOverTimePartition
 	}
 
 	@Override
-	public int getPartitionForWorkitemComment(DiscussionEvent wc) {
+	public int getPartitionForDiscussionEvent(DiscussionEvent wc) {
 		// 1. compute the total length of the timeline
 		long totalLength = this.to.getTime() - this.from.getTime();
 

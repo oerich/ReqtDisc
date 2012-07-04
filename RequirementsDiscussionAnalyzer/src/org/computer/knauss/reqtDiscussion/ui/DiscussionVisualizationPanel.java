@@ -21,9 +21,9 @@ import javax.swing.event.ListSelectionListener;
 
 import org.computer.knauss.reqtDiscussion.model.Discussion;
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
-import org.computer.knauss.reqtDiscussion.model.IFilteredWorkitemCommentList;
+import org.computer.knauss.reqtDiscussion.model.IFilteredDiscussionEventList;
 import org.computer.knauss.reqtDiscussion.ui.uiModel.DiscussionTableModel;
-import org.computer.knauss.reqtDiscussion.ui.visualization.ICommentOverTimePartition;
+import org.computer.knauss.reqtDiscussion.ui.visualization.IDiscussionOverTimePartition;
 import org.computer.knauss.reqtDiscussion.ui.visualization.IVisualizationStyle;
 import org.computer.knauss.reqtDiscussion.ui.visualization.PixelPartition;
 import org.computer.knauss.reqtDiscussion.ui.visualization.TimeIntervalPartition;
@@ -42,12 +42,12 @@ public class DiscussionVisualizationPanel extends JPanel implements
 	private static final long serialVersionUID = 1L;
 	private static final Dimension VISUALIZATION_DIMENSION = new Dimension(800,
 			600);
-	private DiscussionTableModel wtm;
-	private Discussion[] selectedWorkitems;
+	private DiscussionTableModel dtm;
+	private Discussion[] selectedDiscussions;
 	private Date firstDate;
 	private Date lastDate;
-	private ICommentOverTimePartition commentPartition = new TimeIntervalPartition();
-	private ICommentOverTimePartition commentPixelPartition = new PixelPartition();
+	private IDiscussionOverTimePartition discussionPartition = new TimeIntervalPartition();
+	private IDiscussionOverTimePartition discussionPixelPartition = new PixelPartition();
 	private IVisualizationStyle visualizationStyleBoxes;
 	private IVisualizationStyle visualizationGrid;
 	private IVisualizationStyle visualizationLineOfUnderstanding;
@@ -67,7 +67,7 @@ public class DiscussionVisualizationPanel extends JPanel implements
 
 		this.configureVisualizationPanel = configureVisualizationPanel;
 		this.configureVisualizationPanel
-				.setCommentPartition(this.commentPartition);
+				.setCommentPartition(this.discussionPartition);
 		this.configureVisualizationPanel.addActionListener(this);
 
 		this.visualizationStyleBoxes = new AlignedRectangularCommentStyle();
@@ -77,18 +77,18 @@ public class DiscussionVisualizationPanel extends JPanel implements
 		this.visualizationStyleText = new OverlappingCommentStyle();
 		this.visualizationPattern = new PatternClassVisualization();
 		this.visualizationBackground.setDiscussionOverTimePartition(
-				this.commentPartition, 100, 300);
+				this.discussionPartition, 100, 300);
 		this.visualizationGrid.setDiscussionOverTimePartition(
-				this.commentPartition, 100, 300);
+				this.discussionPartition, 100, 300);
 		this.visualizationStyleBoxes.setDiscussionOverTimePartition(
-				this.commentPartition, 100, 300);
+				this.discussionPartition, 100, 300);
 		this.visualizationLineOfUnderstanding.setDiscussionOverTimePartition(
-				this.commentPartition, 100, 300);
+				this.discussionPartition, 100, 300);
 		this.visualizationPattern.setDiscussionOverTimePartition(
-				this.commentPartition, 100, 300);
+				this.discussionPartition, 100, 300);
 		this.visualizationStyleText.setDiscussionOverTimePartition(
-				this.commentPixelPartition, 100, 300);
-		this.commentPixelPartition.setPartitionCount(600);
+				this.discussionPixelPartition, 100, 300);
+		this.discussionPixelPartition.setPartitionCount(600);
 	}
 
 	@Override
@@ -104,51 +104,51 @@ public class DiscussionVisualizationPanel extends JPanel implements
 		g2.setColor(Color.WHITE);
 		g2.fillRect(0, 0, 800, 600);
 
-		if (this.selectedWorkitems != null) {
+		if (this.selectedDiscussions != null) {
 			g2.setStroke(new BasicStroke(1f));
 			g2.setColor(Color.black);
 
 			g2.drawString("Workitem", TXT_HORIZONTAL_MARGIN,
 					300 - (TXT_LINE_HEIGHT / 2));
 
-			IFilteredWorkitemCommentList allCommentList = this.configureVisualizationPanel
+			IFilteredDiscussionEventList allDiscussionEventList = this.configureVisualizationPanel
 					.getFilteredCommentList();
-			allCommentList.clear();
+			allDiscussionEventList.clear();
 
 			int y = 300 + TXT_LINE_HEIGHT / 2;
 			this.firstDate = new Date(Long.MAX_VALUE);
 			this.lastDate = new Date(0);
-			for (Discussion wi : this.selectedWorkitems) {
-				g2.drawString(String.valueOf(wi.getID()),
+			for (Discussion d : this.selectedDiscussions) {
+				g2.drawString(String.valueOf(d.getID()),
 						TXT_HORIZONTAL_MARGIN, y);
 				y = y + TXT_LINE_HEIGHT;
-				if (this.firstDate.after(wi.getDateCreated()))
-					this.firstDate = wi.getDateCreated();
-				for (DiscussionEvent wc : wi.getAllComments()) {
-					allCommentList.add(wc);
-					if (this.lastDate.before(wc.getCreationDate()))
-						this.lastDate = wc.getCreationDate();
+				if (this.firstDate.after(d.getDateCreated()))
+					this.firstDate = d.getDateCreated();
+				for (DiscussionEvent de : d.getAllComments()) {
+					allDiscussionEventList.add(de);
+					if (this.lastDate.before(de.getCreationDate()))
+						this.lastDate = de.getCreationDate();
 				}
 			}
 
-			int size = allCommentList.getClassificationItemList().size();
-			DiscussionEvent[] allComments = new DiscussionEvent[size];
+			int size = allDiscussionEventList.getClassificationItemList().size();
+			DiscussionEvent[] allDiscussionEvents = new DiscussionEvent[size];
 			for (int i = 0; i < size; i++)
-				allComments[i] = allCommentList.getWorkitemComment(i);
+				allDiscussionEvents[i] = allDiscussionEventList.getWorkitemComment(i);
 
-			this.commentPartition
+			this.discussionPartition
 					.setTimeInterval(this.firstDate, this.lastDate);
-			this.commentPixelPartition.setTimeInterval(this.firstDate,
+			this.discussionPixelPartition.setTimeInterval(this.firstDate,
 					this.lastDate);
 
 			if (this.configureVisualizationPanel.isBackgroundStyle())
-				applyVisualizationStyle(g2, allComments,
+				applyVisualizationStyle(g2, allDiscussionEvents,
 						this.visualizationBackground);
 			if (this.configureVisualizationPanel.isGridStyle()) {
 				((Grid) this.visualizationGrid)
 						.setUsePartition(this.configureVisualizationPanel
 								.isUsePartitionForGrid());
-				applyVisualizationStyle(g2, allComments, this.visualizationGrid);
+				applyVisualizationStyle(g2, allDiscussionEvents, this.visualizationGrid);
 			}
 			// draw a horizontal time line
 			g2.setStroke(new BasicStroke(3f));
@@ -158,18 +158,18 @@ public class DiscussionVisualizationPanel extends JPanel implements
 				((LineOfUnderstanding) this.visualizationLineOfUnderstanding)
 						.setInterpolarize(this.configureVisualizationPanel
 								.isLSUInterpolarization());
-				applyVisualizationStyle(g2, allComments,
+				applyVisualizationStyle(g2, allDiscussionEvents,
 						this.visualizationLineOfUnderstanding);
 			}
 			if (this.configureVisualizationPanel.isBoxesStyle())
-				applyVisualizationStyle(g2, allComments,
+				applyVisualizationStyle(g2, allDiscussionEvents,
 						this.visualizationStyleBoxes);
 			if (this.configureVisualizationPanel.isPatternStyle()) {
-				applyVisualizationStyle(g2, allComments,
+				applyVisualizationStyle(g2, allDiscussionEvents,
 						this.visualizationPattern);
 			}
 			if (this.configureVisualizationPanel.isTextStyle())
-				applyVisualizationStyle(g2, allComments,
+				applyVisualizationStyle(g2, allDiscussionEvents,
 						this.visualizationStyleText);
 
 		}
@@ -215,12 +215,12 @@ public class DiscussionVisualizationPanel extends JPanel implements
 
 	@Override
 	public void valueChanged(ListSelectionEvent event) {
-		this.selectedWorkitems = this.wtm.getSelectedWorkitems();
+		this.selectedDiscussions = this.dtm.getSelectedWorkitems();
 		repaint();
 	}
 
 	public void setTableModel(DiscussionTableModel wtm) {
-		this.wtm = wtm;
+		this.dtm = wtm;
 	}
 
 	@Override
@@ -234,8 +234,8 @@ public class DiscussionVisualizationPanel extends JPanel implements
 		Graphics2D g2 = bi.createGraphics();
 		paint(g2);
 		String filename = "";
-		if (this.selectedWorkitems != null && this.selectedWorkitems.length > 0)
-			for (Discussion wi : this.selectedWorkitems)
+		if (this.selectedDiscussions != null && this.selectedDiscussions.length > 0)
+			for (Discussion wi : this.selectedDiscussions)
 				filename += wi.getID() + "-";
 		else
 			filename = "empty-";

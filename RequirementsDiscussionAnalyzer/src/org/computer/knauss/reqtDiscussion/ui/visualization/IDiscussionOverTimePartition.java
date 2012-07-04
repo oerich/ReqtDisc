@@ -4,7 +4,7 @@ import java.sql.Date;
 
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
 
-public interface ICommentOverTimePartition {
+public interface IDiscussionOverTimePartition {
 
 	public static final int TYPE_PIXEL = -1;
 	public static final int TYPE_DAYS = -2;
@@ -22,13 +22,13 @@ public interface ICommentOverTimePartition {
 
 	public int getPartitionCount();
 
-	public void setWorkitemComments(DiscussionEvent[] comments);
+	public void setDiscussionEvents(DiscussionEvent[] comments);
 
-	public DiscussionEvent[] getWorkitemComments();
+	public DiscussionEvent[] getDiscussionEvents();
 
-	public int getPartitionForWorkitemComment(DiscussionEvent wc);
+	public int getPartitionForDiscussionEvent(DiscussionEvent wc);
 
-	public DiscussionEvent[] getWorkitemsForPartition(int partition);
+	public DiscussionEvent[] getDiscussionEventForPartition(int partition);
 
 	public boolean isInClass(DiscussionEvent wc);
 

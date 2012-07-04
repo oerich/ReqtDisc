@@ -22,8 +22,8 @@ import javax.swing.table.TableRowSorter;
 
 import org.computer.knauss.reqtDiscussion.model.Discussion;
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
-import org.computer.knauss.reqtDiscussion.model.clarificationPatterns.AbstractWorkitemMetric;
-import org.computer.knauss.reqtDiscussion.ui.ctrl.HighlightRelatedWorkitems;
+import org.computer.knauss.reqtDiscussion.model.clarificationPatterns.AbstractDiscussionMetric;
+import org.computer.knauss.reqtDiscussion.ui.ctrl.HighlightRelatedDiscussions;
 import org.computer.knauss.reqtDiscussion.ui.uiModel.DiscussionTableModel;
 import org.computer.knauss.reqtDiscussion.ui.visualization.sna.NetworkFrame;
 
@@ -84,7 +84,7 @@ public class DiscussionAnalyzerFrame extends JFrame implements
 	};
 	private JLabel infoLabel;
 	private NetworkFrame networkAnalysisFrame = new NetworkFrame();
-	private HighlightRelatedWorkitems highlightRelated;
+	private HighlightRelatedDiscussions highlightRelated;
 
 	// private SocialNetwork sn = new PartitionedSocialNetwork();
 
@@ -222,12 +222,12 @@ public class DiscussionAnalyzerFrame extends JFrame implements
 		Discussion[] selected = this.tableModel.getSelectedWorkitems();
 		// get the standard metrics
 		StringBuffer metrics = new StringBuffer();
-		for (AbstractWorkitemMetric m : AbstractWorkitemMetric.STANDARD_METRICS) {
+		for (AbstractDiscussionMetric m : AbstractDiscussionMetric.STANDARD_METRICS) {
 			metrics.append(" | ");
 			metrics.append(m.getName());
 			metrics.append(" = ");
 			metrics.append(m.getDecimalFormat().format(
-					m.considerWorkitems(selected)));
+					m.considerDiscussions(selected)));
 		}
 
 		int x = 0;
@@ -249,7 +249,7 @@ public class DiscussionAnalyzerFrame extends JFrame implements
 	public void valueChanged(ListSelectionEvent arg0) {
 		try {
 			if (this.highlightRelated == null)
-				this.highlightRelated = new HighlightRelatedWorkitems();
+				this.highlightRelated = new HighlightRelatedDiscussions();
 
 			this.highlightRelated.highlightRelatedWorkitems(tableModel);
 		} catch (IOException e) {

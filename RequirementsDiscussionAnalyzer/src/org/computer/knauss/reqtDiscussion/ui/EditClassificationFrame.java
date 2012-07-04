@@ -25,9 +25,9 @@ import org.computer.knauss.reqtDiscussion.model.Discussion;
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
 import org.computer.knauss.reqtDiscussion.model.DiscussionEventClassification;
 import org.computer.knauss.reqtDiscussion.model.IClassificationFilter;
-import org.computer.knauss.reqtDiscussion.model.clarificationPatterns.CommentListModel;
+import org.computer.knauss.reqtDiscussion.model.clarificationPatterns.DiscussionListModel;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.AbstractCommand;
-import org.computer.knauss.reqtDiscussion.ui.ctrl.InsertOrUpdateCommentClassification;
+import org.computer.knauss.reqtDiscussion.ui.ctrl.InsertOrUpdateDiscussionEventClassification;
 
 public class EditClassificationFrame extends JFrame implements
 		ListSelectionListener {
@@ -39,7 +39,7 @@ public class EditClassificationFrame extends JFrame implements
 	private JSplitPane centerPanel;
 	private JPanel classificationPanel;
 	private JList commentList;
-	private CommentListModel commentListModel;
+	private DiscussionListModel commentListModel;
 	private Discussion workitem;
 	private JTextField workitemCommentDateField;
 	private JTextField workitemCommentIDField;
@@ -51,7 +51,7 @@ public class EditClassificationFrame extends JFrame implements
 	private JTextField classificationTextField;
 	private DiscussionEventClassification classification;
 	private JPanel southPanel;
-	private InsertOrUpdateCommentClassification insertOrUpdateCommand;
+	private InsertOrUpdateDiscussionEventClassification insertOrUpdateCommand;
 	private JTextField workitemCommentCreatorField;
 
 	public EditClassificationFrame() {
@@ -108,9 +108,9 @@ public class EditClassificationFrame extends JFrame implements
 		return this.commentList;
 	}
 
-	private CommentListModel getCommentListModel() {
+	private DiscussionListModel getCommentListModel() {
 		if (this.commentListModel == null) {
-			this.commentListModel = new CommentListModel();
+			this.commentListModel = new DiscussionListModel();
 		}
 		return this.commentListModel;
 	}
@@ -331,6 +331,6 @@ public class EditClassificationFrame extends JFrame implements
 	}
 
 	public void setInsertOrUpdateCommand(AbstractCommand insertOrUpdateCommand) {
-		this.insertOrUpdateCommand = (InsertOrUpdateCommentClassification) insertOrUpdateCommand;
+		this.insertOrUpdateCommand = (InsertOrUpdateDiscussionEventClassification) insertOrUpdateCommand;
 	}
 }

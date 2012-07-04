@@ -20,7 +20,7 @@ public class GreyBackgroundBox extends AbstractVisualizationStyle implements
 
 	@Override
 	public Shape[] layout(DiscussionEvent[] comments) {
-		this.partition.setWorkitemComments(comments);
+		this.partition.setDiscussionEvents(comments);
 
 		// figure out how large the box should be:
 		int maxClarification = 0;
@@ -30,7 +30,7 @@ public class GreyBackgroundBox extends AbstractVisualizationStyle implements
 			int clarificationPerPartition = 0;
 			int otherPerPartition = 0;
 			for (DiscussionEvent wc : this.partition
-					.getWorkitemsForPartition(i)) {
+					.getDiscussionEventForPartition(i)) {
 				if (this.partition.isInClass(wc)) {
 					clarificationPerPartition++;
 				} else {

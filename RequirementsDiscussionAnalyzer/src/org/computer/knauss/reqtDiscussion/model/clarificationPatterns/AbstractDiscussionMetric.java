@@ -10,9 +10,9 @@ import java.util.Set;
 import org.computer.knauss.reqtDiscussion.model.Discussion;
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
 
-public abstract class AbstractWorkitemMetric {
+public abstract class AbstractDiscussionMetric {
 
-	public final static AbstractWorkitemMetric TIME_LENGTH = new AbstractWorkitemMetric() {
+	public final static AbstractDiscussionMetric TIME_LENGTH = new AbstractDiscussionMetric() {
 
 		private DecimalFormat df;
 
@@ -22,7 +22,7 @@ public abstract class AbstractWorkitemMetric {
 		}
 
 		@Override
-		public Double considerWorkitems(Discussion[] wi) {
+		public Double considerDiscussions(Discussion[] wi) {
 			if (wi == null || wi.length <= 0)
 				return 0d;
 			Date min = wi[0].getDateCreated();
@@ -46,7 +46,7 @@ public abstract class AbstractWorkitemMetric {
 			return this.df;
 		}
 	};
-	public final static AbstractWorkitemMetric NUMBER_COMMENTS = new AbstractWorkitemMetric() {
+	public final static AbstractDiscussionMetric NUMBER_COMMENTS = new AbstractDiscussionMetric() {
 
 		@Override
 		public String getName() {
@@ -54,7 +54,7 @@ public abstract class AbstractWorkitemMetric {
 		}
 
 		@Override
-		public Double considerWorkitems(Discussion[] wis) {
+		public Double considerDiscussions(Discussion[] wis) {
 			if (wis == null)
 				return 0.0;
 			int length = 0;
@@ -64,7 +64,7 @@ public abstract class AbstractWorkitemMetric {
 			return (double) length;
 		}
 	};
-	public final static AbstractWorkitemMetric NUMBER_CONTRIBUTORS = new AbstractWorkitemMetric() {
+	public final static AbstractDiscussionMetric NUMBER_CONTRIBUTORS = new AbstractDiscussionMetric() {
 
 		@Override
 		public String getName() {
@@ -72,7 +72,7 @@ public abstract class AbstractWorkitemMetric {
 		}
 
 		@Override
-		public Double considerWorkitems(Discussion[] wis) {
+		public Double considerDiscussions(Discussion[] wis) {
 			if (wis == null)
 				return 0.0;
 			Set<String> contributors = new HashSet<String>();
@@ -86,7 +86,7 @@ public abstract class AbstractWorkitemMetric {
 		}
 	};
 
-	public static final AbstractWorkitemMetric[] STANDARD_METRICS = {
+	public static final AbstractDiscussionMetric[] STANDARD_METRICS = {
 			TIME_LENGTH, NUMBER_COMMENTS, NUMBER_CONTRIBUTORS };
 
 	public abstract String getName();
@@ -121,9 +121,9 @@ public abstract class AbstractWorkitemMetric {
 		return max;
 	}
 
-	public final void computeMetric(Discussion[] workitems) {
-		for (Discussion wi : workitems) {
-			this.values.put(wi, considerWorkitems(new Discussion[] { wi }));
+	public final void computeMetric(Discussion[] discussions) {
+		for (Discussion wi : discussions) {
+			this.values.put(wi, considerDiscussions(new Discussion[] { wi }));
 		}
 	}
 
@@ -134,7 +134,7 @@ public abstract class AbstractWorkitemMetric {
 		return this.df;
 	}
 
-	public abstract Double considerWorkitems(Discussion[] wi);
+	public abstract Double considerDiscussions(Discussion[] wi);
 
 	public final void reset() {
 		this.values.clear();

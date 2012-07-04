@@ -7,7 +7,7 @@ import java.awt.Stroke;
 import java.awt.geom.Line2D;
 
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
-import org.computer.knauss.reqtDiscussion.ui.visualization.ICommentOverTimePartition;
+import org.computer.knauss.reqtDiscussion.ui.visualization.IDiscussionOverTimePartition;
 
 public class Grid extends AbstractVisualizationStyle {
 
@@ -17,7 +17,7 @@ public class Grid extends AbstractVisualizationStyle {
 
 	@Override
 	public void setDiscussionOverTimePartition(
-			ICommentOverTimePartition partition, int xOffset, int yOffset) {
+			IDiscussionOverTimePartition partition, int xOffset, int yOffset) {
 	}
 
 	@Override

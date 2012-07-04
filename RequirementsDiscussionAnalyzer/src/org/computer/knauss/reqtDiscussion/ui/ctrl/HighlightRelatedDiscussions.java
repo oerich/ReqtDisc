@@ -9,11 +9,11 @@ import java.util.Vector;
 import org.computer.knauss.reqtDiscussion.model.Discussion;
 import org.computer.knauss.reqtDiscussion.ui.uiModel.DiscussionTableModel;
 
-public class HighlightRelatedWorkitems {
+public class HighlightRelatedDiscussions {
 
 	private List<int[]> ids = new Vector<int[]>();
 
-	public HighlightRelatedWorkitems() throws IOException {
+	public HighlightRelatedDiscussions() throws IOException {
 		BufferedReader r = new BufferedReader(new FileReader(
 				"related-work-items.txt"));
 

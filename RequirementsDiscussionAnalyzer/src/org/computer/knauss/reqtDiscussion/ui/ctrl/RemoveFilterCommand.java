@@ -5,14 +5,14 @@ import java.awt.event.ActionEvent;
 import javax.swing.JOptionPane;
 
 import org.computer.knauss.reqtDiscussion.model.IDiscussionEventFilter;
-import org.computer.knauss.reqtDiscussion.model.IFilteredWorkitemCommentList;
+import org.computer.knauss.reqtDiscussion.model.IFilteredDiscussionEventList;
 
 public class RemoveFilterCommand extends AbstractCommand {
 
 	private static final long serialVersionUID = 1L;
-	private IFilteredWorkitemCommentList list;
+	private IFilteredDiscussionEventList list;
 
-	public RemoveFilterCommand(IFilteredWorkitemCommentList list) {
+	public RemoveFilterCommand(IFilteredDiscussionEventList list) {
 		super("Remove filter");
 
 		this.list = list;

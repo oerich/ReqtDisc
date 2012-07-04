@@ -4,8 +4,8 @@ import java.sql.Date;
 
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
 
-public class PixelPartition extends AbstractCommentOverTimePartition implements
-		ICommentOverTimePartition {
+public class PixelPartition extends AbstractDiscussionOverTimePartition implements
+		IDiscussionOverTimePartition {
 
 	private Date to;
 	private Date from;
@@ -28,7 +28,7 @@ public class PixelPartition extends AbstractCommentOverTimePartition implements
 	}
 
 	@Override
-	public int getPartitionForWorkitemComment(DiscussionEvent wc) {
+	public int getPartitionForDiscussionEvent(DiscussionEvent wc) {
 		// 1. compute the total length of the timeline
 		long totalLength = this.to.getTime() - this.from.getTime();
 

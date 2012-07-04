@@ -24,7 +24,7 @@ import javax.swing.event.ChangeListener;
 import org.computer.knauss.reqtDiscussion.model.Discussion;
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
 import org.computer.knauss.reqtDiscussion.ui.visualization.FixedNumberPartition;
-import org.computer.knauss.reqtDiscussion.ui.visualization.ICommentOverTimePartition;
+import org.computer.knauss.reqtDiscussion.ui.visualization.IDiscussionOverTimePartition;
 import org.computer.knauss.reqtDiscussion.ui.visualization.TimeIntervalPartition;
 
 public class NetworkFrame extends JFrame {
@@ -47,7 +47,7 @@ public class NetworkFrame extends JFrame {
 	private JButton playButton;
 	private JComboBox socialNetworkBox;
 	private JSpinner weightSpinner;
-	private ICommentOverTimePartition partition;
+	private IDiscussionOverTimePartition partition;
 	private Discussion[] discussions;
 	private JSlider zoomSlider;
 
@@ -115,7 +115,7 @@ public class NetworkFrame extends JFrame {
 	}
 
 	public void setWorkitems(Discussion[] discussions,
-			ICommentOverTimePartition partition) {
+			IDiscussionOverTimePartition partition) {
 		this.discussions = discussions;
 		this.partition = partition;
 

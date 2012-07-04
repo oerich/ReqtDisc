@@ -9,11 +9,11 @@ import org.computer.knauss.reqtDiscussion.io.IDiscussionDAO;
 import org.computer.knauss.reqtDiscussion.model.Discussion;
 import org.computer.knauss.reqtDiscussion.ui.uiModel.DiscussionTableModel;
 
-public class LoadWorkItemByID extends AbstractCommand {
+public class LoadDiscussionByID extends AbstractCommand {
 
 	private static final long serialVersionUID = 1L;
 
-	public LoadWorkItemByID() {
+	public LoadDiscussionByID() {
 		super("Load discussion by ID...");
 	}
 

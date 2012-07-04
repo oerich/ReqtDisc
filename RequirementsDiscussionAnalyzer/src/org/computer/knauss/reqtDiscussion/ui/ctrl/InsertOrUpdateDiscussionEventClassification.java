@@ -6,12 +6,12 @@ import javax.swing.JOptionPane;
 
 import org.computer.knauss.reqtDiscussion.model.DiscussionEventClassification;
 
-public class InsertOrUpdateCommentClassification extends AbstractCommand {
+public class InsertOrUpdateDiscussionEventClassification extends AbstractCommand {
 
 	private static final long serialVersionUID = 1L;
 	private DiscussionEventClassification wcc;
 
-	public InsertOrUpdateCommentClassification() {
+	public InsertOrUpdateDiscussionEventClassification() {
 		super("Insert or Update Comment Classification");
 	}
 

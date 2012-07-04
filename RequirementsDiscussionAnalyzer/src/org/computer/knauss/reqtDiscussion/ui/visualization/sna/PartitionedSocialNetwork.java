@@ -2,7 +2,7 @@ package org.computer.knauss.reqtDiscussion.ui.visualization.sna;
 
 import org.computer.knauss.reqtDiscussion.model.Discussion;
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
-import org.computer.knauss.reqtDiscussion.ui.visualization.ICommentOverTimePartition;
+import org.computer.knauss.reqtDiscussion.ui.visualization.IDiscussionOverTimePartition;
 
 public class PartitionedSocialNetwork extends SocialNetwork {
 
@@ -14,15 +14,15 @@ public class PartitionedSocialNetwork extends SocialNetwork {
 		boolean actor2Found;
 
 		for (Discussion wi : getDiscussions()) {
-			ICommentOverTimePartition p = getCommentOverTimePartition();
-			p.setWorkitemComments(wi.getAllComments());
+			IDiscussionOverTimePartition p = getDiscussionOverTimePartition();
+			p.setDiscussionEvents(wi.getAllComments());
 			// System.out.println("Partitions: " + p.getPartitionCount());
 			for (int i = 0; i < p.getPartitionCount(); i++) {
 				actor1Found = false;
 				actor2Found = false;
 				// System.out.println(i + " - " + p
 				// .getWorkitemsForPartition(i).length);
-				for (DiscussionEvent wc : p.getWorkitemsForPartition(i)) {
+				for (DiscussionEvent wc : p.getDiscussionEventForPartition(i)) {
 					if (actor1.getLabel().equals(wc.getCreator()))
 						actor1Found = true;
 					if (actor2.getLabel().equals(wc.getCreator()))

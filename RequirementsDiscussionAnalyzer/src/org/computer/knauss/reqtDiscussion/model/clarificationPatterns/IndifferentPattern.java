@@ -1,20 +1,20 @@
 package org.computer.knauss.reqtDiscussion.model.clarificationPatterns;
 
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
-import org.computer.knauss.reqtDiscussion.ui.visualization.ICommentOverTimePartition;
+import org.computer.knauss.reqtDiscussion.ui.visualization.IDiscussionOverTimePartition;
 
 public class IndifferentPattern implements IPatternClass {
 
-	private ICommentOverTimePartition partition;
+	private IDiscussionOverTimePartition partition;
 
 	@Override
-	public void setCommentPartition(ICommentOverTimePartition p) {
+	public void setCommentPartition(IDiscussionOverTimePartition p) {
 		this.partition = p;
 	}
 
 	@Override
 	public boolean matchesPattern(DiscussionEvent[] comments) {
-		this.partition.setWorkitemComments(comments);
+		this.partition.setDiscussionEvents(comments);
 
 		for (DiscussionEvent wc : comments) {
 			if (this.partition.isInClass(wc))

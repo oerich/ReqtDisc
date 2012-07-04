@@ -5,12 +5,12 @@ import java.util.Map;
 
 import org.computer.knauss.reqtDiscussion.model.Discussion;
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
-import org.computer.knauss.reqtDiscussion.ui.visualization.ICommentOverTimePartition;
+import org.computer.knauss.reqtDiscussion.ui.visualization.IDiscussionOverTimePartition;
 
 public abstract class SocialNetwork {
 
-	private ICommentOverTimePartition partition;
-	private Discussion[] workitems;
+	private IDiscussionOverTimePartition partition;
+	private Discussion[] discussions;
 	private Map<String, Node> nodes = new HashMap<String, Node>();
 
 	public abstract double getWeight(Node actor1, Node actor2);
@@ -20,13 +20,13 @@ public abstract class SocialNetwork {
 	}
 
 	public void setDiscussionData(Discussion[] discussions,
-			ICommentOverTimePartition p) {
+			IDiscussionOverTimePartition p) {
 		// System.out.println(getClass().getSimpleName() + ": " + p);
 		this.partition = p;
-		this.workitems = discussions;
+		this.discussions = discussions;
 
 		this.nodes.clear();
-		for (Discussion wi : this.workitems)
+		for (Discussion wi : this.discussions)
 			for (DiscussionEvent wc : wi.getAllComments()) {
 				Node n = this.nodes.get(wc.getCreator());
 				if (n == null) {
@@ -41,12 +41,12 @@ public abstract class SocialNetwork {
 			}
 	}
 
-	public ICommentOverTimePartition getCommentOverTimePartition() {
+	public IDiscussionOverTimePartition getDiscussionOverTimePartition() {
 		return this.partition;
 	}
 
 	public Discussion[] getDiscussions() {
-		return this.workitems;
+		return this.discussions;
 	}
 
 	public String toString() {

@@ -11,20 +11,20 @@ import java.util.List;
 import java.util.Vector;
 
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
-import org.computer.knauss.reqtDiscussion.ui.visualization.ICommentOverTimePartition;
+import org.computer.knauss.reqtDiscussion.ui.visualization.IDiscussionOverTimePartition;
 
 public class LineOfUnderstanding extends AbstractVisualizationStyle {
 
 	private static final BasicStroke PT10_STROKE = new BasicStroke(10,
 			BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
-	private ICommentOverTimePartition partition;
+	private IDiscussionOverTimePartition partition;
 	private int xOffset;
 	private int yOffset;
 	private boolean interpolarize;
 
 	@Override
 	public void setDiscussionOverTimePartition(
-			ICommentOverTimePartition partition, int xOffset, int yOffset) {
+			IDiscussionOverTimePartition partition, int xOffset, int yOffset) {
 		this.partition = partition;
 		this.xOffset = xOffset;
 		this.yOffset = yOffset;
@@ -58,7 +58,7 @@ public class LineOfUnderstanding extends AbstractVisualizationStyle {
 
 	@Override
 	public Shape[] layout(DiscussionEvent[] comments) {
-		this.partition.setWorkitemComments(comments);
+		this.partition.setDiscussionEvents(comments);
 		double partitionWidth = (double) X_SIZE
 				/ (double) this.partition.getPartitionCount();
 		List<Point2D> points = new Vector<Point2D>();
@@ -68,7 +68,7 @@ public class LineOfUnderstanding extends AbstractVisualizationStyle {
 			int clarificationPerPartition = 0;
 			int otherPerPartition = 0;
 			for (DiscussionEvent wc : this.partition
-					.getWorkitemsForPartition(i)) {
+					.getDiscussionEventForPartition(i)) {
 				if (this.partition.isInClass(wc)) {
 					clarificationPerPartition++;
 				} else {

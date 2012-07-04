@@ -19,11 +19,11 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.computer.knauss.reqtDiscussion.model.FilteredWorkitemCommentList;
-import org.computer.knauss.reqtDiscussion.model.IFilteredWorkitemCommentList;
+import org.computer.knauss.reqtDiscussion.model.FilteredDiscussionEventList;
+import org.computer.knauss.reqtDiscussion.model.IFilteredDiscussionEventList;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.AddFilterCommand;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.RemoveFilterCommand;
-import org.computer.knauss.reqtDiscussion.ui.visualization.ICommentOverTimePartition;
+import org.computer.knauss.reqtDiscussion.ui.visualization.IDiscussionOverTimePartition;
 
 public class VisualizationConfigurationPanel extends JPanel implements
 		ItemListener, ChangeListener, ActionListener {
@@ -34,8 +34,8 @@ public class VisualizationConfigurationPanel extends JPanel implements
 			"Month", "Years" };
 
 	private List<ActionListener> listeners = new ArrayList<ActionListener>(1);
-	private IFilteredWorkitemCommentList filteredCommentList;
-	private ICommentOverTimePartition partition;
+	private IFilteredDiscussionEventList filteredCommentList;
+	private IDiscussionOverTimePartition partition;
 	private JComboBox partitionTypeChooser;
 	private JSlider partitionCountSlider;
 	private JCheckBox commentStyleBoxes;
@@ -126,14 +126,14 @@ public class VisualizationConfigurationPanel extends JPanel implements
 
 	}
 
-	public void setCommentPartition(ICommentOverTimePartition partition) {
+	public void setCommentPartition(IDiscussionOverTimePartition partition) {
 		this.partition = partition;
 		this.partition.setPartitionCount(this.partitionCountSlider.getValue());
 		this.partition.setPartitionType(this.partitionTypeChooser
 				.getSelectedIndex() * -1);
 	}
 
-	public ICommentOverTimePartition getCommentPartition() {
+	public IDiscussionOverTimePartition getCommentPartition() {
 		return this.partition;
 	}
 
@@ -147,7 +147,7 @@ public class VisualizationConfigurationPanel extends JPanel implements
 		this.commentStyleBoxes.setEnabled(partitionType >= -1);
 		this.commentStyleText.setEnabled(partitionType >= -1);
 
-		if (partitionType == ICommentOverTimePartition.TYPE_PIXEL) {
+		if (partitionType == IDiscussionOverTimePartition.TYPE_PIXEL) {
 			this.partitionCountSlider.setValue(600);
 			this.partitionCountSpinner.setValue(600);
 			this.partition.setPartitionCount(600);
@@ -192,9 +192,9 @@ public class VisualizationConfigurationPanel extends JPanel implements
 		return this.commentStyleText.isSelected();
 	}
 
-	public IFilteredWorkitemCommentList getFilteredCommentList() {
+	public IFilteredDiscussionEventList getFilteredCommentList() {
 		if (this.filteredCommentList == null)
-			this.filteredCommentList = new FilteredWorkitemCommentList();
+			this.filteredCommentList = new FilteredDiscussionEventList();
 		return this.filteredCommentList;
 	}
 

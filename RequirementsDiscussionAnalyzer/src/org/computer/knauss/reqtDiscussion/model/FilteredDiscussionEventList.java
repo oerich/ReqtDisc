@@ -3,8 +3,8 @@ package org.computer.knauss.reqtDiscussion.model;
 import java.util.List;
 import java.util.Vector;
 
-public class FilteredWorkitemCommentList implements
-		IFilteredWorkitemCommentList {
+public class FilteredDiscussionEventList implements
+		IFilteredDiscussionEventList {
 
 	private List<IDiscussionEventFilter> filters = new Vector<IDiscussionEventFilter>();
 	private List<DiscussionEvent> unfilteredList = new Vector<DiscussionEvent>();
