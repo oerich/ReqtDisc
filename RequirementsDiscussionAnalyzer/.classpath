@@ -12,5 +12,6 @@
 	<classpathentry kind="lib" path="lib/jdom/lib/xercesImpl.jar"/>
 	<classpathentry kind="lib" path="lib/jdom/lib/xml-apis.jar"/>
 	<classpathentry kind="lib" path="lib/postgresql-9.1-901.jdbc4.jar"/>
+	<classpathentry kind="lib" path="lib/de.luh.se.layout.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

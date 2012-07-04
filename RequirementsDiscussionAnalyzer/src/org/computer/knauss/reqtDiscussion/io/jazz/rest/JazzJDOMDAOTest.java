@@ -132,6 +132,17 @@ public class JazzJDOMDAOTest {
 		assertEquals(
 				"https://jazz.net/jazz/oslc/types/_1w8aQEmJEduIY7C8B09Hyw/com.ibm.team.apt.workItemType.story",
 				d.getType());
+		
+		// should also have the discussion events
+		DiscussionEvent[] des = d.getAllComments();
+		assertEquals(4, des.length);
+
+		assertEquals(117709, des[0].getDiscussionID());
+		assertEquals("https://jazz.net/jts/users/jimtykal", des[0].getCreator());
+		assertEquals(new Date(1277806629252l), des[0].getCreationDate());
+		assertEquals(
+				"This is an important component of the sample application for Rational User Education. We will want to have lab exercises directed at .NET as well as Eclipse developers.",
+				des[0].getContent());
 	}
 
 	@Test
@@ -141,6 +152,7 @@ public class JazzJDOMDAOTest {
 		Discussion[] d = this.dao.getDiscussions();
 		assertEquals(50, d.length);
 		assertEquals(117709, d[0].getID());
+		assertEquals(4, d[0].getAllComments().length);
 	}
 
 	@Test
@@ -195,7 +207,7 @@ public class JazzJDOMDAOTest {
 			} else if (requestURL.endsWith("comments")) {
 				// if this file is missing, store the comments for the first
 				// story in '50-stories.xml' into that file.
-				System.out.println(requestURL);
+				// System.out.println(requestURL);
 				if (requestURL
 						.equals("https://jazz.net/jazz/oslc/workitems/_IJb7oHULEd-GXMPQSbP08A/rtc_cm:comments"))
 					this.response.entity.stream = new FileInputStream(

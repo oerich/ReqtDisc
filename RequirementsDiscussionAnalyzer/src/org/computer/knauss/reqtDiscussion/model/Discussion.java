@@ -1,6 +1,8 @@
 package org.computer.knauss.reqtDiscussion.model;
 
 import java.sql.Date;
+import java.util.List;
+import java.util.Vector;
 
 public class Discussion extends ModelElement {
 
@@ -11,6 +13,7 @@ public class Discussion extends ModelElement {
 	private Date dateCreated;
 	private String creator;
 	private String status;
+	private List<DiscussionEvent> comments = new Vector<DiscussionEvent>();
 
 	@Override
 	public int getID() {
@@ -67,6 +70,16 @@ public class Discussion extends ModelElement {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public DiscussionEvent[] getAllComments() {
+		return this.comments.toArray(new DiscussionEvent[0]);
+	}
+
+	public void addComments(DiscussionEvent[] wcs) {
+		for (DiscussionEvent de : wcs) {
+			this.comments.add(de);
+		}
 	}
 
 }

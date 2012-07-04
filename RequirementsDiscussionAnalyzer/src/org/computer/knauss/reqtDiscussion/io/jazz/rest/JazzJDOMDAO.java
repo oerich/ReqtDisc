@@ -37,7 +37,7 @@ public class JazzJDOMDAO implements IJazzDAO, IDiscussionEventDAO,
 
 	private int discussionIndex;
 
-	public JazzJDOMDAO(IJazzAccessConfiguration config) throws IOException {
+	public JazzJDOMDAO(IJazzAccessConfiguration config) throws DAOException {
 		this(new FormBasedAuthenticatedConnector(config));
 	}
 
@@ -331,6 +331,8 @@ public class JazzJDOMDAO implements IJazzDAO, IDiscussionEventDAO,
 					"//ChangeRequest[identifier=" + discussionID + "]").get(0);
 
 			Discussion d = createDiscussion(discussionElement);
+			d.addComments(getDiscussionEventsOfDiscussion(d.getID()));
+
 			return d;
 		} catch (JDOMException e) {
 			throw new DAOException("Could not parse XML [" + e.getMessage()
@@ -344,7 +346,8 @@ public class JazzJDOMDAO implements IJazzDAO, IDiscussionEventDAO,
 		}
 	}
 
-	private Discussion createDiscussion(Object discussionElement) {
+	private Discussion createDiscussion(Object discussionElement)
+			throws DAOException {
 		Discussion d = new Discussion();
 
 		d.setId(Integer.parseInt(((Element) this.xpathHelper.select(
@@ -359,6 +362,7 @@ public class JazzJDOMDAO implements IJazzDAO, IDiscussionEventDAO,
 				"title").get(0)).getValue());
 		d.setType(((Attribute) this.xpathHelper.select(discussionElement,
 				"type/@resource").get(0)).getValue());
+
 		return d;
 	}
 
@@ -399,6 +403,9 @@ public class JazzJDOMDAO implements IJazzDAO, IDiscussionEventDAO,
 			for (int i = 0; i < ret.length; i++) {
 				ret[i] = createDiscussion(discussionElements.get(i));
 			}
+
+			for (Discussion d : ret)
+				d.addComments(getDiscussionEventsOfDiscussion(d.getID()));
 
 			return ret;
 		} catch (JDOMException e) {

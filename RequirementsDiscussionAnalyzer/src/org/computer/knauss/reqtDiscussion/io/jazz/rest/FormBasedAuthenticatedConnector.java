@@ -38,6 +38,7 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
+import org.computer.knauss.reqtDiscussion.io.DAOException;
 
 // this might be a valuable resource: https://jazz.net/ccm/rootservices
 public class FormBasedAuthenticatedConnector implements IWebConnector {
@@ -50,15 +51,23 @@ public class FormBasedAuthenticatedConnector implements IWebConnector {
 
 	private Map<String, String> resolvedHosts;
 
-	public FormBasedAuthenticatedConnector(IJazzAccessConfiguration config)
-			throws IOException {
+	public FormBasedAuthenticatedConnector(IJazzAccessConfiguration config) throws DAOException
+			 {
 		this.config = config;
 		resolvedHosts = Collections
 				.synchronizedMap(new TreeMap<String, String>());
 		String hostname = config.getHostname();
-		this.jazzaddr = InetAddress.getByName(hostname);
-		// first, attempt to create a connection
-		connect();
+		
+		
+		try {
+			this.jazzaddr = InetAddress.getByName(hostname);
+			// first, attempt to create a connection
+			connect();
+		} catch (UnknownHostException e) {
+			throw new DAOException("Could not resolve hostname.", e);
+		} catch (IOException e) {
+			throw new DAOException("Could not connect to host.", e);
+		}
 	}
 
 	public void setJazzAccessConfiguration(IJazzAccessConfiguration config) {
