@@ -27,6 +27,7 @@ public class LoadDiscussions extends AbstractCommand {
 			IDiscussionDAO dao = getWorkitemDAO();
 			data = dao.getDiscussions();
 		} catch (DAOException e) {
+			e.printStackTrace();
 			JOptionPane.showMessageDialog(null, "Could not load Discussions:\n "
 					+ e.getCause().getClass().getSimpleName() + ":\n"
 					+ e.getCause().getMessage(), "Data Access Exception",

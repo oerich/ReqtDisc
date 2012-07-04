@@ -1,4 +1,4 @@
-package org.computer.knauss.reqtDiscussion.io.sql.psql;
+package org.computer.knauss.reqtDiscussion.io.sql;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -6,18 +6,27 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
+
+import org.computer.knauss.reqtDiscussion.io.DAOException;
 
 public class AbstractSQLDAO {
 
-	private static final String EXISTS_TABLE = "SELECT c.oid FROM pg_catalog.pg_class c LEFT JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace WHERE c.relname ~ ? AND pg_catalog.pg_table_is_visible(c.oid)";
+	private static final String EXISTS_TABLE = "EXISTS_TABLE";
 	private Map<String, PreparedStatement> statementCache = new HashMap<String, PreparedStatement>();
+	protected Properties properties;
 
 	public AbstractSQLDAO() {
 		super();
 	}
 
+	public void configure(Properties p) throws DAOException {
+		ConnectionManager.getInstance().configure(p);
+		this.properties = p;
+	}
+	
 	protected boolean existsTable(String tableName) throws SQLException {
-		PreparedStatement ps = getPreparedStatement(EXISTS_TABLE);
+		PreparedStatement ps = getPreparedStatement(this.properties.getProperty(EXISTS_TABLE));
 		ps.setString(1, tableName);
 		ps.execute();
 		ResultSet rs = ps.getResultSet();

@@ -1,13 +1,13 @@
 package org.computer.knauss.reqtDiscussion.scripts;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
 
 import org.computer.knauss.reqtDiscussion.io.DAOException;
+import org.computer.knauss.reqtDiscussion.io.IDiscussionEventDAO;
 import org.computer.knauss.reqtDiscussion.io.csv.CSVDiscussionEventDAO;
-import org.computer.knauss.reqtDiscussion.io.sql.mysql.MySQLDiscussionEventDAO;
+import org.computer.knauss.reqtDiscussion.io.sql.SQLDAOManager;
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
 
 public class PushCSVToMySQL {
@@ -16,13 +16,12 @@ public class PushCSVToMySQL {
 	 * @param args
 	 * @throws IOException
 	 * @throws FileNotFoundException
+	 * @throws DAOException 
 	 */
 	public static void main(String[] args) throws FileNotFoundException,
-			IOException {
+			IOException, DAOException {
 
 		Properties p = new Properties();
-		// load url, username and password from a file that is not in github
-		p.load(new FileInputStream("trento-mysql-properties.txt"));
 
 		p.setProperty(CSVDiscussionEventDAO.PROP_FILENAME,
 				"testfiles/example-workitemcomments.csv");
@@ -34,9 +33,9 @@ public class PushCSVToMySQL {
 		p.setProperty(CSVDiscussionEventDAO.PROP_START_ROW, "1");
 
 		CSVDiscussionEventDAO csvDAO = new CSVDiscussionEventDAO();
-		MySQLDiscussionEventDAO sqlDAO = new MySQLDiscussionEventDAO();
+		SQLDAOManager sdm = new SQLDAOManager("trento-mysql-properties.txt", "mysql-default-schema-queries.txt");
+		IDiscussionEventDAO sqlDAO = sdm.getDiscussionEventDAO();
 		csvDAO.configure(p);
-		sqlDAO.configure(p);
 
 		try {
 			DiscussionEvent[] des = csvDAO

@@ -7,8 +7,10 @@ import javax.swing.JFrame;
 
 import org.computer.knauss.reqtDiscussion.io.DAORegistry;
 import org.computer.knauss.reqtDiscussion.io.jazz.JazzDAOManager;
+import org.computer.knauss.reqtDiscussion.io.sql.SQLDAOManager;
 import org.computer.knauss.reqtDiscussion.ui.DiscussionAnalyzerFrame;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.AbstractCommand;
+import org.computer.knauss.reqtDiscussion.ui.ctrl.ChooseDAOManager;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.InsertOrUpdateDiscussionEventClassification;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.LoadDiscussions;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.LoadDiscussionByID;
@@ -32,6 +34,9 @@ public class DiscussionAnalyzer {
 		try {
 			daoRegistry = DAORegistry.getInstance();
 			// add the data sources
+			daoRegistry.register("PSQL (default)", new SQLDAOManager(
+					"local-postgres-properties.txt",
+					"psql-default-schema-queries.txt"));
 			daoRegistry.register("jazz.net", new JazzDAOManager());
 
 			// add the commands
@@ -43,6 +48,8 @@ public class DiscussionAnalyzer {
 
 			daFrame.addAction(DiscussionAnalyzerFrame.EDIT_MENU,
 					configureCommand(new SetReferenceClassifierName()));
+			daFrame.addAction(DiscussionAnalyzerFrame.EDIT_MENU,
+					configureCommand(new ChooseDAOManager()));
 
 			daFrame.getEditClassificationFrame()
 					.setInsertOrUpdateCommand(

@@ -1,0 +1,14 @@
+SELECT_DISCUSSION_EVENT_BY_DISCUSSION_ID = SELECT * FROM discussionEvent WHERE discussionId = ?;
+SELECT_NEW_DISCUSSION_EVENT_ID = SELECT max(id) from discussionEvent;
+INSERT_DISCUSSION_EVENT = INSERT INTO discussionevent (id, discussionId, content, creationDate, creator) VALUES (?,?,?,?,?);
+CREATE_DISCUSSION_EVENT_TABLE = CREATE TABLE discussionevent (id INTEGER PRIMARY KEY, discussionId INTEGER, content TEXT, creationDate DATE, creator TEXT, CONSTRAINT discussionEvent_discussion_fkey FOREIGN KEY (discussionId) REFERENCES discussion (id));
+DROP_DISCUSSION_EVENT_TABLE = DROP TABLE discussionevent;
+DISCUSSION_EVENT_TABLE_NAME = discussionevent
+EXISTS_TABLE = SELECT c.oid FROM pg_catalog.pg_class c LEFT JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace WHERE c.relname ~ ? AND pg_catalog.pg_table_is_visible(c.oid);
+DISCUSSION_TABLE = discussion
+SELECT_DISCUSSION_BY_ID = SELECT * FROM discussion WHERE ID = ?;
+SELECT_ALL_DISCUSSIONS = SELECT * FROM discussion;
+CREATE_DISCUSSION_TABLE = CREATE TABLE discussion (id INTEGER PRIMARY KEY, topic TEXT, description TEXT, type TEXT, date DATE, status TEXT, creator TEXT);
+INSERT_DISCUSSION = INSERT INTO discussion values (?,?,?,?,?,?,?);
+UPDATE_DISCUSSION = UPDATE discussion SET topic = ?, description = ?, type = ?, date = ?, status = ?, creator = ? WHERE id = ?;;]
+DROP_DISCUSSION_TABLE = DROP TABLE discussion;
