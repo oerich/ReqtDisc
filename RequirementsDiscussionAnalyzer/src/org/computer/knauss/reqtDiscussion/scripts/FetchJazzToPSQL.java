@@ -8,7 +8,6 @@ import java.util.Properties;
 
 import org.computer.knauss.reqtDiscussion.io.DAOException;
 import org.computer.knauss.reqtDiscussion.io.IDiscussionDAO;
-import org.computer.knauss.reqtDiscussion.io.IDiscussionEventDAO;
 import org.computer.knauss.reqtDiscussion.io.jazz.rest.JazzJDOMDAO;
 import org.computer.knauss.reqtDiscussion.io.jazz.util.ui.DialogBasedJazzAccessConfiguration;
 import org.computer.knauss.reqtDiscussion.io.sql.psql.PSQLDiscussionDAO;
@@ -36,7 +35,6 @@ public class FetchJazzToPSQL {
 				.setProjectArea("Rational Team Concert");
 		PSQLDiscussionDAO psqlDiscussions = new PSQLDiscussionDAO();
 
-		IDiscussionEventDAO jazzDiscussionEvents = (IDiscussionEventDAO) jazzDiscussions;
 		PSQLDiscussionEventDAO psqlDiscussionEvents = new PSQLDiscussionEventDAO();
 
 		psqlDiscussionEvents.dropSchema();
