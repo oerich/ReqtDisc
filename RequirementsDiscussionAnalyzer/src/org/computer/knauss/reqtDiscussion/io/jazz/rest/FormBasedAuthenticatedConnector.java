@@ -51,14 +51,13 @@ public class FormBasedAuthenticatedConnector implements IWebConnector {
 
 	private Map<String, String> resolvedHosts;
 
-	public FormBasedAuthenticatedConnector(IJazzAccessConfiguration config) throws DAOException
-			 {
+	public FormBasedAuthenticatedConnector(IJazzAccessConfiguration config)
+			throws DAOException {
 		this.config = config;
 		resolvedHosts = Collections
 				.synchronizedMap(new TreeMap<String, String>());
 		String hostname = config.getHostname();
-		
-		
+
 		try {
 			this.jazzaddr = InetAddress.getByName(hostname);
 			// first, attempt to create a connection
@@ -136,7 +135,8 @@ public class FormBasedAuthenticatedConnector implements IWebConnector {
 		HttpConnectionParams.setSoTimeout(httpClient.getParams(), 25000);
 		// submit the login form
 		HttpResponse formResponse = httpClient.execute(authPost);
-		System.out.println("Login status: " + formResponse.getStatusLine());
+		System.out.println(authURL + " -- Login status: "
+				+ formResponse.getStatusLine());
 
 		Header header = formResponse
 				.getFirstHeader("x-com-ibm-team-repository-web-auth-msg");
@@ -182,8 +182,8 @@ public class FormBasedAuthenticatedConnector implements IWebConnector {
 		}
 
 		HttpResponse response = executeRequest(requestURL);
-		System.out.println(getClass().getSimpleName()
-				+ ".performHTTPSRequest: " + response);
+		// System.out.println(getClass().getSimpleName()
+		// + ".performHTTPSRequest: " + response);
 		if (response.getStatusLine().getStatusCode() == 200) {
 			Header header = response
 					.getFirstHeader("x-com-ibm-team-repository-web-auth-msg");
@@ -195,8 +195,8 @@ public class FormBasedAuthenticatedConnector implements IWebConnector {
 				doAuthenticate(h.getValue());
 				// try again
 				response = executeRequest(requestURL);
-				System.out.println(getClass().getSimpleName()
-						+ ".performHTTPSRequest(2): " + response);
+				// System.out.println(getClass().getSimpleName()
+				// + ".performHTTPSRequest(2): " + response);
 
 				header = response
 						.getFirstHeader("x-com-ibm-team-repository-web-auth-msg");

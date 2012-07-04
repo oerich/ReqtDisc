@@ -40,7 +40,7 @@ public class NetworkPanel extends JPanel {
 
 	public void setNetwork(SocialNetwork network) {
 		this.network = network;
-		this.graphProvider.printMatrix(network);
+		// this.graphProvider.printMatrix(network);
 
 		getLayouter().initialize(this.network, this.graphProvider, BOUNDS, 200);
 		getLayouter().layout(1);
@@ -126,11 +126,12 @@ public class NetworkPanel extends JPanel {
 		// a.getClarification());
 
 		g.setColor(Color.BLACK);
-		g.drawString(a.getLabel(), (int) pos.x + d/2, (int) pos.y);
+		g.drawString(a.getLabel(), (int) pos.x + d / 2, (int) pos.y);
 	}
 
 	/**
 	 * In parts from http://www.tutorialspoint.com/javaexamples/gui_piechart.htm
+	 * 
 	 * @param g
 	 * @param area
 	 * @param slices
