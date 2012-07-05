@@ -37,6 +37,9 @@ public class DiscussionAnalyzer {
 			daoRegistry.register("PSQL (default)", new SQLDAOManager(
 					"local-postgres-properties.txt",
 					"psql-default-schema-queries.txt"));
+			daoRegistry.register("PSQL (ballroom)", new SQLDAOManager(
+					"ballroom-postgres-properties.txt",
+					"psql-ballroom-schema-queries.txt"));
 			daoRegistry.register("jazz.net", new JazzDAOManager());
 
 			// add the commands

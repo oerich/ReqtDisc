@@ -9,7 +9,7 @@ public interface IClassificationFilter {
 
 	public class NameFilter implements IClassificationFilter {
 
-		private String[] name = new String[] { "gpoo,eric1" };
+		private String[] name = new String[] { "gpoo", "eric1" };
 
 		private NameFilter() {
 
