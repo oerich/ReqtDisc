@@ -1,4 +1,4 @@
-package org.computer.knauss.reqtDiscussion.ui.visualization;
+package org.computer.knauss.reqtDiscussion.model.partition;
 
 import java.sql.Date;
 

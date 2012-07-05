@@ -21,9 +21,9 @@ import javax.swing.event.ChangeListener;
 
 import org.computer.knauss.reqtDiscussion.model.FilteredDiscussionEventList;
 import org.computer.knauss.reqtDiscussion.model.IFilteredDiscussionEventList;
+import org.computer.knauss.reqtDiscussion.model.partition.IDiscussionOverTimePartition;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.AddFilterCommand;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.RemoveFilterCommand;
-import org.computer.knauss.reqtDiscussion.ui.visualization.IDiscussionOverTimePartition;
 
 public class VisualizationConfigurationPanel extends JPanel implements
 		ItemListener, ChangeListener, ActionListener {

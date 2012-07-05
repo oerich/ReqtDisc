@@ -1,11 +1,11 @@
-package org.computer.knauss.reqtDiscussion.ui.visualization.sna;
+package org.computer.knauss.reqtDiscussion.model.socialNetwork;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import org.computer.knauss.reqtDiscussion.model.Discussion;
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
-import org.computer.knauss.reqtDiscussion.ui.visualization.IDiscussionOverTimePartition;
+import org.computer.knauss.reqtDiscussion.model.partition.IDiscussionOverTimePartition;
 
 public abstract class SocialNetwork {
 

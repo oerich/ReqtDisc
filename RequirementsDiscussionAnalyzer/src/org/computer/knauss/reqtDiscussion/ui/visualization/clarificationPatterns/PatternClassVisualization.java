@@ -14,7 +14,7 @@ import org.computer.knauss.reqtDiscussion.model.clarificationPatterns.IPatternCl
 import org.computer.knauss.reqtDiscussion.model.clarificationPatterns.IndifferentPattern;
 import org.computer.knauss.reqtDiscussion.model.clarificationPatterns.NoSharedUnderstandingPattern;
 import org.computer.knauss.reqtDiscussion.model.clarificationPatterns.PerfectPattern;
-import org.computer.knauss.reqtDiscussion.ui.visualization.IDiscussionOverTimePartition;
+import org.computer.knauss.reqtDiscussion.model.partition.IDiscussionOverTimePartition;
 
 public class PatternClassVisualization extends AbstractVisualizationStyle {
 

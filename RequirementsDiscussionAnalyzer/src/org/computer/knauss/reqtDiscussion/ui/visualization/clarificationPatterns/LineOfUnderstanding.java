@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Vector;
 
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
-import org.computer.knauss.reqtDiscussion.ui.visualization.IDiscussionOverTimePartition;
+import org.computer.knauss.reqtDiscussion.model.partition.IDiscussionOverTimePartition;
 
 public class LineOfUnderstanding extends AbstractVisualizationStyle {
 

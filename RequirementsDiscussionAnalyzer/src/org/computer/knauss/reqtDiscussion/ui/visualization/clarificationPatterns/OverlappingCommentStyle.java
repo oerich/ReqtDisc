@@ -9,7 +9,7 @@ import java.awt.geom.Area;
 import java.awt.geom.Line2D;
 
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
-import org.computer.knauss.reqtDiscussion.ui.visualization.IDiscussionOverTimePartition;
+import org.computer.knauss.reqtDiscussion.model.partition.IDiscussionOverTimePartition;
 import org.computer.knauss.reqtDiscussion.ui.visualization.IVisualizationStyle;
 
 public class OverlappingCommentStyle extends AbstractVisualizationStyle

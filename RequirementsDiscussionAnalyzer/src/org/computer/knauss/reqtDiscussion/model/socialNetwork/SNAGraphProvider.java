@@ -1,4 +1,4 @@
-package org.computer.knauss.reqtDiscussion.ui.visualization.sna;
+package org.computer.knauss.reqtDiscussion.model.socialNetwork;
 
 import java.awt.geom.Point2D;
 import java.util.Arrays;
@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
 
 import de.luh.pi.geometry.IBounds;
 import de.luh.pi.geometry.ISize;

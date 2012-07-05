@@ -23,9 +23,12 @@ import javax.swing.event.ChangeListener;
 
 import org.computer.knauss.reqtDiscussion.model.Discussion;
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
-import org.computer.knauss.reqtDiscussion.ui.visualization.FixedNumberPartition;
-import org.computer.knauss.reqtDiscussion.ui.visualization.IDiscussionOverTimePartition;
-import org.computer.knauss.reqtDiscussion.ui.visualization.TimeIntervalPartition;
+import org.computer.knauss.reqtDiscussion.model.partition.FixedNumberPartition;
+import org.computer.knauss.reqtDiscussion.model.partition.IDiscussionOverTimePartition;
+import org.computer.knauss.reqtDiscussion.model.partition.TimeIntervalPartition;
+import org.computer.knauss.reqtDiscussion.model.socialNetwork.PartitionedSocialNetwork;
+import org.computer.knauss.reqtDiscussion.model.socialNetwork.ProximitySocialNetwork;
+import org.computer.knauss.reqtDiscussion.model.socialNetwork.SocialNetwork;
 
 public class NetworkFrame extends JFrame {
 

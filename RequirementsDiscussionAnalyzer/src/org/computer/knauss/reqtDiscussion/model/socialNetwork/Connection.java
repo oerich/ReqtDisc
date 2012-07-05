@@ -1,4 +1,4 @@
-package org.computer.knauss.reqtDiscussion.ui.visualization.sna;
+package org.computer.knauss.reqtDiscussion.model.socialNetwork;
 
 public class Connection<WeightType, NodeType> {
 

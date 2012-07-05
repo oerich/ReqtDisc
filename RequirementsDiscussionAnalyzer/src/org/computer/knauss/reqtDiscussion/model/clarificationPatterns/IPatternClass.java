@@ -1,7 +1,7 @@
 package org.computer.knauss.reqtDiscussion.model.clarificationPatterns;
 
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
-import org.computer.knauss.reqtDiscussion.ui.visualization.IDiscussionOverTimePartition;
+import org.computer.knauss.reqtDiscussion.model.partition.IDiscussionOverTimePartition;
 
 public interface IPatternClass {
 

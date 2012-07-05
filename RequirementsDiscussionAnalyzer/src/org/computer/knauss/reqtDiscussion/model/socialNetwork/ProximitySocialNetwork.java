@@ -1,8 +1,8 @@
-package org.computer.knauss.reqtDiscussion.ui.visualization.sna;
+package org.computer.knauss.reqtDiscussion.model.socialNetwork;
 
 import org.computer.knauss.reqtDiscussion.model.Discussion;
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
-import org.computer.knauss.reqtDiscussion.ui.visualization.TimeIntervalPartition;
+import org.computer.knauss.reqtDiscussion.model.partition.TimeIntervalPartition;
 
 public class ProximitySocialNetwork extends SocialNetwork {
 

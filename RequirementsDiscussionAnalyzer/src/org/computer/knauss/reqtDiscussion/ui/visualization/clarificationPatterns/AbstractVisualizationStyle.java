@@ -6,7 +6,7 @@ import java.awt.Shape;
 import java.awt.Stroke;
 
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
-import org.computer.knauss.reqtDiscussion.ui.visualization.IDiscussionOverTimePartition;
+import org.computer.knauss.reqtDiscussion.model.partition.IDiscussionOverTimePartition;
 import org.computer.knauss.reqtDiscussion.ui.visualization.IVisualizationStyle;
 
 public abstract class AbstractVisualizationStyle implements IVisualizationStyle {

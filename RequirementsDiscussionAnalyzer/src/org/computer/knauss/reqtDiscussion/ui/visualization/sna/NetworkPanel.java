@@ -12,6 +12,11 @@ import java.awt.geom.Point2D;
 
 import javax.swing.JPanel;
 
+import org.computer.knauss.reqtDiscussion.model.socialNetwork.Connection;
+import org.computer.knauss.reqtDiscussion.model.socialNetwork.Node;
+import org.computer.knauss.reqtDiscussion.model.socialNetwork.SNAGraphProvider;
+import org.computer.knauss.reqtDiscussion.model.socialNetwork.SocialNetwork;
+
 import de.luh.pi.geometry.Bounds;
 import de.luh.pi.geometry.IBounds;
 import de.luh.se.layout.forcebased.ForceBasedLayouter;

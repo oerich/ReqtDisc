@@ -5,6 +5,7 @@ import java.awt.Shape;
 import java.awt.Stroke;
 
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
+import org.computer.knauss.reqtDiscussion.model.partition.IDiscussionOverTimePartition;
 
 public interface IVisualizationStyle {
 
