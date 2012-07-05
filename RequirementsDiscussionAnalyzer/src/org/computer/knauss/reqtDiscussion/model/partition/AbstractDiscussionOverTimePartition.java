@@ -1,8 +1,10 @@
 package org.computer.knauss.reqtDiscussion.model.partition;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Vector;
 
+import org.computer.knauss.reqtDiscussion.model.Discussion;
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
 
 public abstract class AbstractDiscussionOverTimePartition implements
@@ -42,4 +44,18 @@ public abstract class AbstractDiscussionOverTimePartition implements
 				.startsWith("clarif"));
 	}
 
+	@Override
+	public void setTimeInterval(Discussion[] selectedDiscussions) {
+		Date firstDate = new Date(Long.MAX_VALUE);
+		Date lastDate = new Date(0);
+		for (Discussion d : selectedDiscussions) {
+			if (firstDate.after(d.getDateCreated()))
+				firstDate = d.getDateCreated();
+			for (DiscussionEvent de : d.getAllComments()) {
+				if (lastDate.before(de.getCreationDate()))
+					lastDate = de.getCreationDate();
+			}
+		}
+		setTimeInterval(firstDate, lastDate);
+	}
 }

@@ -12,7 +12,6 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.sql.Date;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
@@ -44,8 +43,6 @@ public class DiscussionVisualizationPanel extends JPanel implements
 			600);
 	private DiscussionTableModel dtm;
 	private Discussion[] selectedDiscussions;
-	private Date firstDate;
-	private Date lastDate;
 	private IDiscussionOverTimePartition discussionPartition = new TimeIntervalPartition();
 	private IDiscussionOverTimePartition discussionPixelPartition = new PixelPartition();
 	private IVisualizationStyle visualizationStyleBoxes;
@@ -116,18 +113,12 @@ public class DiscussionVisualizationPanel extends JPanel implements
 			allDiscussionEventList.clear();
 
 			int y = 300 + TXT_LINE_HEIGHT / 2;
-			this.firstDate = new Date(Long.MAX_VALUE);
-			this.lastDate = new Date(0);
 			for (Discussion d : this.selectedDiscussions) {
 				g2.drawString(String.valueOf(d.getID()),
 						TXT_HORIZONTAL_MARGIN, y);
 				y = y + TXT_LINE_HEIGHT;
-				if (this.firstDate.after(d.getDateCreated()))
-					this.firstDate = d.getDateCreated();
 				for (DiscussionEvent de : d.getAllComments()) {
 					allDiscussionEventList.add(de);
-					if (this.lastDate.before(de.getCreationDate()))
-						this.lastDate = de.getCreationDate();
 				}
 			}
 
@@ -137,9 +128,8 @@ public class DiscussionVisualizationPanel extends JPanel implements
 				allDiscussionEvents[i] = allDiscussionEventList.getWorkitemComment(i);
 
 			this.discussionPartition
-					.setTimeInterval(this.firstDate, this.lastDate);
-			this.discussionPixelPartition.setTimeInterval(this.firstDate,
-					this.lastDate);
+					.setTimeInterval(this.selectedDiscussions);
+			this.discussionPixelPartition.setTimeInterval(this.selectedDiscussions);
 
 			if (this.configureVisualizationPanel.isBackgroundStyle())
 				applyVisualizationStyle(g2, allDiscussionEvents,

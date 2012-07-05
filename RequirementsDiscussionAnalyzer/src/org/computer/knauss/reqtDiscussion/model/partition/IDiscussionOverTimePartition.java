@@ -2,6 +2,7 @@ package org.computer.knauss.reqtDiscussion.model.partition;
 
 import java.sql.Date;
 
+import org.computer.knauss.reqtDiscussion.model.Discussion;
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
 
 public interface IDiscussionOverTimePartition {
@@ -31,5 +32,7 @@ public interface IDiscussionOverTimePartition {
 	public DiscussionEvent[] getDiscussionEventForPartition(int partition);
 
 	public boolean isInClass(DiscussionEvent wc);
+
+	public void setTimeInterval(Discussion[] selectedDiscussions);
 
 }
