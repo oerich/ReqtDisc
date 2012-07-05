@@ -32,6 +32,8 @@ public class NetworkPanel extends JPanel {
 	private ForceBasedLayouter<SocialNetwork, Connection<Double, Node>, Node> layouter;
 	private SNAGraphProvider graphProvider;
 	private double zoomFactor = 1.0d;
+	private BorderRepulsionForce borderRepulsionForce = new BorderRepulsionForce(
+			new Bounds());
 
 	public NetworkPanel() {
 		this.graphProvider = new SNAGraphProvider();
@@ -47,6 +49,16 @@ public class NetworkPanel extends JPanel {
 		this.network = network;
 		// this.graphProvider.printMatrix(network);
 
+		int nodeCount = network.getActors().length;
+		BOUNDS.setHeight(nodeCount * 100);
+		BOUNDS.setWidth(nodeCount * 100);
+
+		IBounds b = this.borderRepulsionForce.getBounds();
+		b.setX(BOUNDS.getX() - 10);
+		b.setY(BOUNDS.getY() - 10);
+		b.setWidth(BOUNDS.getWidth() + 10);
+		b.setHeight(BOUNDS.getHeight() + 10);
+		
 		getLayouter().initialize(this.network, this.graphProvider, BOUNDS, 200);
 		getLayouter().layout(1);
 		repaint();
@@ -59,14 +71,9 @@ public class NetworkPanel extends JPanel {
 
 			this.layouter.addForce(new HookeConnectionForce());
 			this.layouter.addForce(new CoulumbNodeRepulsionForce());
-			IBounds b = new Bounds();
-			b.setX(BOUNDS.getX() - 10);
-			b.setY(BOUNDS.getY() - 10);
-			b.setWidth(BOUNDS.getWidth() + 10);
-			b.setHeight(BOUNDS.getHeight() + 10);
-			// System.out.println(b.getX() + " " + b.getY() + " " + b.getWidth()
-			// + " " + b.getHeight());
-			this.layouter.addForce(new BorderRepulsionForce(b));
+
+			// Will be initialized when the network is set...
+			this.layouter.addForce(borderRepulsionForce);
 
 		}
 		return this.layouter;
