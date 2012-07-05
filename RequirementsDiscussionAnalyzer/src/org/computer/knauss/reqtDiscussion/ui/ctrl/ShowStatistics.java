@@ -2,7 +2,7 @@ package org.computer.knauss.reqtDiscussion.ui.ctrl;
 
 import java.awt.event.ActionEvent;
 
-import org.computer.knauss.reqtDiscussion.model.clarificationPatterns.AbstractDiscussionMetric;
+import org.computer.knauss.reqtDiscussion.model.metric.AbstractDiscussionMetric;
 import org.computer.knauss.reqtDiscussion.ui.uiModel.DiscussionTableModel;
 
 public class ShowStatistics extends AbstractCommand {

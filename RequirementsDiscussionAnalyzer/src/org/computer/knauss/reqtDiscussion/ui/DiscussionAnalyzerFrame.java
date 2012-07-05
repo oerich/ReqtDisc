@@ -22,7 +22,7 @@ import javax.swing.table.TableRowSorter;
 
 import org.computer.knauss.reqtDiscussion.model.Discussion;
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
-import org.computer.knauss.reqtDiscussion.model.clarificationPatterns.AbstractDiscussionMetric;
+import org.computer.knauss.reqtDiscussion.model.metric.AbstractDiscussionMetric;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.HighlightRelatedDiscussions;
 import org.computer.knauss.reqtDiscussion.ui.uiModel.DiscussionTableModel;
 import org.computer.knauss.reqtDiscussion.ui.visualization.sna.NetworkFrame;
