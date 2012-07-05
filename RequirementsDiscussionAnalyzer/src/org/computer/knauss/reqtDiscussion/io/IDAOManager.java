@@ -1,6 +1,5 @@
 package org.computer.knauss.reqtDiscussion.io;
 
-import org.computer.knauss.reqtDiscussion.ui.ctrl.IDiscussionEventClassificationDAO;
 
 public interface IDAOManager {
 

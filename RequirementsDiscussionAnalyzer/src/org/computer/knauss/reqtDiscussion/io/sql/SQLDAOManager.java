@@ -8,8 +8,8 @@ import java.util.Properties;
 import org.computer.knauss.reqtDiscussion.io.DAOException;
 import org.computer.knauss.reqtDiscussion.io.IDAOManager;
 import org.computer.knauss.reqtDiscussion.io.IDiscussionDAO;
+import org.computer.knauss.reqtDiscussion.io.IDiscussionEventClassificationDAO;
 import org.computer.knauss.reqtDiscussion.io.IDiscussionEventDAO;
-import org.computer.knauss.reqtDiscussion.ui.ctrl.IDiscussionEventClassificationDAO;
 
 public class SQLDAOManager implements IDAOManager {
 
@@ -18,6 +18,7 @@ public class SQLDAOManager implements IDAOManager {
 	private SQLDiscussionEventDAO discussionEventDAO;
 	private String queryPropertyFilename;
 	private String connectionPropertyFilename;
+	private SQLDiscussionEventClassificationDAO discussionEventClassificationDAO;
 
 	public SQLDAOManager(String connectionPropertyFilename,
 			String queryPropertyFilename) {
@@ -39,6 +40,8 @@ public class SQLDAOManager implements IDAOManager {
 	public IDiscussionEventDAO getDiscussionEventDAO() throws DAOException {
 		if (this.discussionEventDAO == null) {
 			this.discussionEventDAO = new SQLDiscussionEventDAO();
+			this.discussionEventDAO
+					.setDiscussionEventClassificationDAO(getDiscussionEventClassificationDAO());
 			this.discussionEventDAO.configure(getProperties());
 		}
 		return this.discussionEventDAO;
@@ -47,8 +50,11 @@ public class SQLDAOManager implements IDAOManager {
 	@Override
 	public IDiscussionEventClassificationDAO getDiscussionEventClassificationDAO()
 			throws DAOException {
-		// TODO Auto-generated method stub
-		return null;
+		if (this.discussionEventClassificationDAO == null) {
+			this.discussionEventClassificationDAO = new SQLDiscussionEventClassificationDAO();
+			this.discussionEventClassificationDAO.configure(getProperties());
+		}
+		return this.discussionEventClassificationDAO;
 	}
 
 	private Properties getProperties() {

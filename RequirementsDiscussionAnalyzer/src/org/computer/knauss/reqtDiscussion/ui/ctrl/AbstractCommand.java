@@ -5,6 +5,7 @@ import javax.swing.AbstractAction;
 import org.computer.knauss.reqtDiscussion.io.DAOException;
 import org.computer.knauss.reqtDiscussion.io.DAORegistry;
 import org.computer.knauss.reqtDiscussion.io.IDiscussionDAO;
+import org.computer.knauss.reqtDiscussion.io.IDiscussionEventClassificationDAO;
 import org.computer.knauss.reqtDiscussion.io.IDiscussionEventDAO;
 import org.computer.knauss.reqtDiscussion.ui.uiModel.DiscussionTableModel;
 

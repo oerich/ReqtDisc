@@ -1,8 +1,9 @@
 package org.computer.knauss.reqtDiscussion.io;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
-import org.computer.knauss.reqtDiscussion.ui.ctrl.IDiscussionEventClassificationDAO;
 import org.junit.Test;
 
 public class DAORegistryTest {

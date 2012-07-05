@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.computer.knauss.reqtDiscussion.io.DAOException;
+import org.computer.knauss.reqtDiscussion.io.IDiscussionEventClassificationDAO;
 import org.computer.knauss.reqtDiscussion.io.IDiscussionEventDAO;
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
 
@@ -36,6 +37,12 @@ public class SQLDiscussionEventDAO extends AbstractSQLDAO implements
 	public static final String DROP_DISCUSSION_EVENT_TABLE = "DROP_DISCUSSION_EVENT_TABLE";
 	public static final String SELECT_NEW_DISCUSSION_EVENT_ID = "SELECT_NEW_DISCUSSION_EVENT_ID";
 	public static final String DISCUSSION_EVENT_TABLE_NAME = "DISCUSSION_EVENT_TABLE_NAME";
+	private IDiscussionEventClassificationDAO discEventClassDAO;
+
+	public void setDiscussionEventClassificationDAO(
+			IDiscussionEventClassificationDAO discEventClassDAO) {
+		this.discEventClassDAO = discEventClassDAO;
+	}
 
 	@Override
 	public DiscussionEvent[] getDiscussionEventsOfDiscussion(int discussionId)
@@ -56,6 +63,8 @@ public class SQLDiscussionEventDAO extends AbstractSQLDAO implements
 				de.setContent(rs.getString("content"));
 				de.setCreationDate(rs.getDate("creationDate"));
 				de.setCreator(rs.getString("creator"));
+				de.setDiscussionEventClassification(this.discEventClassDAO
+						.getClassificationsForDiscussionEvent(de.getID()));
 				res.add(de);
 			}
 			return res.toArray(new DiscussionEvent[0]);

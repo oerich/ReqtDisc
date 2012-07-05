@@ -6,7 +6,8 @@ import javax.swing.JOptionPane;
 
 import org.computer.knauss.reqtDiscussion.model.DiscussionEventClassification;
 
-public class InsertOrUpdateDiscussionEventClassification extends AbstractCommand {
+public class InsertOrUpdateDiscussionEventClassification extends
+		AbstractCommand {
 
 	private static final long serialVersionUID = 1L;
 	private DiscussionEventClassification wcc;
@@ -18,7 +19,8 @@ public class InsertOrUpdateDiscussionEventClassification extends AbstractCommand
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		try {
-			getWorkitemCommentClassificationDAO().insertOrUpdate(this.wcc);
+			getWorkitemCommentClassificationDAO()
+					.storeDiscussionEventClassification(this.wcc);
 		} catch (Exception e1) {
 			JOptionPane.showMessageDialog(null, e1.getMessage(),
 					"Error by Insert or Update", JOptionPane.ERROR_MESSAGE);

@@ -4,7 +4,13 @@ import java.util.Properties;
 
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
 
-
+/**
+ * Assume the following schema: discussionEventClassification(discussioneventid,
+ * classifiedby, classification, confidence, comment)
+ * 
+ * @author eknauss
+ * 
+ */
 public interface IDiscussionEventDAO {
 
 	public void configure(Properties p) throws DAOException;

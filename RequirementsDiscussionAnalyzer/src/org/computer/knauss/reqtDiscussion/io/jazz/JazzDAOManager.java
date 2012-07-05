@@ -8,10 +8,10 @@ import java.util.Properties;
 import org.computer.knauss.reqtDiscussion.io.DAOException;
 import org.computer.knauss.reqtDiscussion.io.IDAOManager;
 import org.computer.knauss.reqtDiscussion.io.IDiscussionDAO;
+import org.computer.knauss.reqtDiscussion.io.IDiscussionEventClassificationDAO;
 import org.computer.knauss.reqtDiscussion.io.IDiscussionEventDAO;
 import org.computer.knauss.reqtDiscussion.io.jazz.rest.JazzJDOMDAO;
 import org.computer.knauss.reqtDiscussion.io.jazz.util.ui.DialogBasedJazzAccessConfiguration;
-import org.computer.knauss.reqtDiscussion.ui.ctrl.IDiscussionEventClassificationDAO;
 
 public class JazzDAOManager implements IDAOManager {
 
