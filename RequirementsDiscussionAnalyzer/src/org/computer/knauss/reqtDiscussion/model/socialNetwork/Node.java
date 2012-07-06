@@ -1,6 +1,6 @@
 package org.computer.knauss.reqtDiscussion.model.socialNetwork;
 
-public class Node {
+public class Node implements Comparable<Node> {
 
 	private String label;
 	private int clarification;
@@ -29,12 +29,19 @@ public class Node {
 	public void setCoordination(int coordination) {
 		this.coordination = coordination;
 	}
-	
-//	public String toString() {
-//		return this.label;
-//	}
-//	
-//	public boolean equals(Object o){
-//		return this.label.equals(o);
-//	}
+
+	@Override
+	public int compareTo(Node o) {
+		if (getLabel() == null || o.getLabel() == null)
+			return 0;
+		return getLabel().compareTo(o.getLabel());
+	}
+
+	// public String toString() {
+	// return this.label;
+	// }
+	//
+	// public boolean equals(Object o){
+	// return this.label.equals(o);
+	// }
 }

@@ -42,9 +42,9 @@ public class NetworkDegreeCentralityMetricTest {
 		d.addComments(new DiscussionEvent[] { d1 });
 		assertEquals(0.0, m.considerDiscussions(new Discussion[] { d }), 0.001);
 		// lets see if the partitions are okay:
-		assertEquals(0,
-				m.getPartition().getDiscussionEventForPartition(1).length);
 		assertEquals(1,
+				m.getPartition().getDiscussionEventForPartition(1).length);
+		assertEquals(0,
 				m.getPartition().getDiscussionEventForPartition(2).length);
 		assertEquals(0,
 				m.getPartition().getDiscussionEventForPartition(3).length);
