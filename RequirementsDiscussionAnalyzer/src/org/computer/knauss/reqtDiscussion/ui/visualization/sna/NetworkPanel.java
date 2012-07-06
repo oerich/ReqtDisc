@@ -58,7 +58,7 @@ public class NetworkPanel extends JPanel {
 		b.setY(BOUNDS.getY() - 10);
 		b.setWidth(BOUNDS.getWidth() + 10);
 		b.setHeight(BOUNDS.getHeight() + 10);
-		
+
 		getLayouter().initialize(this.network, this.graphProvider, BOUNDS, 200);
 		getLayouter().layout(1);
 		repaint();
@@ -94,9 +94,9 @@ public class NetworkPanel extends JPanel {
 				RenderingHints.VALUE_ANTIALIAS_ON);
 		((Graphics2D) g).scale(zoomFactor, zoomFactor);
 		g.setColor(Color.white);
-		g.fillRect(0, 0, (int) BOUNDS.getWidth() * 2,
-				(int) BOUNDS.getHeight() * 2);
+		g.fillRect(0, 0, 2000, 2000);
 		g.setColor(Color.BLACK);
+		g.drawRect(0, 0, (int) BOUNDS.getWidth(), (int) BOUNDS.getHeight());
 		for (Node a : this.network.getActors()) {
 			g.setColor(Color.GRAY);
 
@@ -118,9 +118,6 @@ public class NetworkPanel extends JPanel {
 	}
 
 	private void paintNode(Node a, Point2D.Double pos, Graphics g) {
-		// int width = 8;
-		// int height = a.getClarification() + a.getCoordination();
-
 		Slice[] slices = new Slice[] {
 				new Slice(a.getClarification(), Color.RED),
 				new Slice(a.getCoordination(), Color.BLUE) };
@@ -129,13 +126,6 @@ public class NetworkPanel extends JPanel {
 
 		paintPie((Graphics2D) g, new Rectangle((int) pos.x - d / 2, (int) pos.y
 				- d / 2, d, d), slices);
-		// g.setColor(Color.BLUE);
-		// g.fillRect((int) (pos.x - width / 2), (int) (pos.y - height / 2),
-		// width, a.getCoordination());
-		// g.setColor(Color.RED);
-		// g.fillRect((int) (pos.x - width / 2),
-		// (int) (pos.y - height / 2 + a.getCoordination()), width,
-		// a.getClarification());
 
 		g.setColor(Color.BLACK);
 		g.drawString(a.getLabel(), (int) pos.x + d / 2, (int) pos.y);

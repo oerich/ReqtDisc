@@ -21,6 +21,7 @@ public class NetworkDegreeCentralityMetricTest {
 	@Test
 	public void testConsiderDiscussions() {
 		AbstractNetworkMetric m = new NetworkDegreeCentralityMetric();
+		m.initNetwork(new Discussion[0]);
 		assertEquals(0.0, m.considerDiscussions(new Discussion[0]), 0.001);
 
 		Discussion d = new Discussion();
@@ -40,7 +41,7 @@ public class NetworkDegreeCentralityMetricTest {
 		d3.setCreationDate(new Date(System.currentTimeMillis()));
 
 		d.addComments(new DiscussionEvent[] { d1 });
-		assertEquals(0.0, m.considerDiscussions(new Discussion[] { d }), 0.001);
+		m.initNetwork(new Discussion[] { d });
 		// lets see if the partitions are okay:
 		assertEquals(1,
 				m.getPartition().getDiscussionEventForPartition(1).length);
@@ -49,9 +50,12 @@ public class NetworkDegreeCentralityMetricTest {
 		assertEquals(0,
 				m.getPartition().getDiscussionEventForPartition(3).length);
 
+		assertEquals(0.0, m.considerDiscussions(new Discussion[] { d }), 0.001);
 		d.addComments(new DiscussionEvent[] { d2 });
+		m.initNetwork(new Discussion[] { d });
 		assertEquals(0.0, m.considerDiscussions(new Discussion[] { d }), 0.001);
 		d.addComments(new DiscussionEvent[] { d3 });
+		m.initNetwork(new Discussion[] { d });
 		assertEquals(0.0, m.considerDiscussions(new Discussion[] { d }), 0.001);
 
 		DiscussionEvent d4 = new DiscussionEvent();
@@ -67,6 +71,7 @@ public class NetworkDegreeCentralityMetricTest {
 		d6.setCreationDate(new Date(System.currentTimeMillis()));
 
 		d.addComments(new DiscussionEvent[] { d4, d5, d6 });
+		m.initNetwork(new Discussion[] { d });
 		assertEquals(0.33, m.considerDiscussions(new Discussion[] { d }), 0.01);
 
 		DiscussionEvent d7 = new DiscussionEvent();
@@ -78,6 +83,7 @@ public class NetworkDegreeCentralityMetricTest {
 		d8.setCreationDate(new Date(System.currentTimeMillis() - 1000));
 
 		d.addComments(new DiscussionEvent[] { d7, d8 });
+		m.initNetwork(new Discussion[] { d });
 		assertEquals(0.649, m.considerDiscussions(new Discussion[] { d }), 0.01);
 	}
 

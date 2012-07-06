@@ -15,6 +15,11 @@ public abstract class AbstractNetworkMetric extends AbstractDiscussionMetric {
 
 	private SocialNetwork socialNetwork;
 	private IDiscussionOverTimePartition partition;
+	private double minWeight = 0.0;
+
+	public final static AbstractNetworkMetric[] STANDARD_METRICS = new AbstractNetworkMetric[] {
+			new NetworkSubgraphCountMetric(),
+			new NetworkDegreeCentralityMetric() };
 
 	public AbstractNetworkMetric() {
 		// Set a few reasonable defaults:
@@ -22,6 +27,27 @@ public abstract class AbstractNetworkMetric extends AbstractDiscussionMetric {
 		this.partition.setPartitionCount(3);
 
 		this.socialNetwork = new PartitionedSocialNetwork();
+	}
+
+	/**
+	 * The minimal weight of edges that are included in the computation of this
+	 * metric.
+	 * 
+	 * @return The minimal weight of edges that are included in the computation
+	 *         of this metric.
+	 */
+	public double getMinWeight() {
+		return minWeight;
+	}
+
+	/**
+	 * Sets the minimal weight of edges that are included in the computation of
+	 * this metric.
+	 * 
+	 * @param minWeight
+	 */
+	public void setMinWeight(double minWeight) {
+		this.minWeight = minWeight;
 	}
 
 	public void setSocialNetwork(SocialNetwork sn) {

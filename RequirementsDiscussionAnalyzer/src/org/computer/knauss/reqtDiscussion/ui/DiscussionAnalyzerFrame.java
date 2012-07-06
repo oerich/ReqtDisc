@@ -256,7 +256,10 @@ public class DiscussionAnalyzerFrame extends JFrame implements
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+		configureVisualizationPanel.getCommentPartition().setTimeInterval(tableModel.getSelectedWorkitems());
+		networkAnalysisFrame.setWorkitems(
+				tableModel.getSelectedWorkitems(),
+				configureVisualizationPanel.getCommentPartition());
 		tableChanged(null);
 	}
 }

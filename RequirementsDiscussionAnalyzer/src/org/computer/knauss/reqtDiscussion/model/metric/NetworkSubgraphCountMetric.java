@@ -18,7 +18,7 @@ public class NetworkSubgraphCountMetric extends AbstractNetworkMetric {
 
 	@Override
 	public Double considerDiscussions(Discussion[] wi) {
-		initNetwork(wi);
+//		initNetwork(wi);
 		
 		Node[] nodes = getSocialNetwork().getActors();
 		Set<Node> notVisited = new TreeSet<Node>(Arrays.asList(nodes));
@@ -44,7 +44,7 @@ public class NetworkSubgraphCountMetric extends AbstractNetworkMetric {
 				List<Node> tmp = new LinkedList<Node>();
 				for (Node n1 : subgraph) {
 					for (Node n2 : notVisited) {
-						if (getSocialNetwork().getWeight(n1, n2) > 0) {
+						if (getSocialNetwork().getWeight(n1, n2) > getMinWeight()) {
 							tmp.add(n2);
 						}
 					}

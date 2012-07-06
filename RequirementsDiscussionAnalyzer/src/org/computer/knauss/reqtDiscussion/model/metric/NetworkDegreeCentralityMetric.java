@@ -1,6 +1,5 @@
 package org.computer.knauss.reqtDiscussion.model.metric;
 
-
 import org.computer.knauss.reqtDiscussion.model.Discussion;
 import org.computer.knauss.reqtDiscussion.model.socialNetwork.Node;
 
@@ -16,7 +15,7 @@ public class NetworkDegreeCentralityMetric extends AbstractNetworkMetric {
 		if (wi.length == 0)
 			return 0.0;
 
-		initNetwork(wi);
+		// initNetwork(wi);
 
 		// compute centrality of each node
 		Node[] nodes = getSocialNetwork().getActors();
@@ -50,7 +49,9 @@ public class NetworkDegreeCentralityMetric extends AbstractNetworkMetric {
 			return 0.0;
 		double nodeWeight = 0;
 		for (int j = 0; j < nodes.length; j++) {
-			nodeWeight += getSocialNetwork().getWeight(node, nodes[j]);
+			double weight = getSocialNetwork().getWeight(node, nodes[j]);
+			if (weight > getMinWeight())
+				nodeWeight += weight;
 		}
 		double nodeCentrality = nodeWeight / (nodes.length - 1);
 		return nodeCentrality;
