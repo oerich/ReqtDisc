@@ -18,7 +18,8 @@ public interface IClassificationFilter {
 		public void setName(String name) {
 			if (name == null)
 				this.name = new String[] { "null" };
-			this.name = name.split(",");
+			else
+				this.name = name.split(",");
 		}
 
 		public String getName() {

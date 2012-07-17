@@ -46,7 +46,7 @@ public class XPathHelper {
 
 	}
 
-	public Document getDocument() {
+	public synchronized Document getDocument() {
 		return this.document;
 	}
 

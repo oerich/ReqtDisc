@@ -6,7 +6,7 @@ import java.sql.Time;
 public class Util {
 
 	public static Date parseDate(String dateString) {
-		String split = null;
+		String split = "";
 		
 		// lets see what kind of format we have here...
 		if (dateString.trim().indexOf(" ") >-1) {
