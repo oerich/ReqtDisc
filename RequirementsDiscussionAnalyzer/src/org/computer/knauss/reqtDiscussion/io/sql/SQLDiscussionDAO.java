@@ -78,25 +78,34 @@ public class SQLDiscussionDAO extends AbstractSQLDAO implements IDiscussionDAO {
 			}
 			for (Discussion d : tmp)
 				addComments(d);
-			return tmp.toArray(new Discussion[0]);
+
+			return addReferencedDiscussions(tmp).toArray(new Discussion[0]);
 		} catch (SQLException e) {
 			throw new DAOException(e);
 		}
 	}
 
+	private List<Discussion> addReferencedDiscussions(
+			List<Discussion> discussions) throws DAOException {
+		List<Discussion> ret = new LinkedList<Discussion>();
+		try {
+			HighlightRelatedDiscussions hrd = new HighlightRelatedDiscussions();
+			for (Discussion d : discussions) {
+				int[] relatedIDs = hrd.getRelatedWorkitemIDs(d.getID());
+				for (int i : relatedIDs) {
+					if (!DiscussionFactory.getInstance().exists(i))
+						ret.add(getDiscussion(i));
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		discussions.addAll(ret);
+		return discussions;
+	}
+
 	private void addComments(Discussion d) throws DAOException {
 		d.addComments(this.deDAO.getDiscussionEventsOfDiscussion(d.getID()));
-
-//		try {
-//			HighlightRelatedDiscussions hrd = new HighlightRelatedDiscussions();
-//			int[] relatedIDs = hrd.getRelatedWorkitemIDs(d.getID());
-//			for (int i : relatedIDs) {
-//				if (i != d.getID())
-//					d.addComments(this.deDAO.getDiscussionEventsOfDiscussion(i));
-//			}
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
 	}
 
 	private Discussion createDiscussion(ResultSet rs) throws SQLException {
