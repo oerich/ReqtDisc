@@ -6,7 +6,7 @@ import java.util.Set;
 import org.computer.knauss.reqtDiscussion.model.Discussion;
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
 
-public class ContributerNumberMetric extends AbstractDiscussionMetric {
+public class ContributorNumberMetric extends AbstractDiscussionMetric {
 
 	@Override
 	public String getName() {

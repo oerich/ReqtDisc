@@ -1,23 +1,44 @@
 package org.computer.knauss.reqtDiscussion.model.metric;
 
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import org.computer.knauss.reqtDiscussion.io.Util;
 import org.computer.knauss.reqtDiscussion.model.Discussion;
+import org.computer.knauss.reqtDiscussion.ui.ctrl.HighlightRelatedDiscussions;
 
+/**
+ * Metrics about Discussions.
+ * 
+ * @author eknauss
+ * 
+ */
 public abstract class AbstractDiscussionMetric {
 
 	public final static AbstractDiscussionMetric TIME_LENGTH = new TimeLengthMetric();
 	public final static AbstractDiscussionMetric NUMBER_COMMENTS = new CommentNumberMetric();
-	public final static AbstractDiscussionMetric NUMBER_CONTRIBUTORS = new ContributerNumberMetric();
+	public final static AbstractDiscussionMetric NUMBER_CONTRIBUTORS = new ContributorNumberMetric();
 
+	/**
+	 * A set of metrics that is often computed together.
+	 */
 	public static final AbstractDiscussionMetric[] STANDARD_METRICS = {
 			TIME_LENGTH, NUMBER_COMMENTS, NUMBER_CONTRIBUTORS };
 
+	/**
+	 * Returns the name of the metric for GUI and Reports.
+	 * 
+	 * @return
+	 */
 	public abstract String getName();
 
-	private Map<Discussion, Double> values = new HashMap<Discussion, Double>();
+	private Map<String, Double> values = new HashMap<String, Double>();
 	private DecimalFormat df;
 
 	public final Double getAverage() {
@@ -48,9 +69,48 @@ public abstract class AbstractDiscussionMetric {
 	}
 
 	public final void computeMetric(Discussion[] discussions) {
-		for (Discussion wi : discussions) {
-			this.values.put(wi, considerDiscussions(new Discussion[] { wi }));
+		Set<Integer> visited = new HashSet<Integer>();
+		Map<Integer, Discussion> discussionMap = new HashMap<Integer, Discussion>();
+		HighlightRelatedDiscussions hrd = null;
+		try {
+			hrd = new HighlightRelatedDiscussions();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
+
+		// init
+		for (Discussion d : discussions) {
+			discussionMap.put(d.getID(), d);
+		}
+
+		// compute
+		for (Discussion d : discussions) {
+			if (!visited.contains(d.getID())) {
+				int[] related = new int[] { d.getID() };
+				if (hrd != null)
+					related = hrd.getRelatedWorkitemIDs(d.getID());
+				List<Discussion> tmp = new LinkedList<Discussion>();
+				for (int id : related) {
+					if (!visited.contains(id)) {
+						visited.add(id);
+						tmp.add(discussionMap.get(id));
+					}
+				}
+				this.values.put(Util.idsToKey(related),
+						considerDiscussions(tmp.toArray(new Discussion[0])));
+			}
+		}
+	}
+
+	/**
+	 * Returns a map with the results. The String-key contains the id of the
+	 * discussion. Note that it may contain multiple ids, if it is a complex
+	 * Discussion.
+	 * 
+	 * @return
+	 */
+	public Map<String, Double> getResults() {
+		return this.values;
 	}
 
 	public DecimalFormat getDecimalFormat() {

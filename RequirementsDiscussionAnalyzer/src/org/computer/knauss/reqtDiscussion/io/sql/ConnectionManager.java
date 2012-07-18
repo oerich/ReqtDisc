@@ -60,6 +60,8 @@ public class ConnectionManager {
 	}
 
 	public void closeConnection() {
+		if (this.connection == null)
+			return;
 		try {
 			this.connection.close();
 		} catch (SQLException e) {
