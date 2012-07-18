@@ -21,6 +21,7 @@ import org.computer.knauss.reqtDiscussion.io.Util;
 import org.computer.knauss.reqtDiscussion.io.jazz.IJazzDAO;
 import org.computer.knauss.reqtDiscussion.model.Discussion;
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
+import org.computer.knauss.reqtDiscussion.model.DiscussionFactory;
 import org.jdom2.JDOMException;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,6 +32,7 @@ public class JazzJDOMDAOTest {
 
 	@Before
 	public void setup() throws IOException {
+		DiscussionFactory.getInstance().clear();
 		this.dao = new JazzJDOMDAO(new ConnectorProbe());
 	}
 
@@ -137,7 +139,7 @@ public class JazzJDOMDAOTest {
 		assertEquals(
 				"https://jazz.net/jazz/oslc/types/_1w8aQEmJEduIY7C8B09Hyw/com.ibm.team.apt.workItemType.story",
 				d.getType());
-		
+
 		// should also have the discussion events
 		DiscussionEvent[] des = d.getAllComments();
 		assertEquals(4, des.length);
@@ -178,12 +180,14 @@ public class JazzJDOMDAOTest {
 
 	@Test(expected = UnsupportedOperationException.class)
 	public void testStoreDiscussion() throws DAOException {
-		this.dao.storeDiscussion(new Discussion());
+		this.dao.storeDiscussion(DiscussionFactory.getInstance().getDiscussion(
+				-1));
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
 	public void testStoreDiscussions() throws DAOException {
-		this.dao.storeDiscussions(new Discussion[] { new Discussion() });
+		this.dao.storeDiscussions(new Discussion[] { DiscussionFactory
+				.getInstance().getDiscussion(-1) });
 	}
 
 	private class ConnectorProbe implements IWebConnector {

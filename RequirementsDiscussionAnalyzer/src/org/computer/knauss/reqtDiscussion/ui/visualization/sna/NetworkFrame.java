@@ -27,6 +27,7 @@ import javax.swing.event.ChangeListener;
 
 import org.computer.knauss.reqtDiscussion.model.Discussion;
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
+import org.computer.knauss.reqtDiscussion.model.DiscussionFactory;
 import org.computer.knauss.reqtDiscussion.model.metric.AbstractNetworkMetric;
 import org.computer.knauss.reqtDiscussion.model.partition.FixedNumberPartition;
 import org.computer.knauss.reqtDiscussion.model.partition.IDiscussionOverTimePartition;
@@ -186,14 +187,15 @@ public class NetworkFrame extends JFrame {
 			}
 		});
 
-		Discussion wi = new Discussion();
-		wi.addComments(wcs);
-		wi.setDateCreated(wcs[0].getCreationDate());
+		Discussion d = DiscussionFactory.getInstance().getDiscussion(1);
+
+		d.addComments(wcs);
+		d.setDateCreated(wcs[0].getCreationDate());
 		FixedNumberPartition p = new FixedNumberPartition();
 		p.setTimeInterval(wcs[0].getCreationDate(),
 				wcs[wcs.length - 1].getCreationDate());
 
-		f.setWorkitems(new Discussion[] { wi }, p);
+		f.setWorkitems(new Discussion[] { d }, p);
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.pack();
 		f.setVisible(true);

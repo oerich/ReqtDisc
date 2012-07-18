@@ -1,5 +1,6 @@
 package org.computer.knauss.reqtDiscussion.io.sql;
 
+import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,6 +11,8 @@ import org.computer.knauss.reqtDiscussion.io.DAOException;
 import org.computer.knauss.reqtDiscussion.io.IDiscussionDAO;
 import org.computer.knauss.reqtDiscussion.io.IDiscussionEventDAO;
 import org.computer.knauss.reqtDiscussion.model.Discussion;
+import org.computer.knauss.reqtDiscussion.model.DiscussionFactory;
+import org.computer.knauss.reqtDiscussion.ui.ctrl.HighlightRelatedDiscussions;
 
 /**
  * discussion(id, topic, description, type, date, status, creator)
@@ -44,16 +47,8 @@ public class SQLDiscussionDAO extends AbstractSQLDAO implements IDiscussionDAO {
 			ResultSet rs = stat.executeQuery();
 			if (!rs.next())
 				return null;
-			// discussion(id, topic, description, type, date, status, creator)
-			Discussion d = new Discussion();
-			d.setId(rs.getInt(1));
-			d.setSummary(rs.getString(2));
-			d.setDescription(rs.getString(3));
-			d.setType(rs.getString(4));
-			d.setDateCreated(rs.getDate(5));
-			d.setStatus(rs.getString(6));
-			d.setCreator(rs.getString(7));
-			d.addComments(this.deDAO.getDiscussionEventsOfDiscussion(d.getID()));
+			Discussion d = createDiscussion(rs);
+			addComments(d);
 			return d;
 		} catch (SQLException e) {
 			throw new DAOException(e);
@@ -78,23 +73,42 @@ public class SQLDiscussionDAO extends AbstractSQLDAO implements IDiscussionDAO {
 			while (rs.next()) {
 				// discussion(id, topic, description, type, date, status,
 				// creator)
-				Discussion d = new Discussion();
-				d.setId(rs.getInt(1));
-				d.setSummary(rs.getString(2));
-				d.setDescription(rs.getString(3));
-				d.setType(rs.getString(4));
-				d.setDateCreated(rs.getDate(5));
-				d.setStatus(rs.getString(6));
-				d.setCreator(rs.getString(7));
+				Discussion d = createDiscussion(rs);
 				tmp.add(d);
 			}
 			for (Discussion d : tmp)
-				d.addComments(this.deDAO.getDiscussionEventsOfDiscussion(d
-						.getID()));
+				addComments(d);
 			return tmp.toArray(new Discussion[0]);
 		} catch (SQLException e) {
 			throw new DAOException(e);
 		}
+	}
+
+	private void addComments(Discussion d) throws DAOException {
+		d.addComments(this.deDAO.getDiscussionEventsOfDiscussion(d.getID()));
+
+//		try {
+//			HighlightRelatedDiscussions hrd = new HighlightRelatedDiscussions();
+//			int[] relatedIDs = hrd.getRelatedWorkitemIDs(d.getID());
+//			for (int i : relatedIDs) {
+//				if (i != d.getID())
+//					d.addComments(this.deDAO.getDiscussionEventsOfDiscussion(i));
+//			}
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+	}
+
+	private Discussion createDiscussion(ResultSet rs) throws SQLException {
+		Discussion d = DiscussionFactory.getInstance().getDiscussion(
+				rs.getInt(1));
+		d.setSummary(rs.getString(2));
+		d.setDescription(rs.getString(3));
+		d.setType(rs.getString(4));
+		d.setDateCreated(rs.getDate(5));
+		d.setStatus(rs.getString(6));
+		d.setCreator(rs.getString(7));
+		return d;
 	}
 
 	@Override

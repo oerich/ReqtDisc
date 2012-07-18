@@ -15,6 +15,10 @@ public class Discussion extends ModelElement {
 	private String status;
 	private List<DiscussionEvent> comments = new Vector<DiscussionEvent>();
 
+	Discussion() {
+		// Limit visibility of constructor.
+	}
+
 	@Override
 	public int getID() {
 		return this.id;

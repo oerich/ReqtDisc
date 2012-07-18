@@ -6,6 +6,7 @@ import java.sql.Date;
 
 import org.computer.knauss.reqtDiscussion.model.Discussion;
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
+import org.computer.knauss.reqtDiscussion.model.DiscussionFactory;
 import org.junit.Test;
 
 public class NetworkDegreeCentralityMetricTest {
@@ -24,7 +25,7 @@ public class NetworkDegreeCentralityMetricTest {
 		m.initNetwork(new Discussion[0]);
 		assertEquals(0.0, m.considerDiscussions(new Discussion[0]), 0.001);
 
-		Discussion d = new Discussion();
+		Discussion d = DiscussionFactory.getInstance().getDiscussion(1);
 		d.setCreator("1");
 		d.setDateCreated(new Date(System.currentTimeMillis() - 1000));
 
@@ -43,12 +44,21 @@ public class NetworkDegreeCentralityMetricTest {
 		d.addComments(new DiscussionEvent[] { d1 });
 		m.initNetwork(new Discussion[] { d });
 		// lets see if the partitions are okay:
-		assertEquals(1,
-				m.getPartition().getDiscussionEventForPartition(1).length);
-		assertEquals(0,
-				m.getPartition().getDiscussionEventForPartition(2).length);
-		assertEquals(0,
-				m.getPartition().getDiscussionEventForPartition(3).length);
+		if (d.getDateCreated().getTime() == d1.getCreationDate().getTime()) {
+			assertEquals(1,
+					m.getPartition().getDiscussionEventForPartition(1).length);
+			assertEquals(0,
+					m.getPartition().getDiscussionEventForPartition(2).length);
+			assertEquals(0,
+					m.getPartition().getDiscussionEventForPartition(3).length);
+		} else {
+			assertEquals(0,
+					m.getPartition().getDiscussionEventForPartition(1).length);
+			assertEquals(1,
+					m.getPartition().getDiscussionEventForPartition(2).length);
+			assertEquals(0,
+					m.getPartition().getDiscussionEventForPartition(3).length);
+		}
 
 		assertEquals(0.0, m.considerDiscussions(new Discussion[] { d }), 0.001);
 		d.addComments(new DiscussionEvent[] { d2 });

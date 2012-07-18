@@ -16,6 +16,7 @@ import org.computer.knauss.reqtDiscussion.io.jazz.util.XPathHelper;
 import org.computer.knauss.reqtDiscussion.io.jazz.util.ui.DialogBasedJazzAccessConfiguration;
 import org.computer.knauss.reqtDiscussion.model.Discussion;
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
+import org.computer.knauss.reqtDiscussion.model.DiscussionFactory;
 import org.jdom2.Attribute;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
@@ -267,7 +268,7 @@ public class JazzJDOMDAO implements IJazzDAO, IDiscussionEventDAO,
 					.performHTTPSRequestXML(commentURL).getEntity()
 					.getContent());
 
-			List<Object> comments =  this.commentsXML.select("//Comment");
+			List<Object> comments = this.commentsXML.select("//Comment");
 			DiscussionEvent[] ret = new DiscussionEvent[comments.size()];
 			for (int i = 0; i < ret.length; i++) {
 				ret[i] = new DiscussionEvent();
@@ -348,10 +349,10 @@ public class JazzJDOMDAO implements IJazzDAO, IDiscussionEventDAO,
 
 	private Discussion createDiscussion(Object discussionElement)
 			throws DAOException {
-		Discussion d = new Discussion();
+		Discussion d = DiscussionFactory.getInstance().getDiscussion(
+				Integer.parseInt(((Element) this.xpathHelper.select(
+						discussionElement, "identifier").get(0)).getValue()));
 
-		d.setId(Integer.parseInt(((Element) this.xpathHelper.select(
-				discussionElement, "identifier").get(0)).getValue()));
 		d.setDateCreated(Util.parseDate(((Element) this.xpathHelper.select(
 				discussionElement, "created").get(0)).getValue()));
 		d.setCreator(((Attribute) this.xpathHelper.select(discussionElement,
@@ -429,4 +430,5 @@ public class JazzJDOMDAO implements IJazzDAO, IDiscussionEventDAO,
 	public void storeDiscussions(Discussion[] ds) {
 		throw new UnsupportedOperationException("Read only DAO!");
 	}
+
 }

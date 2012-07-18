@@ -6,6 +6,7 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
 import org.computer.knauss.reqtDiscussion.model.Discussion;
+import org.computer.knauss.reqtDiscussion.model.DiscussionFactory;
 import org.junit.Test;
 
 public class DiscussionTableModelTest {
@@ -26,12 +27,9 @@ public class DiscussionTableModelTest {
 		DiscussionTableModel wtm = new DiscussionTableModel();
 		assertEquals(2, wtm.getColumnCount());
 
-		Discussion d1 = new Discussion();
-		Discussion d2 = new Discussion();
-		Discussion d3 = new Discussion();
-		d1.setId(1);
-		d2.setId(2);
-		d3.setId(3);
+		Discussion d1 = DiscussionFactory.getInstance().getDiscussion(1);
+		Discussion d2 = DiscussionFactory.getInstance().getDiscussion(2);
+		Discussion d3 = DiscussionFactory.getInstance().getDiscussion(3);
 
 		d1.setSummary("sum1");
 		d2.setSummary("sum2");
@@ -43,7 +41,7 @@ public class DiscussionTableModelTest {
 		assertFalse(l.tableChanged);
 		wtm.setDiscussions(new Discussion[] { d1, d2, d3 });
 		assertTrue(l.tableChanged);
-		
+
 		assertEquals("ID", wtm.getColumnName(0));
 		assertEquals("Summary", wtm.getColumnName(1));
 
