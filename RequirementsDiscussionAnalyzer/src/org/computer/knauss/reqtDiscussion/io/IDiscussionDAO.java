@@ -21,9 +21,14 @@ public interface IDiscussionDAO {
 	 * Should only return discussions on appropriate level of abstraction (i.e.
 	 * stories in jazz).
 	 * 
+	 * @param progressMonitor
+	 *            add to see what is going on
 	 * @return
 	 * @throws DAOException
 	 */
+	public Discussion[] getDiscussions(IDAOProgressMonitor progressMonitor)
+			throws DAOException;
+
 	public Discussion[] getDiscussions() throws DAOException;
 
 	public void storeDiscussion(Discussion d) throws DAOException;

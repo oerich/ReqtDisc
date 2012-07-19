@@ -8,6 +8,7 @@ import java.util.Properties;
 
 import org.apache.http.HttpResponse;
 import org.computer.knauss.reqtDiscussion.io.DAOException;
+import org.computer.knauss.reqtDiscussion.io.IDAOProgressMonitor;
 import org.computer.knauss.reqtDiscussion.io.IDiscussionDAO;
 import org.computer.knauss.reqtDiscussion.io.IDiscussionEventDAO;
 import org.computer.knauss.reqtDiscussion.io.Util;
@@ -387,26 +388,42 @@ public class JazzJDOMDAO implements IJazzDAO, IDiscussionEventDAO,
 
 	@Override
 	public Discussion[] getDiscussions() throws DAOException {
+		return getDiscussions(IDAOProgressMonitor.NULL_PROGRESS_MONITOR);
+	}
+
+	@Override
+	public Discussion[] getDiscussions(IDAOProgressMonitor progressMonitor)
+			throws DAOException {
 		try {
+			progressMonitor.setTotalSteps(-1);
+			int step = 0;
+
 			// 1. make sure that the changerequests are already loaded.
 			// Otherwise
 			// query them.
+			progressMonitor.setStep(step++,
+					"Loading change requests from jazz.net");
 			if (this.changeRequestsXML == null) {
 				getWorkitemsForType(null, false);
 			}
 
 			// 2. identify the changerequest with the discussionid and get the
 			// comment-url
+			progressMonitor.setStep(step++, "Parsing change requests");
 			List<Object> discussionElements = this.changeRequestsXML
 					.select("//ChangeRequest");
 
 			Discussion[] ret = new Discussion[discussionElements.size()];
+			progressMonitor.setTotalSteps(2 * ret.length + 2);
 			for (int i = 0; i < ret.length; i++) {
+				progressMonitor.setStep(step++, "Creating Discussions");
 				ret[i] = createDiscussion(discussionElements.get(i));
 			}
 
-			for (Discussion d : ret)
+			for (Discussion d : ret) {
+				progressMonitor.setStep(step++, "Adding DiscussionEvents");
 				d.addComments(getDiscussionEventsOfDiscussion(d.getID()));
+			}
 
 			return ret;
 		} catch (JDOMException e) {

@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.computer.knauss.reqtDiscussion.io.DAOException;
+import org.computer.knauss.reqtDiscussion.io.IDAOProgressMonitor;
 import org.computer.knauss.reqtDiscussion.io.IDiscussionDAO;
 import org.computer.knauss.reqtDiscussion.io.IDiscussionEventDAO;
 import org.computer.knauss.reqtDiscussion.model.Discussion;
@@ -26,6 +27,7 @@ public class SQLDiscussionDAO extends AbstractSQLDAO implements IDiscussionDAO {
 	private static final String DISCUSSION_TABLE = "DISCUSSION_TABLE";
 	private static final String SELECT_DISCUSSION_BY_ID = "SELECT_DISCUSSION_BY_ID";
 	private static final String SELECT_ALL_DISCUSSIONS = "SELECT_ALL_DISCUSSIONS";
+	private static final String NUMBER_OF_ALL_DISCUSSIONS = "NUMBER_OF_ALL_DISCUSSIONS";
 	private static final String UPDATE_DISCUSSION = "UPDATE_DISCUSSION";
 	private static final String INSERT_DISCUSSION = "INSERT_DISCUSSION";
 	private static final String CREATE_DISCUSSION_TABLE = "CREATE_DISCUSSION_TABLE";
@@ -63,35 +65,19 @@ public class SQLDiscussionDAO extends AbstractSQLDAO implements IDiscussionDAO {
 
 	@Override
 	public Discussion[] getDiscussions() throws DAOException {
-		try {
-			if (!existsTable(this.properties.getProperty(DISCUSSION_TABLE)))
-				return new Discussion[0];
-			PreparedStatement stat = getPreparedStatement(this.properties
-					.getProperty(SELECT_ALL_DISCUSSIONS));
-			ResultSet rs = stat.executeQuery();
-			List<Discussion> tmp = new LinkedList<Discussion>();
-			while (rs.next()) {
-				// discussion(id, topic, description, type, date, status,
-				// creator)
-				Discussion d = createDiscussion(rs);
-				tmp.add(d);
-			}
-			for (Discussion d : tmp)
-				addComments(d);
-
-			return addReferencedDiscussions(tmp).toArray(new Discussion[0]);
-		} catch (SQLException e) {
-			throw new DAOException(e);
-		}
+		return getDiscussions(IDAOProgressMonitor.NULL_PROGRESS_MONITOR);
 	}
 
 	private List<Discussion> addReferencedDiscussions(
-			List<Discussion> discussions) throws DAOException {
+			List<Discussion> discussions, IDAOProgressMonitor monitor,
+			int progress) throws DAOException {
 		List<Discussion> ret = new LinkedList<Discussion>();
 		try {
 			HighlightRelatedDiscussions hrd = new HighlightRelatedDiscussions();
+			monitor.setStep(progress, "Loading related discussions...");
 			for (Discussion d : discussions) {
-				int[] relatedIDs = hrd.getRelatedWorkitemIDs(d.getID());
+				monitor.setStep(progress++);
+				int[] relatedIDs = hrd.getRelatedDiscussionIDs(d.getID());
 				for (int i : relatedIDs) {
 					if (!DiscussionFactory.getInstance().exists(i))
 						ret.add(getDiscussion(i));
@@ -180,6 +166,59 @@ public class SQLDiscussionDAO extends AbstractSQLDAO implements IDiscussionDAO {
 				.execute();
 		System.out.println("Dropped Table "
 				+ this.properties.getProperty(DISCUSSION_TABLE) + ".");
+	}
+
+	@Override
+	public Discussion[] getDiscussions(IDAOProgressMonitor progressMonitor)
+			throws DAOException {
+		try {
+			if (!existsTable(this.properties.getProperty(DISCUSSION_TABLE)))
+				return new Discussion[0];
+
+			progressMonitor.setTotalSteps(numberOfAllDiscussions() * 3);
+
+			PreparedStatement stat = getPreparedStatement(this.properties
+					.getProperty(SELECT_ALL_DISCUSSIONS));
+			ResultSet rs = stat.executeQuery();
+			List<Discussion> tmp = new LinkedList<Discussion>();
+
+			int i = 0;
+			progressMonitor.setStep(0, "Loading Discussions...");
+			while (rs.next()) {
+				// discussion(id, topic, description, type, date, status,
+				// creator)
+				Discussion d = createDiscussion(rs);
+				tmp.add(d);
+				progressMonitor.setStep(i++);
+				// Thread.yield();
+			}
+			progressMonitor.setStep(i, "Loading Discussion Events...");
+			for (Discussion d : tmp) {
+				addComments(d);
+				progressMonitor.setStep(i++);
+			}
+
+			return addReferencedDiscussions(tmp, progressMonitor, i).toArray(
+					new Discussion[0]);
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		}
+	}
+
+	private int numberOfAllDiscussions() throws SQLException {
+		if (!existsTable(this.properties.getProperty(DISCUSSION_TABLE)))
+			return 0;
+		String numberQuery = this.properties
+				.getProperty(NUMBER_OF_ALL_DISCUSSIONS);
+		if (numberQuery == null)
+			return -1;
+		PreparedStatement stat = getPreparedStatement(numberQuery);
+		ResultSet rs = stat.executeQuery();
+
+		if (rs.next())
+			return rs.getInt(1);
+
+		return 0;
 	}
 
 }
