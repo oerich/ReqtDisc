@@ -20,7 +20,7 @@ public class ShowStatistics extends AbstractCommand {
 		StringBuffer sb = new StringBuffer();
 		System.out.println("=== Statistics ===");
 		for (AbstractDiscussionMetric m : AbstractDiscussionMetric.STANDARD_METRICS) {
-			m.computeMetric(((DiscussionTableModel) getWorkitemTableModel())
+			m.computeMetric(((DiscussionTableModel) getDiscussionTableModel())
 					.getDiscussions());
 			System.out.println(m);
 			// for the details:
@@ -28,7 +28,7 @@ public class ShowStatistics extends AbstractCommand {
 			sb.append(m.getName());
 		}
 		for (AbstractNetworkMetric nm : AbstractNetworkMetric.STANDARD_METRICS) {
-			nm.computeMetric(((DiscussionTableModel) getWorkitemTableModel())
+			nm.computeMetric(((DiscussionTableModel) getDiscussionTableModel())
 					.getDiscussions());
 			System.out.println(nm);
 			sb.append("\t");

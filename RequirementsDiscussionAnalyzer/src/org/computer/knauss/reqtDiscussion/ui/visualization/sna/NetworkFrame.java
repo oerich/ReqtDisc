@@ -1,17 +1,25 @@
 package org.computer.knauss.reqtDiscussion.ui.visualization.sna;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.sql.Date;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Dictionary;
 import java.util.Hashtable;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -32,6 +40,7 @@ import org.computer.knauss.reqtDiscussion.model.metric.AbstractNetworkMetric;
 import org.computer.knauss.reqtDiscussion.model.partition.FixedNumberPartition;
 import org.computer.knauss.reqtDiscussion.model.partition.IDiscussionOverTimePartition;
 import org.computer.knauss.reqtDiscussion.model.partition.TimeIntervalPartition;
+import org.computer.knauss.reqtDiscussion.model.socialNetwork.Node;
 import org.computer.knauss.reqtDiscussion.model.socialNetwork.PartitionedSocialNetwork;
 import org.computer.knauss.reqtDiscussion.model.socialNetwork.ProximitySocialNetwork;
 import org.computer.knauss.reqtDiscussion.model.socialNetwork.SocialNetwork;
@@ -60,6 +69,7 @@ public class NetworkFrame extends JFrame {
 	private Discussion[] discussions;
 	private JSlider zoomSlider;
 	private JLabel metricLabel;
+	private JSlider cutoffSlider;
 
 	public NetworkFrame() {
 		super("Social Network Analysis");
@@ -108,6 +118,8 @@ public class NetworkFrame extends JFrame {
 		this.networkPanel = new NetworkPanel();
 		add(new JScrollPane(this.networkPanel), BorderLayout.CENTER);
 
+		JPanel ctrlPanel = new JPanel(new GridLayout(2, 1));
+		add(ctrlPanel, BorderLayout.WEST);
 		this.zoomSlider = new JSlider(2, 20, 10);
 		Dictionary<Integer, JComponent> labels = new Hashtable<Integer, JComponent>();
 		labels.put(2, new JLabel("-"));
@@ -121,7 +133,20 @@ public class NetworkFrame extends JFrame {
 				networkPanel.setZoomFactor(zoomSlider.getValue() / 10d);
 			}
 		});
-		this.add(this.zoomSlider, BorderLayout.WEST);
+		ctrlPanel.add(this.zoomSlider, BorderLayout.WEST);
+
+		this.cutoffSlider = new JSlider();
+		this.cutoffSlider.setPaintLabels(true);
+		this.cutoffSlider.setValue(0);
+		this.cutoffSlider.addChangeListener(new ChangeListener() {
+
+			@Override
+			public void stateChanged(ChangeEvent arg0) {
+				weightSpinner.setValue((double) cutoffSlider.getValue());
+				setWorkitems(discussions, partition);
+			}
+		});
+		ctrlPanel.add(this.cutoffSlider);
 
 		this.metricLabel = new JLabel("");
 		add(this.metricLabel, BorderLayout.SOUTH);
@@ -146,7 +171,60 @@ public class NetworkFrame extends JFrame {
 			this.networkPanel.repaint();
 
 			computeNetworkMetrics(discussions, partition, sn);
+			updateCutoffSlider(sn);
 		}
+	}
+
+	private void updateCutoffSlider(SocialNetwork sn) {
+		List<Double> weights = new LinkedList<Double>();
+		double maxWeight = 0;
+		for (Node n1 : sn.getActors())
+			for (Node n2 : sn.getActors()) {
+				double weight = sn.getWeight(n1, n2);
+				if (weight > 0) {
+					weights.add(weight);
+					if (weight > maxWeight)
+						maxWeight = weight;
+				}
+			}
+
+		Collections.sort(weights);
+		int[] bucketAmounts = new int[(int) maxWeight + 1];
+		// 1. divide the maxWeight by bucketAmounts.length, and count how many
+		// weights we
+		// have for each bucket
+		int i = 0;
+		for (Double w : weights) {
+			while (w > i + 1) {
+				i++;
+			}
+			bucketAmounts[i]++;
+		}
+
+		// 2. divide the maxAmount per bucket by the height we might use
+		int maxHeight = 100;
+
+		// 3. create pictures for each bucket and add them to the slider
+		Dictionary<Integer, JComponent> labels = new Hashtable<Integer, JComponent>();
+		for (int j = 0; j < bucketAmounts.length; j++) {
+			int amount = bucketAmounts[j];
+			if (maxHeight < weights.size())
+				amount = (amount * 100) / weights.size();
+			BufferedImage bi = new BufferedImage(5, Math.min(weights.size(),
+					maxHeight), BufferedImage.TYPE_INT_RGB);
+			// System.out.println(j + " = " + amount + "/" + weights.size());
+			Graphics graphics = bi.getGraphics();
+			graphics.fillRect(0, 0, 5, Math.min(weights.size(), maxHeight));
+			graphics.setColor(Color.BLUE);
+
+			graphics.fillRect(0, 0, 5, amount);
+			JLabel weightLabel = new JLabel(new ImageIcon(bi));
+			weightLabel.setToolTipText(amount + " edges have weight < " + j);
+			labels.put(j, weightLabel);
+		}
+		this.cutoffSlider.setMinimum(0);
+		this.cutoffSlider.setMaximum((int) maxWeight);
+		this.cutoffSlider.setLabelTable(labels);
 	}
 
 	private void computeNetworkMetrics(Discussion[] discussions,

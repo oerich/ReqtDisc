@@ -24,13 +24,14 @@ public abstract class AbstractDiscussionMetric {
 	public final static AbstractDiscussionMetric TIME_LENGTH = new TimeLengthMetric();
 	public final static AbstractDiscussionMetric NUMBER_COMMENTS = new CommentNumberMetric();
 	public final static AbstractDiscussionMetric NUMBER_CONTRIBUTORS = new ContributorNumberMetric();
-
+	public final static AbstractDiscussionMetric PATTERN_METRIC = new PatternMetric();
 	/**
 	 * A set of metrics that is often computed together.
 	 */
 	public static final AbstractDiscussionMetric[] STANDARD_METRICS = {
 			TIME_LENGTH, NUMBER_COMMENTS, NUMBER_CONTRIBUTORS };
 
+	public static final AbstractDiscussionMetric[] OTHER_METRICS = {PATTERN_METRIC};
 	/**
 	 * Returns the name of the metric for GUI and Reports.
 	 * 
@@ -88,7 +89,7 @@ public abstract class AbstractDiscussionMetric {
 			if (!visited.contains(d.getID())) {
 				int[] related = new int[] { d.getID() };
 				if (hrd != null)
-					related = hrd.getRelatedWorkitemIDs(d.getID());
+					related = hrd.getRelatedDiscussionIDs(d.getID());
 				List<Discussion> tmp = new LinkedList<Discussion>();
 				for (int id : related) {
 					if (!visited.contains(id)) {
@@ -96,10 +97,16 @@ public abstract class AbstractDiscussionMetric {
 						tmp.add(discussionMap.get(id));
 					}
 				}
+				Discussion[] tmpDiscussions = tmp.toArray(new Discussion[0]);
+				initDiscussions(tmpDiscussions);
 				this.values.put(Util.idsToKey(related),
-						considerDiscussions(tmp.toArray(new Discussion[0])));
+						considerDiscussions(tmpDiscussions));
 			}
 		}
+	}
+
+	public void initDiscussions(Discussion[] discussions) {
+		// override if needed.
 	}
 
 	/**

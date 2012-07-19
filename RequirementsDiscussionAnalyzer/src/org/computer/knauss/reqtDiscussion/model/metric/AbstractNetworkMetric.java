@@ -66,14 +66,18 @@ public abstract class AbstractNetworkMetric extends AbstractDiscussionMetric {
 		this.partition = partition;
 	}
 
-	protected void initNetwork(Discussion[] wi) {
-		// TODO Check how to deal with multiple discussions
+	public void initNetwork(Discussion[] discussions) {
 		List<DiscussionEvent> tmp = new LinkedList<DiscussionEvent>();
-		for (Discussion d : wi) {
+		for (Discussion d : discussions) {
 			Collections.addAll(tmp, d.getAllComments());
 		}
-		getPartition().setTimeInterval(wi);
+		getPartition().setTimeInterval(discussions);
 		getPartition().setDiscussionEvents(tmp.toArray(new DiscussionEvent[0]));
-		getSocialNetwork().setDiscussionData(wi, getPartition());
+		getSocialNetwork().setDiscussionData(discussions, getPartition());
+	}
+
+	@Override
+	public void initDiscussions(Discussion[] discussions) {
+		initNetwork(discussions);
 	}
 }
