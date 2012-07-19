@@ -31,7 +31,7 @@ public abstract class AbstractCommand extends AbstractAction {
 		this.workitemTableModel = wtm;
 	}
 
-	public DiscussionTableModel getWorkitemTableModel() {
+	public DiscussionTableModel getDiscussionTableModel() {
 		return this.workitemTableModel;
 	}
 
