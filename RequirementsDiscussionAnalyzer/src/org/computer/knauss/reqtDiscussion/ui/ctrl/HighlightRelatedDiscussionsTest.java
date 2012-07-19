@@ -16,7 +16,7 @@ public class HighlightRelatedDiscussionsTest {
 
 	@Test
 	public void testWithFirstIDExisting() {
-		int[] wiIDs = this.hrw.getRelatedWorkitemIDs(13764);
+		int[] wiIDs = this.hrw.getRelatedDiscussionIDs(13764);
 
 		assertEquals(3, wiIDs.length);
 		assertEquals(13764, wiIDs[0]);
@@ -26,7 +26,7 @@ public class HighlightRelatedDiscussionsTest {
 
 	@Test
 	public void testWithLaterIDExisting() {
-		int[] wiIDs = this.hrw.getRelatedWorkitemIDs(40774);
+		int[] wiIDs = this.hrw.getRelatedDiscussionIDs(40774);
 
 		assertEquals(3, wiIDs.length);
 		assertEquals(13764, wiIDs[0]);
@@ -36,7 +36,7 @@ public class HighlightRelatedDiscussionsTest {
 	
 	@Test
 	public void testNonExisting() { 
-		int[] wiIDs = this.hrw.getRelatedWorkitemIDs(0123);
+		int[] wiIDs = this.hrw.getRelatedDiscussionIDs(0123);
 		
 		assertEquals(1, wiIDs.length);
 		assertEquals(0123, wiIDs[0]);

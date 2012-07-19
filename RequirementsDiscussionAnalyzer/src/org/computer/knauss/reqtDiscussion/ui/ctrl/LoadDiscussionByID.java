@@ -19,7 +19,7 @@ public class LoadDiscussionByID extends AbstractCommand {
 
 	@Override
 	public void actionPerformed(ActionEvent event) {
-		DiscussionTableModel wtm = getWorkitemTableModel();
+		DiscussionTableModel wtm = getDiscussionTableModel();
 
 		String input = JOptionPane
 				.showInputDialog(

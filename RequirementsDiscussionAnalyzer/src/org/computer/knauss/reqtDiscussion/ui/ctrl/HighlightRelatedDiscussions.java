@@ -29,7 +29,7 @@ public class HighlightRelatedDiscussions {
 		r.close();
 	}
 
-	public int[] getRelatedWorkitemIDs(int id) {
+	public int[] getRelatedDiscussionIDs(int id) {
 		for (int[] a : this.ids) {
 			for (int i : a) {
 				if (i == id) {
@@ -45,7 +45,7 @@ public class HighlightRelatedDiscussions {
 
 		// Do not interfere when user does multiple selections...
 		if (selectedItems.length == 1) {
-			int[] ids = getRelatedWorkitemIDs(selectedItems[0].getID());
+			int[] ids = getRelatedDiscussionIDs(selectedItems[0].getID());
 
 			if (ids.length > 1) {
 				Discussion[] wis = tm.getDiscussions();
