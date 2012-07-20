@@ -12,11 +12,10 @@ import org.computer.knauss.reqtDiscussion.ui.DiscussionAnalyzerFrame;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.AbstractCommand;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.ChooseDAOManager;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.InsertOrUpdateDiscussionEventClassification;
-import org.computer.knauss.reqtDiscussion.ui.ctrl.LoadDiscussions;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.LoadDiscussionByID;
+import org.computer.knauss.reqtDiscussion.ui.ctrl.LoadDiscussions;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.SetReferenceClassifierName;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.ShowStatistics;
-import org.computer.knauss.reqtDiscussion.ui.ctrl.ShowStatistics2;
 import org.computer.knauss.reqtDiscussion.ui.uiModel.DiscussionTableModel;
 
 public class DiscussionAnalyzer {
@@ -60,7 +59,7 @@ public class DiscussionAnalyzer {
 							configureCommand(new InsertOrUpdateDiscussionEventClassification()));
 
 			daFrame.addAction(DiscussionAnalyzerFrame.STATISTICS_MENU,
-					configureCommand(new ShowStatistics2()));
+					configureCommand(new ShowStatistics()));
 
 		} catch (NullPointerException e) {
 			System.err
