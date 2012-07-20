@@ -178,7 +178,7 @@ public class NetworkFrame extends JFrame {
 	private void updateCutoffSlider(SocialNetwork sn) {
 		List<Double> weights = new LinkedList<Double>();
 		double maxWeight = 0;
-		for (Node n1 : sn.getActors())
+		for (Node n1 : sn.getActors()) {
 			for (Node n2 : sn.getActors()) {
 				double weight = sn.getWeight(n1, n2);
 				if (weight > 0) {
@@ -187,6 +187,7 @@ public class NetworkFrame extends JFrame {
 						maxWeight = weight;
 				}
 			}
+		}
 
 		Collections.sort(weights);
 		int[] bucketAmounts = new int[(int) maxWeight + 1];
@@ -208,13 +209,17 @@ public class NetworkFrame extends JFrame {
 		Dictionary<Integer, JComponent> labels = new Hashtable<Integer, JComponent>();
 		for (int j = 0; j < bucketAmounts.length; j++) {
 			int amount = bucketAmounts[j];
-			if (maxHeight < weights.size())
-				amount = (amount * 100) / weights.size();
-			BufferedImage bi = new BufferedImage(5, Math.min(weights.size(),
-					maxHeight), BufferedImage.TYPE_INT_RGB);
+			int maxAmount = weights.size();
+			if (maxHeight < weights.size()) {
+				amount = (amount * maxHeight) / weights.size();
+				maxAmount = maxHeight;
+			} else if (weights.size() == 0 )
+				maxAmount = 1;
+			BufferedImage bi = new BufferedImage(5, maxAmount,
+					BufferedImage.TYPE_INT_RGB);
 			// System.out.println(j + " = " + amount + "/" + weights.size());
 			Graphics graphics = bi.getGraphics();
-			graphics.fillRect(0, 0, 5, Math.min(weights.size(), maxHeight));
+			graphics.fillRect(0, 0, 5, maxAmount);
 			graphics.setColor(Color.BLUE);
 
 			graphics.fillRect(0, 0, 5, amount);
