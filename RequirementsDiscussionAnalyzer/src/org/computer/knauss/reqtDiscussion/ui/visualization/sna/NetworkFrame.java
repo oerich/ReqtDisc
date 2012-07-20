@@ -111,6 +111,8 @@ public class NetworkFrame extends JFrame {
 			@Override
 			public void stateChanged(ChangeEvent arg0) {
 				setWorkitems(discussions, partition);
+				double v = (Double)weightSpinner.getValue();
+				cutoffSlider.setValue((int)v);
 			}
 		});
 		buttonPanel.add(this.weightSpinner);
