@@ -8,6 +8,9 @@ public class PartitionedSocialNetwork extends SocialNetwork {
 
 	@Override
 	public double getWeight(Node actor1, Node actor2) {
+		if (actor1.equals(actor2))
+			return 0.0;
+		
 		double ret = 0;
 
 		boolean actor1Found;
