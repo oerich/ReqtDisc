@@ -19,6 +19,7 @@ import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -70,6 +71,7 @@ public class NetworkFrame extends JFrame {
 	private JSlider zoomSlider;
 	private JLabel metricLabel;
 	private JSlider cutoffSlider;
+	private JScrollPane jScrollPane;
 
 	public NetworkFrame() {
 		super("Social Network Analysis");
@@ -111,16 +113,32 @@ public class NetworkFrame extends JFrame {
 			@Override
 			public void stateChanged(ChangeEvent arg0) {
 				setWorkitems(discussions, partition);
-				double v = (Double)weightSpinner.getValue();
-				cutoffSlider.setValue((int)v);
+				double v = (Double) weightSpinner.getValue();
+				cutoffSlider.setValue((int) v);
 			}
 		});
 		buttonPanel.add(this.weightSpinner);
 
 		this.networkPanel = new NetworkPanel();
-		add(new JScrollPane(this.networkPanel), BorderLayout.CENTER);
+		jScrollPane = new JScrollPane(this.networkPanel);
+		add(jScrollPane, BorderLayout.CENTER);
 
 		JPanel ctrlPanel = new JPanel(new GridLayout(2, 1));
+
+		JPanel zoomPanel = new JPanel(new GridLayout(2, 1));
+		zoomPanel.setBorder(BorderFactory.createTitledBorder("Zoom"));
+
+		JButton fitToViewBtn = new JButton("fit to view");
+		zoomPanel.add(fitToViewBtn);
+		fitToViewBtn.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				networkPanel.zoomToFitRect(jScrollPane.getBounds());
+				zoomSlider.setValue((int)(networkPanel.getZoomFactor() * 10));
+			}
+		});
+
 		add(ctrlPanel, BorderLayout.WEST);
 		this.zoomSlider = new JSlider(2, 20, 10);
 		Dictionary<Integer, JComponent> labels = new Hashtable<Integer, JComponent>();
@@ -135,7 +153,8 @@ public class NetworkFrame extends JFrame {
 				networkPanel.setZoomFactor(zoomSlider.getValue() / 10d);
 			}
 		});
-		ctrlPanel.add(this.zoomSlider, BorderLayout.WEST);
+		zoomPanel.add(this.zoomSlider);
+		ctrlPanel.add(zoomPanel, BorderLayout.WEST);
 
 		this.cutoffSlider = new JSlider();
 		this.cutoffSlider.setPaintLabels(true);
@@ -170,7 +189,8 @@ public class NetworkFrame extends JFrame {
 			sn.setDiscussionData(discussions, partition);
 			this.networkPanel.setMinWeight((Double) weightSpinner.getValue());
 			this.networkPanel.setNetwork(sn);
-			this.networkPanel.repaint();
+//			this.networkPanel.repaint();
+			this.networkPanel.zoomToFitRect(this.jScrollPane.getBounds());
 
 			computeNetworkMetrics(discussions, partition, sn);
 			updateCutoffSlider(sn);
@@ -215,7 +235,7 @@ public class NetworkFrame extends JFrame {
 			if (maxHeight < weights.size()) {
 				amount = (amount * maxHeight) / weights.size();
 				maxAmount = maxHeight;
-			} else if (weights.size() == 0 )
+			} else if (weights.size() == 0)
 				maxAmount = 1;
 			BufferedImage bi = new BufferedImage(5, maxAmount,
 					BufferedImage.TYPE_INT_RGB);

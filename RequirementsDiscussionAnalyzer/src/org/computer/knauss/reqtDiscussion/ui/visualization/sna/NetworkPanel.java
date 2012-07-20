@@ -45,6 +45,13 @@ public class NetworkPanel extends JPanel {
 		return network;
 	}
 
+	public void zoomToFitRect(Rectangle rect) {
+		double xZoom = rect.getWidth() / BOUNDS.getWidth();
+		double yZoom = rect.getHeight() / BOUNDS.getHeight();
+
+		setZoomFactor(Math.min(xZoom, yZoom));
+	}
+
 	public void setNetwork(SocialNetwork network) {
 		this.network = network;
 		// this.graphProvider.printMatrix(network);
@@ -61,6 +68,10 @@ public class NetworkPanel extends JPanel {
 
 		getLayouter().initialize(this.network, this.graphProvider, BOUNDS, 200);
 		getLayouter().layout(1);
+
+		setPreferredSize(new Dimension(
+				(int) (BOUNDS.getWidth() * this.zoomFactor),
+				(int) (BOUNDS.getHeight() * this.zoomFactor)));
 		repaint();
 	}
 
@@ -85,16 +96,22 @@ public class NetworkPanel extends JPanel {
 
 	public void setZoomFactor(double d) {
 		this.zoomFactor = d;
+		setPreferredSize(new Dimension(
+				(int) (BOUNDS.getWidth() * this.zoomFactor),
+				(int) (BOUNDS.getHeight() * this.zoomFactor)));
+		revalidate();
 		repaint();
 	}
 
 	@Override
 	public void paint(Graphics g) {
+		g.clearRect(getBounds().x, getBounds().y, getBounds().width,
+				getBounds().height);
 		((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 				RenderingHints.VALUE_ANTIALIAS_ON);
 		((Graphics2D) g).scale(zoomFactor, zoomFactor);
 		g.setColor(Color.white);
-		g.fillRect(0, 0, 2000, 2000);
+		g.fillRect(0, 0, (int) BOUNDS.getWidth(), (int) BOUNDS.getHeight());
 		g.setColor(Color.BLACK);
 		g.drawRect(0, 0, (int) BOUNDS.getWidth(), (int) BOUNDS.getHeight());
 		for (Node a : this.network.getActors()) {
@@ -163,5 +180,9 @@ public class NetworkPanel extends JPanel {
 			this.value = value;
 			this.color = color;
 		}
+	}
+
+	public double getZoomFactor() {
+		return this.zoomFactor;
 	}
 }
