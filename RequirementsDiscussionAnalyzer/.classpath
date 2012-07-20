@@ -13,5 +13,7 @@
 	<classpathentry kind="lib" path="lib/jdom/lib/xml-apis.jar"/>
 	<classpathentry kind="lib" path="lib/postgresql-9.1-901.jdbc4.jar"/>
 	<classpathentry kind="lib" path="lib/de.luh.se.layout.jar"/>
+	<classpathentry kind="lib" path="lib/jfreechart-1.0.14.jar"/>
+	<classpathentry kind="lib" path="lib/jcommon-1.0.17.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

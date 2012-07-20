@@ -9,10 +9,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.swing.JFrame;
+
 import org.computer.knauss.reqtDiscussion.io.Util;
 import org.computer.knauss.reqtDiscussion.model.Discussion;
 import org.computer.knauss.reqtDiscussion.model.metric.AbstractDiscussionMetric;
 import org.computer.knauss.reqtDiscussion.model.metric.AbstractNetworkMetric;
+import org.computer.knauss.reqtDiscussion.ui.metrics.MetricFrame;
 import org.computer.knauss.reqtDiscussion.ui.uiModel.DiscussionTableModel;
 
 public class ShowStatistics extends AbstractDiscussionIterationCommand {
@@ -90,6 +93,11 @@ public class ShowStatistics extends AbstractDiscussionIterationCommand {
 
 		for (AbstractDiscussionMetric m : metrics)
 			System.out.println(m);
+		
+		MetricFrame mf = new MetricFrame();
+		mf.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		mf.update();
+		mf.setVisible(true);
 	}
 
 }
