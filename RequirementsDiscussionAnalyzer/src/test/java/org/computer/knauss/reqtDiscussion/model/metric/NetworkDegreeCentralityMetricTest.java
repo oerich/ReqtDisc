@@ -24,7 +24,7 @@ public class NetworkDegreeCentralityMetricTest {
 		AbstractNetworkMetric m = new NetworkDegreeCentralityMetric();
 		m.initNetwork(new Discussion[0]);
 		assertEquals(0.0, m.considerDiscussions(new Discussion[0]), 0.001);
-
+DiscussionFactory.getInstance().clear();
 		Discussion d = DiscussionFactory.getInstance().getDiscussion(1);
 		d.setCreator("1");
 		d.setDateCreated(new Date(System.currentTimeMillis() - 1000));
@@ -45,19 +45,19 @@ public class NetworkDegreeCentralityMetricTest {
 		m.initNetwork(new Discussion[] { d });
 		// lets see if the partitions are okay:
 		if (d.getDateCreated().getTime() == d1.getCreationDate().getTime()) {
+			assertEquals(0,
+					m.getPartition().getDiscussionEventForPartition(0).length);
 			assertEquals(1,
 					m.getPartition().getDiscussionEventForPartition(1).length);
 			assertEquals(0,
 					m.getPartition().getDiscussionEventForPartition(2).length);
-			assertEquals(0,
-					m.getPartition().getDiscussionEventForPartition(3).length);
 		} else {
+			assertEquals(1,
+					m.getPartition().getDiscussionEventForPartition(0).length);
 			assertEquals(0,
 					m.getPartition().getDiscussionEventForPartition(1).length);
-			assertEquals(1,
-					m.getPartition().getDiscussionEventForPartition(2).length);
 			assertEquals(0,
-					m.getPartition().getDiscussionEventForPartition(3).length);
+					m.getPartition().getDiscussionEventForPartition(2).length);
 		}
 
 		assertEquals(0.0, m.considerDiscussions(new Discussion[] { d }), 0.001);
@@ -82,7 +82,7 @@ public class NetworkDegreeCentralityMetricTest {
 
 		d.addComments(new DiscussionEvent[] { d4, d5, d6 });
 		m.initNetwork(new Discussion[] { d });
-		assertEquals(0.33, m.considerDiscussions(new Discussion[] { d }), 0.01);
+		assertEquals(0.0, m.considerDiscussions(new Discussion[] { d }), 0.01);
 
 		DiscussionEvent d7 = new DiscussionEvent();
 		d7.setCreator("1");
@@ -94,7 +94,7 @@ public class NetworkDegreeCentralityMetricTest {
 
 		d.addComments(new DiscussionEvent[] { d7, d8 });
 		m.initNetwork(new Discussion[] { d });
-		assertEquals(0.649, m.considerDiscussions(new Discussion[] { d }), 0.01);
+		assertEquals(0.399, m.considerDiscussions(new Discussion[] { d }), 0.01);
 	}
 
 }
