@@ -37,6 +37,7 @@ import javax.swing.event.ChangeListener;
 import org.computer.knauss.reqtDiscussion.model.Discussion;
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
 import org.computer.knauss.reqtDiscussion.model.DiscussionFactory;
+import org.computer.knauss.reqtDiscussion.model.VisualizationConfiguration;
 import org.computer.knauss.reqtDiscussion.model.metric.AbstractNetworkMetric;
 import org.computer.knauss.reqtDiscussion.model.partition.FixedNumberPartition;
 import org.computer.knauss.reqtDiscussion.model.partition.IDiscussionOverTimePartition;
@@ -49,8 +50,6 @@ import org.computer.knauss.reqtDiscussion.model.socialNetwork.SocialNetwork;
 public class NetworkFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	private NetworkPanel networkPanel;
-	private boolean play;
 
 	private TimerTask timer = new TimerTask() {
 
@@ -65,17 +64,23 @@ public class NetworkFrame extends JFrame {
 	};
 	private JButton playButton;
 	private JComboBox socialNetworkBox;
-	private JSpinner weightSpinner;
-	private IDiscussionOverTimePartition partition;
-	private Discussion[] discussions;
-	private JSlider zoomSlider;
 	private JLabel metricLabel;
-	private JSlider cutoffSlider;
 	private JScrollPane jScrollPane;
+	private JSlider zoomSlider;
+	private JSlider cutoffSlider;
+	private JSpinner weightSpinner;
 
-	public NetworkFrame() {
+	private NetworkPanel networkPanel;
+	private Discussion[] discussions;
+	private boolean play;
+
+	private VisualizationConfiguration configuration;
+
+	public NetworkFrame(VisualizationConfiguration configuration) {
 		super("Social Network Analysis");
 
+		this.configuration = configuration;
+		
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		setLayout(new BorderLayout());
 
@@ -101,7 +106,7 @@ public class NetworkFrame extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent event) {
-				setWorkitems(discussions, partition);
+				setWorkitems(discussions);
 			}
 		});
 		buttonPanel.add(this.socialNetworkBox);
@@ -112,7 +117,7 @@ public class NetworkFrame extends JFrame {
 
 			@Override
 			public void stateChanged(ChangeEvent arg0) {
-				setWorkitems(discussions, partition);
+				setWorkitems(discussions);
 				double v = (Double) weightSpinner.getValue();
 				cutoffSlider.setValue((int) v);
 			}
@@ -135,7 +140,7 @@ public class NetworkFrame extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				networkPanel.zoomToFitRect(jScrollPane.getBounds());
-				zoomSlider.setValue((int)(networkPanel.getZoomFactor() * 10));
+				zoomSlider.setValue((int) (networkPanel.getZoomFactor() * 10));
 			}
 		});
 
@@ -164,7 +169,7 @@ public class NetworkFrame extends JFrame {
 			@Override
 			public void stateChanged(ChangeEvent arg0) {
 				weightSpinner.setValue((double) cutoffSlider.getValue());
-				setWorkitems(discussions, partition);
+				setWorkitems(discussions);
 			}
 		});
 		ctrlPanel.add(this.cutoffSlider);
@@ -178,21 +183,24 @@ public class NetworkFrame extends JFrame {
 		t.schedule(this.timer, 50, 100);
 	}
 
-	public void setWorkitems(Discussion[] discussions,
-			IDiscussionOverTimePartition partition) {
-		this.discussions = discussions;
-		this.partition = partition;
 
-		if (discussions != null && partition != null) {
+	public void setWorkitems(Discussion[] discussions) {
+		this.discussions = discussions;
+
+		if (discussions != null
+				&& this.configuration.getDiscussionPartition() != null) {
 			SocialNetwork sn = (SocialNetwork) this.socialNetworkBox
 					.getSelectedItem();
-			sn.setDiscussionData(discussions, partition);
+			sn.setDiscussionData(discussions,
+					this.configuration.getDiscussionPartition());
+			this.configuration.setSocialNetwork(sn);
 			this.networkPanel.setMinWeight((Double) weightSpinner.getValue());
 			this.networkPanel.setNetwork(sn);
-//			this.networkPanel.repaint();
+			// this.networkPanel.repaint();
 			this.networkPanel.zoomToFitRect(this.jScrollPane.getBounds());
 
-			computeNetworkMetrics(discussions, partition, sn);
+			computeNetworkMetrics(discussions,
+					configuration.getDiscussionPartition(), sn);
 			updateCutoffSlider(sn);
 		}
 	}
@@ -272,7 +280,10 @@ public class NetworkFrame extends JFrame {
 	}
 
 	public static void main(String[] args) {
-		NetworkFrame f = new NetworkFrame();
+		VisualizationConfiguration vc = new VisualizationConfiguration();
+		FixedNumberPartition p = new FixedNumberPartition();
+		vc.setPartition(p);
+		NetworkFrame f = new NetworkFrame(vc);
 
 		Random r = new Random();
 		int actorNumber = 7;
@@ -283,6 +294,9 @@ public class NetworkFrame extends JFrame {
 			wcs[i].setCreationDate(new Date(System.currentTimeMillis()
 					- r.nextInt(40) * TimeIntervalPartition.MILLIS_PER_DAY));
 		}
+
+		p.setTimeInterval(wcs[0].getCreationDate(),
+				wcs[wcs.length - 1].getCreationDate());
 
 		Arrays.sort(wcs, new Comparator<DiscussionEvent>() {
 
@@ -296,11 +310,8 @@ public class NetworkFrame extends JFrame {
 
 		d.addComments(wcs);
 		d.setDateCreated(wcs[0].getCreationDate());
-		FixedNumberPartition p = new FixedNumberPartition();
-		p.setTimeInterval(wcs[0].getCreationDate(),
-				wcs[wcs.length - 1].getCreationDate());
 
-		f.setWorkitems(new Discussion[] { d }, p);
+		f.setWorkitems(new Discussion[] { d });
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.pack();
 		f.setVisible(true);

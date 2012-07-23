@@ -49,7 +49,7 @@ public class LoadDiscussions extends AbstractCommand {
 			Discussion[] data = new Discussion[0];
 
 			try {
-				IDiscussionDAO dao = getWorkitemDAO();
+				IDiscussionDAO dao = getDiscussionDAO();
 				data = dao.getDiscussions(this);
 			} catch (DAOException e) {
 				e.printStackTrace();

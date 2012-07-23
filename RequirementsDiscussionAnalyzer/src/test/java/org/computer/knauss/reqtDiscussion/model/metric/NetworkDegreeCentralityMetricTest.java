@@ -24,7 +24,7 @@ public class NetworkDegreeCentralityMetricTest {
 		AbstractNetworkMetric m = new NetworkDegreeCentralityMetric();
 		m.initNetwork(new Discussion[0]);
 		assertEquals(0.0, m.considerDiscussions(new Discussion[0]), 0.001);
-DiscussionFactory.getInstance().clear();
+		DiscussionFactory.getInstance().clear();
 		Discussion d = DiscussionFactory.getInstance().getDiscussion(1);
 		d.setCreator("1");
 		d.setDateCreated(new Date(System.currentTimeMillis() - 1000));

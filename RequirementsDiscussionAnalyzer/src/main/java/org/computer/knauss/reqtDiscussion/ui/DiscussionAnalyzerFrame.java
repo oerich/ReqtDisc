@@ -22,6 +22,7 @@ import javax.swing.table.TableRowSorter;
 
 import org.computer.knauss.reqtDiscussion.model.Discussion;
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
+import org.computer.knauss.reqtDiscussion.model.VisualizationConfiguration;
 import org.computer.knauss.reqtDiscussion.model.metric.AbstractDiscussionMetric;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.HighlightRelatedDiscussions;
 import org.computer.knauss.reqtDiscussion.ui.uiModel.DiscussionTableModel;
@@ -75,24 +76,25 @@ public class DiscussionAnalyzerFrame extends JFrame implements
 
 		@Override
 		public void actionPerformed(ActionEvent event) {
-			networkAnalysisFrame.setWorkitems(
-					tableModel.getSelectedWorkitems(),
-					configureVisualizationPanel.getCommentPartition());
+			networkAnalysisFrame
+					.setWorkitems(tableModel.getSelectedWorkitems());
 			networkAnalysisFrame.setVisible(true);
 		}
 
 	};
 	private JLabel infoLabel;
-	private NetworkFrame networkAnalysisFrame = new NetworkFrame();
+	private NetworkFrame networkAnalysisFrame;
 	private HighlightRelatedDiscussions highlightRelated;
 
 	// private SocialNetwork sn = new PartitionedSocialNetwork();
 
-	public DiscussionAnalyzerFrame() {
+	public DiscussionAnalyzerFrame(VisualizationConfiguration configuration) {
 		super("Jazz Discussion Analyzer");
 
 		setLayout(new BorderLayout());
 
+		this.networkAnalysisFrame = new NetworkFrame(configuration);
+		
 		this.table = new JTable();
 		add(new JScrollPane(this.table), BorderLayout.WEST);
 
@@ -102,6 +104,8 @@ public class DiscussionAnalyzerFrame extends JFrame implements
 		add(this.menu, BorderLayout.NORTH);
 
 		this.configureVisualizationPanel = new VisualizationConfigurationPanel();
+		this.configureVisualizationPanel.setDiscussionPartition(configuration
+				.getDiscussionPartition());
 		JPanel flowPanel = new JPanel();
 		flowPanel.add(this.configureVisualizationPanel);
 		add(flowPanel, BorderLayout.EAST);
@@ -256,10 +260,9 @@ public class DiscussionAnalyzerFrame extends JFrame implements
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		configureVisualizationPanel.getCommentPartition().setTimeInterval(tableModel.getSelectedWorkitems());
-		networkAnalysisFrame.setWorkitems(
-				tableModel.getSelectedWorkitems(),
-				configureVisualizationPanel.getCommentPartition());
+		configureVisualizationPanel.getDiscussionPartition().setTimeInterval(
+				tableModel.getSelectedWorkitems());
+		networkAnalysisFrame.setWorkitems(tableModel.getSelectedWorkitems());
 		tableChanged(null);
 	}
 }

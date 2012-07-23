@@ -126,14 +126,14 @@ public class VisualizationConfigurationPanel extends JPanel implements
 
 	}
 
-	public void setCommentPartition(IDiscussionOverTimePartition partition) {
+	public void setDiscussionPartition(IDiscussionOverTimePartition partition) {
 		this.partition = partition;
 		this.partition.setPartitionCount(this.partitionCountSlider.getValue());
 		this.partition.setPartitionType(this.partitionTypeChooser
 				.getSelectedIndex() * -1);
 	}
 
-	public IDiscussionOverTimePartition getCommentPartition() {
+	public IDiscussionOverTimePartition getDiscussionPartition() {
 		return this.partition;
 	}
 

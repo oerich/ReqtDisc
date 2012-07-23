@@ -8,6 +8,7 @@ import javax.swing.JFrame;
 import org.computer.knauss.reqtDiscussion.io.DAORegistry;
 import org.computer.knauss.reqtDiscussion.io.jazz.JazzDAOManager;
 import org.computer.knauss.reqtDiscussion.io.sql.SQLDAOManager;
+import org.computer.knauss.reqtDiscussion.model.VisualizationConfiguration;
 import org.computer.knauss.reqtDiscussion.ui.DiscussionAnalyzerFrame;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.AbstractCommand;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.ChooseDAOManager;
@@ -22,14 +23,20 @@ public class DiscussionAnalyzer {
 
 	private static DAORegistry daoRegistry;
 	private static DiscussionTableModel tableModel;
+	private static VisualizationConfiguration configuration;
 
 	public static void main(String[] args) {
-		DiscussionAnalyzerFrame daFrame = new DiscussionAnalyzerFrame();
 
+		// create the model:
+		tableModel = new DiscussionTableModel();
+		configuration = new VisualizationConfiguration();
+
+		// create the view:
+		DiscussionAnalyzerFrame daFrame = new DiscussionAnalyzerFrame(configuration);
 		daFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		daFrame.pack();
-
-		tableModel = new DiscussionTableModel();
+		
+		// add model to view:
 		daFrame.setTableModel(tableModel);
 		try {
 			daoRegistry = DAORegistry.getInstance();
@@ -82,7 +89,8 @@ public class DiscussionAnalyzer {
 
 	private static AbstractCommand configureCommand(AbstractCommand cmd) {
 		cmd.setDAORegistry(daoRegistry);
-		cmd.setWorkitemTableModel(tableModel);
+		cmd.setDiscussionTableModel(tableModel);
+		cmd.setVisualizationConfiguration(configuration);
 		return cmd;
 	}
 }

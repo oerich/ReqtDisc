@@ -37,7 +37,7 @@ public class LoadDiscussionByID extends AbstractCommand {
 		Discussion[] data = new Discussion[inputs.length];
 
 		try {
-			IDiscussionDAO dao = getWorkitemDAO();
+			IDiscussionDAO dao = getDiscussionDAO();
 			for (int i = 0; i < inputs.length; i++) {
 				data[i] = dao.getDiscussion(Integer.valueOf(inputs[i].trim()));
 			}

@@ -19,7 +19,7 @@ public class InsertOrUpdateDiscussionEventClassification extends
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		try {
-			getWorkitemCommentClassificationDAO()
+			getDiscussionEventClassificationDAO()
 					.storeDiscussionEventClassification(this.wcc);
 		} catch (Exception e1) {
 			JOptionPane.showMessageDialog(null, e1.getMessage(),

@@ -23,7 +23,6 @@ import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
 import org.computer.knauss.reqtDiscussion.model.IFilteredDiscussionEventList;
 import org.computer.knauss.reqtDiscussion.model.partition.IDiscussionOverTimePartition;
 import org.computer.knauss.reqtDiscussion.model.partition.PixelPartition;
-import org.computer.knauss.reqtDiscussion.model.partition.TimeIntervalPartition;
 import org.computer.knauss.reqtDiscussion.ui.uiModel.DiscussionTableModel;
 import org.computer.knauss.reqtDiscussion.ui.visualization.IVisualizationStyle;
 import org.computer.knauss.reqtDiscussion.ui.visualization.clarificationPatterns.AlignedRectangularCommentStyle;
@@ -43,7 +42,7 @@ public class DiscussionVisualizationPanel extends JPanel implements
 			600);
 	private DiscussionTableModel dtm;
 	private Discussion[] selectedDiscussions;
-	private IDiscussionOverTimePartition discussionPartition = new TimeIntervalPartition();
+	private IDiscussionOverTimePartition discussionPartition;
 	private IDiscussionOverTimePartition discussionPixelPartition = new PixelPartition();
 	private IVisualizationStyle visualizationStyleBoxes;
 	private IVisualizationStyle visualizationGrid;
@@ -63,8 +62,7 @@ public class DiscussionVisualizationPanel extends JPanel implements
 		setBackground(Color.WHITE);
 
 		this.configureVisualizationPanel = configureVisualizationPanel;
-		this.configureVisualizationPanel
-				.setCommentPartition(this.discussionPartition);
+		this.discussionPartition = this.configureVisualizationPanel.getDiscussionPartition();
 		this.configureVisualizationPanel.addActionListener(this);
 
 		this.visualizationStyleBoxes = new AlignedRectangularCommentStyle();
