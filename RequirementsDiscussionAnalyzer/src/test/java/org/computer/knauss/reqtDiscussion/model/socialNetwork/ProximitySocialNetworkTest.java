@@ -21,7 +21,7 @@ public class ProximitySocialNetworkTest {
 		DiscussionFactory.getInstance().clear();
 		discussion = DiscussionFactory.getInstance().getDiscussion(1);
 		discussion.setCreator("1");
-		discussion.setDateCreated(new Date(System.currentTimeMillis() - 1000));
+		discussion.setCreationDate(new Date(System.currentTimeMillis() - 1000));
 
 		DiscussionEvent d1 = new DiscussionEvent();
 		d1.setCreator("1");
@@ -35,7 +35,7 @@ public class ProximitySocialNetworkTest {
 		d3.setCreator("2");
 		d3.setCreationDate(new Date(System.currentTimeMillis()));
 
-		discussion.addComments(new DiscussionEvent[] { d1, d2, d3 });
+		discussion.addDiscussionEvents(new DiscussionEvent[] { d1, d2, d3 });
 
 		this.sn = new ProximitySocialNetwork();
 		this.sn.setDiscussionData(new Discussion[] { this.discussion },

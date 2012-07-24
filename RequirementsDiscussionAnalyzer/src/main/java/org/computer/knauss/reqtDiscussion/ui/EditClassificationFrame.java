@@ -283,7 +283,7 @@ public class EditClassificationFrame extends JFrame implements
 						+ this.workitem.getDescription());
 		// getWorkitemTextArea().scrollRectToVisible(new Rectangle(0,0,10,10));
 		getWorkitemTextView().setCaretPosition(0);
-		getCommentListModel().setComments(this.workitem.getAllComments());
+		getCommentListModel().setComments(this.workitem.getDiscussionEvents());
 		getCommentList().setSelectedIndex(0);
 		valueChanged(null);
 	}
@@ -296,7 +296,7 @@ public class EditClassificationFrame extends JFrame implements
 				IClassificationFilter.NAME_FILTER.getName());
 
 		int i = getCommentList().getSelectedIndex();
-		if (i == -1 || i >= this.workitem.getAllComments().length) {
+		if (i == -1 || i >= this.workitem.getDiscussionEvents().length) {
 			// reset the fields
 			String empty = "";
 			getWorkitemCommentIDField().setText(empty);
@@ -309,7 +309,7 @@ public class EditClassificationFrame extends JFrame implements
 			getCommentTextField().setText(empty);
 			return;
 		}
-		this.workitemComment = this.workitem.getAllComments()[i];
+		this.workitemComment = this.workitem.getDiscussionEvents()[i];
 		getWorkitemCommentIDField().setText(
 				String.valueOf(this.workitemComment.getID()));
 		getWorkitemCommentDateField().setText(

@@ -32,7 +32,7 @@ public abstract class SocialNetwork {
 
 		this.nodes.clear();
 		for (Discussion wi : this.discussions)
-			for (DiscussionEvent wc : wi.getAllComments()) {
+			for (DiscussionEvent wc : wi.getDiscussionEvents()) {
 				Node n = this.nodes.get(wc.getCreator());
 				if (n == null) {
 					n = new Node();

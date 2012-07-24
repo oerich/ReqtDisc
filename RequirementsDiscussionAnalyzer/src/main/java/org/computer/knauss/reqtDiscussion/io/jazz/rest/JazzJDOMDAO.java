@@ -333,7 +333,7 @@ public class JazzJDOMDAO implements IJazzDAO, IDiscussionEventDAO,
 					"//ChangeRequest[identifier=" + discussionID + "]").get(0);
 
 			Discussion d = createDiscussion(discussionElement);
-			d.addComments(getDiscussionEventsOfDiscussion(d.getID()));
+			d.addDiscussionEvents(getDiscussionEventsOfDiscussion(d.getID()));
 
 			return d;
 		} catch (JDOMException e) {
@@ -354,7 +354,7 @@ public class JazzJDOMDAO implements IJazzDAO, IDiscussionEventDAO,
 				Integer.parseInt(((Element) this.xpathHelper.select(
 						discussionElement, "identifier").get(0)).getValue()));
 
-		d.setDateCreated(Util.parseDate(((Element) this.xpathHelper.select(
+		d.setCreationDate(Util.parseDate(((Element) this.xpathHelper.select(
 				discussionElement, "created").get(0)).getValue()));
 		d.setCreator(((Attribute) this.xpathHelper.select(discussionElement,
 				"creator/@resource").get(0)).getValue());
@@ -422,7 +422,7 @@ public class JazzJDOMDAO implements IJazzDAO, IDiscussionEventDAO,
 
 			for (Discussion d : ret) {
 				progressMonitor.setStep(step++, "Adding DiscussionEvents");
-				d.addComments(getDiscussionEventsOfDiscussion(d.getID()));
+				d.addDiscussionEvents(getDiscussionEventsOfDiscussion(d.getID()));
 			}
 
 			return ret;

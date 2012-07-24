@@ -237,7 +237,7 @@ public class DiscussionAnalyzerFrame extends JFrame implements
 		int x = 0;
 		int y = 0;
 		for (Discussion w : selected) {
-			for (DiscussionEvent wc : w.getAllComments()) {
+			for (DiscussionEvent wc : w.getDiscussionEvents()) {
 				if (wc.getReferenceClassification().startsWith("clarif"))
 					x++;
 				else

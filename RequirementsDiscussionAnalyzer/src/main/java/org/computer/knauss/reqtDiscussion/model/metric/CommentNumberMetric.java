@@ -15,7 +15,7 @@ public class CommentNumberMetric extends AbstractDiscussionMetric {
 			return 0.0;
 		int length = 0;
 		for (Discussion wi : wis) {
-			length += wi.getAllComments().length;
+			length += wi.getDiscussionEvents().length;
 		}
 		return (double) length;
 	}

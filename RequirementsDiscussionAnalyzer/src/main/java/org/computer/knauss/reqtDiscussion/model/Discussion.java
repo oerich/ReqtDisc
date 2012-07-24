@@ -13,7 +13,7 @@ public class Discussion extends ModelElement {
 	private Date dateCreated;
 	private String creator;
 	private String status;
-	private List<DiscussionEvent> comments = new Vector<DiscussionEvent>();
+	private List<DiscussionEvent> dEvents = new Vector<DiscussionEvent>();
 
 	Discussion() {
 		// Limit visibility of constructor.
@@ -48,11 +48,11 @@ public class Discussion extends ModelElement {
 		this.type = type;
 	}
 
-	public Date getDateCreated() {
+	public Date getCreationDate() {
 		return dateCreated;
 	}
 
-	public void setDateCreated(Date dateCreated) {
+	public void setCreationDate(Date dateCreated) {
 		this.dateCreated = dateCreated;
 	}
 
@@ -76,13 +76,13 @@ public class Discussion extends ModelElement {
 		this.id = id;
 	}
 
-	public DiscussionEvent[] getAllComments() {
-		return this.comments.toArray(new DiscussionEvent[0]);
+	public DiscussionEvent[] getDiscussionEvents() {
+		return this.dEvents.toArray(new DiscussionEvent[0]);
 	}
 
-	public void addComments(DiscussionEvent[] wcs) {
-		for (DiscussionEvent de : wcs) {
-			this.comments.add(de);
+	public void addDiscussionEvents(DiscussionEvent[] des) {
+		for (DiscussionEvent de : des) {
+			this.dEvents.add(de);
 		}
 	}
 

@@ -18,7 +18,7 @@ public class PartitionedSocialNetwork extends SocialNetwork {
 
 		for (Discussion wi : getDiscussions()) {
 			IDiscussionOverTimePartition p = getDiscussionOverTimePartition();
-			p.setDiscussionEvents(wi.getAllComments());
+			p.setDiscussionEvents(wi.getDiscussionEvents());
 			// System.out.println("Partitions: " + p.getPartitionCount());
 			for (int i = 0; i < p.getPartitionCount(); i++) {
 				actor1Found = false;

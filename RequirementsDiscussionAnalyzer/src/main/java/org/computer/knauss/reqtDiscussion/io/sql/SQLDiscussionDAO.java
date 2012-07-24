@@ -91,7 +91,7 @@ public class SQLDiscussionDAO extends AbstractSQLDAO implements IDiscussionDAO {
 	}
 
 	private void addComments(Discussion d) throws DAOException {
-		d.addComments(this.deDAO.getDiscussionEventsOfDiscussion(d.getID()));
+		d.addDiscussionEvents(this.deDAO.getDiscussionEventsOfDiscussion(d.getID()));
 	}
 
 	private Discussion createDiscussion(ResultSet rs) throws SQLException {
@@ -100,7 +100,7 @@ public class SQLDiscussionDAO extends AbstractSQLDAO implements IDiscussionDAO {
 		d.setSummary(rs.getString(2));
 		d.setDescription(rs.getString(3));
 		d.setType(rs.getString(4));
-		d.setDateCreated(rs.getDate(5));
+		d.setCreationDate(rs.getDate(5));
 		d.setStatus(rs.getString(6));
 		d.setCreator(rs.getString(7));
 		return d;
@@ -127,7 +127,7 @@ public class SQLDiscussionDAO extends AbstractSQLDAO implements IDiscussionDAO {
 			ps.setString(i++, d.getSummary());
 			ps.setString(i++, d.getDescription());
 			ps.setString(i++, d.getType());
-			ps.setDate(i++, d.getDateCreated());
+			ps.setDate(i++, d.getCreationDate());
 			ps.setString(i++, d.getStatus());
 			ps.setString(i++, d.getCreator());
 			ps.executeUpdate();

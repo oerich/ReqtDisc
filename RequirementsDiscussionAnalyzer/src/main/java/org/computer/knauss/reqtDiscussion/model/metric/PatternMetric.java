@@ -53,7 +53,7 @@ public class PatternMetric extends AbstractDiscussionMetric {
 	private DiscussionEvent[] getEvents(Discussion[] discussions) {
 		List<DiscussionEvent> tmp = new LinkedList<DiscussionEvent>();
 		for (Discussion d : discussions)
-			Collections.addAll(tmp, d.getAllComments());
+			Collections.addAll(tmp, d.getDiscussionEvents());
 		return tmp.toArray(new DiscussionEvent[0]);
 	}
 }

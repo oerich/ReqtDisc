@@ -20,7 +20,7 @@ public class ContributorNumberMetric extends AbstractDiscussionMetric {
 		Set<String> contributors = new HashSet<String>();
 		for (Discussion wi : wis) {
 			contributors.add(wi.getCreator());
-			for (DiscussionEvent wc : wi.getAllComments()) {
+			for (DiscussionEvent wc : wi.getDiscussionEvents()) {
 				contributors.add(wc.getCreator());
 			}
 		}

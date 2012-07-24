@@ -130,7 +130,7 @@ public class JazzJDOMDAOTest {
 
 		assertEquals(117709, d.getID());
 		assertEquals(Util.parseDate("2010-06-11T03:44:02.373Z"),
-				d.getDateCreated());
+				d.getCreationDate());
 		assertEquals("https://jazz.net/jts/users/sreerupa", d.getCreator());
 		assertEquals(
 				"We'll look at the application scenario described in plan item 102112 and add some VS specific sources/component to it.<br/><br/>What we could do&nbsp; is to have a separate component altogether with a WPF based application in it that does client authentication or some simple UI work that fits into the application scenario.<br/><br/>This project will need to be install automatically in VS should the user choose to install the sample app. So we'd have to add some code to do that as well.<br/><br/>If we have something like this, @dcustic could use it in his tutorials as well. ",
@@ -141,7 +141,7 @@ public class JazzJDOMDAOTest {
 				d.getType());
 
 		// should also have the discussion events
-		DiscussionEvent[] des = d.getAllComments();
+		DiscussionEvent[] des = d.getDiscussionEvents();
 		assertEquals(4, des.length);
 
 		assertEquals(117709, des[0].getDiscussionID());
@@ -159,7 +159,7 @@ public class JazzJDOMDAOTest {
 		Discussion[] d = this.dao.getDiscussions();
 		assertEquals(50, d.length);
 		assertEquals(117709, d[0].getID());
-		assertEquals(4, d[0].getAllComments().length);
+		assertEquals(4, d[0].getDiscussionEvents().length);
 	}
 
 	@Test

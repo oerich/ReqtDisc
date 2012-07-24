@@ -16,7 +16,7 @@ public class ProximitySocialNetwork extends SocialNetwork {
 		// Based on Remko's Master thesis
 		for (Discussion wi : getDiscussions()) {
 
-			DiscussionEvent[] comments = wi.getAllComments();
+			DiscussionEvent[] comments = wi.getDiscussionEvents();
 			// we are determining the distance between two posts:
 			if (comments.length > 0) {
 				DiscussionEvent wc1 = comments[0];

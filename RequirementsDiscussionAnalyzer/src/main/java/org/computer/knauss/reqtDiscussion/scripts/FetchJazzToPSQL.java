@@ -42,7 +42,7 @@ public class FetchJazzToPSQL {
 		
 		for (Discussion d : jazzDiscussions.getDiscussions()) {
 			psqlDiscussions.storeDiscussion(d);
-			psqlDiscussionEvents.storeDiscussionEvents(d.getAllComments());
+			psqlDiscussionEvents.storeDiscussionEvents(d.getDiscussionEvents());
 		}
 	}
 

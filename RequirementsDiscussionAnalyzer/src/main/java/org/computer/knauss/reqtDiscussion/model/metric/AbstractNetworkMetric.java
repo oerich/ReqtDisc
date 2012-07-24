@@ -69,7 +69,7 @@ public abstract class AbstractNetworkMetric extends AbstractDiscussionMetric {
 	public void initNetwork(Discussion[] discussions) {
 		List<DiscussionEvent> tmp = new LinkedList<DiscussionEvent>();
 		for (Discussion d : discussions) {
-			Collections.addAll(tmp, d.getAllComments());
+			Collections.addAll(tmp, d.getDiscussionEvents());
 		}
 		getPartition().setTimeInterval(discussions);
 		getPartition().setDiscussionEvents(tmp.toArray(new DiscussionEvent[0]));

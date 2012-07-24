@@ -19,10 +19,10 @@ public class TimeLengthMetric extends AbstractDiscussionMetric {
 	public Double considerDiscussions(Discussion[] wi) {
 		if (wi == null || wi.length <= 0)
 			return 0d;
-		Date min = wi[0].getDateCreated();
-		Date max = wi[0].getDateCreated();
+		Date min = wi[0].getCreationDate();
+		Date max = wi[0].getCreationDate();
 		for (Discussion w : wi)
-			for (DiscussionEvent wc : w.getAllComments()) {
+			for (DiscussionEvent wc : w.getDiscussionEvents()) {
 				if (min.after(wc.getCreationDate()))
 					min = wc.getCreationDate();
 				if (max.before(wc.getCreationDate()))

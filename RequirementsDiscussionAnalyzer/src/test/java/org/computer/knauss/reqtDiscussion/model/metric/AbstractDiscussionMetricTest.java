@@ -24,13 +24,13 @@ public class AbstractDiscussionMetricTest {
 		DiscussionEvent de3 = new DiscussionEvent();
 
 		d1.setCreator("Creator1");
-		d1.setDateCreated(new Date(System.currentTimeMillis() - 10
+		d1.setCreationDate(new Date(System.currentTimeMillis() - 10
 				* TimeIntervalPartition.MILLIS_PER_DAY));
 		d2.setCreator("Creator2");
-		d2.setDateCreated(new Date(System.currentTimeMillis() - 8
+		d2.setCreationDate(new Date(System.currentTimeMillis() - 8
 				* TimeIntervalPartition.MILLIS_PER_DAY));
 		d3.setCreator("Creator3");
-		d3.setDateCreated(new Date(System.currentTimeMillis() - 7
+		d3.setCreationDate(new Date(System.currentTimeMillis() - 7
 				* TimeIntervalPartition.MILLIS_PER_DAY));
 
 		de1.setCreator("Creator1");
@@ -43,9 +43,9 @@ public class AbstractDiscussionMetricTest {
 		de3.setCreationDate(new Date(System.currentTimeMillis() - 6
 				* TimeIntervalPartition.MILLIS_PER_DAY));
 
-		d1.addComments(new DiscussionEvent[] { de1 });
-		d2.addComments(new DiscussionEvent[] { de2 });
-		d3.addComments(new DiscussionEvent[] { de3 });
+		d1.addDiscussionEvents(new DiscussionEvent[] { de1 });
+		d2.addDiscussionEvents(new DiscussionEvent[] { de2 });
+		d3.addDiscussionEvents(new DiscussionEvent[] { de3 });
 
 		ContributorNumberMetric m = new ContributorNumberMetric();
 		m.computeMetric(new Discussion[] { d1, d2, d3 });

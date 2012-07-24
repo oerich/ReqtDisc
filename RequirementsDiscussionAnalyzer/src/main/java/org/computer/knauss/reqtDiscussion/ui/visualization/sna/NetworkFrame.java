@@ -308,8 +308,8 @@ public class NetworkFrame extends JFrame {
 
 		Discussion d = DiscussionFactory.getInstance().getDiscussion(1);
 
-		d.addComments(wcs);
-		d.setDateCreated(wcs[0].getCreationDate());
+		d.addDiscussionEvents(wcs);
+		d.setCreationDate(wcs[0].getCreationDate());
 
 		f.setWorkitems(new Discussion[] { d });
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

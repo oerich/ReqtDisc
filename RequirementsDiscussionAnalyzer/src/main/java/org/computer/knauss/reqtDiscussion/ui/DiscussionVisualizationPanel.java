@@ -115,7 +115,7 @@ public class DiscussionVisualizationPanel extends JPanel implements
 				g2.drawString(String.valueOf(d.getID()),
 						TXT_HORIZONTAL_MARGIN, y);
 				y = y + TXT_LINE_HEIGHT;
-				for (DiscussionEvent de : d.getAllComments()) {
+				for (DiscussionEvent de : d.getDiscussionEvents()) {
 					allDiscussionEventList.add(de);
 				}
 			}

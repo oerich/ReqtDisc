@@ -49,9 +49,9 @@ public abstract class AbstractDiscussionOverTimePartition implements
 		Date firstDate = new Date(Long.MAX_VALUE);
 		Date lastDate = new Date(0);
 		for (Discussion d : selectedDiscussions) {
-			if (firstDate.after(d.getDateCreated()))
-				firstDate = d.getDateCreated();
-			for (DiscussionEvent de : d.getAllComments()) {
+			if (firstDate.after(d.getCreationDate()))
+				firstDate = d.getCreationDate();
+			for (DiscussionEvent de : d.getDiscussionEvents()) {
 				if (lastDate.before(de.getCreationDate()))
 					lastDate = de.getCreationDate();
 			}
