@@ -56,6 +56,8 @@ public class NetworkPanel extends JPanel {
 		this.network = network;
 		// this.graphProvider.printMatrix(network);
 
+		this.graphProvider.setMinWeight(this.network.getEdgeCutoffWeight());
+		
 		int nodeCount = network.getActors().length;
 		BOUNDS.setHeight(nodeCount * 100);
 		BOUNDS.setWidth(nodeCount * 100);
@@ -88,10 +90,6 @@ public class NetworkPanel extends JPanel {
 
 		}
 		return this.layouter;
-	}
-
-	public void setMinWeight(double minWeight) {
-		this.graphProvider.setMinWeight(minWeight);
 	}
 
 	public void setZoomFactor(double d) {

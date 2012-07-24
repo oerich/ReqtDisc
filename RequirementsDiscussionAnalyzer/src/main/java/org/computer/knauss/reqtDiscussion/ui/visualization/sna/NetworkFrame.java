@@ -111,7 +111,7 @@ public class NetworkFrame extends JFrame {
 		});
 		buttonPanel.add(this.socialNetworkBox);
 
-		this.weightSpinner = new JSpinner(new SpinnerNumberModel(0.0d, 0.0d,
+		this.weightSpinner = new JSpinner(new SpinnerNumberModel(0.0d, -1.0d,
 				100.0d, 0.1d));
 		this.weightSpinner.addChangeListener(new ChangeListener() {
 
@@ -193,8 +193,8 @@ public class NetworkFrame extends JFrame {
 					.getSelectedItem();
 			sn.setDiscussionData(discussions,
 					this.configuration.getDiscussionPartition());
+			sn.setEdgeCutoffWeight((Double) weightSpinner.getValue());
 			this.configuration.setSocialNetwork(sn);
-			this.networkPanel.setMinWeight((Double) weightSpinner.getValue());
 			this.networkPanel.setNetwork(sn);
 			// this.networkPanel.repaint();
 			this.networkPanel.zoomToFitRect(this.jScrollPane.getBounds());
