@@ -1,6 +1,7 @@
 package org.computer.knauss.reqtDiscussion.model;
 
 import java.sql.Date;
+import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
 
@@ -14,6 +15,7 @@ public class Discussion extends ModelElement {
 	private String creator;
 	private String status;
 	private List<DiscussionEvent> dEvents = new Vector<DiscussionEvent>();
+	private List<Incident> incidents = new Vector<Incident>();
 
 	Discussion() {
 		// Limit visibility of constructor.
@@ -81,9 +83,14 @@ public class Discussion extends ModelElement {
 	}
 
 	public void addDiscussionEvents(DiscussionEvent[] des) {
-		for (DiscussionEvent de : des) {
-			this.dEvents.add(de);
-		}
+		Collections.addAll(this.dEvents, des);
 	}
 
+	public Incident[] getIncidents() {
+		return this.incidents.toArray(new Incident[0]);
+	}
+
+	public void addIncidents(Incident[] incidents) {
+		Collections.addAll(this.incidents, incidents);
+	}
 }

@@ -11,6 +11,7 @@ import org.computer.knauss.reqtDiscussion.io.DAOException;
 import org.computer.knauss.reqtDiscussion.io.IDAOProgressMonitor;
 import org.computer.knauss.reqtDiscussion.io.IDiscussionDAO;
 import org.computer.knauss.reqtDiscussion.io.IDiscussionEventDAO;
+import org.computer.knauss.reqtDiscussion.io.IIncidentDAO;
 import org.computer.knauss.reqtDiscussion.io.Util;
 import org.computer.knauss.reqtDiscussion.io.jazz.IJazzDAO;
 import org.computer.knauss.reqtDiscussion.io.jazz.util.XPathHelper;
@@ -18,12 +19,13 @@ import org.computer.knauss.reqtDiscussion.io.jazz.util.ui.DialogBasedJazzAccessC
 import org.computer.knauss.reqtDiscussion.model.Discussion;
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
 import org.computer.knauss.reqtDiscussion.model.DiscussionFactory;
+import org.computer.knauss.reqtDiscussion.model.Incident;
 import org.jdom2.Attribute;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
 
 public class JazzJDOMDAO implements IJazzDAO, IDiscussionEventDAO,
-		IDiscussionDAO {
+		IDiscussionDAO, IIncidentDAO {
 
 	private static final String TEN_STORIES = "?oslc_cm.query=dc%3Atype=%22com.ibm.team.apt.workItemType.story%22&oslc_cm.pageSize=10";
 
@@ -445,6 +447,18 @@ public class JazzJDOMDAO implements IJazzDAO, IDiscussionEventDAO,
 
 	@Override
 	public void storeDiscussions(Discussion[] ds) {
+		throw new UnsupportedOperationException("Read only DAO!");
+	}
+
+	@Override
+	public Incident[] getIncidentsForDiscussion(int discussionID)
+			throws DAOException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void storeIncidents(Incident[] incidents) throws DAOException {
 		throw new UnsupportedOperationException("Read only DAO!");
 	}
 

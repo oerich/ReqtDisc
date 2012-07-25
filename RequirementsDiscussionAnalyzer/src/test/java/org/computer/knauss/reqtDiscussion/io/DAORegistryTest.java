@@ -65,6 +65,12 @@ public class DAORegistryTest {
 			connectionClosed = true;
 		}
 
+		@Override
+		public IIncidentDAO getIncidentDAO() throws DAOException {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
 	}
 
 }

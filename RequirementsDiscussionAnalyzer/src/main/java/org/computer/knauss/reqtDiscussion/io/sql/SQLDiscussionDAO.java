@@ -11,6 +11,7 @@ import org.computer.knauss.reqtDiscussion.io.DAOException;
 import org.computer.knauss.reqtDiscussion.io.IDAOProgressMonitor;
 import org.computer.knauss.reqtDiscussion.io.IDiscussionDAO;
 import org.computer.knauss.reqtDiscussion.io.IDiscussionEventDAO;
+import org.computer.knauss.reqtDiscussion.io.IIncidentDAO;
 import org.computer.knauss.reqtDiscussion.model.Discussion;
 import org.computer.knauss.reqtDiscussion.model.DiscussionFactory;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.HighlightRelatedDiscussions;
@@ -33,9 +34,14 @@ public class SQLDiscussionDAO extends AbstractSQLDAO implements IDiscussionDAO {
 	private static final String CREATE_DISCUSSION_TABLE = "CREATE_DISCUSSION_TABLE";
 	private static final String DROP_DISCUSSION_TABLE = "DROP_DISCUSSION_TABLE";
 	private IDiscussionEventDAO deDAO;
+	private IIncidentDAO inDAO;
 
 	public void setDiscussionEventDAO(IDiscussionEventDAO deDAO) {
 		this.deDAO = deDAO;
+	}
+
+	public void setIncidentDAO(IIncidentDAO inDAO) {
+		this.inDAO = inDAO;
 	}
 
 	@Override
@@ -50,7 +56,7 @@ public class SQLDiscussionDAO extends AbstractSQLDAO implements IDiscussionDAO {
 			if (!rs.next())
 				return null;
 			Discussion d = createDiscussion(rs);
-			addComments(d);
+			addRelatedItems(d);
 			return d;
 		} catch (SQLException e) {
 			throw new DAOException(e);
@@ -90,8 +96,10 @@ public class SQLDiscussionDAO extends AbstractSQLDAO implements IDiscussionDAO {
 		return discussions;
 	}
 
-	private void addComments(Discussion d) throws DAOException {
-		d.addDiscussionEvents(this.deDAO.getDiscussionEventsOfDiscussion(d.getID()));
+	private void addRelatedItems(Discussion d) throws DAOException {
+		d.addDiscussionEvents(this.deDAO.getDiscussionEventsOfDiscussion(d
+				.getID()));
+		d.addIncidents(this.inDAO.getIncidentsForDiscussion(d.getID()));
 	}
 
 	private Discussion createDiscussion(ResultSet rs) throws SQLException {
@@ -194,7 +202,7 @@ public class SQLDiscussionDAO extends AbstractSQLDAO implements IDiscussionDAO {
 			}
 			progressMonitor.setStep(i, "Loading Discussion Events...");
 			for (Discussion d : tmp) {
-				addComments(d);
+				addRelatedItems(d);
 				progressMonitor.setStep(i++);
 			}
 

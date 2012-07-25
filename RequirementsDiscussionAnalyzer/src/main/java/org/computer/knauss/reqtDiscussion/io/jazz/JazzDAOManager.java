@@ -10,6 +10,7 @@ import org.computer.knauss.reqtDiscussion.io.IDAOManager;
 import org.computer.knauss.reqtDiscussion.io.IDiscussionDAO;
 import org.computer.knauss.reqtDiscussion.io.IDiscussionEventClassificationDAO;
 import org.computer.knauss.reqtDiscussion.io.IDiscussionEventDAO;
+import org.computer.knauss.reqtDiscussion.io.IIncidentDAO;
 import org.computer.knauss.reqtDiscussion.io.jazz.rest.JazzJDOMDAO;
 import org.computer.knauss.reqtDiscussion.io.jazz.util.ui.DialogBasedJazzAccessConfiguration;
 
@@ -60,6 +61,11 @@ public class JazzDAOManager implements IDAOManager {
 	public void closeAllConnections() {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public IIncidentDAO getIncidentDAO() throws DAOException {
+		return getDAO();
 	}
 
 }

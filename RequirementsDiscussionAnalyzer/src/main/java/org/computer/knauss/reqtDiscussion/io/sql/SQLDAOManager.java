@@ -10,6 +10,7 @@ import org.computer.knauss.reqtDiscussion.io.IDAOManager;
 import org.computer.knauss.reqtDiscussion.io.IDiscussionDAO;
 import org.computer.knauss.reqtDiscussion.io.IDiscussionEventClassificationDAO;
 import org.computer.knauss.reqtDiscussion.io.IDiscussionEventDAO;
+import org.computer.knauss.reqtDiscussion.io.IIncidentDAO;
 
 public class SQLDAOManager implements IDAOManager {
 
@@ -19,6 +20,7 @@ public class SQLDAOManager implements IDAOManager {
 	private String queryPropertyFilename;
 	private String connectionPropertyFilename;
 	private SQLDiscussionEventClassificationDAO discussionEventClassificationDAO;
+	private IIncidentDAO incidentDAO;
 
 	public SQLDAOManager(String connectionPropertyFilename,
 			String queryPropertyFilename) {
@@ -31,6 +33,7 @@ public class SQLDAOManager implements IDAOManager {
 		if (this.discussionDAO == null) {
 			this.discussionDAO = new SQLDiscussionDAO();
 			this.discussionDAO.setDiscussionEventDAO(getDiscussionEventDAO());
+			this.discussionDAO.setIncidentDAO(getIncidentDAO());
 			this.discussionDAO.configure(getProperties());
 		}
 		return this.discussionDAO;
@@ -79,6 +82,13 @@ public class SQLDAOManager implements IDAOManager {
 	@Override
 	public void closeAllConnections() {
 		ConnectionManager.getInstance().closeConnection();
+	}
+
+	@Override
+	public IIncidentDAO getIncidentDAO() throws DAOException {
+		if (this.incidentDAO == null)
+			this.incidentDAO = new SQLIncidentDAO();
+		return this.incidentDAO;
 	}
 
 }
