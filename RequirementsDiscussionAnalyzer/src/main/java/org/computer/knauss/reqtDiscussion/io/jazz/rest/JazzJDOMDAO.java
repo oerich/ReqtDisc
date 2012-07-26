@@ -24,21 +24,25 @@ import org.jdom2.Attribute;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
 
+/**
+ * Get the discussions from jazz.net by using the change management query API:
+ * http://open-services.net/bin/view/Main/CmQuerySyntaxV1
+ * 
+ * @author eknauss
+ * 
+ */
 public class JazzJDOMDAO implements IJazzDAO, IDiscussionEventDAO,
 		IDiscussionDAO, IIncidentDAO {
 
-	private static final String TEN_STORIES = "?oslc_cm.query=dc%3Atype=%22com.ibm.team.apt.workItemType.story%22&oslc_cm.pageSize=10";
+	private static final String STORY_QUERY = "?oslc_cm.query=dc%3Atype=%22com.ibm.team.apt.workItemType.story%22&oslc_cm./sort=dc:created&oslc_cm.pageSize=";
 
-	private XPathHelper xpathHelper;
 	private IWebConnector webConnector;
-	private int limit = 10;
-	private String selectedProjectArea;
-	private List<Object> projectAreaList;
-
+	private XPathHelper xpathHelper;
 	private XPathHelper changeRequestsXML;
-
 	private XPathHelper commentsXML;
-
+	private List<Object> projectAreaList;
+	private String selectedProjectArea;
+	private int limit = 10;
 	private int discussionIndex;
 
 	public JazzJDOMDAO(IJazzAccessConfiguration config) throws DAOException {
@@ -131,6 +135,11 @@ public class JazzJDOMDAO implements IJazzDAO, IDiscussionEventDAO,
 
 	@Override
 	public void setLimit(int limit) {
+		// if we have a change, we need to reset the results from a previous
+		// query.
+		if (this.limit != limit)
+			this.changeRequestsXML = null;
+
 		if (limit < 0)
 			this.limit = 0;
 		else
@@ -171,7 +180,7 @@ public class JazzJDOMDAO implements IJazzDAO, IDiscussionEventDAO,
 		this.xpathHelper.setDocument(r.getEntity().getContent());
 		String simpleQueryURI = ((Element) this.xpathHelper.select(
 				"//simpleQuery/url").get(0)).getValue();
-		simpleQueryURI = simpleQueryURI.trim() + TEN_STORIES;
+		simpleQueryURI = simpleQueryURI.trim() + STORY_QUERY + getLimit();
 		// System.out.println("Query URL: "
 		// + URLDecoder.decode(simpleQueryURI, "UTF-8"));
 		// 2. create a simple query according to
@@ -276,9 +285,9 @@ public class JazzJDOMDAO implements IJazzDAO, IDiscussionEventDAO,
 			for (int i = 0; i < ret.length; i++) {
 				ret[i] = new DiscussionEvent();
 				ret[i].setDiscussionID(discussionId);
-				ret[i].setCreator(((Attribute) this.commentsXML.select(
+				ret[i].setCreator(parseUserName(((Attribute) this.commentsXML.select(
 						comments.get(i), ".//creator/@resource").get(0))
-						.getValue());
+						.getValue()));
 				ret[i].setContent(((Element) this.commentsXML.select(
 						comments.get(i), ".//description").get(0)).getValue());
 				String dateString = ((Element) this.commentsXML.select(
@@ -298,6 +307,10 @@ public class JazzJDOMDAO implements IJazzDAO, IDiscussionEventDAO,
 			throw new DAOException("General error reading discussion events ["
 					+ e.getMessage() + "]", e);
 		}
+	}
+
+	private String parseUserName(String userString) {
+		return userString.substring(userString.lastIndexOf("/")+1);
 	}
 
 	@Override
@@ -358,8 +371,9 @@ public class JazzJDOMDAO implements IJazzDAO, IDiscussionEventDAO,
 
 		d.setCreationDate(Util.parseDate(((Element) this.xpathHelper.select(
 				discussionElement, "created").get(0)).getValue()));
-		d.setCreator(((Attribute) this.xpathHelper.select(discussionElement,
-				"creator/@resource").get(0)).getValue());
+		String creator = ((Attribute) this.xpathHelper.select(discussionElement,
+				"creator/@resource").get(0)).getValue();
+		d.setCreator(parseUserName(creator));
 		d.setDescription(((Element) this.xpathHelper.select(discussionElement,
 				"description").get(0)).getValue());
 		d.setSummary(((Element) this.xpathHelper.select(discussionElement,

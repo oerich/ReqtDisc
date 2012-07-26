@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.sql.Date;
 import java.util.Properties;
+import java.util.Stack;
 
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -29,22 +30,13 @@ import org.junit.Test;
 public class JazzJDOMDAOTest {
 
 	private IJazzDAO dao;
+	private ConnectorProbe connector;
 
 	@Before
 	public void setup() throws IOException {
 		DiscussionFactory.getInstance().clear();
-		this.dao = new JazzJDOMDAO(new ConnectorProbe());
-	}
-
-	@Test
-	public void testLimit() {
-		assertEquals(10, this.dao.getLimit());
-
-		this.dao.setLimit(25);
-		assertEquals(25, this.dao.getLimit());
-
-		this.dao.setLimit(-5);
-		assertEquals(0, this.dao.getLimit());
+		connector = new ConnectorProbe();
+		this.dao = new JazzJDOMDAO(connector);
 	}
 
 	@Test
@@ -64,6 +56,43 @@ public class JazzJDOMDAOTest {
 	public void testSelectWorkitemsNoProjectArea() throws JDOMException,
 			IOException, Exception {
 		this.dao.getWorkitemsForType("any", false);
+	}
+
+	@Test
+	public void testLimit() throws DAOException {
+		assertEquals(10, this.dao.getLimit());
+		this.dao.setProjectArea("Rational Team Concert");
+
+		// The test fixture returns 50 items. But I need to query them to see if
+		// the query is correct.
+		assertEquals(50, this.dao.getDiscussions().length);
+
+		Stack<String> requestURLs = this.connector.requestURL;
+		String request = requestURLs.pop();
+		// get all the requests for comments from the stack
+		while (request.endsWith("cm:comments"))
+			request = requestURLs.pop();
+		assertEquals("pageSize=10", request.substring(request.length() - 11));
+
+		this.dao.setLimit(25);
+		assertEquals(25, this.dao.getLimit());
+		// The test fixture returns 50 items. But I need to query them to see if
+		// the query is correct.
+		assertEquals(50, this.dao.getDiscussions().length);
+		request = requestURLs.pop();
+		while (request.endsWith("cm:comments"))
+			request = requestURLs.pop();
+		assertEquals("pageSize=25", request.substring(request.length() - 11));
+
+		this.dao.setLimit(-5);
+		assertEquals(0, this.dao.getLimit());
+		// The test fixture returns 50 items. But I need to query them to see if
+		// the query is correct.
+		assertEquals(50, this.dao.getDiscussions().length);
+		request = requestURLs.pop();
+		while (request.endsWith("cm:comments"))
+			request = requestURLs.pop();
+		assertEquals("pageSize=0", request.substring(request.length() - 10));
 	}
 
 	@Test
@@ -88,13 +117,13 @@ public class JazzJDOMDAOTest {
 		assertEquals(4, des.length);
 
 		assertEquals(117709, des[0].getDiscussionID());
-		assertEquals("https://jazz.net/jts/users/jimtykal", des[0].getCreator());
+		assertEquals("jimtykal", des[0].getCreator());
 		assertEquals(new Date(1277806629252l), des[0].getCreationDate());
 		assertEquals(
 				"This is an important component of the sample application for Rational User Education. We will want to have lab exercises directed at .NET as well as Eclipse developers.",
 				des[0].getContent());
 		assertEquals(117709, des[1].getDiscussionID());
-		assertEquals("https://jazz.net/jts/users/tfeeney", des[1].getCreator());
+		assertEquals("tfeeney", des[1].getCreator());
 		assertEquals(
 				"@sreerupa, once you get going on this, can we (sample asset/scenario team) get some early visibility into what you have planned? meetings with Ben/JM on the web/Java version have been very helpful in getting the app where it needs to be (or will be) for all stakeholders.",
 				des[1].getContent());
@@ -103,7 +132,7 @@ public class JazzJDOMDAOTest {
 		assertEquals(1, des.length);
 
 		assertEquals(50162, des[0].getDiscussionID());
-		assertEquals("https://jazz.net/jts/users/csun", des[0].getCreator());
+		assertEquals("csun", des[0].getCreator());
 		assertEquals("verified in m6.", des[0].getContent());
 	}
 
@@ -131,7 +160,7 @@ public class JazzJDOMDAOTest {
 		assertEquals(117709, d.getID());
 		assertEquals(Util.parseDate("2010-06-11T03:44:02.373Z"),
 				d.getCreationDate());
-		assertEquals("https://jazz.net/jts/users/sreerupa", d.getCreator());
+		assertEquals("sreerupa", d.getCreator());
 		assertEquals(
 				"We'll look at the application scenario described in plan item 102112 and add some VS specific sources/component to it.<br/><br/>What we could do&nbsp; is to have a separate component altogether with a WPF based application in it that does client authentication or some simple UI work that fits into the application scenario.<br/><br/>This project will need to be install automatically in VS should the user choose to install the sample app. So we'd have to add some code to do that as well.<br/><br/>If we have something like this, @dcustic could use it in his tutorials as well. ",
 				d.getDescription());
@@ -145,7 +174,7 @@ public class JazzJDOMDAOTest {
 		assertEquals(4, des.length);
 
 		assertEquals(117709, des[0].getDiscussionID());
-		assertEquals("https://jazz.net/jts/users/jimtykal", des[0].getCreator());
+		assertEquals("jimtykal", des[0].getCreator());
 		assertEquals(new Date(1277806629252l), des[0].getCreationDate());
 		assertEquals(
 				"This is an important component of the sample application for Rational User Education. We will want to have lab exercises directed at .NET as well as Eclipse developers.",
@@ -193,11 +222,12 @@ public class JazzJDOMDAOTest {
 	private class ConnectorProbe implements IWebConnector {
 
 		HttpResponseDummy response = new HttpResponseDummy();
+		Stack<String> requestURL = new Stack<String>();
 
 		@Override
 		public HttpResponse performHTTPSRequestXML(String requestURL)
 				throws Exception {
-
+			this.requestURL.push(requestURL);
 			if (requestURL.endsWith("rootservices"))
 				this.response.entity.stream = new FileInputStream(
 						"testfiles/jazz.xml/rootservices.xml");
