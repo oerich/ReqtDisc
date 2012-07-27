@@ -39,7 +39,7 @@ public class AlignedRectangularCommentStyle extends AbstractVisualizationStyle
 	@Override
 	public Shape[] getShape(DiscussionEvent comment) {
 		// System.out.print("getShape: ");
-		int partition = this.partition.getPartitionForDiscussionEvent(comment);
+		int partition = this.partition.getPartitionForModelElement(comment);
 		// System.out.print("partition: " + partition + "("
 		// + this.partition.getPartitionCount() + ") ");
 

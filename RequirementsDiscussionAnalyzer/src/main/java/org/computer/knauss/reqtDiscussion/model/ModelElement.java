@@ -1,5 +1,6 @@
 package org.computer.knauss.reqtDiscussion.model;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Vector;
 
@@ -24,4 +25,8 @@ public abstract class ModelElement {
 	}
 
 	public abstract int getID();
+
+	public abstract Date getCreationDate();
+
+	public abstract String getCreator();
 }

@@ -71,4 +71,15 @@ public class Incident extends ModelElement {
 	public int getID() {
 		return 0;
 	}
+
+	@Override
+	public Date getCreationDate() {
+		return this.getDate();
+	}
+
+	@Override
+	public String getCreator() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

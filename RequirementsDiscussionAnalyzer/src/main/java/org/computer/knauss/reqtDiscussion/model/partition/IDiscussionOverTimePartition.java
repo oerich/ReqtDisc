@@ -2,8 +2,7 @@ package org.computer.knauss.reqtDiscussion.model.partition;
 
 import java.sql.Date;
 
-import org.computer.knauss.reqtDiscussion.model.Discussion;
-import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
+import org.computer.knauss.reqtDiscussion.model.ModelElement;
 
 public interface IDiscussionOverTimePartition {
 
@@ -23,16 +22,16 @@ public interface IDiscussionOverTimePartition {
 
 	public int getPartitionCount();
 
-	public void setDiscussionEvents(DiscussionEvent[] comments);
+	public void setModelElements(ModelElement[] comments);
 
-	public DiscussionEvent[] getDiscussionEvents();
+	public ModelElement[] getModelElements();
 
-	public int getPartitionForDiscussionEvent(DiscussionEvent wc);
+	public int getPartitionForModelElement(ModelElement wc);
 
-	public DiscussionEvent[] getDiscussionEventForPartition(int partition);
+	public ModelElement[] getModelElementsForPartition(int partition);
 
-	public boolean isInClass(DiscussionEvent wc);
+	public boolean isInClass(ModelElement wc);
 
-	public void setTimeInterval(Discussion[] selectedDiscussions);
+	public void setTimeInterval(ModelElement[] selectedElements);
 
 }

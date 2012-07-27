@@ -2,7 +2,7 @@ package org.computer.knauss.reqtDiscussion.model.partition;
 
 import java.sql.Date;
 
-import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
+import org.computer.knauss.reqtDiscussion.model.ModelElement;
 
 public class FixedNumberPartition extends AbstractDiscussionOverTimePartition
 		implements IDiscussionOverTimePartition {
@@ -39,7 +39,7 @@ public class FixedNumberPartition extends AbstractDiscussionOverTimePartition
 	}
 
 	@Override
-	public int getPartitionForDiscussionEvent(DiscussionEvent wc) {
+	public int getPartitionForModelElement(ModelElement me) {
 		// 1. compute the total length of the timeline
 		long totalLength = this.to.getTime() - this.from.getTime();
 
@@ -48,16 +48,16 @@ public class FixedNumberPartition extends AbstractDiscussionOverTimePartition
 			return this.partitionCount / 2;
 
 		// Special condition: the comment is on the last date:
-		if (to.equals(wc.getCreationDate()))
+		if (to.equals(me.getCreationDate()))
 			return this.partitionCount - 1;
 
 		// Special condition: the comment is outside of the date range.
-		if (from.after(wc.getCreationDate()))
+		if (from.after(me.getCreationDate()))
 			return 0;
-		if (this.to.before(wc.getCreationDate()))
+		if (this.to.before(me.getCreationDate()))
 			return getPartitionCount() - 1;
 
-		long thisLength = wc.getCreationDate().getTime() - this.from.getTime();
+		long thisLength = me.getCreationDate().getTime() - this.from.getTime();
 		// System.out.println("x = " + thisLength + "/" + totalLength);
 
 		return (int) (((double) thisLength / (double) totalLength) * this.partitionCount);

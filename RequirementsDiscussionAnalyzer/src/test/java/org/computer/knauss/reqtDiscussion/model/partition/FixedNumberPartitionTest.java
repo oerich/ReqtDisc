@@ -40,28 +40,28 @@ public class FixedNumberPartitionTest {
 		wc.setContent("Testcomment");
 		wc.setCreationDate(new Date(0));
 
-		assertEquals(0, fnp.getPartitionForDiscussionEvent(wc));
+		assertEquals(0, fnp.getPartitionForModelElement(wc));
 		wc.setCreationDate(new Date(24));
-		assertEquals(0, fnp.getPartitionForDiscussionEvent(wc));
+		assertEquals(0, fnp.getPartitionForModelElement(wc));
 		wc.setCreationDate(new Date(25));
-		assertEquals(1, fnp.getPartitionForDiscussionEvent(wc));
+		assertEquals(1, fnp.getPartitionForModelElement(wc));
 		wc.setCreationDate(new Date(49));
-		assertEquals(1, fnp.getPartitionForDiscussionEvent(wc));
+		assertEquals(1, fnp.getPartitionForModelElement(wc));
 		wc.setCreationDate(new Date(50));
-		assertEquals(2, fnp.getPartitionForDiscussionEvent(wc));
+		assertEquals(2, fnp.getPartitionForModelElement(wc));
 		wc.setCreationDate(new Date(74));
-		assertEquals(2, fnp.getPartitionForDiscussionEvent(wc));
+		assertEquals(2, fnp.getPartitionForModelElement(wc));
 		wc.setCreationDate(new Date(75));
-		assertEquals(3, fnp.getPartitionForDiscussionEvent(wc));
+		assertEquals(3, fnp.getPartitionForModelElement(wc));
 		wc.setCreationDate(new Date(99));
-		assertEquals(3, fnp.getPartitionForDiscussionEvent(wc));
+		assertEquals(3, fnp.getPartitionForModelElement(wc));
 		wc.setCreationDate(new Date(100));
-		assertEquals(3, fnp.getPartitionForDiscussionEvent(wc));
+		assertEquals(3, fnp.getPartitionForModelElement(wc));
 
 		wc.setCreationDate(new Date(101));
-		assertEquals(3, fnp.getPartitionForDiscussionEvent(wc));
+		assertEquals(3, fnp.getPartitionForModelElement(wc));
 		wc.setCreationDate(new Date(-1));
-		assertEquals(0, fnp.getPartitionForDiscussionEvent(wc));
+		assertEquals(0, fnp.getPartitionForModelElement(wc));
 	}
 
 	@Test
@@ -75,24 +75,24 @@ public class FixedNumberPartitionTest {
 		wc.setContent("Testcomment");
 		wc.setCreationDate(new Date(0));
 
-		assertEquals(0, fnp.getPartitionForDiscussionEvent(wc));
+		assertEquals(0, fnp.getPartitionForModelElement(wc));
 		wc.setCreationDate(new Date(24));
-		assertEquals(0, fnp.getPartitionForDiscussionEvent(wc));
+		assertEquals(0, fnp.getPartitionForModelElement(wc));
 		wc.setCreationDate(new Date(25));
-		assertEquals(0, fnp.getPartitionForDiscussionEvent(wc));
+		assertEquals(0, fnp.getPartitionForModelElement(wc));
 		wc.setCreationDate(new Date(49));
-		assertEquals(0, fnp.getPartitionForDiscussionEvent(wc));
+		assertEquals(0, fnp.getPartitionForModelElement(wc));
 		wc.setCreationDate(new Date(50));
-		assertEquals(0, fnp.getPartitionForDiscussionEvent(wc));
+		assertEquals(0, fnp.getPartitionForModelElement(wc));
 		wc.setCreationDate(new Date(74));
-		assertEquals(0, fnp.getPartitionForDiscussionEvent(wc));
+		assertEquals(0, fnp.getPartitionForModelElement(wc));
 		wc.setCreationDate(new Date(75));
-		assertEquals(0, fnp.getPartitionForDiscussionEvent(wc));
+		assertEquals(0, fnp.getPartitionForModelElement(wc));
 		wc.setCreationDate(new Date(99));
-		assertEquals(0, fnp.getPartitionForDiscussionEvent(wc));
+		assertEquals(0, fnp.getPartitionForModelElement(wc));
 		wc.setCreationDate(new Date(100));
-		assertEquals(0, fnp.getPartitionForDiscussionEvent(wc));
+		assertEquals(0, fnp.getPartitionForModelElement(wc));
 		wc.setCreationDate(new Date(101));
-		assertEquals(0, fnp.getPartitionForDiscussionEvent(wc));
+		assertEquals(0, fnp.getPartitionForModelElement(wc));
 	}
 }

@@ -47,7 +47,7 @@ public class PatternMetric extends AbstractDiscussionMetric {
 			this.partition.setPartitionCount(32);
 		}
 		this.partition.setTimeInterval(discussions);
-		this.partition.setDiscussionEvents(getEvents(discussions));
+		this.partition.setModelElements(getEvents(discussions));
 	}
 
 	private DiscussionEvent[] getEvents(Discussion[] discussions) {

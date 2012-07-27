@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Vector;
 
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
+import org.computer.knauss.reqtDiscussion.model.ModelElement;
 import org.computer.knauss.reqtDiscussion.model.partition.IDiscussionOverTimePartition;
 
 public class LineOfUnderstanding extends AbstractVisualizationStyle {
@@ -58,7 +59,7 @@ public class LineOfUnderstanding extends AbstractVisualizationStyle {
 
 	@Override
 	public Shape[] layout(DiscussionEvent[] comments) {
-		this.partition.setDiscussionEvents(comments);
+		this.partition.setModelElements(comments);
 		double partitionWidth = (double) X_SIZE
 				/ (double) this.partition.getPartitionCount();
 		List<Point2D> points = new Vector<Point2D>();
@@ -67,9 +68,9 @@ public class LineOfUnderstanding extends AbstractVisualizationStyle {
 		for (int i = 0; i < this.partition.getPartitionCount(); i++) {
 			int clarificationPerPartition = 0;
 			int otherPerPartition = 0;
-			for (DiscussionEvent wc : this.partition
-					.getDiscussionEventForPartition(i)) {
-				if (this.partition.isInClass(wc)) {
+			for (ModelElement me : this.partition
+					.getModelElementsForPartition(i)) {
+				if (this.partition.isInClass(me)) {
 					clarificationPerPartition++;
 				} else {
 					otherPerPartition++;

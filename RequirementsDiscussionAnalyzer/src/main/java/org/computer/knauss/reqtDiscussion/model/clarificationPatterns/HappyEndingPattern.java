@@ -1,6 +1,7 @@
 package org.computer.knauss.reqtDiscussion.model.clarificationPatterns;
 
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
+import org.computer.knauss.reqtDiscussion.model.ModelElement;
 import org.computer.knauss.reqtDiscussion.model.partition.IDiscussionOverTimePartition;
 
 public class HappyEndingPattern implements IPatternClass {
@@ -14,7 +15,7 @@ public class HappyEndingPattern implements IPatternClass {
 
 	@Override
 	public boolean matchesPattern(DiscussionEvent[] comments) {
-		this.partition.setDiscussionEvents(comments);
+		this.partition.setModelElements(comments);
 
 		boolean backToDraft = false;
 		boolean happyEnding = false;
@@ -24,9 +25,9 @@ public class HappyEndingPattern implements IPatternClass {
 		for (int i = 0; i < this.partition.getPartitionCount(); i++) {
 			int inClass = 0;
 			int notInClass = 0;
-			for (DiscussionEvent wc : this.partition
-					.getDiscussionEventForPartition(i)) {
-				if (this.partition.isInClass(wc))
+			for (ModelElement me : this.partition
+					.getModelElementsForPartition(i)) {
+				if (this.partition.isInClass(me))
 					inClass++;
 				else
 					notInClass++;

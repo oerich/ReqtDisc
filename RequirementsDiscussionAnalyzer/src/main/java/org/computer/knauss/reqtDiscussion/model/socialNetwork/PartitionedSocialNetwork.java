@@ -2,6 +2,7 @@ package org.computer.knauss.reqtDiscussion.model.socialNetwork;
 
 import org.computer.knauss.reqtDiscussion.model.Discussion;
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
+import org.computer.knauss.reqtDiscussion.model.ModelElement;
 import org.computer.knauss.reqtDiscussion.model.partition.IDiscussionOverTimePartition;
 
 public class PartitionedSocialNetwork extends SocialNetwork {
@@ -18,14 +19,14 @@ public class PartitionedSocialNetwork extends SocialNetwork {
 
 		for (Discussion wi : getDiscussions()) {
 			IDiscussionOverTimePartition p = getDiscussionOverTimePartition();
-			p.setDiscussionEvents(wi.getDiscussionEvents());
+			p.setModelElements(wi.getDiscussionEvents());
 			// System.out.println("Partitions: " + p.getPartitionCount());
 			for (int i = 0; i < p.getPartitionCount(); i++) {
 				actor1Found = false;
 				actor2Found = false;
 				// System.out.println(i + " - " + p
 				// .getWorkitemsForPartition(i).length);
-				for (DiscussionEvent wc : p.getDiscussionEventForPartition(i)) {
+				for (ModelElement wc : p.getModelElementsForPartition(i)) {
 					if (actor1.getLabel().equals(wc.getCreator()))
 						actor1Found = true;
 					if (actor2.getLabel().equals(wc.getCreator()))

@@ -14,7 +14,7 @@ public class IndifferentPattern implements IPatternClass {
 
 	@Override
 	public boolean matchesPattern(DiscussionEvent[] comments) {
-		this.partition.setDiscussionEvents(comments);
+		this.partition.setModelElements(comments);
 
 		for (DiscussionEvent wc : comments) {
 			if (this.partition.isInClass(wc))

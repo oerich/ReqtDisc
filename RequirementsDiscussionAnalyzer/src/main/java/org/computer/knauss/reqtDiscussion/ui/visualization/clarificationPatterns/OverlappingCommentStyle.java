@@ -31,7 +31,7 @@ public class OverlappingCommentStyle extends AbstractVisualizationStyle
 
 	@Override
 	public Shape[] getShape(DiscussionEvent comment) {
-		int x = this.partition.getPartitionForDiscussionEvent(comment)
+		int x = this.partition.getPartitionForModelElement(comment)
 				+ this.xOffset;
 		int y1 = this.yOffset;
 		int y2 = getWorkitemCommentY(comment);

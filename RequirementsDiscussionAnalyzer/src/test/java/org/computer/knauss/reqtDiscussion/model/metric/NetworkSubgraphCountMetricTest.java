@@ -93,18 +93,18 @@ public class NetworkSubgraphCountMetricTest {
 		// lets see if the partitions are okay:
 		if (d.getCreationDate().getTime() == d1.getCreationDate().getTime()) {
 			assertEquals(1,
-					m.getPartition().getDiscussionEventForPartition(1).length);
+					m.getPartition().getModelElementsForPartition(1).length);
 			assertEquals(0,
-					m.getPartition().getDiscussionEventForPartition(2).length);
+					m.getPartition().getModelElementsForPartition(2).length);
 			assertEquals(0,
-					m.getPartition().getDiscussionEventForPartition(3).length);
+					m.getPartition().getModelElementsForPartition(3).length);
 		} else {
 			assertEquals(0,
-					m.getPartition().getDiscussionEventForPartition(1).length);
+					m.getPartition().getModelElementsForPartition(1).length);
 			assertEquals(1,
-					m.getPartition().getDiscussionEventForPartition(2).length);
+					m.getPartition().getModelElementsForPartition(2).length);
 			assertEquals(0,
-					m.getPartition().getDiscussionEventForPartition(3).length);
+					m.getPartition().getModelElementsForPartition(3).length);
 		}
 
 		d.addDiscussionEvents(new DiscussionEvent[] { d3 });

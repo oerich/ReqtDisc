@@ -72,7 +72,7 @@ public abstract class AbstractNetworkMetric extends AbstractDiscussionMetric {
 			Collections.addAll(tmp, d.getDiscussionEvents());
 		}
 		getPartition().setTimeInterval(discussions);
-		getPartition().setDiscussionEvents(tmp.toArray(new DiscussionEvent[0]));
+		getPartition().setModelElements(tmp.toArray(new DiscussionEvent[0]));
 		getSocialNetwork().setDiscussionData(discussions, getPartition());
 	}
 

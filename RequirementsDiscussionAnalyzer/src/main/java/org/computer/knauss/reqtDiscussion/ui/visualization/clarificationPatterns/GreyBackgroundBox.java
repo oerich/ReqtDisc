@@ -5,6 +5,7 @@ import java.awt.Shape;
 import java.awt.geom.RoundRectangle2D;
 
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
+import org.computer.knauss.reqtDiscussion.model.ModelElement;
 import org.computer.knauss.reqtDiscussion.ui.visualization.IVisualizationStyle;
 
 public class GreyBackgroundBox extends AbstractVisualizationStyle implements
@@ -20,7 +21,7 @@ public class GreyBackgroundBox extends AbstractVisualizationStyle implements
 
 	@Override
 	public Shape[] layout(DiscussionEvent[] comments) {
-		this.partition.setDiscussionEvents(comments);
+		this.partition.setModelElements(comments);
 
 		// figure out how large the box should be:
 		int maxClarification = 0;
@@ -29,9 +30,9 @@ public class GreyBackgroundBox extends AbstractVisualizationStyle implements
 		for (int i = 0; i < this.partition.getPartitionCount(); i++) {
 			int clarificationPerPartition = 0;
 			int otherPerPartition = 0;
-			for (DiscussionEvent wc : this.partition
-					.getDiscussionEventForPartition(i)) {
-				if (this.partition.isInClass(wc)) {
+			for (ModelElement me : this.partition
+					.getModelElementsForPartition(i)) {
+				if (this.partition.isInClass(me)) {
 					clarificationPerPartition++;
 				} else {
 					otherPerPartition++;

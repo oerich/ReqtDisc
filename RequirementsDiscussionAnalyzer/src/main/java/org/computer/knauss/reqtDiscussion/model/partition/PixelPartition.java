@@ -2,10 +2,10 @@ package org.computer.knauss.reqtDiscussion.model.partition;
 
 import java.sql.Date;
 
-import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
+import org.computer.knauss.reqtDiscussion.model.ModelElement;
 
-public class PixelPartition extends AbstractDiscussionOverTimePartition implements
-		IDiscussionOverTimePartition {
+public class PixelPartition extends AbstractDiscussionOverTimePartition
+		implements IDiscussionOverTimePartition {
 
 	private Date to;
 	private Date from;
@@ -28,7 +28,7 @@ public class PixelPartition extends AbstractDiscussionOverTimePartition implemen
 	}
 
 	@Override
-	public int getPartitionForDiscussionEvent(DiscussionEvent wc) {
+	public int getPartitionForModelElement(ModelElement me) {
 		// 1. compute the total length of the timeline
 		long totalLength = this.to.getTime() - this.from.getTime();
 
@@ -36,7 +36,7 @@ public class PixelPartition extends AbstractDiscussionOverTimePartition implemen
 		if (totalLength <= 0)
 			return pixels / 2;
 
-		long thisLength = wc.getCreationDate().getTime() - this.from.getTime();
+		long thisLength = me.getCreationDate().getTime() - this.from.getTime();
 		// System.out.println("x = " + thisLength + "/" + totalLength);
 
 		return (int) (((double) thisLength / (double) totalLength) * this.pixels);

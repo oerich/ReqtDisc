@@ -2,7 +2,7 @@ package org.computer.knauss.reqtDiscussion.model.partition;
 
 import java.sql.Date;
 
-import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
+import org.computer.knauss.reqtDiscussion.model.ModelElement;
 
 public class TimeIntervalPartition extends AbstractDiscussionOverTimePartition
 		implements IDiscussionOverTimePartition {
@@ -75,8 +75,8 @@ public class TimeIntervalPartition extends AbstractDiscussionOverTimePartition
 	}
 
 	@Override
-	public int getPartitionForDiscussionEvent(DiscussionEvent wc) {
-		return this.delegate.getPartitionForDiscussionEvent(wc);
+	public int getPartitionForModelElement(ModelElement me) {
+		return this.delegate.getPartitionForModelElement(me);
 	}
 
 }

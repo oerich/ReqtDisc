@@ -46,18 +46,18 @@ public class NetworkDegreeCentralityMetricTest {
 		// lets see if the partitions are okay:
 		if (d.getCreationDate().getTime() == d1.getCreationDate().getTime()) {
 			assertEquals(0,
-					m.getPartition().getDiscussionEventForPartition(0).length);
+					m.getPartition().getModelElementsForPartition(0).length);
 			assertEquals(1,
-					m.getPartition().getDiscussionEventForPartition(1).length);
+					m.getPartition().getModelElementsForPartition(1).length);
 			assertEquals(0,
-					m.getPartition().getDiscussionEventForPartition(2).length);
+					m.getPartition().getModelElementsForPartition(2).length);
 		} else {
 			assertEquals(1,
-					m.getPartition().getDiscussionEventForPartition(0).length);
+					m.getPartition().getModelElementsForPartition(0).length);
 			assertEquals(0,
-					m.getPartition().getDiscussionEventForPartition(1).length);
+					m.getPartition().getModelElementsForPartition(1).length);
 			assertEquals(0,
-					m.getPartition().getDiscussionEventForPartition(2).length);
+					m.getPartition().getModelElementsForPartition(2).length);
 		}
 
 		assertEquals(0.0, m.considerDiscussions(new Discussion[] { d }), 0.001);

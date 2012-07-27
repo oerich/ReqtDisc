@@ -1,6 +1,7 @@
 package org.computer.knauss.reqtDiscussion.model.clarificationPatterns;
 
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
+import org.computer.knauss.reqtDiscussion.model.ModelElement;
 import org.computer.knauss.reqtDiscussion.model.partition.IDiscussionOverTimePartition;
 
 public class BackToDraftPattern implements IPatternClass {
@@ -14,7 +15,7 @@ public class BackToDraftPattern implements IPatternClass {
 
 	@Override
 	public boolean matchesPattern(DiscussionEvent[] comments) {
-		this.partition.setDiscussionEvents(comments);
+		this.partition.setModelElements(comments);
 
 		boolean wasGoodLevelOfUnderstanding = false;
 		boolean backToDraft = false;
@@ -22,9 +23,9 @@ public class BackToDraftPattern implements IPatternClass {
 		for (int i = 0; i < this.partition.getPartitionCount(); i++) {
 			int inClass = 0;
 			int notInClass = 0;
-			for (DiscussionEvent wc : this.partition
-					.getDiscussionEventForPartition(i)) {
-				if (this.partition.isInClass(wc))
+			for (ModelElement me : this.partition
+					.getModelElementsForPartition(i)) {
+				if (this.partition.isInClass(me))
 					inClass++;
 				else
 					notInClass++;
@@ -35,7 +36,8 @@ public class BackToDraftPattern implements IPatternClass {
 					backToDraft = false;
 				}
 			} else {
-				if (wasGoodLevelOfUnderstanding && inClass >= notInClass && inClass + notInClass > 0) {
+				if (wasGoodLevelOfUnderstanding && inClass >= notInClass
+						&& inClass + notInClass > 0) {
 					backToDraft = true;
 				}
 			}

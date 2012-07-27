@@ -18,12 +18,12 @@ public class ClosingGatePattern implements IPatternClass {
 		if (comments.length == 0)
 			return false;
 
-		this.partition.setDiscussionEvents(comments);
+		this.partition.setModelElements(comments);
 
 		int limit = (int) (this.partition.getPartitionCount() * LIMIT);
 
 		for (int i = 0; i < limit; i++) {
-			if (this.partition.getDiscussionEventForPartition(i).length > 0)
+			if (this.partition.getModelElementsForPartition(i).length > 0)
 				return false;
 		}
 

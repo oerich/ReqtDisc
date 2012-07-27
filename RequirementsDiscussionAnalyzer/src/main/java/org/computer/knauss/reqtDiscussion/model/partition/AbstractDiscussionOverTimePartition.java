@@ -6,55 +6,65 @@ import java.util.Vector;
 
 import org.computer.knauss.reqtDiscussion.model.Discussion;
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
+import org.computer.knauss.reqtDiscussion.model.ModelElement;
 
 public abstract class AbstractDiscussionOverTimePartition implements
 		IDiscussionOverTimePartition {
 
-	private DiscussionEvent[] discussionEvents;
+	private ModelElement[] modelElements;
 
 	@Override
-	public void setDiscussionEvents(DiscussionEvent[] comments) {
-		this.discussionEvents = comments;
+	public void setModelElements(ModelElement[] comments) {
+		this.modelElements = comments;
 	}
 
 	@Override
-	public DiscussionEvent[] getDiscussionEvents() {
-		return this.discussionEvents;
+	public ModelElement[] getModelElements() {
+		return this.modelElements;
 	}
 
 	@Override
-	public abstract int getPartitionForDiscussionEvent(DiscussionEvent wc);
+	public abstract int getPartitionForModelElement(ModelElement wc);
 
 	@Override
-	public DiscussionEvent[] getDiscussionEventForPartition(int partition) {
-		List<DiscussionEvent> tmp = new Vector<DiscussionEvent>();
+	public ModelElement[] getModelElementsForPartition(int partition) {
+		List<ModelElement> tmp = new Vector<ModelElement>();
 
-		for (DiscussionEvent wc : this.discussionEvents) {
-			if (partition == getPartitionForDiscussionEvent(wc))
+		for (ModelElement wc : this.modelElements) {
+			if (partition == getPartitionForModelElement(wc))
 				tmp.add(wc);
 		}
 
-		return tmp.toArray(new DiscussionEvent[0]);
+		return tmp.toArray(new ModelElement[0]);
 	}
 
 	@Override
-	public boolean isInClass(DiscussionEvent wic) {
-		return (wic.getReferenceClassification() != null && wic
+	public boolean isInClass(ModelElement me) {
+		if (!(me instanceof DiscussionEvent))
+			return false;
+
+		DiscussionEvent de = (DiscussionEvent) me;
+
+		return (de.getReferenceClassification() != null && de
 				.getReferenceClassification().toLowerCase()
 				.startsWith("clarif"));
 	}
 
 	@Override
-	public void setTimeInterval(Discussion[] selectedDiscussions) {
+	public void setTimeInterval(ModelElement[] selectedElements) {
 		Date firstDate = new Date(Long.MAX_VALUE);
 		Date lastDate = new Date(0);
-		for (Discussion d : selectedDiscussions) {
+		for (ModelElement d : selectedElements) {
 			if (firstDate.after(d.getCreationDate()))
 				firstDate = d.getCreationDate();
-			for (DiscussionEvent de : d.getDiscussionEvents()) {
-				if (lastDate.before(de.getCreationDate()))
-					lastDate = de.getCreationDate();
-			}
+			if (lastDate.before(d.getCreationDate()))
+				lastDate = d.getCreationDate();
+			if (d instanceof Discussion)
+				for (DiscussionEvent de : ((Discussion) d)
+						.getDiscussionEvents()) {
+					if (lastDate.before(de.getCreationDate()))
+						lastDate = de.getCreationDate();
+				}
 		}
 		setTimeInterval(firstDate, lastDate);
 	}

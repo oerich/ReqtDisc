@@ -29,10 +29,10 @@ public class PixelPartitionTest {
 		wc.setContent("Testcomment");
 		wc.setCreationDate(new Date(50));
 
-		assertEquals(50, testitem.getPartitionForDiscussionEvent(wc));
+		assertEquals(50, testitem.getPartitionForModelElement(wc));
 
 		testitem.setPartitionCount(600);
-		assertEquals(300, testitem.getPartitionForDiscussionEvent(wc));
+		assertEquals(300, testitem.getPartitionForModelElement(wc));
 	}
 
 	@Test
@@ -44,9 +44,9 @@ public class PixelPartitionTest {
 		wc.setContent("Testcomment");
 		wc.setCreationDate(new Date(50));
 
-		assertEquals(50, testitem.getPartitionForDiscussionEvent(wc));
+		assertEquals(50, testitem.getPartitionForModelElement(wc));
 
 		testitem.setPartitionCount(600);
-		assertEquals(300, testitem.getPartitionForDiscussionEvent(wc));
+		assertEquals(300, testitem.getPartitionForModelElement(wc));
 	}
 }
