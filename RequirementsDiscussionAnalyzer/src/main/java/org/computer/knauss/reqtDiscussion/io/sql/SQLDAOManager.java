@@ -86,8 +86,10 @@ public class SQLDAOManager implements IDAOManager {
 
 	@Override
 	public IIncidentDAO getIncidentDAO() throws DAOException {
-		if (this.incidentDAO == null)
+		if (this.incidentDAO == null) {
 			this.incidentDAO = new SQLIncidentDAO();
+			this.incidentDAO.configure(getProperties());
+		}
 		return this.incidentDAO;
 	}
 

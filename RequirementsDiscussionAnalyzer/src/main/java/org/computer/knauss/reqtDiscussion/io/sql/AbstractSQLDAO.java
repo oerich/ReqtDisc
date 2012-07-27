@@ -14,13 +14,13 @@ public class AbstractSQLDAO {
 
 	private static final String EXISTS_TABLE = "EXISTS_TABLE";
 	private Map<String, PreparedStatement> statementCache = new HashMap<String, PreparedStatement>();
-	protected Properties properties;
+	protected transient Properties properties;
 
 	public AbstractSQLDAO() {
 		super();
 	}
 
-	public void configure(Properties p) throws DAOException {
+	public synchronized void configure(Properties p) throws DAOException {
 		ConnectionManager.getInstance().configure(p);
 		this.properties = p;
 	}
