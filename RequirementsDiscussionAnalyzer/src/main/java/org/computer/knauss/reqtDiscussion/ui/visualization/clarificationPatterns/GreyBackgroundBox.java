@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Shape;
 import java.awt.geom.RoundRectangle2D;
 
-import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
 import org.computer.knauss.reqtDiscussion.model.ModelElement;
 import org.computer.knauss.reqtDiscussion.ui.visualization.IVisualizationStyle;
 
@@ -15,12 +14,12 @@ public class GreyBackgroundBox extends AbstractVisualizationStyle implements
 	private static final Color BACKGROUND_COLOR = new Color(242, 242, 242);
 
 	@Override
-	public Shape[] getShape(DiscussionEvent comment) {
+	public Shape[] getShape(ModelElement modelElement) {
 		return new Shape[0];
 	}
 
 	@Override
-	public Shape[] layout(DiscussionEvent[] comments) {
+	public Shape[] layout(ModelElement[] comments) {
 		this.partition.setModelElements(comments);
 
 		// figure out how large the box should be:
@@ -60,12 +59,12 @@ public class GreyBackgroundBox extends AbstractVisualizationStyle implements
 	}
 
 	@Override
-	public Color getFillColor(DiscussionEvent comment, int i) {
+	public Color getFillColor(ModelElement comment, int i) {
 		return BACKGROUND_COLOR;
 	}
 
 	@Override
-	public Color getDrawColor(DiscussionEvent comment, int i) {
+	public Color getDrawColor(ModelElement comment, int i) {
 		return BACKGROUND_COLOR;
 	}
 

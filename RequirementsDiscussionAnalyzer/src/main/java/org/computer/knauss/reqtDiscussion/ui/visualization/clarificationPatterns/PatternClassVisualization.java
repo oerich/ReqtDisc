@@ -7,6 +7,7 @@ import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
 
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
+import org.computer.knauss.reqtDiscussion.model.ModelElement;
 import org.computer.knauss.reqtDiscussion.model.clarificationPatterns.BackToDraftPattern;
 import org.computer.knauss.reqtDiscussion.model.clarificationPatterns.ClosingGatePattern;
 import org.computer.knauss.reqtDiscussion.model.clarificationPatterns.HappyEndingPattern;
@@ -24,7 +25,7 @@ public class PatternClassVisualization extends AbstractVisualizationStyle {
 			new HappyEndingPattern(), new PerfectPattern() };
 
 	@Override
-	public Shape[] getShape(DiscussionEvent comment) {
+	public Shape[] getShape(ModelElement comment) {
 		return new Shape[0];
 	}
 
@@ -34,24 +35,25 @@ public class PatternClassVisualization extends AbstractVisualizationStyle {
 	}
 
 	@Override
-	public Color getFillColor(DiscussionEvent comment, int i) {
+	public Color getFillColor(ModelElement comment, int i) {
 		// return Color.GREEN;
 		return Color.DARK_GRAY;
 	}
 
 	@Override
-	public Color getDrawColor(DiscussionEvent comment, int i) {
+	public Color getDrawColor(ModelElement comment, int i) {
 		return null;
 	}
 
 	@Override
-	public Shape[] layout(DiscussionEvent[] comments) {
+	public Shape[] layout(ModelElement[] comments) {
 		StringBuffer sb = new StringBuffer("Pattern: ");
 		for (IPatternClass pattern : PATTERNS) {
-			if (pattern.matchesPattern(comments)) {
-				sb.append(pattern.getName());
-				sb.append(',');
-			}
+			if (comments instanceof DiscussionEvent[])
+				if (pattern.matchesPattern((DiscussionEvent[]) comments)) {
+					sb.append(pattern.getName());
+					sb.append(',');
+				}
 		}
 
 		FontRenderContext frc1 = new FontRenderContext(null, true, true);

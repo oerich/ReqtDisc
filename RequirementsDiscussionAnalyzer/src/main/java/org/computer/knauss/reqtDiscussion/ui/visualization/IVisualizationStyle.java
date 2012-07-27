@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Shape;
 import java.awt.Stroke;
 
-import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
+import org.computer.knauss.reqtDiscussion.model.ModelElement;
 import org.computer.knauss.reqtDiscussion.model.partition.IDiscussionOverTimePartition;
 
 public interface IVisualizationStyle {
@@ -32,11 +32,11 @@ public interface IVisualizationStyle {
 	 * sophisticated algorithms might cache shapes or return pre-computed
 	 * results from the layout method.
 	 * 
-	 * @param discEvent
+	 * @param modelElement
 	 *            the DiscussionEvent that should be visualized
 	 * @return a number of shapes that represent this discEvent.
 	 */
-	public Shape[] getShape(DiscussionEvent discEvent);
+	public Shape[] getShape(ModelElement modelElement);
 
 	/**
 	 * Gives the algorithm a chance to layout all DiscussionEvents at once.
@@ -45,11 +45,11 @@ public interface IVisualizationStyle {
 	 * method to pre-compute a layout and give faster results in the getShape
 	 * method.
 	 * 
-	 * @param discEvents
+	 * @param modelElements
 	 *            - the discussion events that should be layouted
 	 * @return the shapes that represent the given discEvents.
 	 */
-	public Shape[] layout(DiscussionEvent[] discEvents);
+	public Shape[] layout(ModelElement[] modelElements);
 
 	/**
 	 * Gives the algorithm a chance to set everything on default again. This is
@@ -65,13 +65,13 @@ public interface IVisualizationStyle {
 	 * @param i
 	 * @return null, if this shape should not be filled.
 	 */
-	public Color getFillColor(DiscussionEvent discEvent, int i);
+	public Color getFillColor(ModelElement modelElement, int i);
 
 	/**
 	 * Return the color that should draw the i. shape returned by the getShape
 	 * method for this discEvent.
 	 * 
-	 * @param discEvent
+	 * @param modelElement
 	 *            - the discEvent that should be painted
 	 * @param i
 	 *            - the i. shape of the representation of this discEvent as
@@ -80,7 +80,7 @@ public interface IVisualizationStyle {
 	 *         by the getShape-Method, null if there should not be an outline of
 	 *         this shape.
 	 */
-	public Color getDrawColor(DiscussionEvent discEvent, int i);
+	public Color getDrawColor(ModelElement modelElement, int i);
 
 	public Stroke getStroke();
 

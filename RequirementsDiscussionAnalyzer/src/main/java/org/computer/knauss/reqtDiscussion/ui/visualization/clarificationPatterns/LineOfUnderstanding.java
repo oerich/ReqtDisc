@@ -10,7 +10,6 @@ import java.awt.geom.Point2D;
 import java.util.List;
 import java.util.Vector;
 
-import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
 import org.computer.knauss.reqtDiscussion.model.ModelElement;
 import org.computer.knauss.reqtDiscussion.model.partition.IDiscussionOverTimePartition;
 
@@ -32,7 +31,7 @@ public class LineOfUnderstanding extends AbstractVisualizationStyle {
 	}
 
 	@Override
-	public Shape[] getShape(DiscussionEvent comment) {
+	public Shape[] getShape(ModelElement comment) {
 		return new Shape[0];
 	}
 
@@ -42,13 +41,13 @@ public class LineOfUnderstanding extends AbstractVisualizationStyle {
 	}
 
 	@Override
-	public Color getFillColor(DiscussionEvent comment, int i) {
+	public Color getFillColor(ModelElement comment, int i) {
 		// return Color.GRAY;
 		return null;
 	}
 
 	@Override
-	public Color getDrawColor(DiscussionEvent comment, int i) {
+	public Color getDrawColor(ModelElement comment, int i) {
 		return Color.GRAY;
 	}
 
@@ -58,7 +57,7 @@ public class LineOfUnderstanding extends AbstractVisualizationStyle {
 	}
 
 	@Override
-	public Shape[] layout(DiscussionEvent[] comments) {
+	public Shape[] layout(ModelElement[] comments) {
 		this.partition.setModelElements(comments);
 		double partitionWidth = (double) X_SIZE
 				/ (double) this.partition.getPartitionCount();

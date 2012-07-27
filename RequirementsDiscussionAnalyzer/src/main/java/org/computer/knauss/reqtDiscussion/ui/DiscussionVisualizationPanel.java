@@ -12,6 +12,9 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
@@ -21,6 +24,8 @@ import javax.swing.event.ListSelectionListener;
 import org.computer.knauss.reqtDiscussion.model.Discussion;
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
 import org.computer.knauss.reqtDiscussion.model.IFilteredDiscussionEventList;
+import org.computer.knauss.reqtDiscussion.model.Incident;
+import org.computer.knauss.reqtDiscussion.model.ModelElement;
 import org.computer.knauss.reqtDiscussion.model.partition.IDiscussionOverTimePartition;
 import org.computer.knauss.reqtDiscussion.model.partition.PixelPartition;
 import org.computer.knauss.reqtDiscussion.ui.uiModel.DiscussionTableModel;
@@ -28,6 +33,7 @@ import org.computer.knauss.reqtDiscussion.ui.visualization.IVisualizationStyle;
 import org.computer.knauss.reqtDiscussion.ui.visualization.clarificationPatterns.AlignedRectangularCommentStyle;
 import org.computer.knauss.reqtDiscussion.ui.visualization.clarificationPatterns.GreyBackgroundBox;
 import org.computer.knauss.reqtDiscussion.ui.visualization.clarificationPatterns.Grid;
+import org.computer.knauss.reqtDiscussion.ui.visualization.clarificationPatterns.IncidentTextStyle;
 import org.computer.knauss.reqtDiscussion.ui.visualization.clarificationPatterns.LineOfUnderstanding;
 import org.computer.knauss.reqtDiscussion.ui.visualization.clarificationPatterns.OverlappingCommentStyle;
 import org.computer.knauss.reqtDiscussion.ui.visualization.clarificationPatterns.PatternClassVisualization;
@@ -50,6 +56,7 @@ public class DiscussionVisualizationPanel extends JPanel implements
 	private IVisualizationStyle visualizationBackground;
 	private IVisualizationStyle visualizationStyleText;
 	private IVisualizationStyle visualizationPattern;
+	private IVisualizationStyle incidentVisualization;
 	private VisualizationConfigurationPanel configureVisualizationPanel;
 
 	public DiscussionVisualizationPanel(
@@ -62,7 +69,8 @@ public class DiscussionVisualizationPanel extends JPanel implements
 		setBackground(Color.WHITE);
 
 		this.configureVisualizationPanel = configureVisualizationPanel;
-		this.discussionPartition = this.configureVisualizationPanel.getDiscussionPartition();
+		this.discussionPartition = this.configureVisualizationPanel
+				.getDiscussionPartition();
 		this.configureVisualizationPanel.addActionListener(this);
 
 		this.visualizationStyleBoxes = new AlignedRectangularCommentStyle();
@@ -71,6 +79,7 @@ public class DiscussionVisualizationPanel extends JPanel implements
 		this.visualizationLineOfUnderstanding = new LineOfUnderstanding();
 		this.visualizationStyleText = new OverlappingCommentStyle();
 		this.visualizationPattern = new PatternClassVisualization();
+		this.incidentVisualization = new IncidentTextStyle();
 		this.visualizationBackground.setDiscussionOverTimePartition(
 				this.discussionPartition, 100, 300);
 		this.visualizationGrid.setDiscussionOverTimePartition(
@@ -82,6 +91,8 @@ public class DiscussionVisualizationPanel extends JPanel implements
 		this.visualizationPattern.setDiscussionOverTimePartition(
 				this.discussionPartition, 100, 300);
 		this.visualizationStyleText.setDiscussionOverTimePartition(
+				this.discussionPixelPartition, 100, 300);
+		this.incidentVisualization.setDiscussionOverTimePartition(
 				this.discussionPixelPartition, 100, 300);
 		this.discussionPixelPartition.setPartitionCount(600);
 	}
@@ -112,22 +123,24 @@ public class DiscussionVisualizationPanel extends JPanel implements
 
 			int y = 300 + TXT_LINE_HEIGHT / 2;
 			for (Discussion d : this.selectedDiscussions) {
-				g2.drawString(String.valueOf(d.getID()),
-						TXT_HORIZONTAL_MARGIN, y);
+				g2.drawString(String.valueOf(d.getID()), TXT_HORIZONTAL_MARGIN,
+						y);
 				y = y + TXT_LINE_HEIGHT;
 				for (DiscussionEvent de : d.getDiscussionEvents()) {
 					allDiscussionEventList.add(de);
 				}
 			}
 
-			int size = allDiscussionEventList.getFilteredDiscussionEventList().size();
+			int size = allDiscussionEventList.getFilteredDiscussionEventList()
+					.size();
 			DiscussionEvent[] allDiscussionEvents = new DiscussionEvent[size];
 			for (int i = 0; i < size; i++)
-				allDiscussionEvents[i] = allDiscussionEventList.getWorkitemComment(i);
+				allDiscussionEvents[i] = allDiscussionEventList
+						.getWorkitemComment(i);
 
-			this.discussionPartition
+			this.discussionPartition.setTimeInterval(this.selectedDiscussions);
+			this.discussionPixelPartition
 					.setTimeInterval(this.selectedDiscussions);
-			this.discussionPixelPartition.setTimeInterval(this.selectedDiscussions);
 
 			if (this.configureVisualizationPanel.isBackgroundStyle())
 				applyVisualizationStyle(g2, allDiscussionEvents,
@@ -136,7 +149,8 @@ public class DiscussionVisualizationPanel extends JPanel implements
 				((Grid) this.visualizationGrid)
 						.setUsePartition(this.configureVisualizationPanel
 								.isUsePartitionForGrid());
-				applyVisualizationStyle(g2, allDiscussionEvents, this.visualizationGrid);
+				applyVisualizationStyle(g2, allDiscussionEvents,
+						this.visualizationGrid);
 			}
 			// draw a horizontal time line
 			g2.setStroke(new BasicStroke(3f));
@@ -160,12 +174,17 @@ public class DiscussionVisualizationPanel extends JPanel implements
 				applyVisualizationStyle(g2, allDiscussionEvents,
 						this.visualizationStyleText);
 
+			List<Incident> incidentList = new LinkedList<Incident>();
+			for (Discussion d : this.selectedDiscussions) {
+				Collections.addAll(incidentList, d.getIncidents());
+			}
+			applyVisualizationStyle(g2, incidentList.toArray(new Incident[0]),
+					this.incidentVisualization);
 		}
 	}
 
 	private void applyVisualizationStyle(Graphics2D g2,
-			DiscussionEvent[] allComments,
-			IVisualizationStyle visualizationStyle) {
+			ModelElement[] allComments, IVisualizationStyle visualizationStyle) {
 		visualizationStyle.reset();
 		g2.setStroke(visualizationStyle.getStroke());
 		// paint the background
@@ -183,7 +202,7 @@ public class DiscussionVisualizationPanel extends JPanel implements
 		}
 
 		// paint the comments
-		for (DiscussionEvent wic : allComments) {
+		for (ModelElement wic : allComments) {
 			Shape[] shapes = visualizationStyle.getShape(wic);
 			for (int i = 0; i < shapes.length; i++) {
 				Shape s = shapes[i];
@@ -222,7 +241,8 @@ public class DiscussionVisualizationPanel extends JPanel implements
 		Graphics2D g2 = bi.createGraphics();
 		paint(g2);
 		String filename = "";
-		if (this.selectedDiscussions != null && this.selectedDiscussions.length > 0)
+		if (this.selectedDiscussions != null
+				&& this.selectedDiscussions.length > 0)
 			for (Discussion wi : this.selectedDiscussions)
 				filename += wi.getID() + "-";
 		else

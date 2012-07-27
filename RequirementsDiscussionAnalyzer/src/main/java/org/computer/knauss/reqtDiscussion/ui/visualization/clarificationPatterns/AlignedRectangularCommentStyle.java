@@ -6,7 +6,7 @@ import java.awt.geom.RoundRectangle2D;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
+import org.computer.knauss.reqtDiscussion.model.ModelElement;
 import org.computer.knauss.reqtDiscussion.model.partition.IDiscussionOverTimePartition;
 import org.computer.knauss.reqtDiscussion.ui.visualization.IVisualizationStyle;
 
@@ -23,8 +23,8 @@ public class AlignedRectangularCommentStyle extends AbstractVisualizationStyle
 	private IDiscussionOverTimePartition partition;
 	private int xOffset;
 	private int yOffset;
-	private Set<DiscussionEvent>[] elementsInClassPerPartition;
-	private Set<DiscussionEvent>[] elementsNotInClassPerPartition;
+	private Set<ModelElement>[] elementsInClassPerPartition;
+	private Set<ModelElement>[] elementsNotInClassPerPartition;
 
 	@Override
 	public void setDiscussionOverTimePartition(
@@ -37,7 +37,7 @@ public class AlignedRectangularCommentStyle extends AbstractVisualizationStyle
 	}
 
 	@Override
-	public Shape[] getShape(DiscussionEvent comment) {
+	public Shape[] getShape(ModelElement comment) {
 		// System.out.print("getShape: ");
 		int partition = this.partition.getPartitionForModelElement(comment);
 		// System.out.print("partition: " + partition + "("
@@ -75,12 +75,12 @@ public class AlignedRectangularCommentStyle extends AbstractVisualizationStyle
 				COMMENT_HEIGHT, arcw, arch) };
 	}
 
-	private double getYPositionInPartition(DiscussionEvent comment,
-			Set<DiscussionEvent> elementsInPartition) {
+	private double getYPositionInPartition(ModelElement comment,
+			Set<ModelElement> elementsInPartition) {
 		double y = 0;
 		if (elementsInPartition.contains(comment)) {
 			// figure out the position of this comment in the set.
-			for (DiscussionEvent wc : elementsInPartition) {
+			for (ModelElement wc : elementsInPartition) {
 				y++;
 				if (wc.equals(comment))
 					break;
@@ -103,23 +103,23 @@ public class AlignedRectangularCommentStyle extends AbstractVisualizationStyle
 			this.elementsNotInClassPerPartition = new Set[this.partition
 					.getPartitionCount()];
 			for (int i = 0; i < this.elementsInClassPerPartition.length; i++) {
-				this.elementsInClassPerPartition[i] = new LinkedHashSet<DiscussionEvent>();
-				this.elementsNotInClassPerPartition[i] = new LinkedHashSet<DiscussionEvent>();
+				this.elementsInClassPerPartition[i] = new LinkedHashSet<ModelElement>();
+				this.elementsNotInClassPerPartition[i] = new LinkedHashSet<ModelElement>();
 			}
 		}
 
 		if (this.elementsInClassPerPartition != null)
-			for (Set<DiscussionEvent> s : this.elementsInClassPerPartition)
+			for (Set<ModelElement> s : this.elementsInClassPerPartition)
 				if (s != null)
 					s.clear();
 		if (this.elementsNotInClassPerPartition != null)
-			for (Set<DiscussionEvent> s : this.elementsNotInClassPerPartition)
+			for (Set<ModelElement> s : this.elementsNotInClassPerPartition)
 				if (s != null)
 					s.clear();
 	}
 
 	@Override
-	public Color getFillColor(DiscussionEvent comment, int i) {
+	public Color getFillColor(ModelElement comment, int i) {
 		if (this.partition.isInClass(comment))
 			// return Color.MAGENTA;
 			return IN_CLASS_COLOR;
@@ -128,7 +128,7 @@ public class AlignedRectangularCommentStyle extends AbstractVisualizationStyle
 	}
 
 	@Override
-	public Color getDrawColor(DiscussionEvent comment, int i) {
+	public Color getDrawColor(ModelElement comment, int i) {
 		return null;
 	}
 

@@ -5,7 +5,7 @@ import java.awt.Color;
 import java.awt.Shape;
 import java.awt.Stroke;
 
-import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
+import org.computer.knauss.reqtDiscussion.model.ModelElement;
 import org.computer.knauss.reqtDiscussion.model.partition.IDiscussionOverTimePartition;
 import org.computer.knauss.reqtDiscussion.ui.visualization.IVisualizationStyle;
 
@@ -17,10 +17,10 @@ public abstract class AbstractVisualizationStyle implements IVisualizationStyle 
 	protected IDiscussionOverTimePartition partition;
 
 	@Override
-	public abstract Shape[] getShape(DiscussionEvent comment);
+	public abstract Shape[] getShape(ModelElement modelElement);
 
 	@Override
-	public Shape[] layout(DiscussionEvent[] comments) {
+	public Shape[] layout(ModelElement[] modelElements) {
 		// List<Shape> tmp = new Vector<Shape>(comments.length);
 		// for (WorkitemComment wc : comments) {
 		// for (Shape s : getShape(wc)) {
@@ -39,10 +39,10 @@ public abstract class AbstractVisualizationStyle implements IVisualizationStyle 
 	public abstract void reset();
 
 	@Override
-	public abstract Color getFillColor(DiscussionEvent comment, int i);
+	public abstract Color getFillColor(ModelElement modelElement, int i);
 
 	@Override
-	public abstract Color getDrawColor(DiscussionEvent comment, int i);
+	public abstract Color getDrawColor(ModelElement modelElement, int i);
 
 	@Override
 	public Stroke getStroke() {

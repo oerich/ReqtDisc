@@ -8,12 +8,12 @@ import java.awt.font.GlyphVector;
 import java.awt.geom.Area;
 import java.awt.geom.Line2D;
 
-import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
+import org.computer.knauss.reqtDiscussion.model.Incident;
 import org.computer.knauss.reqtDiscussion.model.ModelElement;
 import org.computer.knauss.reqtDiscussion.model.partition.IDiscussionOverTimePartition;
 import org.computer.knauss.reqtDiscussion.ui.visualization.IVisualizationStyle;
 
-public class OverlappingCommentStyle extends AbstractVisualizationStyle
+public class IncidentTextStyle extends AbstractVisualizationStyle
 		implements IVisualizationStyle {
 
 	private IDiscussionOverTimePartition partition;
@@ -32,27 +32,22 @@ public class OverlappingCommentStyle extends AbstractVisualizationStyle
 
 	@Override
 	public Shape[] getShape(ModelElement comment) {
-		int x = this.partition.getPartitionForModelElement(comment)
+		if (!(comment instanceof Incident))
+			return new Shape[0];
+		
+		Incident incident = (Incident)comment;
+		int x = this.partition.getPartitionForModelElement(incident)
 				+ this.xOffset;
 		int y1 = this.yOffset;
-		int y2 = getWorkitemCommentY(comment);
+		int y2 = getWorkitemCommentY(incident);
 
-		String referenceClassification = null;
-		if (comment instanceof DiscussionEvent)
-			referenceClassification = ((DiscussionEvent) comment)
-					.getReferenceClassification();
-		if (referenceClassification == null)
-			referenceClassification = "not classified";
-
-		// TODO frc should derived from a graphics-object - then it would be
-		// more exact.
 		FontRenderContext frc1 = new FontRenderContext(null, true, true);
 		FontRenderContext frc2 = new FontRenderContext(null, true, true);
 
+		
 		Font f = new Font("SansSerif", Font.PLAIN, 12);
-		GlyphVector v1 = f.createGlyphVector(frc1, referenceClassification);
-		GlyphVector v2 = f.createGlyphVector(frc2, comment.getCreationDate()
-				.toString());
+		GlyphVector v1 = f.createGlyphVector(frc1, incident.getName());
+		GlyphVector v2 = f.createGlyphVector(frc2, incident.getSummary());
 
 		Shape line = new Line2D.Double(x, y1, x, y2);
 
