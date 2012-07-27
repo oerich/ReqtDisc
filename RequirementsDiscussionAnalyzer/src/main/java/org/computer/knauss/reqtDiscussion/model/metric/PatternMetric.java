@@ -18,7 +18,7 @@ import org.computer.knauss.reqtDiscussion.model.partition.IDiscussionOverTimePar
 
 public class PatternMetric extends AbstractDiscussionMetric {
 
-	private static final IPatternClass[] PATTERNS = new IPatternClass[] {
+	public static final IPatternClass[] PATTERNS = new IPatternClass[] {
 			new IndifferentPattern(), new NoSharedUnderstandingPattern(),
 			new ClosingGatePattern(), new BackToDraftPattern(),
 			new HappyEndingPattern(), new PerfectPattern() };

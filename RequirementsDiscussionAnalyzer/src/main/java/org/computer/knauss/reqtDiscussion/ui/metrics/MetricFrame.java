@@ -1,6 +1,7 @@
 package org.computer.knauss.reqtDiscussion.ui.metrics;
 
 import java.awt.BorderLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,11 +19,18 @@ import javax.swing.JTable;
 import javax.swing.event.ListDataListener;
 
 import org.computer.knauss.reqtDiscussion.model.metric.AbstractDiscussionMetric;
+import org.computer.knauss.reqtDiscussion.model.metric.PatternMetric;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.ExportTableCommand;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.CategoryAxis;
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.labels.BoxAndWhiskerToolTipGenerator;
+import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.renderer.category.BoxAndWhiskerRenderer;
+import org.jfree.data.statistics.DefaultBoxAndWhiskerCategoryDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
@@ -59,42 +67,26 @@ public class MetricFrame extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				XYSeriesCollection result = new XYSeriesCollection();
 				AbstractDiscussionMetric metric1 = (AbstractDiscussionMetric) metricTable
 						.getMetrics()[metric1Box.getSelectedIndex()];
 				AbstractDiscussionMetric metric2 = (AbstractDiscussionMetric) metricTable
 						.getMetrics()[metric2Box.getSelectedIndex()];
-				XYSeries series = new XYSeries(metric1.getName() + "/"
-						+ metric2.getName());
-				for (int i = 0; i < metricTable.getRowCount(); i++) {
-					double x = metric1.getResults().get(
-							metricTable.getValueAt(i, 0));
-					double y = metric2.getResults().get(
-							metricTable.getValueAt(i, 0));
-					series.add(x, y);
-				}
-				result.addSeries(series);
 
-				JFreeChart chart = ChartFactory.createScatterPlot(
-						"Scatter Plot", // chart
-						// title
-						metric1.getName(), // x axis label
-						metric2.getName(), // y axis label
-						result, // data ***-----PROBLEM------***
-						PlotOrientation.VERTICAL, true, // include legend
-						true, // tooltips
-						false // urls
-						);
-
+				JFreeChart chart = null;
+				if (metric1.getName().equals("Pattern"))
+					chart = createBoxPlot(metric1, metric2);
+				else
+					createScatterPlot(metric1, metric2);
 				tabbedPane.addTab(metric1.getName() + "/" + metric2.getName(),
 						new ChartPanel(chart));
+
 			}
 		});
 
 		configPanel.add(metric1Box);
 		configPanel.add(metric2Box);
 		configPanel.add(createPlotBtn);
-		
+
 		configPanel.add(new JPanel());
 		ExportTableCommand etc = new ExportTableCommand();
 		etc.setTableModel(this.metricTable);
@@ -105,6 +97,66 @@ public class MetricFrame extends JFrame {
 
 	public void update() {
 		this.metricTable.fireTableChanged();
+	}
+
+	private JFreeChart createScatterPlot(AbstractDiscussionMetric metric1,
+			AbstractDiscussionMetric metric2) {
+		XYSeriesCollection result = new XYSeriesCollection();
+
+		XYSeries series = new XYSeries(metric1.getName() + "/"
+				+ metric2.getName());
+		for (int i = 0; i < metricTable.getRowCount(); i++) {
+			double x = metric1.getResults().get(metricTable.getValueAt(i, 0));
+			double y = metric2.getResults().get(metricTable.getValueAt(i, 0));
+			series.add(x, y);
+		}
+		result.addSeries(series);
+
+		return ChartFactory.createScatterPlot("Scatter Plot", // chart
+				// title
+				metric1.getName(), // x axis label
+				metric2.getName(), // y axis label
+				result, // data ***-----PROBLEM------***
+				PlotOrientation.VERTICAL, true, // include legend
+				true, // tooltips
+				false // urls
+				);
+	}
+
+	private JFreeChart createBoxPlot(AbstractDiscussionMetric metric1,
+			AbstractDiscussionMetric metric2) {
+		DefaultBoxAndWhiskerCategoryDataset dataset = new DefaultBoxAndWhiskerCategoryDataset();
+
+		// Assume metric 1 are the patterns
+		for (int i = -1; i < 6; i++) {
+			String patternName = "unknown";
+			if (i >= 0)
+				patternName = PatternMetric.PATTERNS[i].getName();
+			List<Double> values = new LinkedList<Double>();
+			for (int row = 0; row < metricTable.getRowCount(); row++) {
+				double x = metric1.getResults().get(
+						metricTable.getValueAt(row, 0));
+				double y = metric2.getResults().get(
+						metricTable.getValueAt(row, 0));
+				if (x == i)
+					values.add(y);
+			}
+			dataset.add(values, metric2.getName(), patternName);
+
+		}
+
+		// Create the chart
+		final CategoryAxis xAxis = new CategoryAxis("Pattern");
+		final NumberAxis yAxis = new NumberAxis(metric2.getName());
+		yAxis.setAutoRangeIncludesZero(false);
+		final BoxAndWhiskerRenderer renderer = new BoxAndWhiskerRenderer();
+		// renderer.setFillBox(false);
+		renderer.setToolTipGenerator(new BoxAndWhiskerToolTipGenerator());
+		final CategoryPlot plot = new CategoryPlot(dataset, xAxis, yAxis,
+				renderer);
+
+		return new JFreeChart("Box-and-Whisker Demo", new Font("SansSerif",
+				Font.BOLD, 14), plot, true);
 	}
 
 	public static void main(String[] args) {
