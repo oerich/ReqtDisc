@@ -18,6 +18,7 @@ import javax.swing.JTable;
 import javax.swing.event.ListDataListener;
 
 import org.computer.knauss.reqtDiscussion.model.metric.AbstractDiscussionMetric;
+import org.computer.knauss.reqtDiscussion.ui.ctrl.ExportTableCommand;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -44,7 +45,7 @@ public class MetricFrame extends JFrame {
 		tabbedPane.addTab("Table",
 				new JScrollPane(new JTable(this.metricTable)));
 
-		JPanel configPanel = new JPanel(new GridLayout(3, 1));
+		JPanel configPanel = new JPanel(new GridLayout(5, 1));
 		JPanel tmp = new JPanel();
 		tmp.add(configPanel);
 		add(tmp, BorderLayout.EAST);
@@ -93,6 +94,12 @@ public class MetricFrame extends JFrame {
 		configPanel.add(metric1Box);
 		configPanel.add(metric2Box);
 		configPanel.add(createPlotBtn);
+		
+		configPanel.add(new JPanel());
+		ExportTableCommand etc = new ExportTableCommand();
+		etc.setTableModel(this.metricTable);
+		JButton exportButton = new JButton(etc);
+		configPanel.add(exportButton);
 		pack();
 	}
 
