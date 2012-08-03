@@ -139,6 +139,9 @@ public class SQLDiscussionDAO extends AbstractSQLDAO implements IDiscussionDAO {
 			ps.setString(i++, d.getStatus());
 			ps.setString(i++, d.getCreator());
 			ps.executeUpdate();
+
+			if (this.deDAO != null)
+				this.deDAO.storeDiscussionEvents(d.getDiscussionEvents());
 		} catch (SQLException e) {
 			throw new DAOException(e);
 		}

@@ -17,6 +17,7 @@ import org.computer.knauss.reqtDiscussion.ui.ctrl.LoadDiscussionByID;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.LoadDiscussions;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.SetReferenceClassifierName;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.ShowStatistics;
+import org.computer.knauss.reqtDiscussion.ui.ctrl.StoreDiscussions;
 import org.computer.knauss.reqtDiscussion.ui.uiModel.DiscussionTableModel;
 
 public class DiscussionAnalyzer {
@@ -32,10 +33,11 @@ public class DiscussionAnalyzer {
 		configuration = new VisualizationConfiguration();
 
 		// create the view:
-		DiscussionAnalyzerFrame daFrame = new DiscussionAnalyzerFrame(configuration);
+		DiscussionAnalyzerFrame daFrame = new DiscussionAnalyzerFrame(
+				configuration);
 		daFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		daFrame.pack();
-		
+
 		// add model to view:
 		daFrame.setTableModel(tableModel);
 		try {
@@ -52,9 +54,10 @@ public class DiscussionAnalyzer {
 			// add the commands
 			daFrame.addAction(DiscussionAnalyzerFrame.DATA_MENU,
 					configureCommand(new LoadDiscussions()));
-
 			daFrame.addAction(DiscussionAnalyzerFrame.DATA_MENU,
 					configureCommand(new LoadDiscussionByID()));
+			daFrame.addAction(DiscussionAnalyzerFrame.DATA_MENU,
+					configureCommand(new StoreDiscussions()));
 
 			daFrame.addAction(DiscussionAnalyzerFrame.EDIT_MENU,
 					configureCommand(new SetReferenceClassifierName()));

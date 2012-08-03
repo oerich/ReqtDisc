@@ -284,9 +284,10 @@ public class JazzJDOMDAO implements IJazzDAO, IDiscussionEventDAO,
 			DiscussionEvent[] ret = new DiscussionEvent[comments.size()];
 			for (int i = 0; i < ret.length; i++) {
 				ret[i] = new DiscussionEvent();
+				ret[i].setID(i);
 				ret[i].setDiscussionID(discussionId);
-				ret[i].setCreator(parseUserName(((Attribute) this.commentsXML.select(
-						comments.get(i), ".//creator/@resource").get(0))
+				ret[i].setCreator(parseUserName(((Attribute) this.commentsXML
+						.select(comments.get(i), ".//creator/@resource").get(0))
 						.getValue()));
 				ret[i].setContent(((Element) this.commentsXML.select(
 						comments.get(i), ".//description").get(0)).getValue());
@@ -310,7 +311,7 @@ public class JazzJDOMDAO implements IJazzDAO, IDiscussionEventDAO,
 	}
 
 	private String parseUserName(String userString) {
-		return userString.substring(userString.lastIndexOf("/")+1);
+		return userString.substring(userString.lastIndexOf("/") + 1);
 	}
 
 	@Override
@@ -371,8 +372,8 @@ public class JazzJDOMDAO implements IJazzDAO, IDiscussionEventDAO,
 
 		d.setCreationDate(Util.parseDate(((Element) this.xpathHelper.select(
 				discussionElement, "created").get(0)).getValue()));
-		String creator = ((Attribute) this.xpathHelper.select(discussionElement,
-				"creator/@resource").get(0)).getValue();
+		String creator = ((Attribute) this.xpathHelper.select(
+				discussionElement, "creator/@resource").get(0)).getValue();
 		d.setCreator(parseUserName(creator));
 		d.setDescription(((Element) this.xpathHelper.select(discussionElement,
 				"description").get(0)).getValue());

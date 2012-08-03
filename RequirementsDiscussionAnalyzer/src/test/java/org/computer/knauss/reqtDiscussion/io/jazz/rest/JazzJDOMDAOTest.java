@@ -116,6 +116,10 @@ public class JazzJDOMDAOTest {
 				.getDiscussionEventsOfDiscussion(117709);
 		assertEquals(4, des.length);
 
+		// test if the ids are correct
+		for (int i = 0; i < des.length; i++)
+			assertEquals(i + ". element", i, des[i].getID());
+
 		assertEquals(117709, des[0].getDiscussionID());
 		assertEquals("jimtykal", des[0].getCreator());
 		assertEquals(new Date(1277806629252l), des[0].getCreationDate());
