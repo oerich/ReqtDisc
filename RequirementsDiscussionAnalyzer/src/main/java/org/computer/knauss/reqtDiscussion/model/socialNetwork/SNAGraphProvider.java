@@ -7,12 +7,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-
-import de.luh.pi.geometry.IBounds;
-import de.luh.pi.geometry.ISize;
-import de.luh.pi.geometry.Size;
-import de.luh.pi.layouting.IGeometricalLayoutConstraint;
-import de.luh.pi.layouting.IGraphProvider;
+import de.te.layouting.geometry.IBounds;
+import de.te.layouting.geometry.ISize;
+import de.te.layouting.geometry.Size;
+import de.te.layouting.layouting.IGeometricalLayoutConstraint;
+import de.te.layouting.layouting.IGraphProvider;
 
 public class SNAGraphProvider implements
 		IGraphProvider<SocialNetwork, Connection<Double, Node>, Node> {

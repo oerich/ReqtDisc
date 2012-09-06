@@ -17,12 +17,12 @@ import org.computer.knauss.reqtDiscussion.model.socialNetwork.Node;
 import org.computer.knauss.reqtDiscussion.model.socialNetwork.SNAGraphProvider;
 import org.computer.knauss.reqtDiscussion.model.socialNetwork.SocialNetwork;
 
-import de.luh.pi.geometry.Bounds;
-import de.luh.pi.geometry.IBounds;
-import de.luh.se.layout.forcebased.ForceBasedLayouter;
-import de.luh.se.layout.forcebased.forces.BorderRepulsionForce;
-import de.luh.se.layout.forcebased.forces.CoulumbNodeRepulsionForce;
-import de.luh.se.layout.forcebased.forces.HookeConnectionForce;
+import de.te.layouting.geometry.Bounds;
+import de.te.layouting.geometry.IBounds;
+import de.te.layouting.layouting.forcebased.ForceBasedLayouter;
+import de.te.layouting.layouting.forcebased.forces.BorderRepulsionForce;
+import de.te.layouting.layouting.forcebased.forces.CoulumbNodeRepulsionForce;
+import de.te.layouting.layouting.forcebased.forces.HookeConnectionForce;
 
 public class NetworkPanel extends JPanel {
 
