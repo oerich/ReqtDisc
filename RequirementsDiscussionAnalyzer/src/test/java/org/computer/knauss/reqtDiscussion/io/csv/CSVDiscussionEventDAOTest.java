@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
+import java.net.URL;
 import java.util.Properties;
 
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
@@ -12,6 +13,7 @@ import org.junit.Test;
 
 public class CSVDiscussionEventDAOTest {
 
+	private static final String WORKITEMCOMMENTS_CSV = "/example-workitemcomments.csv";
 	private CSVDiscussionEventDAO testDao;
 
 	@Before
@@ -35,8 +37,13 @@ public class CSVDiscussionEventDAOTest {
 
 		}
 
-		p.setProperty(CSVDiscussionEventDAO.PROP_FILENAME, getClass()
-				.getResource("/example-workitemcomments.csv").getFile());
+		URL resource = getClass().getResource(WORKITEMCOMMENTS_CSV);
+		if (resource == null) {
+			System.err
+					.println("Testfile missing: example-workitemcomments.csv");
+			return;
+		}
+		p.setProperty(CSVDiscussionEventDAO.PROP_FILENAME, resource.getFile());
 		p.setProperty(CSVDiscussionEventDAO.PROP_ID_COL, "4");
 		p.setProperty(CSVDiscussionEventDAO.PROP_DISC_ID_COL, "1");
 		p.setProperty(CSVDiscussionEventDAO.PROP_CONTENT_COL, "0");
@@ -55,8 +62,13 @@ public class CSVDiscussionEventDAOTest {
 	@Test
 	public void testGetDiscussionEvent() {
 		Properties p = new Properties();
-		p.setProperty(CSVDiscussionEventDAO.PROP_FILENAME, getClass()
-				.getResource("/example-workitemcomments.csv").getFile());
+		URL resource = getClass().getResource(WORKITEMCOMMENTS_CSV);
+		if (resource == null) {
+			System.err
+					.println("Testfile missing: example-workitemcomments.csv");
+			return;
+		}
+		p.setProperty(CSVDiscussionEventDAO.PROP_FILENAME, resource.getFile());
 		p.setProperty(CSVDiscussionEventDAO.PROP_ID_COL, "4");
 		p.setProperty(CSVDiscussionEventDAO.PROP_DISC_ID_COL, "1");
 		p.setProperty(CSVDiscussionEventDAO.PROP_CONTENT_COL, "0");

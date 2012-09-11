@@ -18,19 +18,21 @@ public class HighlightRelatedDiscussions {
 
 	public HighlightRelatedDiscussions() throws IOException {
 		URL url = getClass().getResource("/related-work-items.txt");
-		BufferedReader r;
+		if (url != null) {
+			BufferedReader r;
 			r = new BufferedReader(new InputStreamReader(new FileInputStream(
 					url.getFile())));
 
-		String line = r.readLine();
-		while (line != null) {
-			if (line.startsWith("=")) {
-				int[] tmp = Util.stringToID(line);
-				this.ids.add(tmp);
+			String line = r.readLine();
+			while (line != null) {
+				if (line.startsWith("=")) {
+					int[] tmp = Util.stringToID(line);
+					this.ids.add(tmp);
+				}
+				line = r.readLine();
 			}
-			line = r.readLine();
+			r.close();
 		}
-		r.close();
 	}
 
 	public int[] getRelatedDiscussionIDs(int id) {

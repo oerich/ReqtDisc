@@ -14,7 +14,8 @@ public class AbstractDiscussionMetricTest {
 
 	@Test
 	public void testComputeMetric() {
-		// a few discussions we believe belong together.
+		// a few discussions we believe belong together. 
+		// TODO we might want to remove this test here, as it tests, whether related workitems are found.
 		Discussion d1 = DiscussionFactory.getInstance().getDiscussion(13764);
 		Discussion d2 = DiscussionFactory.getInstance().getDiscussion(40774);
 		Discussion d3 = DiscussionFactory.getInstance().getDiscussion(40775);

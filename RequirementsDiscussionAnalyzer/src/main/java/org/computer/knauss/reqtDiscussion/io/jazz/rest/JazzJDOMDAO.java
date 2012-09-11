@@ -153,8 +153,8 @@ public class JazzJDOMDAO implements IJazzDAO, IDiscussionEventDAO,
 		return this.limit;
 	}
 
-	public synchronized String[] getWorkitemsForType()
-			throws JDOMException, IOException, Exception {
+	public synchronized String[] getWorkitemsForType() throws JDOMException,
+			IOException, Exception {
 		// 0. check if project area is set
 		if (this.selectedProjectArea == null) {
 			StringBuffer b = new StringBuffer();
@@ -167,7 +167,7 @@ public class JazzJDOMDAO implements IJazzDAO, IDiscussionEventDAO,
 					"Select a project area first! Available: "
 							+ b.toString().substring(0, b.length() - 1));
 		}
-		
+
 		// 1. get the services.xml for project area and obtain the query URI
 		String servicesURI = "";
 		for (Object o : getProjectAreaList()) {
@@ -185,7 +185,7 @@ public class JazzJDOMDAO implements IJazzDAO, IDiscussionEventDAO,
 		simpleQueryURI = simpleQueryURI.trim() + STORY_QUERY + getLimit();
 		// System.out.println("Query URL: "
 		// + URLDecoder.decode(simpleQueryURI, "UTF-8"));
-		
+
 		// 2. create a simple query according to
 		// http://open-services.net/bin/view/Main/CmQuerySyntaxV1
 		r = this.webConnector.performHTTPSRequestXML(simpleQueryURI);
@@ -195,7 +195,8 @@ public class JazzJDOMDAO implements IJazzDAO, IDiscussionEventDAO,
 		this.changeRequestsXML.setDocument(r.getEntity().getContent());
 		List<Object> crElements = this.changeRequestsXML
 				.select("//ChangeRequest");
-		moreQuery = ((Attribute)this.changeRequestsXML.select("//Collection/@next").get(0)).getValue();
+		// moreQuery =
+		// ((Attribute)this.changeRequestsXML.select("//Collection/@next").get(0)).getValue();
 		String[] ret = new String[crElements.size()];
 		for (int i = 0; i < ret.length; i++) {
 			Element e = (Element) crElements.get(i);
@@ -242,7 +243,8 @@ public class JazzJDOMDAO implements IJazzDAO, IDiscussionEventDAO,
 	public static void main(String[] args) throws JDOMException, IOException,
 			Exception {
 		Properties p = new Properties();
-		p.load(new FileInputStream("jazz-properties.txt"));
+		p.load(new FileInputStream(JazzJDOMDAO.class.getResource(
+				"jazz-properties.txt").getFile()));
 
 		DialogBasedJazzAccessConfiguration config = new DialogBasedJazzAccessConfiguration();
 		config.configure(p);
