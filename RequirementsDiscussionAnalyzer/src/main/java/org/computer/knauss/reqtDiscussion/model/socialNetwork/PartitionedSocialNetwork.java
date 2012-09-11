@@ -1,7 +1,6 @@
 package org.computer.knauss.reqtDiscussion.model.socialNetwork;
 
 import org.computer.knauss.reqtDiscussion.model.Discussion;
-import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
 import org.computer.knauss.reqtDiscussion.model.ModelElement;
 import org.computer.knauss.reqtDiscussion.model.partition.IDiscussionOverTimePartition;
 

@@ -152,6 +152,11 @@ public class MetricFrame extends JFrame {
 		final BoxAndWhiskerRenderer renderer = new BoxAndWhiskerRenderer();
 		// renderer.setFillBox(false);
 		renderer.setToolTipGenerator(new BoxAndWhiskerToolTipGenerator());
+		// XXX deprecated. Instead use:
+		// renderer.setBaseToolTipGenerator(new
+		// BoxAndWhiskerToolTipGenerator());
+		// renderer.setSeriesToolTipGenerator(0, new
+		// BoxAndWhiskerToolTipGenerator());
 		final CategoryPlot plot = new CategoryPlot(dataset, xAxis, yAxis,
 				renderer);
 
