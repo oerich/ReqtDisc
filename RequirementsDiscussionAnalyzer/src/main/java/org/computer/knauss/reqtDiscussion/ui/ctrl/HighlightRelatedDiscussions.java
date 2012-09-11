@@ -1,8 +1,10 @@
 package org.computer.knauss.reqtDiscussion.ui.ctrl;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.List;
 import java.util.Vector;
 
@@ -15,8 +17,10 @@ public class HighlightRelatedDiscussions {
 	private List<int[]> ids = new Vector<int[]>();
 
 	public HighlightRelatedDiscussions() throws IOException {
-		BufferedReader r = new BufferedReader(new FileReader(
-				"related-work-items.txt"));
+		URL url = getClass().getResource("/related-work-items.txt");
+		BufferedReader r;
+			r = new BufferedReader(new InputStreamReader(new FileInputStream(
+					url.getFile())));
 
 		String line = r.readLine();
 		while (line != null) {
