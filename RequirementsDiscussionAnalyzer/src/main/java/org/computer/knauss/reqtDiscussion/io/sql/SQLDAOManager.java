@@ -3,6 +3,7 @@ package org.computer.knauss.reqtDiscussion.io.sql;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Properties;
 
 import org.computer.knauss.reqtDiscussion.io.DAOException;
@@ -60,18 +61,24 @@ public class SQLDAOManager implements IDAOManager {
 		return this.discussionEventClassificationDAO;
 	}
 
-	private Properties getProperties() {
+	private Properties getProperties() throws DAOException {
 		if (this.properties == null) {
 			properties = new Properties();
 			try {
+				URL propertyURL = getClass().getResource(
+						this.connectionPropertyFilename);
+				if (propertyURL == null)
+					throw new DAOException("Could not locate property file '"
+							+ this.connectionPropertyFilename + "'!");
+				properties.load(new FileInputStream(propertyURL.getFile()));
 				properties.load(new FileInputStream(getClass().getResource(
-						this.connectionPropertyFilename).getFile()));
-				properties
-						.load(new FileInputStream(this.queryPropertyFilename));
+						this.queryPropertyFilename).getFile()));
 			} catch (FileNotFoundException e) {
-				e.printStackTrace();
+				throw new DAOException("Could not find property file '"
+						+ e.getMessage() + "'!", e);
 			} catch (IOException e) {
-				e.printStackTrace();
+				throw new DAOException("Could not read property file '"
+						+ e.getMessage() + "'!", e);
 			}
 		}
 		return this.properties;

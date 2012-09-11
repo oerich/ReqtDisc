@@ -1,6 +1,7 @@
 package org.computer.knauss.reqtDiscussion.ui.ctrl;
 
 import java.awt.event.ActionEvent;
+import java.util.concurrent.ExecutionException;
 
 import javax.swing.AbstractAction;
 import javax.swing.JOptionPane;
@@ -9,8 +10,6 @@ import javax.swing.SwingWorker;
 
 import org.computer.knauss.reqtDiscussion.io.DAOException;
 import org.computer.knauss.reqtDiscussion.io.IDAOProgressMonitor;
-import org.computer.knauss.reqtDiscussion.io.IDiscussionDAO;
-import org.computer.knauss.reqtDiscussion.model.Discussion;
 import org.computer.knauss.reqtDiscussion.ui.uiModel.DiscussionTableModel;
 
 public class LoadDiscussions extends AbstractCommand {
@@ -37,7 +36,7 @@ public class LoadDiscussions extends AbstractCommand {
 		private int totalSteps;
 
 		@Override
-		public Void doInBackground() {
+		public Void doInBackground() throws DAOException {
 			progressMonitor = new ProgressMonitor(null,
 					getValue(AbstractAction.NAME), null, 0, 100);
 			progressMonitor.setMillisToDecideToPopup(0);
@@ -46,22 +45,7 @@ public class LoadDiscussions extends AbstractCommand {
 
 			DiscussionTableModel wtm = getDiscussionTableModel();
 
-			Discussion[] data = new Discussion[0];
-
-			try {
-				IDiscussionDAO dao = getDiscussionDAO();
-				data = dao.getDiscussions(this);
-			} catch (DAOException e) {
-				e.printStackTrace();
-				JOptionPane.showMessageDialog(null,
-						"Could not load Discussions:\n "
-								+ e.getCause().getClass().getSimpleName()
-								+ ":\n" + e.getCause().getMessage(),
-						"Data Access Exception", JOptionPane.ERROR_MESSAGE);
-			}
-
-			// System.out.println("Loaded data, setting it into the model.");
-			wtm.setDiscussions(data);
+			wtm.setDiscussions(getDiscussionDAO().getDiscussions(this));
 			return null;
 		}
 
@@ -69,6 +53,26 @@ public class LoadDiscussions extends AbstractCommand {
 		public void done() {
 			setProgress(100);
 			progressMonitor.close();
+			try {
+				get();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			} catch (ExecutionException e) {
+				e.printStackTrace();
+				Throwable cause = e.getCause();
+				Throwable causeCause = cause.getCause();
+				String errorType = cause.getClass().getSimpleName();
+				String errorMessage = cause.getMessage();
+				if (causeCause != null) {
+					errorType += "(" + causeCause.getClass().getSimpleName()
+							+ ")";
+					errorMessage += "(" + causeCause.getMessage() + ")";
+				}
+				JOptionPane.showMessageDialog(null,
+						"Could not load Discussions:\n" + errorType + ":\n"
+								+ errorMessage, "Data Access Exception",
+						JOptionPane.ERROR_MESSAGE);
+			}
 		}
 
 		@Override

@@ -3,6 +3,7 @@ package org.computer.knauss.reqtDiscussion.io.jazz;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Properties;
 
 import org.computer.knauss.reqtDiscussion.io.DAOException;
@@ -33,14 +34,15 @@ public class JazzDAOManager implements IDAOManager {
 			Properties p = new Properties();
 
 			try {
-				p.load(new FileInputStream(getClass().getResource(
-						"jazz-properties.txt").getFile()));
+				URL propertyResource = getClass().getResource(
+						"jazz-properties.txt");
+				if (propertyResource == null)
+					throw new DAOException("Could not locate property file!");
+				p.load(new FileInputStream(propertyResource.getFile()));
 			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				throw new DAOException("Could not find property file!", e);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				throw new DAOException("Could not read property file!", e);
 			}
 
 			DialogBasedJazzAccessConfiguration config = new DialogBasedJazzAccessConfiguration();
