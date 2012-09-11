@@ -241,19 +241,19 @@ public class JazzJDOMDAOTest {
 			this.requestURL.push(requestURL);
 			if (requestURL.endsWith("rootservices"))
 				this.response.entity.stream = new FileInputStream(
-						"testfiles/jazz.xml/rootservices.xml");
+						getClass().getResource("jazz.xml/rootservices.xml").getFile());
 			else if (requestURL.endsWith("catalog"))
 				this.response.entity.stream = new FileInputStream(
-						"testfiles/jazz.xml/catalog.xml");
+						getClass().getResource("jazz.xml/catalog.xml").getFile());
 			else if (requestURL.endsWith("services.xml"))
 				this.response.entity.stream = new FileInputStream(
-						"testfiles/jazz.xml/services.xml");
+						getClass().getResource("jazz.xml/services.xml").getFile());
 			else if (requestURL.endsWith("workitems")
 					|| requestURL.indexOf("query") > 0) {
 				// if this file is missing, store the results of the query under
 				// its name.
 				this.response.entity.stream = new FileInputStream(
-						"testfiles/jazz.xml/50-stories.xml");
+						getClass().getResource("jazz.xml/50-stories.xml").getFile());
 			} else if (requestURL.endsWith("comments")) {
 				// if this file is missing, store the comments for the first
 				// story in '50-stories.xml' into that file.
@@ -261,10 +261,10 @@ public class JazzJDOMDAOTest {
 				if (requestURL
 						.equals("https://jazz.net/jazz/oslc/workitems/_IJb7oHULEd-GXMPQSbP08A/rtc_cm:comments"))
 					this.response.entity.stream = new FileInputStream(
-							"testfiles/jazz.xml/117709-comments.xml");
+							getClass().getResource("jazz.xml/117709-comments.xml").getFile());
 				else
 					this.response.entity.stream = new FileInputStream(
-							"testfiles/jazz.xml/50162-comments.xml");
+							getClass().getResource("jazz.xml/50162-comments.xml").getFile());
 
 			}
 			return response;
