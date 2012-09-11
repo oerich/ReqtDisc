@@ -1,4 +1,4 @@
-<inventory>
+<inventory next="some url" type="1">
     <book year="2000">
         <title>Snow Crash</title>
         <author>Neal Stephenson</author>
