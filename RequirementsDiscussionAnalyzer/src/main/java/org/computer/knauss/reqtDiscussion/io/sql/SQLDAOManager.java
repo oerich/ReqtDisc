@@ -64,15 +64,13 @@ public class SQLDAOManager implements IDAOManager {
 		if (this.properties == null) {
 			properties = new Properties();
 			try {
-				properties.load(new FileInputStream(
-						this.connectionPropertyFilename));
+				properties.load(new FileInputStream(getClass().getResource(
+						this.connectionPropertyFilename).getFile()));
 				properties
 						.load(new FileInputStream(this.queryPropertyFilename));
 			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

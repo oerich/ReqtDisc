@@ -19,9 +19,10 @@ import org.xml.sax.SAXException;
 
 public class XPathHelperTest {
 
-	private static final String DOORS_GENERAL_EXAMPLE_TESTFILE_PATH = "testfiles/jazz.xml/general_test.xml";
-
-	private static final String BOOK_EXAMPLE_TESTFILE_PATH = "testfiles/jazz.xml/buchbsp.xml";
+	private static final String DOORS_GENERAL_EXAMPLE_TESTFILE_PATH = XPathHelperTest.class
+			.getResource("/jazz.xml/general_test.xml").getFile();
+	private static final String BOOK_EXAMPLE_TESTFILE_PATH = XPathHelperTest.class
+			.getResource("/jazz.xml/buchbsp.xml").getFile();
 
 	private XPathHelper helper;
 
@@ -78,29 +79,77 @@ public class XPathHelperTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testSelectWithNullNode() throws XPathExpressionException,
-			SAXException, IOException, ParserConfigurationException, JDOMException {
-		helper.setDocument(new FileInputStream(DOORS_GENERAL_EXAMPLE_TESTFILE_PATH));
+			SAXException, IOException, ParserConfigurationException,
+			JDOMException {
+		helper.setDocument(new FileInputStream(
+				DOORS_GENERAL_EXAMPLE_TESTFILE_PATH));
 		helper.select(null, "//");
 	}
 
-	
 	@Test
-	public void testGetResourcesFromRootservices() throws IOException, JDOMException {
-		FileInputStream documentStream = new FileInputStream("testfiles/jazz.xml/rootservices.xml");
+	public void testGetResourcesFromRootservices() throws IOException,
+			JDOMException {
+		FileInputStream documentStream = new FileInputStream(getClass()
+				.getResource("/jazz.xml/rootservices.xml").getFile());
 		helper.setDocument(documentStream);
-		Attribute queryResource = (Attribute) helper.select("//query/@resource").get(0);
-		assertEquals("https://jazz.net/jazz/query",queryResource.getValue());
+		Attribute queryResource = (Attribute) helper
+				.select("//query/@resource").get(0);
+		assertEquals("https://jazz.net/jazz/query", queryResource.getValue());
 		documentStream.close();
 	}
-	
+
 	@Test
-	public void testRelativeSelect() throws FileNotFoundException, JDOMException, IOException {
-		helper.setDocument(new FileInputStream(BOOK_EXAMPLE_TESTFILE_PATH));
+	public void testRelativeSelect() throws FileNotFoundException,
+			JDOMException, IOException {
+		FileInputStream documentStream = new FileInputStream(
+				BOOK_EXAMPLE_TESTFILE_PATH);
+		helper.setDocument(documentStream);
 		List<Object> books = helper.select("//book");
-		
+
 		assertEquals(3, books.size());
-		assertEquals("14.95", ((Element)helper.select(books.get(0), ".//price").get(0)).getValue());
-		assertEquals("5.99", ((Element)helper.select(books.get(1), ".//price").get(0)).getValue());
-		assertEquals("7.50", ((Element)helper.select(books.get(2), ".//price").get(0)).getValue());
+		assertEquals("14.95", ((Element) helper
+				.select(books.get(0), ".//price").get(0)).getValue());
+		assertEquals("5.99", ((Element) helper.select(books.get(1), ".//price")
+				.get(0)).getValue());
+		assertEquals("7.50", ((Element) helper.select(books.get(2), ".//price")
+				.get(0)).getValue());
+		documentStream.close();
+	}
+
+	@Test
+	public void testSelectAttributes() throws FileNotFoundException,
+			JDOMException, IOException {
+		FileInputStream documentStream = new FileInputStream(
+				BOOK_EXAMPLE_TESTFILE_PATH);
+		helper.setDocument(documentStream);
+
+		assertEquals(1, helper.select("//inventory").size());
+		assertEquals("some url", ((Attribute) helper
+				.select("//inventory/@next").get(0)).getValue());
+
+		documentStream.close();
+
+	}
+
+	@Test
+	public void testGetJazzNextChangeRequestsQuery() throws JDOMException,
+			IOException {
+		FileInputStream documentStream = new FileInputStream(getClass()
+				.getResource("/jazz.xml/50-stories.xml").getFile());
+		helper.setDocument(documentStream);
+		assertEquals(50, helper.select("//ChangeRequest").size());
+
+		List<Object> list = helper.select(".");
+		assertEquals(1, list.size());
+
+		// assertEquals("Colection", ((Document) list.get(0)).getRootElement()
+		// .getChildren().get(0).getName());
+
+		Attribute nextAttrib = (Attribute) helper.select("//Colection/@next")
+				.get(0);
+		assertEquals(
+				"https://jazz.net/jazz/oslc/contexts/_1w8aQEmJEduIY7C8B09Hyw/workitems?oslc_cm.pageSize=50&amp;_resultToken=_qMxpUbTjEeGVKOo_oXemGQ&amp;_startIndex=50",
+				nextAttrib.getValue());
+		documentStream.close();
 	}
 }

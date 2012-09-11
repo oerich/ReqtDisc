@@ -2,6 +2,7 @@ package org.computer.knauss.reqtDiscussion.io.jazz.rest;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -19,7 +20,6 @@ import org.apache.http.StatusLine;
 import org.apache.http.message.BasicHttpResponse;
 import org.computer.knauss.reqtDiscussion.io.DAOException;
 import org.computer.knauss.reqtDiscussion.io.Util;
-import org.computer.knauss.reqtDiscussion.io.jazz.IJazzDAO;
 import org.computer.knauss.reqtDiscussion.model.Discussion;
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
 import org.computer.knauss.reqtDiscussion.model.DiscussionFactory;
@@ -29,7 +29,7 @@ import org.junit.Test;
 
 public class JazzJDOMDAOTest {
 
-	private IJazzDAO dao;
+	private JazzJDOMDAO dao;
 	private ConnectorProbe connector;
 
 	@Before
@@ -55,7 +55,7 @@ public class JazzJDOMDAOTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void testSelectWorkitemsNoProjectArea() throws JDOMException,
 			IOException, Exception {
-		this.dao.getWorkitemsForType("any", false);
+		this.dao.getWorkitemsForType();
 	}
 
 	@Test
@@ -99,7 +99,7 @@ public class JazzJDOMDAOTest {
 	public void testSimpleQuery() throws JDOMException, IOException, Exception {
 		this.dao.setProjectArea("Rational Team Concert");
 
-		String[] results = this.dao.getWorkitemsForType("any", false);
+		String[] results = this.dao.getWorkitemsForType();
 		assertEquals(50, results.length);
 
 		// System.out.println(results[0]);
@@ -199,16 +199,23 @@ public class JazzJDOMDAOTest {
 	public void testGetNextDiscussion() throws DAOException {
 		this.dao.setProjectArea("Rational Team Concert");
 
-		for (int i = 0; i < 51; i++) {
-			Discussion d = this.dao.getNextDiscussion();
-			// we have 50 stories, before the testframe gives the same file
-			// again
-			if (i == 0 || i == 50)
-				assertEquals("Should be the same for i=0 and i=50 (i=" + i
-						+ ")", 117709, d.getID());
-			else
-				assertFalse(117709 == d.getID());
-		}
+		assertFalse(this.dao.hasMoreDiscussions());
+		Discussion[] d = this.dao.getDiscussions();
+		assertTrue(this.dao.hasMoreDiscussions());
+
+		
+		// this.dao.setProjectArea("Rational Team Concert");
+		//
+		// for (int i = 0; i < 51; i++) {
+		// Discussion d = this.dao.getNextDiscussion();
+		// // we have 50 stories, before the testframe gives the same file
+		// // again
+		// if (i == 0 || i == 50)
+		// assertEquals("Should be the same for i=0 and i=50 (i=" + i
+		// + ")", 117709, d.getID());
+		// else
+		// assertFalse(117709 == d.getID());
+		// }
 	}
 
 	@Test(expected = UnsupportedOperationException.class)

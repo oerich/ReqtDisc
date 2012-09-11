@@ -1,13 +1,14 @@
 package org.computer.knauss.reqtDiscussion.io.csv;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
 import java.util.Properties;
 
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
 import org.junit.Before;
 import org.junit.Test;
-
 
 public class CSVDiscussionEventDAOTest {
 
@@ -34,18 +35,13 @@ public class CSVDiscussionEventDAOTest {
 
 		}
 
-		p.setProperty(CSVDiscussionEventDAO.PROP_FILENAME,
-				"testfiles/example-workitemcomments.csv");
-		p.setProperty(CSVDiscussionEventDAO.PROP_ID_COL,
-				"4");
-		p.setProperty(CSVDiscussionEventDAO.PROP_DISC_ID_COL,
-				"1");
-		p.setProperty(CSVDiscussionEventDAO.PROP_CONTENT_COL,
-				"0");
-		p.setProperty(CSVDiscussionEventDAO.PROP_CDATE_COL,
-				"2");
-		p.setProperty(CSVDiscussionEventDAO.PROP_CREATOR_COL,
-				"3");
+		p.setProperty(CSVDiscussionEventDAO.PROP_FILENAME, getClass()
+				.getResource("/example-workitemcomments.csv").getFile());
+		p.setProperty(CSVDiscussionEventDAO.PROP_ID_COL, "4");
+		p.setProperty(CSVDiscussionEventDAO.PROP_DISC_ID_COL, "1");
+		p.setProperty(CSVDiscussionEventDAO.PROP_CONTENT_COL, "0");
+		p.setProperty(CSVDiscussionEventDAO.PROP_CDATE_COL, "2");
+		p.setProperty(CSVDiscussionEventDAO.PROP_CREATOR_COL, "3");
 		p.setProperty(CSVDiscussionEventDAO.PROP_START_ROW, "1");
 		this.testDao.configure(p);
 		DiscussionEvent[] events = this.testDao
@@ -59,25 +55,20 @@ public class CSVDiscussionEventDAOTest {
 	@Test
 	public void testGetDiscussionEvent() {
 		Properties p = new Properties();
-		p.setProperty(CSVDiscussionEventDAO.PROP_FILENAME,
-				"testfiles/example-workitemcomments.csv");
-		p.setProperty(CSVDiscussionEventDAO.PROP_ID_COL,
-				"4");
-		p.setProperty(CSVDiscussionEventDAO.PROP_DISC_ID_COL,
-				"1");
-		p.setProperty(CSVDiscussionEventDAO.PROP_CONTENT_COL,
-				"0");
-		p.setProperty(CSVDiscussionEventDAO.PROP_CDATE_COL,
-				"2");
-		p.setProperty(CSVDiscussionEventDAO.PROP_CREATOR_COL,
-				"3");
+		p.setProperty(CSVDiscussionEventDAO.PROP_FILENAME, getClass()
+				.getResource("/example-workitemcomments.csv").getFile());
+		p.setProperty(CSVDiscussionEventDAO.PROP_ID_COL, "4");
+		p.setProperty(CSVDiscussionEventDAO.PROP_DISC_ID_COL, "1");
+		p.setProperty(CSVDiscussionEventDAO.PROP_CONTENT_COL, "0");
+		p.setProperty(CSVDiscussionEventDAO.PROP_CDATE_COL, "2");
+		p.setProperty(CSVDiscussionEventDAO.PROP_CREATOR_COL, "3");
 		p.setProperty(CSVDiscussionEventDAO.PROP_START_ROW, "1");
 		this.testDao.configure(p);
-	DiscussionEvent event = this.testDao.getDiscussionEvent(54132);
-	
-	assertNotNull(event);
-	assertEquals(event.getID(), 54132);
-	assertEquals("user4955", event.getCreator());
+		DiscussionEvent event = this.testDao.getDiscussionEvent(54132);
+
+		assertNotNull(event);
+		assertEquals(event.getID(), 54132);
+		assertEquals("user4955", event.getCreator());
 	}
 
 }
