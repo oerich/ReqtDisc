@@ -17,6 +17,9 @@ public interface IDiscussionDAO {
 
 	public Discussion getNextDiscussion() throws DAOException;
 
+	public Discussion[] getMoreDiscussions(IDAOProgressMonitor progressMonitor)
+			throws DAOException;
+
 	/**
 	 * Should only return discussions on appropriate level of abstraction (i.e.
 	 * stories in jazz).
@@ -35,4 +38,12 @@ public interface IDiscussionDAO {
 
 	public void storeDiscussions(Discussion[] ds) throws DAOException;
 
+	/**
+	 * Especially when loading data from the web, it is delivered in chunks
+	 * (typically 50-100 items, e.g. from jazz.net). This method should return
+	 * true, if there is more data available.
+	 * 
+	 * @return
+	 */
+	public boolean hasMoreDiscussions();
 }

@@ -45,6 +45,8 @@ public class JazzJDOMDAO implements IJazzDAO, IDiscussionEventDAO,
 	private int limit = 10;
 	private int discussionIndex;
 
+	private String moreQuery;
+
 	public JazzJDOMDAO(IJazzAccessConfiguration config) throws DAOException {
 		this(new FormBasedAuthenticatedConnector(config));
 	}
@@ -151,8 +153,7 @@ public class JazzJDOMDAO implements IJazzDAO, IDiscussionEventDAO,
 		return this.limit;
 	}
 
-	@Override
-	public synchronized String[] getWorkitemsForType(String type, boolean deep)
+	public synchronized String[] getWorkitemsForType()
 			throws JDOMException, IOException, Exception {
 		// 0. check if project area is set
 		if (this.selectedProjectArea == null) {
@@ -166,6 +167,7 @@ public class JazzJDOMDAO implements IJazzDAO, IDiscussionEventDAO,
 					"Select a project area first! Available: "
 							+ b.toString().substring(0, b.length() - 1));
 		}
+		
 		// 1. get the services.xml for project area and obtain the query URI
 		String servicesURI = "";
 		for (Object o : getProjectAreaList()) {
@@ -183,6 +185,7 @@ public class JazzJDOMDAO implements IJazzDAO, IDiscussionEventDAO,
 		simpleQueryURI = simpleQueryURI.trim() + STORY_QUERY + getLimit();
 		// System.out.println("Query URL: "
 		// + URLDecoder.decode(simpleQueryURI, "UTF-8"));
+		
 		// 2. create a simple query according to
 		// http://open-services.net/bin/view/Main/CmQuerySyntaxV1
 		r = this.webConnector.performHTTPSRequestXML(simpleQueryURI);
@@ -192,6 +195,7 @@ public class JazzJDOMDAO implements IJazzDAO, IDiscussionEventDAO,
 		this.changeRequestsXML.setDocument(r.getEntity().getContent());
 		List<Object> crElements = this.changeRequestsXML
 				.select("//ChangeRequest");
+		moreQuery = ((Attribute)this.changeRequestsXML.select("//Collection/@next").get(0)).getValue();
 		String[] ret = new String[crElements.size()];
 		for (int i = 0; i < ret.length; i++) {
 			Element e = (Element) crElements.get(i);
@@ -245,7 +249,7 @@ public class JazzJDOMDAO implements IJazzDAO, IDiscussionEventDAO,
 		JazzJDOMDAO dao = new JazzJDOMDAO(config);
 		dao.setProjectArea("Rational Team Concert");
 
-		for (String element : dao.getWorkitemsForType("any", false)) {
+		for (String element : dao.getWorkitemsForType()) {
 			System.out.println(element);
 		}
 	}
@@ -262,7 +266,7 @@ public class JazzJDOMDAO implements IJazzDAO, IDiscussionEventDAO,
 			// 1. make sure that the change requests are already loaded.
 			// Otherwise query them.
 			if (this.changeRequestsXML == null) {
-				getWorkitemsForType(null, false);
+				getWorkitemsForType();
 			}
 
 			// 2. identify the change request with the discussion id and get the
@@ -340,7 +344,7 @@ public class JazzJDOMDAO implements IJazzDAO, IDiscussionEventDAO,
 			// Otherwise
 			// query them.
 			if (this.changeRequestsXML == null) {
-				getWorkitemsForType(null, false);
+				getWorkitemsForType();
 			}
 
 			// 2. identify the changerequest with the discussionid and get the
@@ -421,7 +425,7 @@ public class JazzJDOMDAO implements IJazzDAO, IDiscussionEventDAO,
 			progressMonitor.setStep(step++,
 					"Loading change requests from jazz.net");
 			if (this.changeRequestsXML == null) {
-				getWorkitemsForType(null, false);
+				getWorkitemsForType();
 			}
 
 			// 2. identify the changerequest with the discussionid and get the
@@ -475,6 +479,18 @@ public class JazzJDOMDAO implements IJazzDAO, IDiscussionEventDAO,
 	@Override
 	public void storeIncidents(Incident[] incidents) throws DAOException {
 		throw new UnsupportedOperationException("Read only DAO!");
+	}
+
+	@Override
+	public Discussion[] getMoreDiscussions(IDAOProgressMonitor progressMonitor)
+			throws DAOException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean hasMoreDiscussions() {
+		return this.moreQuery != null;
 	}
 
 }

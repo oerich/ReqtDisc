@@ -42,20 +42,4 @@ public interface IJazzDAO extends IDiscussionDAO, IDiscussionEventDAO {
 	 */
 	public int getLimit();
 
-	/**
-	 * For simplicity, we start to return workitems as xml fragments with
-	 * discussion.
-	 * 
-	 * @param type
-	 *            defaults to story
-	 * @param deep
-	 *            should we follow links to subitems?
-	 * @return workitems as xml fragments with discussion
-	 * @throws Exception
-	 * @throws IOException
-	 * @throws JDOMException
-	 */
-	public String[] getWorkitemsForType(String type, boolean deep)
-			throws JDOMException, IOException, Exception;
-
 }

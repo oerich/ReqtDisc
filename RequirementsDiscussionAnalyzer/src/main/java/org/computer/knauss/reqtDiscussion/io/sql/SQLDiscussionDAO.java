@@ -232,4 +232,17 @@ public class SQLDiscussionDAO extends AbstractSQLDAO implements IDiscussionDAO {
 		return 0;
 	}
 
+	@Override
+	public Discussion[] getMoreDiscussions(IDAOProgressMonitor progressMonitor)
+			throws DAOException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean hasMoreDiscussions() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

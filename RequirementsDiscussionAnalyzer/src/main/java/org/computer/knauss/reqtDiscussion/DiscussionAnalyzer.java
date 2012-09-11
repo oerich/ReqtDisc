@@ -12,6 +12,7 @@ import org.computer.knauss.reqtDiscussion.model.VisualizationConfiguration;
 import org.computer.knauss.reqtDiscussion.ui.DiscussionAnalyzerFrame;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.AbstractCommand;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.ChooseDAOManager;
+import org.computer.knauss.reqtDiscussion.ui.ctrl.ConfigureJazzDAO;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.InsertOrUpdateDiscussionEventClassification;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.LoadDiscussionByID;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.LoadDiscussions;
@@ -63,6 +64,8 @@ public class DiscussionAnalyzer {
 					configureCommand(new SetReferenceClassifierName()));
 			daFrame.addAction(DiscussionAnalyzerFrame.EDIT_MENU,
 					configureCommand(new ChooseDAOManager()));
+			daFrame.addAction(DiscussionAnalyzerFrame.EDIT_MENU,
+					configureCommand(new ConfigureJazzDAO()));
 
 			daFrame.getEditClassificationFrame()
 					.setInsertOrUpdateCommand(

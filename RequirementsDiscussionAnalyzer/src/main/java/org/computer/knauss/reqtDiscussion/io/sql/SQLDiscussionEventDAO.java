@@ -116,13 +116,15 @@ public class SQLDiscussionEventDAO extends AbstractSQLDAO implements
 					stat = getPreparedStatement(this.properties
 							.getProperty(DELETE_DISCUSSION_EVENT));
 					stat.setInt(1, i);
-					stat.executeUpdate();
+					System.out.println("Updating " + stat.executeUpdate()
+							+ " existing events for discussion " + i);
 				}
 				stat = getPreparedStatement(this.properties
 						.getProperty(INSERT_DISCUSSION_EVENT));
 
 				for (DiscussionEvent de : des) {
 					int id = de.getID();
+
 					if (id < 0)
 						id = getNextDiscussionEventID();
 					stat.setInt(1, id);

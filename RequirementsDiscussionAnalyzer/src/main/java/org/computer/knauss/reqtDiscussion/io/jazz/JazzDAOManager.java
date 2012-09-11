@@ -33,7 +33,8 @@ public class JazzDAOManager implements IDAOManager {
 			Properties p = new Properties();
 
 			try {
-				p.load(new FileInputStream("jazz-properties.txt"));
+				p.load(new FileInputStream(getClass().getResource(
+						"jazz-properties.txt").getFile()));
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
