@@ -1,4 +1,4 @@
-package org.computer.knauss.reqtDiscussion.io.jazz.util;
+package org.computer.knauss.reqtDiscussion.io.util;
 
 import java.io.IOException;
 import java.io.InputStream;

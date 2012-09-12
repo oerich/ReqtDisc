@@ -1,4 +1,4 @@
-package org.computer.knauss.reqtDiscussion.io.jazz.util;
+package org.computer.knauss.reqtDiscussion.io.util;
 
 import static org.junit.Assert.assertEquals;
 
@@ -11,6 +11,7 @@ import java.util.List;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
 
+import org.computer.knauss.reqtDiscussion.io.util.XPathHelper;
 import org.jdom2.Attribute;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
