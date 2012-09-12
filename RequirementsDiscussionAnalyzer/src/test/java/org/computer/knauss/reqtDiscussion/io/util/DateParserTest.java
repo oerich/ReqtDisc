@@ -51,8 +51,11 @@ public class DateParserTest {
 
 		Date d2 = new Date(111, 10, 29);
 		assertTrue("We also have the timemillis", d2.before(date));
+		
+		assertNotNull(DateParser.JIRA_PARSER.parseDate("Wed, 16 Aug 2006 13:55:42 +0200"));
 	}
 
+	@SuppressWarnings("deprecation")
 	@Test
 	public void testMixtureOfFormats() {
 		Date d1 = new Date(111, 10, 29);

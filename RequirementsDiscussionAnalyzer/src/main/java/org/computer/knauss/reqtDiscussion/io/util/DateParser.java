@@ -74,9 +74,16 @@ public abstract class DateParser {
 			}
 			// int year = Integer.parseInt(splitDateString[3]);
 
-			// System.out.println(year + "-" + month + "-" + day);
+			String monthString = "";
+			if (month < 9)
+				monthString = 0 + String.valueOf(month + 1);
+			else
+				monthString = String.valueOf(month + 1);
 
-			Date ret = Date.valueOf(splitDateString[3] + "-" + (month + 1)
+			// System.out.println(splitDateString[3] + "-" + monthString
+			// + "-" + splitDateString[1]);
+
+			Date ret = Date.valueOf(splitDateString[3] + "-" + monthString
 					+ "-" + splitDateString[1]);
 
 			Time t = Time.valueOf(splitDateString[4]);
@@ -107,6 +114,7 @@ public abstract class DateParser {
 						}
 
 					}
+					System.out.println("Could not parse '" + str + "'");
 					return null;
 				}
 			};
