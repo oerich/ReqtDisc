@@ -1,0 +1,12 @@
+# File name with the jira export. Leave empty to get a file chooser dialog (TOD)
+# file=
+
+# Get the items and then, relatively, the required information
+xpath.discussion=//item
+xpath.discussionID=substring(key,5)
+xpath.discussionCreated=created
+xpath.discussionCreator=reporter
+xpath.discussionDescription=description
+#xpath.discussionSummary=summary
+xpath.discussionSummary=title
+xpath.discussionType=type

@@ -59,7 +59,7 @@ public abstract class DateParser {
 	static final DateParser JIRA_PARSER = new DateParser() {
 
 		private String[] MONTHS = new String[] { "Jan", "Feb", "Mar", "Apr",
-				"Mai", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+				"May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
 
 		@Override
 		public Date parseDate(String str) {
@@ -80,11 +80,17 @@ public abstract class DateParser {
 			else
 				monthString = String.valueOf(month + 1);
 
-			// System.out.println(splitDateString[3] + "-" + monthString
-			// + "-" + splitDateString[1]);
+			String dayString = "";
+			if (splitDateString[1].length() == 1) {
+				dayString = "0" + splitDateString[1];
+			} else
+				dayString = splitDateString[1];
 
-			Date ret = Date.valueOf(splitDateString[3] + "-" + monthString
-					+ "-" + splitDateString[1]);
+			String dateString = splitDateString[3] + "-" + monthString + "-"
+					+ dayString;
+			// System.out.println(dateString);
+
+			Date ret = Date.valueOf(dateString);
 
 			Time t = Time.valueOf(splitDateString[4]);
 			// System.out.println(ret);

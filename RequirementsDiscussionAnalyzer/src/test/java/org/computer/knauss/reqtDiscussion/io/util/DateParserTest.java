@@ -53,6 +53,7 @@ public class DateParserTest {
 		assertTrue("We also have the timemillis", d2.before(date));
 		
 		assertNotNull(DateParser.JIRA_PARSER.parseDate("Wed, 16 Aug 2006 13:55:42 +0200"));
+		assertNotNull(DateParser.JIRA_PARSER.parseDate("Tue, 3 Mar 2009 01:05:53 +0100"));
 	}
 
 	@SuppressWarnings("deprecation")

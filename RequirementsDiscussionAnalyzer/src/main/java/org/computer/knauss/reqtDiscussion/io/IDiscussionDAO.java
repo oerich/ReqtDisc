@@ -1,5 +1,7 @@
 package org.computer.knauss.reqtDiscussion.io;
 
+import java.util.Properties;
+
 import org.computer.knauss.reqtDiscussion.model.Discussion;
 
 public interface IDiscussionDAO {
@@ -46,4 +48,6 @@ public interface IDiscussionDAO {
 	 * @return
 	 */
 	public boolean hasMoreDiscussions();
+
+	public void configure(Properties properties) throws DAOException;
 }
