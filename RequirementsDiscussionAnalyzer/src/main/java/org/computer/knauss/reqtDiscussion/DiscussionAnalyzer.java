@@ -8,6 +8,7 @@ import javax.swing.JFrame;
 import org.computer.knauss.reqtDiscussion.io.DAORegistry;
 import org.computer.knauss.reqtDiscussion.io.jazz.JazzDAOManager;
 import org.computer.knauss.reqtDiscussion.io.sql.SQLDAOManager;
+import org.computer.knauss.reqtDiscussion.io.xml.XmlDAOManager;
 import org.computer.knauss.reqtDiscussion.model.VisualizationConfiguration;
 import org.computer.knauss.reqtDiscussion.ui.DiscussionAnalyzerFrame;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.AbstractCommand;
@@ -51,7 +52,8 @@ public class DiscussionAnalyzer {
 					"/ballroom-postgres-properties.txt",
 					"/psql-ballroom-schema-queries.txt"));
 			daoRegistry.register("jazz.net", new JazzDAOManager());
-
+			daoRegistry.register("Jira (xml)", new XmlDAOManager(
+					"/jira-xml-properties.txt"));
 			// add the commands
 			daFrame.addAction(DiscussionAnalyzerFrame.DATA_MENU,
 					configureCommand(new LoadDiscussions()));

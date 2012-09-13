@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Properties;
 
+import javax.swing.JFileChooser;
+
 import org.computer.knauss.reqtDiscussion.io.DAOException;
 import org.computer.knauss.reqtDiscussion.io.IDAOProgressMonitor;
 import org.computer.knauss.reqtDiscussion.io.IDiscussionDAO;
@@ -163,8 +165,16 @@ public class XMLDiscussionDAO implements IDiscussionDAO, IDiscussionEventDAO {
 		// throw exception if important property is missing
 		if (properties == null)
 			throw new DAOException("Configuration is null");
-		if (!properties.containsKey(PROP_FILENAME))
-			throw new DAOException("No filename specified.");
+		if (!properties.containsKey(PROP_FILENAME)) {
+			JFileChooser fc = new JFileChooser();
+			int i = fc.showOpenDialog(null);
+			if (i == JFileChooser.APPROVE_OPTION) {
+				properties.setProperty(PROP_FILENAME, fc.getSelectedFile()
+						.getName());
+			} else {
+				throw new DAOException("No filename specified.");
+			}
+		}
 		if (!properties.containsKey(PROP_DISCUSSION_PATH))
 			throw new DAOException("No path to discussion specified.");
 		if (!properties.containsKey(PROP_DISCUSSION_ID_PATH))
@@ -189,7 +199,7 @@ public class XMLDiscussionDAO implements IDiscussionDAO, IDiscussionEventDAO {
 	@Override
 	public DiscussionEvent getDiscussionEvent(int id) throws DAOException {
 		throw new DAOException(
-				"XML data source: Extaction of single discussion events not implemented.");
+				"XML data source: Extraction of single discussion events not implemented.");
 	}
 
 	@Override

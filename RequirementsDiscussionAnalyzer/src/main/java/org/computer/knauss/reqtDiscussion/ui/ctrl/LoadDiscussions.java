@@ -83,7 +83,8 @@ public class LoadDiscussions extends AbstractCommand {
 
 		@Override
 		public void setStep(int step) {
-			progressMonitor.setProgress((step * 100) / this.totalSteps);
+			if (this.totalSteps != 0)
+				progressMonitor.setProgress((step * 100) / this.totalSteps);
 		}
 
 		@Override
