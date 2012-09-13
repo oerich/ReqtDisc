@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Properties;
 
 import org.computer.knauss.reqtDiscussion.io.DAOException;
 import org.computer.knauss.reqtDiscussion.io.IIncidentDAO;
@@ -20,9 +21,9 @@ public class SQLIncidentDAO extends AbstractSQLDAO implements IIncidentDAO {
 	public Incident[] getIncidentsForDiscussion(int discussionID)
 			throws DAOException {
 		try {
-//			if (!existsTable(this.properties
-//					.getProperty(INCIDENT_TABLE_NAME)))
-//				return new Incident[0];
+			// if (!existsTable(this.properties
+			// .getProperty(INCIDENT_TABLE_NAME)))
+			// return new Incident[0];
 			PreparedStatement stat = getPreparedStatement(this.properties
 					.getProperty(SELECT_INCIDENT_BY_DISCUSSION_ID));
 			List<Incident> res = new LinkedList<Incident>();
@@ -32,7 +33,8 @@ public class SQLIncidentDAO extends AbstractSQLDAO implements IIncidentDAO {
 				Incident de = new Incident();
 				de.setName(rs.getString("field"));
 				de.setDate(rs.getDate("modifydate"));
-				de.setSummary(rs.getString("oldcontent") + " => " + rs.getString("newcontent"));
+				de.setSummary(rs.getString("oldcontent") + " => "
+						+ rs.getString("newcontent"));
 
 				res.add(de);
 			}
@@ -47,6 +49,18 @@ public class SQLIncidentDAO extends AbstractSQLDAO implements IIncidentDAO {
 	public void storeIncidents(Incident[] incidents) throws DAOException {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	protected Properties getDefaultProperties() {
+		Properties p = new Properties();
+
+		p.setProperty(SELECT_INCIDENT_BY_DISCUSSION_ID, "");
+		p.setProperty(CREATE_INCIDENT_TABLE, "");
+		p.setProperty(DROP_INCIDENT_TABLE, "");
+		p.setProperty(INCIDENT_TABLE_NAME, "");
+
+		return p;
 	}
 
 }

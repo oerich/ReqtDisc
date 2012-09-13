@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import org.computer.knauss.reqtDiscussion.io.DAOException;
 import org.computer.knauss.reqtDiscussion.io.IDiscussionEventClassificationDAO;
@@ -185,6 +186,21 @@ public class SQLDiscussionEventDAO extends AbstractSQLDAO implements
 		if (!rs.next())
 			return 1;
 		return rs.getInt(1) + 1;
+	}
+
+	@Override
+	protected Properties getDefaultProperties() {
+		Properties p = new Properties();
+
+		p.setProperty(SELECT_DISCUSSION_EVENT_BY_DISCUSSION_ID, "");
+		p.setProperty(INSERT_DISCUSSION_EVENT, "");
+		p.setProperty(DELETE_DISCUSSION_EVENT, "");
+		p.setProperty(CREATE_DISCUSSION_EVENT_TABLE, "");
+		p.setProperty(DROP_DISCUSSION_EVENT_TABLE, "");
+		p.setProperty(SELECT_NEW_DISCUSSION_EVENT_ID, "");
+		p.setProperty(DISCUSSION_EVENT_TABLE_NAME, "");
+
+		return p;
 	}
 
 }

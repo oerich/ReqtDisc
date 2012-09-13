@@ -1,6 +1,7 @@
 package org.computer.knauss.reqtDiscussion.ui.ctrl;
 
 import java.awt.event.ActionEvent;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import javax.swing.AbstractAction;
@@ -10,6 +11,7 @@ import javax.swing.SwingWorker;
 
 import org.computer.knauss.reqtDiscussion.io.DAOException;
 import org.computer.knauss.reqtDiscussion.io.IDAOProgressMonitor;
+import org.computer.knauss.reqtDiscussion.ui.EditPropertiesFrame;
 import org.computer.knauss.reqtDiscussion.ui.uiModel.DiscussionTableModel;
 
 public class LoadDiscussions extends AbstractCommand {
@@ -24,6 +26,23 @@ public class LoadDiscussions extends AbstractCommand {
 
 	@Override
 	public void actionPerformed(ActionEvent event) {
+		// Let's see if the configuration is okay...
+		try {
+			System.out.println("Let's check the configuration");
+			Map<String, String> remarks = getDiscussionDAO().checkConfiguration();
+			System.out.println("We have " + remarks.size() + " configuration errors");
+			if (remarks.size() >0){
+				EditPropertiesFrame epf = new EditPropertiesFrame();
+				epf.setProperties(getDiscussionDAO().getConfiguration());
+				epf.setRemarks(remarks);
+				epf.pack();
+				epf.setVisible(true);
+			}
+		} catch (DAOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		task = new ClassificationItemTask();
 		// task.addPropertyChangeListener(this);
 		task.execute();

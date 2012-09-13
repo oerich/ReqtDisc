@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Properties;
 
 import org.computer.knauss.reqtDiscussion.io.DAOException;
 import org.computer.knauss.reqtDiscussion.io.IDiscussionEventClassificationDAO;
@@ -107,5 +108,22 @@ public class SQLDiscussionEventClassificationDAO extends AbstractSQLDAO
 						+ this.properties
 								.getProperty(DISCUSSION_EVENT_CLASSIFICATION_TABLE_NAME)
 						+ ".");
+	}
+
+	@Override
+	protected Properties getDefaultProperties() {
+		Properties p = new Properties();
+
+		p.setProperty(DISCUSSION_EVENT_CLASSIFICATION_TABLE_NAME, "");
+		p.setProperty(
+				SELECT_DISCUSSION_EVENT_CLASSIFICATION_BY_DISCUSSION_EVENT_ID,
+				"");
+		p.setProperty(INSERT_DISCUSSION_EVENT_CLASSIFICATION, "");
+		p.setProperty(UPDATE_DISCUSSION_EVENT_CLASSIFICATION, "");
+		p.setProperty(EXISTS_DISCUSSION_EVENT_CLASSIFICATION, "");
+		p.setProperty(CREATE_DISCUSSION_EVENT_CLASSIFICATION_TABLE, "");
+		p.setProperty(DROP_DISCUSSION_EVENT_CLASSIFICATION_TABLE, "");
+
+		return p;
 	}
 }

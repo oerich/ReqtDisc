@@ -4,8 +4,11 @@ import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 
 import org.computer.knauss.reqtDiscussion.io.DAOException;
 import org.computer.knauss.reqtDiscussion.io.IDAOProgressMonitor;
@@ -243,6 +246,44 @@ public class SQLDiscussionDAO extends AbstractSQLDAO implements IDiscussionDAO {
 	public boolean hasMoreDiscussions() {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public Map<String, String> checkConfiguration() {
+		Map<String, String> ret = new HashMap<String, String>();
+		if (!getConfiguration().containsKey(DISCUSSION_TABLE)
+				|| "".equals(getConfiguration().getProperty(DISCUSSION_TABLE)))
+			ret.put(DISCUSSION_TABLE,
+					"Missing: Name of Relation that holds Discussions");
+		if (!getConfiguration().containsKey(SELECT_DISCUSSION_BY_ID)
+				|| "".equals(getConfiguration().getProperty(
+						SELECT_DISCUSSION_BY_ID)))
+			ret.put(SELECT_DISCUSSION_BY_ID,
+					"Missing: Statement to select discussions by id");
+		if (!getConfiguration().containsKey(SELECT_ALL_DISCUSSIONS))
+			ret.put(SELECT_ALL_DISCUSSIONS,
+					"Missing: Statement to select all discussions");
+		if (!getConfiguration().containsKey(NUMBER_OF_ALL_DISCUSSIONS))
+			ret.put(NUMBER_OF_ALL_DISCUSSIONS,
+					"Missing: Statement to determine number of all discussions");
+
+		return ret;
+	}
+
+	@Override
+	protected Properties getDefaultProperties() {
+		Properties ret = new Properties();
+
+		ret.setProperty(DISCUSSION_TABLE, "");
+		ret.setProperty(SELECT_DISCUSSION_BY_ID, "");
+		ret.setProperty(SELECT_ALL_DISCUSSIONS, "");
+		ret.setProperty(NUMBER_OF_ALL_DISCUSSIONS, "");
+		ret.setProperty(UPDATE_DISCUSSION, "");
+		ret.setProperty(INSERT_DISCUSSION, "");
+		ret.setProperty(CREATE_DISCUSSION_TABLE, "");
+		ret.setProperty(DROP_DISCUSSION_TABLE, "");
+
+		return ret;
 	}
 
 }

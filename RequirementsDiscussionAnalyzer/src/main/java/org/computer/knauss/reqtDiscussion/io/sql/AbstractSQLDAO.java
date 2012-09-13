@@ -10,7 +10,7 @@ import java.util.Properties;
 
 import org.computer.knauss.reqtDiscussion.io.DAOException;
 
-public class AbstractSQLDAO {
+public abstract class AbstractSQLDAO {
 
 	private static final String EXISTS_TABLE = "EXISTS_TABLE";
 	private Map<String, PreparedStatement> statementCache = new HashMap<String, PreparedStatement>();
@@ -18,12 +18,17 @@ public class AbstractSQLDAO {
 
 	public AbstractSQLDAO() {
 		super();
+		this.properties = getDefaultProperties();
 	}
 
 	public synchronized void configure(Properties p) throws DAOException {
 		ConnectionManager.getInstance().configure(p);
-		this.properties = p;
+		for (String key : p.stringPropertyNames()) {
+			this.properties.setProperty(key, p.getProperty(key));
+		}
 	}
+	
+	protected abstract Properties getDefaultProperties();
 	
 	protected boolean existsTable(String tableName) throws SQLException {
 		PreparedStatement ps = getPreparedStatement(this.properties.getProperty(EXISTS_TABLE));
@@ -51,4 +56,9 @@ public class AbstractSQLDAO {
 		return this.statementCache.get(name);
 	}
 
+	public Properties getConfiguration() {
+		if (properties != null)
+			return properties;
+		return null;
+	}
 }

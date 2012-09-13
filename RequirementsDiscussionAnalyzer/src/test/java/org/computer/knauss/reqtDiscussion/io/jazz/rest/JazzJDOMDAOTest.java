@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.sql.Date;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Stack;
 
@@ -281,6 +282,18 @@ public class JazzJDOMDAOTest {
 		@Override
 		public void configure(Properties properties) {
 
+		}
+
+		@Override
+		public Properties getConfiguration() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public Map<String, String> checkConfiguration() {
+			// TODO Auto-generated method stub
+			return null;
 		}
 
 	}

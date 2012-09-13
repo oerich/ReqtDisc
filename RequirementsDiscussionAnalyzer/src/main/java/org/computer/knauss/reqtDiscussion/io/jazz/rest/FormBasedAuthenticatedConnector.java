@@ -345,4 +345,16 @@ public class FormBasedAuthenticatedConnector implements IWebConnector {
 		getJazzAccessConfiguration().configure(properties);
 	}
 
+	@Override
+	public Properties getConfiguration() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Map<String, String> checkConfiguration() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
