@@ -31,8 +31,7 @@ public class XMLDiscussionDAO implements IDiscussionDAO {
 
 	@Override
 	public Discussion getDiscussion(int discussionID) throws DAOException {
-		// TODO Auto-generated method stub
-		return null;
+		throw new RuntimeException("Not implemented yet (XMLDiscussionDAO)");
 	}
 
 	@Override
@@ -51,16 +50,12 @@ public class XMLDiscussionDAO implements IDiscussionDAO {
 	@Override
 	public Discussion[] getDiscussions(IDAOProgressMonitor progressMonitor)
 			throws DAOException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Discussion[] getDiscussions() throws DAOException {
+		progressMonitor.setStep(0, "Loading configuration...");
 		checkProperties(this.properties);
 
 		Discussion[] result = new Discussion[0];
 
+		progressMonitor.setStep(0, "Reading file...");
 		issueParser = new XPathHelper();
 		try {
 			issueParser.setDocument(new FileInputStream(getClass().getResource(
@@ -75,27 +70,37 @@ public class XMLDiscussionDAO implements IDiscussionDAO {
 
 		List<Object> issueList = issueParser.select(this.properties
 				.getProperty(PROP_DISCUSSION_PATH));
-
+		progressMonitor.setTotalSteps(issueList.size());
 		result = new Discussion[issueList.size()];
 		for (int i = 0; i < result.length; i++) {
-			Object issue = issueList.get(i);
-			int id = Integer.parseInt(getValue(issue,
-					this.properties.getProperty(PROP_DISCUSSION_ID_PATH)));
-			Discussion d = DiscussionFactory.getInstance().getDiscussion(id);
-			d.setCreationDate(DateParser.getInstance().parseDate(
-					getValue(issue, this.properties
-							.getProperty(PROP_DISCUSSION_CREATED_PATH))));
-			d.setCreator(getValue(issue,
-					this.properties.getProperty(PROP_DISCUSSION_CREATOR_PATH)));
-			d.setDescription(getValue(issue, this.properties
-					.getProperty(PROP_DISCUSSION_DESCRIPTION_PATH)));
-			d.setSummary(getValue(issue,
-					this.properties.getProperty(PROP_DISCUSSION_SUMMARY_PATH)));
-			d.setType(getValue(issue,
-					this.properties.getProperty(PROP_DISCUSSION_TYPE_PATH)));
-			result[i] = d;
+			progressMonitor.setStep(i, "Loading discussion " + i + "...");
+			result[i] = extractDiscussion(issueList.get(i));
 		}
+		progressMonitor.setStep(issueList.size(), "done.");
 		return result;
+	}
+
+	@Override
+	public Discussion[] getDiscussions() throws DAOException {
+		return getDiscussions(IDAOProgressMonitor.NULL_PROGRESS_MONITOR);
+	}
+
+	private Discussion extractDiscussion(Object issue) {
+		int id = Integer.parseInt(getValue(issue,
+				this.properties.getProperty(PROP_DISCUSSION_ID_PATH)));
+		Discussion d = DiscussionFactory.getInstance().getDiscussion(id);
+		d.setCreationDate(DateParser.getInstance().parseDate(
+				getValue(issue, this.properties
+						.getProperty(PROP_DISCUSSION_CREATED_PATH))));
+		d.setCreator(getValue(issue,
+				this.properties.getProperty(PROP_DISCUSSION_CREATOR_PATH)));
+		d.setDescription(getValue(issue,
+				this.properties.getProperty(PROP_DISCUSSION_DESCRIPTION_PATH)));
+		d.setSummary(getValue(issue,
+				this.properties.getProperty(PROP_DISCUSSION_SUMMARY_PATH)));
+		d.setType(getValue(issue,
+				this.properties.getProperty(PROP_DISCUSSION_TYPE_PATH)));
+		return d;
 	}
 
 	private String getValue(Object relativeTo, String xpath) {
@@ -109,19 +114,18 @@ public class XMLDiscussionDAO implements IDiscussionDAO {
 
 	@Override
 	public void storeDiscussion(Discussion d) throws DAOException {
-		// TODO Auto-generated method stub
-
+		throw new DAOException(
+				"This data source is read only! Please choose a different data source.");
 	}
 
 	@Override
 	public void storeDiscussions(Discussion[] ds) throws DAOException {
-		// TODO Auto-generated method stub
-
+		throw new DAOException(
+				"This data source is read only! Please choose a different data source.");
 	}
 
 	@Override
 	public boolean hasMoreDiscussions() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
