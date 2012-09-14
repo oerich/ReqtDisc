@@ -3,10 +3,15 @@ package org.computer.knauss.reqtDiscussion.io.sql;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
-public class ConnectionManager {
+import org.computer.knauss.reqtDiscussion.io.IConfigurable;
 
+public class ConnectionManager implements IConfigurable {
+
+	private static final String PROP_URL = "url";
 	private static ConnectionManager INSTANCE = null;
 	private Connection connection;
 	private Properties properties;
@@ -23,7 +28,7 @@ public class ConnectionManager {
 
 	public Connection getConnection() {
 		if (this.connection == null) {
-			String url = this.properties.getProperty("url");
+			String url = this.properties.getProperty(PROP_URL);
 			try {
 				if (url.indexOf("postgresql") > -1)
 					Class.forName("org.postgresql.Driver");
@@ -71,6 +76,29 @@ public class ConnectionManager {
 	}
 
 	public void configure(Properties p) {
-		this.properties = p;
+		for (String key : p.stringPropertyNames()) {
+			getConfiguration().setProperty(key, p.getProperty(key));
+		}
+	}
+
+	@Override
+	public Properties getConfiguration() {
+		if (this.properties == null) {
+			this.properties = new Properties();
+			this.properties.setProperty(PROP_URL, "");
+		}
+		return this.properties;
+	}
+
+	@Override
+	public Map<String, String> checkConfiguration() {
+		System.out.println(getClass().getSimpleName() + ".check: "
+				+ this.properties);
+		Map<String, String> ret = new HashMap<String, String>();
+
+		if ("".equals(getConfiguration().getProperty(PROP_URL)))
+			ret.put(PROP_URL,
+					"Missing: URL (e.g. jdbc:<dbms>://<url>:<port>/<database>");
+		return ret;
 	}
 }

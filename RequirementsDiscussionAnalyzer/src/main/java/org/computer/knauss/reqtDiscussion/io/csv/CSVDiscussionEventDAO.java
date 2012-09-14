@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Vector;
 
@@ -180,6 +181,18 @@ public class CSVDiscussionEventDAO implements IDiscussionEventDAO {
 		}
 
 		this.properties = p;
+	}
+
+	@Override
+	public Properties getConfiguration() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Map<String, String> checkConfiguration() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

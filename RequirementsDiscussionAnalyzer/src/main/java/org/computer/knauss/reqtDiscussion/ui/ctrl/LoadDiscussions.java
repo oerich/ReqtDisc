@@ -28,24 +28,30 @@ public class LoadDiscussions extends AbstractCommand {
 	public void actionPerformed(ActionEvent event) {
 		// Let's see if the configuration is okay...
 		try {
-			System.out.println("Let's check the configuration");
-			Map<String, String> remarks = getDiscussionDAO().checkConfiguration();
-			System.out.println("We have " + remarks.size() + " configuration errors");
-			if (remarks.size() >0){
+			// System.out.println("Let's check the configuration");
+			Map<String, String> remarks = getDiscussionDAO()
+					.checkConfiguration();
+			// System.out.println("We have " + remarks.size() +
+			// " configuration errors");
+			// for (String key : remarks.keySet())
+			// System.out.println(" - " + key + ": " + remarks.get(key));
+
+			if (remarks.size() > 0) {
 				EditPropertiesFrame epf = new EditPropertiesFrame();
 				epf.setProperties(getDiscussionDAO().getConfiguration());
 				epf.setRemarks(remarks);
 				epf.pack();
 				epf.setVisible(true);
+			} else {
+				task = new ClassificationItemTask();
+				// task.addPropertyChangeListener(this);
+				task.execute();
 			}
 		} catch (DAOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		task = new ClassificationItemTask();
-		// task.addPropertyChangeListener(this);
-		task.execute();
+
 	}
 
 	class ClassificationItemTask extends SwingWorker<Void, Void> implements

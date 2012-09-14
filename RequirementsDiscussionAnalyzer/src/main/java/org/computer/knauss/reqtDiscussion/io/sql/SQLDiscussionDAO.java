@@ -50,9 +50,9 @@ public class SQLDiscussionDAO extends AbstractSQLDAO implements IDiscussionDAO {
 	@Override
 	public Discussion getDiscussion(int discussionID) throws DAOException {
 		try {
-			if (!existsTable(this.properties.getProperty(DISCUSSION_TABLE)))
+			if (!existsTable(getConfiguration().getProperty(DISCUSSION_TABLE)))
 				return null;
-			PreparedStatement stat = getPreparedStatement(this.properties
+			PreparedStatement stat = getPreparedStatement(getConfiguration()
 					.getProperty(SELECT_DISCUSSION_BY_ID));
 			stat.setInt(1, discussionID);
 			ResultSet rs = stat.executeQuery();
@@ -121,16 +121,16 @@ public class SQLDiscussionDAO extends AbstractSQLDAO implements IDiscussionDAO {
 	public void storeDiscussion(Discussion d) throws DAOException {
 		// discussion(id, topic, description, type, date, status, creator)
 		try {
-			if (!existsTable(this.properties.getProperty(DISCUSSION_TABLE)))
+			if (!existsTable(getConfiguration().getProperty(DISCUSSION_TABLE)))
 				createSchema();
 			PreparedStatement ps = null;
 			int i = 1;
 			if (existsDiscussion(d.getID())) {
-				ps = getPreparedStatement(this.properties
+				ps = getPreparedStatement(getConfiguration()
 						.getProperty(UPDATE_DISCUSSION));
 				ps.setInt(7, d.getID());
 			} else {
-				ps = getPreparedStatement(this.properties
+				ps = getPreparedStatement(getConfiguration()
 						.getProperty(INSERT_DISCUSSION));
 				ps.setInt(1, d.getID());
 				i++;
@@ -157,7 +157,7 @@ public class SQLDiscussionDAO extends AbstractSQLDAO implements IDiscussionDAO {
 	}
 
 	private boolean existsDiscussion(int ID) throws SQLException {
-		PreparedStatement ps = getPreparedStatement(this.properties
+		PreparedStatement ps = getPreparedStatement(getConfiguration()
 				.getProperty(SELECT_DISCUSSION_BY_ID));
 		ps.setInt(1, ID);
 		ResultSet rs = ps.executeQuery();
@@ -169,29 +169,29 @@ public class SQLDiscussionDAO extends AbstractSQLDAO implements IDiscussionDAO {
 
 	void createSchema() throws SQLException {
 		getPreparedStatement(
-				this.properties.getProperty(CREATE_DISCUSSION_TABLE))
+				getConfiguration().getProperty(CREATE_DISCUSSION_TABLE))
 				.executeUpdate();
 		System.out.println("Created Table "
-				+ this.properties.getProperty(DISCUSSION_TABLE) + ".");
+				+ getConfiguration().getProperty(DISCUSSION_TABLE) + ".");
 	}
 
 	public void dropSchema() throws SQLException {
-		getPreparedStatement(this.properties.getProperty(DROP_DISCUSSION_TABLE))
+		getPreparedStatement(getConfiguration().getProperty(DROP_DISCUSSION_TABLE))
 				.execute();
 		System.out.println("Dropped Table "
-				+ this.properties.getProperty(DISCUSSION_TABLE) + ".");
+				+ getConfiguration().getProperty(DISCUSSION_TABLE) + ".");
 	}
 
 	@Override
 	public Discussion[] getDiscussions(IDAOProgressMonitor progressMonitor)
 			throws DAOException {
 		try {
-			if (!existsTable(this.properties.getProperty(DISCUSSION_TABLE)))
+			if (!existsTable(getConfiguration().getProperty(DISCUSSION_TABLE)))
 				return new Discussion[0];
 
 			progressMonitor.setTotalSteps(numberOfAllDiscussions() * 3);
 
-			PreparedStatement stat = getPreparedStatement(this.properties
+			PreparedStatement stat = getPreparedStatement(getConfiguration()
 					.getProperty(SELECT_ALL_DISCUSSIONS));
 			ResultSet rs = stat.executeQuery();
 			List<Discussion> tmp = new LinkedList<Discussion>();
@@ -220,9 +220,9 @@ public class SQLDiscussionDAO extends AbstractSQLDAO implements IDiscussionDAO {
 	}
 
 	private int numberOfAllDiscussions() throws SQLException {
-		if (!existsTable(this.properties.getProperty(DISCUSSION_TABLE)))
+		if (!existsTable(getConfiguration().getProperty(DISCUSSION_TABLE)))
 			return 0;
-		String numberQuery = this.properties
+		String numberQuery = getConfiguration()
 				.getProperty(NUMBER_OF_ALL_DISCUSSIONS);
 		if (numberQuery == null)
 			return -1;
@@ -249,28 +249,6 @@ public class SQLDiscussionDAO extends AbstractSQLDAO implements IDiscussionDAO {
 	}
 
 	@Override
-	public Map<String, String> checkConfiguration() {
-		Map<String, String> ret = new HashMap<String, String>();
-		if (!getConfiguration().containsKey(DISCUSSION_TABLE)
-				|| "".equals(getConfiguration().getProperty(DISCUSSION_TABLE)))
-			ret.put(DISCUSSION_TABLE,
-					"Missing: Name of Relation that holds Discussions");
-		if (!getConfiguration().containsKey(SELECT_DISCUSSION_BY_ID)
-				|| "".equals(getConfiguration().getProperty(
-						SELECT_DISCUSSION_BY_ID)))
-			ret.put(SELECT_DISCUSSION_BY_ID,
-					"Missing: Statement to select discussions by id");
-		if (!getConfiguration().containsKey(SELECT_ALL_DISCUSSIONS))
-			ret.put(SELECT_ALL_DISCUSSIONS,
-					"Missing: Statement to select all discussions");
-		if (!getConfiguration().containsKey(NUMBER_OF_ALL_DISCUSSIONS))
-			ret.put(NUMBER_OF_ALL_DISCUSSIONS,
-					"Missing: Statement to determine number of all discussions");
-
-		return ret;
-	}
-
-	@Override
 	protected Properties getDefaultProperties() {
 		Properties ret = new Properties();
 
@@ -284,6 +262,18 @@ public class SQLDiscussionDAO extends AbstractSQLDAO implements IDiscussionDAO {
 		ret.setProperty(DROP_DISCUSSION_TABLE, "");
 
 		return ret;
+	}
+
+	@Override
+	protected Map<String, String> getMandatoryPropertiesAndHints() {
+		Map<String, String> ret = new HashMap<String, String>();
+		
+		ret.put(DISCUSSION_TABLE, "Name of the table with the discussions");
+		ret.put(SELECT_ALL_DISCUSSIONS, "SQL statement that selects all discussions");
+		ret.put(SELECT_DISCUSSION_BY_ID, "SQL statement that selects a discussion by ID");
+		ret.put(NUMBER_OF_ALL_DISCUSSIONS, "SQL statement that returns the number of discussions in the database");
+		
+		return ret ;
 	}
 
 }
