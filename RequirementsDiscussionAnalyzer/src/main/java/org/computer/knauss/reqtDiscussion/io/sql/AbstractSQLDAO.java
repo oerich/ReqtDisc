@@ -75,8 +75,6 @@ public abstract class AbstractSQLDAO implements IConfigurable {
 
 	@Override
 	public Map<String, String> checkConfiguration() {
-		System.out.println(getClass().getSimpleName() + ".check: "
-				+ getConfiguration());
 		Map<String, String> ret = ConnectionManager.getInstance()
 				.checkConfiguration();
 

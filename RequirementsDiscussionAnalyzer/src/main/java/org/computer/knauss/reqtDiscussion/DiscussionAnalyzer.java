@@ -14,6 +14,7 @@ import org.computer.knauss.reqtDiscussion.ui.DiscussionAnalyzerFrame;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.AbstractCommand;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.ChooseDAOManager;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.ConfigureJazzDAO;
+import org.computer.knauss.reqtDiscussion.ui.ctrl.EditDatasourceCommand;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.InsertOrUpdateDiscussionEventClassification;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.LoadDiscussionByID;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.LoadDiscussions;
@@ -53,10 +54,13 @@ public class DiscussionAnalyzer {
 					"/psql-ballroom-schema-queries.txt"));
 			daoRegistry.register("jazz.net", new JazzDAOManager());
 			daoRegistry.register("Jira (xml)", new XmlDAOManager(
-					"/jira-xml-properties.txt"));
+					"/bizzdesign-jira.txt"));
+//					"/jira-xml-properties.txt"));
 			// add the commands
 			daFrame.addAction(DiscussionAnalyzerFrame.DATA_MENU,
 					configureCommand(new ChooseDAOManager()));
+			daFrame.addAction(DiscussionAnalyzerFrame.DATA_MENU,
+					configureCommand(new EditDatasourceCommand()));
 			daFrame.addAction(DiscussionAnalyzerFrame.DATA_MENU,
 					configureCommand(new LoadDiscussions()));
 			daFrame.addAction(DiscussionAnalyzerFrame.DATA_MENU,

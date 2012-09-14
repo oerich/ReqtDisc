@@ -92,8 +92,6 @@ public class ConnectionManager implements IConfigurable {
 
 	@Override
 	public Map<String, String> checkConfiguration() {
-		System.out.println(getClass().getSimpleName() + ".check: "
-				+ this.properties);
 		Map<String, String> ret = new HashMap<String, String>();
 
 		if ("".equals(getConfiguration().getProperty(PROP_URL)))

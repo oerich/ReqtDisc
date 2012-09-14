@@ -31,6 +31,7 @@ public class EditPropertiesFrame extends JFrame {
 	public EditPropertiesFrame() {
 		super("Edit data source properties");
 		setLayout(new BorderLayout());
+		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 
 		this.tableModel = new PropertiesTableModel();
 
