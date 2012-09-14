@@ -3,11 +3,11 @@ package org.computer.knauss.reqtDiscussion.io.xml;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URL;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-
-import javax.swing.JFileChooser;
 
 import org.computer.knauss.reqtDiscussion.io.DAOException;
 import org.computer.knauss.reqtDiscussion.io.IDAOProgressMonitor;
@@ -47,7 +47,7 @@ public class XMLDiscussionDAO implements IDiscussionDAO, IDiscussionEventDAO {
 	public Discussion getDiscussion(int discussionID) throws DAOException {
 		loadFile();
 		String query = String.format(
-				this.properties.getProperty(PROP_DISCUSSION_BY_ID_PATH),
+				getConfiguration().getProperty(PROP_DISCUSSION_BY_ID_PATH),
 				discussionID);
 		Object issue = issueParser.select(query);
 		return extractDiscussion(issue);
@@ -74,7 +74,7 @@ public class XMLDiscussionDAO implements IDiscussionDAO, IDiscussionEventDAO {
 
 		loadFile();
 
-		List<Object> issueList = issueParser.select(this.properties
+		List<Object> issueList = issueParser.select(getConfiguration()
 				.getProperty(PROP_DISCUSSION_PATH));
 		progressMonitor.setTotalSteps(issueList.size());
 		result = new Discussion[issueList.size()];
@@ -87,11 +87,16 @@ public class XMLDiscussionDAO implements IDiscussionDAO, IDiscussionEventDAO {
 	}
 
 	private void loadFile() throws DAOException {
-		checkProperties(this.properties);
 		issueParser = new XPathHelper();
 		try {
-			issueParser.setDocument(new FileInputStream(getClass().getResource(
-					this.properties.getProperty(PROP_FILENAME)).getFile()));
+			URL resource = getClass().getResource(
+					getConfiguration().getProperty(PROP_FILENAME));
+			if (resource == null) {
+				throw new DAOException("Could not find resource '"
+						+ getConfiguration().getProperty(PROP_FILENAME) + "'");
+			}
+
+			issueParser.setDocument(new FileInputStream(resource.getFile()));
 		} catch (FileNotFoundException e) {
 			throw new DAOException("Could not find file.", e);
 		} catch (JDOMException e) {
@@ -107,20 +112,23 @@ public class XMLDiscussionDAO implements IDiscussionDAO, IDiscussionEventDAO {
 	}
 
 	private Discussion extractDiscussion(Object issue) {
-		int id = Integer.parseInt(getValue(issue,
-				this.properties.getProperty(PROP_DISCUSSION_ID_PATH)));
+		int id = Integer.parseInt(getValue(issue, getConfiguration()
+				.getProperty(PROP_DISCUSSION_ID_PATH)));
 		Discussion d = DiscussionFactory.getInstance().getDiscussion(id);
 		d.setCreationDate(DateParser.getInstance().parseDate(
-				getValue(issue, this.properties
-						.getProperty(PROP_DISCUSSION_CREATED_PATH))));
+				getValue(
+						issue,
+						getConfiguration().getProperty(
+								PROP_DISCUSSION_CREATED_PATH))));
 		d.setCreator(getValue(issue,
-				this.properties.getProperty(PROP_DISCUSSION_CREATOR_PATH)));
+				getConfiguration().getProperty(PROP_DISCUSSION_CREATOR_PATH)));
 		d.setDescription(getValue(issue,
-				this.properties.getProperty(PROP_DISCUSSION_DESCRIPTION_PATH)));
+				getConfiguration()
+						.getProperty(PROP_DISCUSSION_DESCRIPTION_PATH)));
 		d.setSummary(getValue(issue,
-				this.properties.getProperty(PROP_DISCUSSION_SUMMARY_PATH)));
+				getConfiguration().getProperty(PROP_DISCUSSION_SUMMARY_PATH)));
 		d.setType(getValue(issue,
-				this.properties.getProperty(PROP_DISCUSSION_TYPE_PATH)));
+				getConfiguration().getProperty(PROP_DISCUSSION_TYPE_PATH)));
 
 		DiscussionEvent[] events = getDiscussionEventsForDiscussion(issue);
 		for (DiscussionEvent e : events)
@@ -157,29 +165,10 @@ public class XMLDiscussionDAO implements IDiscussionDAO, IDiscussionEventDAO {
 
 	@Override
 	public void configure(Properties properties) throws DAOException {
-		checkProperties(properties);
-
-		this.properties = properties;
-	}
-
-	private void checkProperties(Properties properties) throws DAOException {
-		// throw exception if important property is missing
 		if (properties == null)
-			throw new DAOException("Configuration is null");
-		if (!properties.containsKey(PROP_FILENAME)) {
-			JFileChooser fc = new JFileChooser();
-			int i = fc.showOpenDialog(null);
-			if (i == JFileChooser.APPROVE_OPTION) {
-				properties.setProperty(PROP_FILENAME, fc.getSelectedFile()
-						.getName());
-			} else {
-				throw new DAOException("No filename specified.");
-			}
-		}
-		if (!properties.containsKey(PROP_DISCUSSION_PATH))
-			throw new DAOException("No path to discussion specified.");
-		if (!properties.containsKey(PROP_DISCUSSION_ID_PATH))
-			throw new DAOException("No path to id specified specified.");
+			throw new DAOException("Properties must not be null.");
+		for (String key : properties.stringPropertyNames())
+			getConfiguration().setProperty(key, properties.getProperty(key));
 	}
 
 	@Override
@@ -187,7 +176,7 @@ public class XMLDiscussionDAO implements IDiscussionDAO, IDiscussionEventDAO {
 			throws DAOException {
 		loadFile();
 		String query = String.format(
-				this.properties.getProperty(PROP_DISCUSSION_BY_ID_PATH),
+				getConfiguration().getProperty(PROP_DISCUSSION_BY_ID_PATH),
 				discussionId);
 		Object issue = issueParser.select(query);
 		Discussion d = extractDiscussion(issue);
@@ -216,7 +205,7 @@ public class XMLDiscussionDAO implements IDiscussionDAO, IDiscussionEventDAO {
 
 	private DiscussionEvent[] getDiscussionEventsForDiscussion(Object issue) {
 		List<Object> discussionEventElements = this.issueParser.select(issue,
-				this.properties.getProperty(PROP_DISCUSSION_EVENTS));
+				getConfiguration().getProperty(PROP_DISCUSSION_EVENTS));
 		DiscussionEvent[] ret = new DiscussionEvent[discussionEventElements
 				.size()];
 
@@ -229,27 +218,85 @@ public class XMLDiscussionDAO implements IDiscussionDAO, IDiscussionEventDAO {
 
 	private DiscussionEvent extractDiscussionEvent(Object object) {
 		DiscussionEvent de = new DiscussionEvent();
-		de.setID(Integer.parseInt(getValue(object,
-				this.properties.getProperty(PROP_DISCUSSION_EVENT_ID))));
+		de.setID(Integer.parseInt(getValue(object, getConfiguration()
+				.getProperty(PROP_DISCUSSION_EVENT_ID))));
 		de.setCreator(getValue(object,
-				this.properties.getProperty(PROP_DISCUSSION_EVENT_CREATOR)));
+				getConfiguration().getProperty(PROP_DISCUSSION_EVENT_CREATOR)));
 		de.setContent(getValue(object,
-				this.properties.getProperty(PROP_DISCUSSION_EVENT_CONTENT)));
+				getConfiguration().getProperty(PROP_DISCUSSION_EVENT_CONTENT)));
 		de.setCreationDate(DateParser.getInstance().parseDate(
-				getValue(object, this.properties
-						.getProperty(PROP_DISCUSSION_EVENT_CREATIONDATE))));
+				getValue(
+						object,
+						getConfiguration().getProperty(
+								PROP_DISCUSSION_EVENT_CREATIONDATE))));
 		return de;
 	}
 
 	@Override
 	public Properties getConfiguration() {
-		// TODO Auto-generated method stub
-		return null;
+		if (this.properties == null) {
+			this.properties = new Properties();
+			this.properties.setProperty(PROP_FILENAME, "");
+			this.properties.setProperty(PROP_DISCUSSION_BY_ID_PATH, "");
+			this.properties.setProperty(PROP_DISCUSSION_CREATED_PATH, "");
+			this.properties.setProperty(PROP_DISCUSSION_CREATOR_PATH, "");
+			this.properties.setProperty(PROP_DISCUSSION_DESCRIPTION_PATH, "");
+			this.properties.setProperty(PROP_DISCUSSION_EVENT_CONTENT, "");
+			this.properties.setProperty(PROP_DISCUSSION_EVENT_CREATIONDATE, "");
+			this.properties.setProperty(PROP_DISCUSSION_EVENT_CREATOR, "");
+			this.properties.setProperty(PROP_DISCUSSION_EVENT_ID, "");
+			this.properties.setProperty(PROP_DISCUSSION_EVENTS, "");
+			this.properties.setProperty(PROP_DISCUSSION_ID_PATH, "");
+			this.properties.setProperty(PROP_DISCUSSION_PATH, "");
+			this.properties.setProperty(PROP_DISCUSSION_SUMMARY_PATH, "");
+			this.properties.setProperty(PROP_DISCUSSION_TYPE_PATH, "");
+		}
+		return this.properties;
 	}
 
 	@Override
 	public Map<String, String> checkConfiguration() {
-		// TODO Auto-generated method stub
-		return null;
+		Map<String, String> ret = new HashMap<String, String>();
+
+		check(getConfiguration(), PROP_FILENAME,
+				"Path to an XML file with discussions", ret);
+		check(getConfiguration(),
+				PROP_DISCUSSION_PATH,
+				"XPath expression that selects all discussions in the XML document (e.g. //discussion).",
+				ret);
+		check(getConfiguration(),
+				PROP_DISCUSSION_ID_PATH,
+				"XPath expression that selects the ID of a discussion relative to the discussion element.",
+				ret);
+		check(getConfiguration(), PROP_DISCUSSION_BY_ID_PATH,
+				"XPath to discussion with id %d", ret);
+		check(getConfiguration(), PROP_DISCUSSION_CREATED_PATH,
+				"Relative XPath to creationDate of this discussion", ret);
+		check(getConfiguration(), PROP_DISCUSSION_CREATOR_PATH,
+				"Relative XPath to creator of this discussion", ret);
+		check(getConfiguration(), PROP_DISCUSSION_DESCRIPTION_PATH,
+				"Relative XPath to description of this discussion", ret);
+		check(getConfiguration(), PROP_DISCUSSION_EVENT_CONTENT,
+				"Relative XPath to content of this discussion event", ret);
+		check(getConfiguration(), PROP_DISCUSSION_EVENT_CREATIONDATE,
+				"Relative XPath to creationDate of this discussion event", ret);
+		check(getConfiguration(), PROP_DISCUSSION_EVENT_CREATOR,
+				"Relative XPath to creator of this discussion event", ret);
+		check(getConfiguration(), PROP_DISCUSSION_EVENT_ID,
+				"Relative XPath to ID of this discussion event", ret);
+		check(getConfiguration(), PROP_DISCUSSION_EVENTS,
+				"Relative XPath to events of this discussion", ret);
+		check(getConfiguration(), PROP_DISCUSSION_SUMMARY_PATH,
+				"Relative XPath to summary of this discussion", ret);
+		check(getConfiguration(), PROP_DISCUSSION_TYPE_PATH,
+				"Relative XPath to type of this discussion", ret);
+		return ret;
 	}
+
+	private void check(Properties p, String key, String remark,
+			Map<String, String> report) {
+		if (!p.containsKey(key) || "".equals(p.getProperty(key)))
+			report.put(key, remark);
+	}
+
 }
