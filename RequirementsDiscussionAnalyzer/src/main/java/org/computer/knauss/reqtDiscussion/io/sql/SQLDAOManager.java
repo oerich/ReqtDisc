@@ -67,18 +67,29 @@ public class SQLDAOManager implements IDAOManager {
 			try {
 				URL propertyURL = getClass().getResource(
 						this.connectionPropertyFilename);
-				if (propertyURL == null)
-					throw new DAOException("Could not locate property file '"
+				if (propertyURL != null) {
+					properties.load(new FileInputStream(propertyURL.getFile()));
+				} else {
+					System.err.println("Could not locate property file '"
 							+ this.connectionPropertyFilename + "'!");
-				properties.load(new FileInputStream(propertyURL.getFile()));
-				properties.load(new FileInputStream(getClass().getResource(
-						this.queryPropertyFilename).getFile()));
+				}
+
+				propertyURL = getClass()
+						.getResource(this.queryPropertyFilename);
+				if (propertyURL != null) {
+					properties.load(new FileInputStream(propertyURL.getFile()));
+				} else {
+					System.err.println("Could not locate property file '"
+							+ this.queryPropertyFilename + "'!");
+				}
 			} catch (FileNotFoundException e) {
-				throw new DAOException("Could not find property file '"
-						+ e.getMessage() + "'!", e);
+				System.err.println("Could not find property file '"
+						+ e.getMessage() + "'!");
+				// e.printStackTrace();
 			} catch (IOException e) {
-				throw new DAOException("Could not read property file '"
-						+ e.getMessage() + "'!", e);
+				System.err.println("Could not read property file '"
+						+ e.getMessage() + "'!");
+				// e.printStackTrace();
 			}
 		}
 		return this.properties;

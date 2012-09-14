@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import org.computer.knauss.reqtDiscussion.io.DAOException;
 import org.computer.knauss.reqtDiscussion.io.IDiscussionEventClassificationDAO;
@@ -51,10 +52,10 @@ public class SQLDiscussionEventDAO extends AbstractSQLDAO implements
 	public DiscussionEvent[] getDiscussionEventsOfDiscussion(int discussionId)
 			throws DAOException {
 		try {
-			if (!existsTable(this.properties
-					.getProperty(DISCUSSION_EVENT_TABLE_NAME)))
+			if (!existsTable(getConfiguration().getProperty(
+					DISCUSSION_EVENT_TABLE_NAME)))
 				return new DiscussionEvent[0];
-			PreparedStatement stat = getPreparedStatement(this.properties
+			PreparedStatement stat = getPreparedStatement(getConfiguration()
 					.getProperty(SELECT_DISCUSSION_EVENT_BY_DISCUSSION_ID));
 			List<DiscussionEvent> res = new LinkedList<DiscussionEvent>();
 			stat.setInt(1, discussionId);
@@ -93,8 +94,8 @@ public class SQLDiscussionEventDAO extends AbstractSQLDAO implements
 	public void storeDiscussionEvents(DiscussionEvent[] des)
 			throws DAOException {
 		try {
-			if (!existsTable(this.properties
-					.getProperty(DISCUSSION_EVENT_TABLE_NAME)))
+			if (!existsTable(getConfiguration().getProperty(
+					DISCUSSION_EVENT_TABLE_NAME)))
 				createSchema();
 
 			// How many discussions do we have? (Discussion ID is part of the
@@ -113,14 +114,14 @@ public class SQLDiscussionEventDAO extends AbstractSQLDAO implements
 			for (Integer i : discussionMap.keySet()) {
 				PreparedStatement stat = null;
 				if (existsDiscussion(i)) {
-					stat = getPreparedStatement(this.properties
-							.getProperty(DELETE_DISCUSSION_EVENT));
+					stat = getPreparedStatement(getConfiguration().getProperty(
+							DELETE_DISCUSSION_EVENT));
 					stat.setInt(1, i);
 					System.out.println("Updating " + stat.executeUpdate()
 							+ " existing events for discussion " + i);
 				}
-				stat = getPreparedStatement(this.properties
-						.getProperty(INSERT_DISCUSSION_EVENT));
+				stat = getPreparedStatement(getConfiguration().getProperty(
+						INSERT_DISCUSSION_EVENT));
 
 				for (DiscussionEvent de : des) {
 					int id = de.getID();
@@ -153,24 +154,24 @@ public class SQLDiscussionEventDAO extends AbstractSQLDAO implements
 
 	void createSchema() throws SQLException {
 		getPreparedStatement(
-				this.properties.getProperty(CREATE_DISCUSSION_EVENT_TABLE))
+				getConfiguration().getProperty(CREATE_DISCUSSION_EVENT_TABLE))
 				.executeUpdate();
 		System.out.println("Created Table "
-				+ this.properties.getProperty(DISCUSSION_EVENT_TABLE_NAME)
+				+ getConfiguration().getProperty(DISCUSSION_EVENT_TABLE_NAME)
 				+ ".");
 	}
 
 	public void dropSchema() throws SQLException {
 		getPreparedStatement(
-				this.properties.getProperty(DROP_DISCUSSION_EVENT_TABLE))
+				getConfiguration().getProperty(DROP_DISCUSSION_EVENT_TABLE))
 				.execute();
 		System.out.println("Dropped Table "
-				+ this.properties.getProperty(DISCUSSION_EVENT_TABLE_NAME)
+				+ getConfiguration().getProperty(DISCUSSION_EVENT_TABLE_NAME)
 				+ ".");
 	}
 
 	private boolean existsDiscussion(int ID) throws SQLException {
-		PreparedStatement ps = getPreparedStatement(this.properties
+		PreparedStatement ps = getPreparedStatement(getConfiguration()
 				.getProperty(SELECT_DISCUSSION_EVENT_BY_DISCUSSION_ID));
 		ps.setInt(1, ID);
 		ResultSet rs = ps.executeQuery();
@@ -179,12 +180,39 @@ public class SQLDiscussionEventDAO extends AbstractSQLDAO implements
 	}
 
 	private int getNextDiscussionEventID() throws SQLException {
-		PreparedStatement ps = getPreparedStatement(this.properties
+		PreparedStatement ps = getPreparedStatement(getConfiguration()
 				.getProperty(SELECT_NEW_DISCUSSION_EVENT_ID));
 		ResultSet rs = ps.executeQuery();
 		if (!rs.next())
 			return 1;
 		return rs.getInt(1) + 1;
+	}
+
+	@Override
+	protected Properties getDefaultProperties() {
+		Properties p = new Properties();
+
+		p.setProperty(SELECT_DISCUSSION_EVENT_BY_DISCUSSION_ID, "");
+		p.setProperty(INSERT_DISCUSSION_EVENT, "");
+		p.setProperty(DELETE_DISCUSSION_EVENT, "");
+		p.setProperty(CREATE_DISCUSSION_EVENT_TABLE, "");
+		p.setProperty(DROP_DISCUSSION_EVENT_TABLE, "");
+		p.setProperty(SELECT_NEW_DISCUSSION_EVENT_ID, "");
+		p.setProperty(DISCUSSION_EVENT_TABLE_NAME, "");
+
+		return p;
+	}
+
+	@Override
+	protected Map<String, String> getMandatoryPropertiesAndHints() {
+		Map<String, String> ret = new HashMap<String, String>();
+
+		ret.put(SELECT_DISCUSSION_EVENT_BY_DISCUSSION_ID,
+				"SQL statement that selects the events in a discussion");
+		ret.put(DISCUSSION_EVENT_TABLE_NAME,
+				"Name of the table with the discussion events");
+
+		return ret;
 	}
 
 }

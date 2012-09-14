@@ -3,8 +3,11 @@ package org.computer.knauss.reqtDiscussion.io.sql;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 
 import org.computer.knauss.reqtDiscussion.io.DAOException;
 import org.computer.knauss.reqtDiscussion.io.IDiscussionEventClassificationDAO;
@@ -32,11 +35,12 @@ public class SQLDiscussionEventClassificationDAO extends AbstractSQLDAO
 	public DiscussionEventClassification[] getClassificationsForDiscussionEvent(
 			int discEventID) throws DAOException {
 		try {
-			if (!existsTable(this.properties
-					.getProperty(DISCUSSION_EVENT_CLASSIFICATION_TABLE_NAME)))
+			if (!existsTable(getConfiguration().getProperty(
+					DISCUSSION_EVENT_CLASSIFICATION_TABLE_NAME)))
 				return new DiscussionEventClassification[0];
-			PreparedStatement stat = getPreparedStatement(this.properties
-					.getProperty(SELECT_DISCUSSION_EVENT_CLASSIFICATION_BY_DISCUSSION_EVENT_ID));
+			PreparedStatement stat = getPreparedStatement(getConfiguration()
+					.getProperty(
+							SELECT_DISCUSSION_EVENT_CLASSIFICATION_BY_DISCUSSION_EVENT_ID));
 			List<DiscussionEventClassification> res = new LinkedList<DiscussionEventClassification>();
 			stat.setInt(1, discEventID);
 			ResultSet rs = stat.executeQuery();
@@ -60,10 +64,10 @@ public class SQLDiscussionEventClassificationDAO extends AbstractSQLDAO
 	public void storeDiscussionEventClassification(
 			DiscussionEventClassification classification) throws DAOException {
 		try {
-			if (!existsTable(this.properties
-					.getProperty(DISCUSSION_EVENT_CLASSIFICATION_TABLE_NAME)))
+			if (!existsTable(getConfiguration().getProperty(
+					DISCUSSION_EVENT_CLASSIFICATION_TABLE_NAME)))
 				createSchema();
-			PreparedStatement stat = getPreparedStatement(this.properties
+			PreparedStatement stat = getPreparedStatement(getConfiguration()
 					.getProperty(INSERT_DISCUSSION_EVENT_CLASSIFICATION));
 			// TODO use update if this tuple already exists.
 			stat.setInt(1, classification.getDiscussionEventID());
@@ -87,25 +91,53 @@ public class SQLDiscussionEventClassificationDAO extends AbstractSQLDAO
 
 	public void createSchema() throws SQLException {
 		getPreparedStatement(
-				this.properties
-						.getProperty(CREATE_DISCUSSION_EVENT_CLASSIFICATION_TABLE))
+				getConfiguration().getProperty(
+						CREATE_DISCUSSION_EVENT_CLASSIFICATION_TABLE))
 				.executeUpdate();
-		System.out
-				.println("Created Table "
-						+ this.properties
-								.getProperty(DISCUSSION_EVENT_CLASSIFICATION_TABLE_NAME)
-						+ ".");
+		System.out.println("Created Table "
+				+ getConfiguration().getProperty(
+						DISCUSSION_EVENT_CLASSIFICATION_TABLE_NAME) + ".");
 	}
 
 	public void dropSchema() throws SQLException {
 		getPreparedStatement(
-				this.properties
-						.getProperty(DROP_DISCUSSION_EVENT_CLASSIFICATION_TABLE))
-				.execute();
-		System.out
-				.println("Dropped Table "
-						+ this.properties
-								.getProperty(DISCUSSION_EVENT_CLASSIFICATION_TABLE_NAME)
-						+ ".");
+				getConfiguration().getProperty(
+						DROP_DISCUSSION_EVENT_CLASSIFICATION_TABLE)).execute();
+		System.out.println("Dropped Table "
+				+ getConfiguration().getProperty(
+						DISCUSSION_EVENT_CLASSIFICATION_TABLE_NAME) + ".");
+	}
+
+	@Override
+	protected Properties getDefaultProperties() {
+		Properties p = new Properties();
+
+		p.setProperty(DISCUSSION_EVENT_CLASSIFICATION_TABLE_NAME, "");
+		p.setProperty(
+				SELECT_DISCUSSION_EVENT_CLASSIFICATION_BY_DISCUSSION_EVENT_ID,
+				"");
+		p.setProperty(INSERT_DISCUSSION_EVENT_CLASSIFICATION, "");
+		p.setProperty(UPDATE_DISCUSSION_EVENT_CLASSIFICATION, "");
+		p.setProperty(EXISTS_DISCUSSION_EVENT_CLASSIFICATION, "");
+		p.setProperty(CREATE_DISCUSSION_EVENT_CLASSIFICATION_TABLE, "");
+		p.setProperty(DROP_DISCUSSION_EVENT_CLASSIFICATION_TABLE, "");
+
+		return p;
+	}
+
+	@Override
+	protected Map<String, String> getMandatoryPropertiesAndHints() {
+		Map<String, String> ret = new HashMap<String, String>();
+
+		ret.put(DISCUSSION_EVENT_CLASSIFICATION_TABLE_NAME,
+				"Name of the table that holds the discussion event classfications");
+		ret.put(SELECT_DISCUSSION_EVENT_CLASSIFICATION_BY_DISCUSSION_EVENT_ID,
+				"SQL statement that selects a classification by event id");
+		ret.put(INSERT_DISCUSSION_EVENT_CLASSIFICATION,
+				"SQL statement that inserts a classification");
+		ret.put(UPDATE_DISCUSSION_EVENT_CLASSIFICATION,
+				"SQL statement that updates a classification");
+
+		return ret;
 	}
 }

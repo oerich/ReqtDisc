@@ -3,7 +3,9 @@ package org.computer.knauss.reqtDiscussion.io.jazz.rest;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import org.apache.http.HttpResponse;
@@ -493,6 +495,18 @@ public class JazzJDOMDAO implements IJazzDAO, IDiscussionEventDAO,
 	@Override
 	public boolean hasMoreDiscussions() {
 		return this.moreQuery != null;
+	}
+
+	@Override
+	public Properties getConfiguration() {
+		return this.webConnector.getConfiguration();
+	}
+
+	@Override
+	public Map<String, String> checkConfiguration() {
+		// return this.webConnector.checkConfiguration();
+		// We have a different way to get the information from the user.
+		return new HashMap<String, String>();
 	}
 
 }

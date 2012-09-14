@@ -4,6 +4,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.swing.JFileChooser;
@@ -238,5 +239,17 @@ public class XMLDiscussionDAO implements IDiscussionDAO, IDiscussionEventDAO {
 				getValue(object, this.properties
 						.getProperty(PROP_DISCUSSION_EVENT_CREATIONDATE))));
 		return de;
+	}
+
+	@Override
+	public Properties getConfiguration() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Map<String, String> checkConfiguration() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

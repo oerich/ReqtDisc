@@ -56,6 +56,8 @@ public class DiscussionAnalyzer {
 					"/jira-xml-properties.txt"));
 			// add the commands
 			daFrame.addAction(DiscussionAnalyzerFrame.DATA_MENU,
+					configureCommand(new ChooseDAOManager()));
+			daFrame.addAction(DiscussionAnalyzerFrame.DATA_MENU,
 					configureCommand(new LoadDiscussions()));
 			daFrame.addAction(DiscussionAnalyzerFrame.DATA_MENU,
 					configureCommand(new LoadDiscussionByID()));
@@ -64,8 +66,7 @@ public class DiscussionAnalyzer {
 
 			daFrame.addAction(DiscussionAnalyzerFrame.EDIT_MENU,
 					configureCommand(new SetReferenceClassifierName()));
-			daFrame.addAction(DiscussionAnalyzerFrame.EDIT_MENU,
-					configureCommand(new ChooseDAOManager()));
+
 			daFrame.addAction(DiscussionAnalyzerFrame.EDIT_MENU,
 					configureCommand(new ConfigureJazzDAO()));
 
