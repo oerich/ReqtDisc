@@ -37,12 +37,16 @@ public class JazzDAOManager implements IDAOManager {
 				URL propertyResource = getClass().getResource(
 						"jazz-properties.txt");
 				if (propertyResource == null)
-					throw new DAOException("Could not locate property file!");
-				p.load(new FileInputStream(propertyResource.getFile()));
+					System.err.println("Could not locate property file!");
+				else
+					p.load(new FileInputStream(propertyResource.getFile()));
 			} catch (FileNotFoundException e) {
-				throw new DAOException("Could not find property file!", e);
+				System.err.println("Could not find property file: "
+						+ e.getMessage());
+				e.printStackTrace();
 			} catch (IOException e) {
-				throw new DAOException("Could not read property file!", e);
+				System.err.println("Could not read property file: "
+						+ e.getMessage());
 			}
 
 			DialogBasedJazzAccessConfiguration config = new DialogBasedJazzAccessConfiguration();

@@ -104,12 +104,16 @@ public class DialogBasedJazzAccessConfiguration implements
 	@Override
 	public void configure(Properties properties) {
 		this.userName = properties.getProperty(IJazzDAO.JAZZ_USR);
-		this.password = properties.getProperty(IJazzDAO.JAZZ_PWD).toCharArray();
+		if (properties.getProperty(IJazzDAO.JAZZ_PWD) != null)
+			this.password = properties.getProperty(IJazzDAO.JAZZ_PWD)
+					.toCharArray();
 		this.hostname = properties.getProperty(IJazzDAO.JAZZ_URL);
-		try {
-			this.jazzAuthUrl = new URI(properties.getProperty(IJazzDAO.JAZZ_AUT));
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
-		}
+		if (properties.getProperty(IJazzDAO.JAZZ_AUT) != null)
+			try {
+				this.jazzAuthUrl = new URI(
+						properties.getProperty(IJazzDAO.JAZZ_AUT));
+			} catch (URISyntaxException e) {
+				e.printStackTrace();
+			}
 	}
 }

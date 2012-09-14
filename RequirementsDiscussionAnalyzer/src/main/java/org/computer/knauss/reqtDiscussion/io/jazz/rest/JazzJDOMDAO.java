@@ -3,6 +3,7 @@ package org.computer.knauss.reqtDiscussion.io.jazz.rest;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -503,7 +504,9 @@ public class JazzJDOMDAO implements IJazzDAO, IDiscussionEventDAO,
 
 	@Override
 	public Map<String, String> checkConfiguration() {
-		return this.webConnector.checkConfiguration();
+		// return this.webConnector.checkConfiguration();
+		// We have a different way to get the information from the user.
+		return new HashMap<String, String>();
 	}
 
 }
