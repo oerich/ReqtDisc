@@ -121,6 +121,7 @@ public class EditPropertiesFrame extends JFrame {
 
 	public static void main(String[] args) {
 		EditPropertiesFrame f = new EditPropertiesFrame();
+		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		Properties p = new Properties();
 		p.setProperty("Name", "oerich");
