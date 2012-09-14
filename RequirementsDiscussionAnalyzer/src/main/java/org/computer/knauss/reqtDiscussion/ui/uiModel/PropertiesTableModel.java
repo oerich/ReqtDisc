@@ -40,13 +40,25 @@ public class PropertiesTableModel implements TableModel {
 
 	public void setProperties(Properties p) {
 		this.properties = p;
-		this.keys = this.properties.stringPropertyNames()
-				.toArray(new String[0]);
-		Arrays.sort(this.keys);
+		revalidateData();
 		fireTableChanged();
 	}
 
-	private void fireTableChanged() {
+	private void revalidateData() {
+		this.keys = this.properties.stringPropertyNames()
+				.toArray(new String[0]);
+		Arrays.sort(this.keys);
+	}
+
+	public Properties getProperties() {
+		return this.properties;
+	}
+
+	public void fireTableChanged() {
+		// we might as well revalidate the data, since this method is public and
+		// the properties might change outside our scope.
+		revalidateData();
+
 		TableModelEvent e = new TableModelEvent(this);
 		for (TableModelListener l : this.listeners)
 			l.tableChanged(e);
