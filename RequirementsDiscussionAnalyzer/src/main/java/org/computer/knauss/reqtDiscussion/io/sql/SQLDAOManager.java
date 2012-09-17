@@ -1,6 +1,5 @@
 package org.computer.knauss.reqtDiscussion.io.sql;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
@@ -65,8 +64,7 @@ public class SQLDAOManager implements IDAOManager {
 				for (String fileName : this.configurationFiles) {
 					URL propertyURL = getClass().getResource(fileName);
 					if (propertyURL != null) {
-						properties.load(new FileInputStream(propertyURL
-								.getFile()));
+						properties.load(getClass().getResourceAsStream(fileName));
 					} else {
 						System.err.println("Could not locate property file '"
 								+ fileName + "'!");
