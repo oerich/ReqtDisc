@@ -12,6 +12,8 @@ import org.computer.knauss.reqtDiscussion.io.IConfigurable;
 public class ConnectionManager implements IConfigurable {
 
 	private static final String PROP_URL = "url";
+	private static final String PROP_USER = "user";
+	private static final String PROP_PASS = "pass";
 	private static ConnectionManager INSTANCE = null;
 	private Connection connection;
 	private Properties properties;
@@ -52,7 +54,18 @@ public class ConnectionManager implements IConfigurable {
 			}
 
 			try {
-				this.connection = DriverManager.getConnection(url);
+				String user = this.properties.getProperty(PROP_USER);
+				String pass = this.properties.getProperty(PROP_PASS);
+
+				if (user == null || "".equals(user)) {
+					this.connection = DriverManager.getConnection(url);
+				} else {
+					System.out.println("Create Connection for User " + user);
+					if (pass == null)
+						pass = "";
+					this.connection = DriverManager.getConnection(url, user,
+							pass);
+				}
 			} catch (SQLException e) {
 				System.err
 						.println("Connection Failed! Check output console. You might want to connect to the database: ssh -L 5432:localhost:5432 ballroom.segal.uvic.ca");

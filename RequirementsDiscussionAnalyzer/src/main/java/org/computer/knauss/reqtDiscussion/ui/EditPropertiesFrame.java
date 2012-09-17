@@ -108,7 +108,7 @@ public class EditPropertiesFrame extends JFrame {
 
 	private JFileChooser getFileChooser() {
 		if (this.fileChooser == null)
-			this.fileChooser = new JFileChooser();
+			this.fileChooser = new JFileChooser("./");
 		return this.fileChooser;
 	}
 

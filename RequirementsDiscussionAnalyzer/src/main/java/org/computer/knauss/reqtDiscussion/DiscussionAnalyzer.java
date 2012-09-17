@@ -6,9 +6,8 @@ import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
 
 import org.computer.knauss.reqtDiscussion.io.DAORegistry;
-import org.computer.knauss.reqtDiscussion.io.jazz.JazzDAOManager;
 import org.computer.knauss.reqtDiscussion.io.sql.SQLDAOManager;
-import org.computer.knauss.reqtDiscussion.io.xml.XmlDAOManager;
+import org.computer.knauss.reqtDiscussion.model.IClassificationFilter;
 import org.computer.knauss.reqtDiscussion.model.VisualizationConfiguration;
 import org.computer.knauss.reqtDiscussion.ui.DiscussionAnalyzerFrame;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.AbstractCommand;
@@ -46,16 +45,18 @@ public class DiscussionAnalyzer {
 		try {
 			daoRegistry = DAORegistry.getInstance();
 			// add the data sources
-			daoRegistry.register("PSQL (default)", new SQLDAOManager(
-					"/local-postgres-properties.txt",
-					"/psql-default-schema-queries.txt"));
-			daoRegistry.register("PSQL (ballroom)", new SQLDAOManager(
-					"/ballroom-postgres-properties.txt",
-					"/psql-ballroom-schema-queries.txt"));
-			daoRegistry.register("jazz.net", new JazzDAOManager());
-			daoRegistry.register("Jira (xml)", new XmlDAOManager(
-					"/bizzdesign-jira.txt"));
-//					"/jira-xml-properties.txt"));
+			// daoRegistry.register("PSQL (default)", new SQLDAOManager(
+			// new String[] { "/local-postgres-properties.txt",
+			// "/psql-default-schema-queries.txt" }));
+			// daoRegistry.register("PSQL (ballroom)", new SQLDAOManager(
+			// new String[] { "/ballroom-postgres-properties.txt",
+			// "/psql-ballroom-schema-queries.txt" }));
+			// daoRegistry.register("jazz.net", new JazzDAOManager());
+			// daoRegistry.register("Jira (xml)", new XmlDAOManager(
+			// "./bizzdesign-jira.txt"));
+			daoRegistry.register("Jira (sql)", new SQLDAOManager(
+					new String[] { "/bizzdesign-psql.txt" }));
+			// "/jira-xml-properties.txt"));
 			// add the commands
 			daFrame.addAction(DiscussionAnalyzerFrame.DATA_MENU,
 					configureCommand(new ChooseDAOManager()));
@@ -80,6 +81,8 @@ public class DiscussionAnalyzer {
 
 			daFrame.addAction(DiscussionAnalyzerFrame.STATISTICS_MENU,
 					configureCommand(new ShowStatistics()));
+
+			IClassificationFilter.NAME_FILTER.setName("robin");
 
 		} catch (NullPointerException e) {
 			System.err

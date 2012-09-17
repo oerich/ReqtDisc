@@ -18,15 +18,12 @@ public class SQLDAOManager implements IDAOManager {
 	private SQLDiscussionDAO discussionDAO;
 	private Properties properties;
 	private SQLDiscussionEventDAO discussionEventDAO;
-	private String queryPropertyFilename;
-	private String connectionPropertyFilename;
 	private SQLDiscussionEventClassificationDAO discussionEventClassificationDAO;
 	private IIncidentDAO incidentDAO;
+	private String[] configurationFiles;
 
-	public SQLDAOManager(String connectionPropertyFilename,
-			String queryPropertyFilename) {
-		this.connectionPropertyFilename = connectionPropertyFilename;
-		this.queryPropertyFilename = queryPropertyFilename;
+	public SQLDAOManager(String[] configurationFiles) {
+		this.configurationFiles = configurationFiles;
 	}
 
 	@Override
@@ -65,22 +62,15 @@ public class SQLDAOManager implements IDAOManager {
 		if (this.properties == null) {
 			properties = new Properties();
 			try {
-				URL propertyURL = getClass().getResource(
-						this.connectionPropertyFilename);
-				if (propertyURL != null) {
-					properties.load(new FileInputStream(propertyURL.getFile()));
-				} else {
-					System.err.println("Could not locate property file '"
-							+ this.connectionPropertyFilename + "'!");
-				}
-
-				propertyURL = getClass()
-						.getResource(this.queryPropertyFilename);
-				if (propertyURL != null) {
-					properties.load(new FileInputStream(propertyURL.getFile()));
-				} else {
-					System.err.println("Could not locate property file '"
-							+ this.queryPropertyFilename + "'!");
+				for (String fileName : this.configurationFiles) {
+					URL propertyURL = getClass().getResource(fileName);
+					if (propertyURL != null) {
+						properties.load(new FileInputStream(propertyURL
+								.getFile()));
+					} else {
+						System.err.println("Could not locate property file '"
+								+ fileName + "'!");
+					}
 				}
 			} catch (FileNotFoundException e) {
 				System.err.println("Could not find property file '"

@@ -31,6 +31,9 @@ public abstract class AbstractSQLDAO implements IConfigurable {
 	protected abstract Properties getDefaultProperties();
 
 	protected boolean existsTable(String tableName) throws SQLException {
+		if (tableName == null || "".equals(tableName))
+			return false;
+
 		PreparedStatement ps = getPreparedStatement(getConfiguration()
 				.getProperty(EXISTS_TABLE));
 		ps.setString(1, tableName);
