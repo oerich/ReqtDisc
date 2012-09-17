@@ -61,6 +61,7 @@ public abstract class AbstractSQLDAO implements IConfigurable {
 		return this.statementCache.get(name);
 	}
 
+	@Override
 	public Properties getConfiguration() {
 		// make sure that there is only one properties instance for the SQL DAOs
 		// and the ConnectionManager
