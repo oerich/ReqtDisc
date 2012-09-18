@@ -73,7 +73,13 @@ public class SQLDiscussionEventClassificationDAO extends AbstractSQLDAO
 			stat.setInt(1, classification.getDiscussionEventID());
 			stat.setString(2, classification.getClassifiedby());
 			ResultSet rs = stat.executeQuery();
+			int rows = 0;
 			if (rs.next()) {
+				rows = rs.getInt(1);
+			}
+
+			if (rows > 0) {
+				System.out.println("UPDATE");
 				stat = getPreparedStatement(getConfiguration().getProperty(
 						UPDATE_DISCUSSION_EVENT_CLASSIFICATION));
 				stat.setString(1, classification.getClassification());
@@ -82,6 +88,7 @@ public class SQLDiscussionEventClassificationDAO extends AbstractSQLDAO
 				stat.setInt(4, classification.getDiscussionEventID());
 				stat.setString(5, classification.getClassifiedby());
 			} else {
+				System.out.println("INSERT");
 				stat = getPreparedStatement(getConfiguration().getProperty(
 						INSERT_DISCUSSION_EVENT_CLASSIFICATION));
 				stat.setInt(1, classification.getDiscussionEventID());
@@ -90,11 +97,13 @@ public class SQLDiscussionEventClassificationDAO extends AbstractSQLDAO
 				stat.setDouble(4, classification.getConfidence());
 				stat.setString(5, classification.getComment());
 			}
-			if (1 != stat.executeUpdate()) {
+			int executeUpdate = stat.executeUpdate();
+			if (1 != executeUpdate) {
 				// stat.close();
 				// ConnectionManager.getInstance().closeConnection();
 				throw new DAOException(
-						"INSERT/UPDATE should only affect one row");
+						"INSERT/UPDATE should only affect one row but did affect "
+								+ executeUpdate + " rows.");
 			}
 			// stat.close();
 		} catch (SQLException e) {
