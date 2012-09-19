@@ -76,7 +76,7 @@ public class MetricFrame extends JFrame {
 				if (metric1.getName().equals("Pattern"))
 					chart = createBoxPlot(metric1, metric2);
 				else
-					createScatterPlot(metric1, metric2);
+					chart = createScatterPlot(metric1, metric2);
 				tabbedPane.addTab(metric1.getName() + "/" + metric2.getName(),
 						new ChartPanel(chart));
 
