@@ -40,4 +40,9 @@ public class TimeLengthMetric extends AbstractDiscussionMetric {
 		return this.df;
 	}
 
+	@Override
+	public int measurementType() {
+		return RATIO_TYPE;
+	}
+
 }

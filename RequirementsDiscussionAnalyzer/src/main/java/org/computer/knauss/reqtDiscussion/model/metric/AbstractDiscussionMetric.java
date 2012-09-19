@@ -26,6 +26,12 @@ public abstract class AbstractDiscussionMetric {
 	public final static AbstractDiscussionMetric NUMBER_CONTRIBUTORS = new ContributorNumberMetric();
 	public final static AbstractDiscussionMetric PATTERN_METRIC = new PatternMetric();
 	public final static AbstractDiscussionMetric RESOLUTION_CHANGES_METRIC = new ResolutionChangesMetric();
+	public final static AbstractDiscussionMetric FINAL_RESULUTION_METRIC = new FinalResolutionMetric();
+	public final static int NOMINAL_TYPE = 0;
+	public final static int ORDINAL_TYPE = 1;
+	public final static int INTERVAL_TYPE = 2;
+	public final static int RATIO_TYPE = 3;
+
 	/**
 	 * A set of metrics that is often computed together.
 	 */
@@ -33,7 +39,8 @@ public abstract class AbstractDiscussionMetric {
 			TIME_LENGTH, NUMBER_COMMENTS, NUMBER_CONTRIBUTORS,
 			RESOLUTION_CHANGES_METRIC };
 
-	public static final AbstractDiscussionMetric[] OTHER_METRICS = { PATTERN_METRIC };
+	public static final AbstractDiscussionMetric[] OTHER_METRICS = {
+			PATTERN_METRIC, FINAL_RESULUTION_METRIC };
 
 	/**
 	 * Returns the name of the metric for GUI and Reports.
@@ -44,6 +51,25 @@ public abstract class AbstractDiscussionMetric {
 
 	private Map<String, Double> values = new HashMap<String, Double>();
 	private DecimalFormat df;
+
+	public abstract int measurementType();
+
+	/**
+	 * Sometimes the value needs to be decoded to allow making sense of it. In
+	 * that case: overwrite this method! As a default, this method returns the
+	 * value if the measurement type is better than Nominal type and null
+	 * otherwise.
+	 * 
+	 * @param value
+	 *            the value as returned by considerDiscussions(Discussion[])
+	 * @return As a default, this method returns the value if the measurement
+	 *         type is better than Nominal type and null otherwise.
+	 */
+	public String decode(double value) {
+		if (NOMINAL_TYPE == measurementType())
+			return null;
+		return String.valueOf(value);
+	}
 
 	public final Double getAverage() {
 		Double sum = 0d;

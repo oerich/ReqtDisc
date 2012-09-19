@@ -22,4 +22,10 @@ public class ResolutionChangesMetric extends AbstractDiscussionMetric {
 		return ret;
 	}
 
+	@Override
+	public int measurementType() {
+		return RATIO_TYPE;
+	}
+
+
 }

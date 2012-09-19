@@ -52,7 +52,13 @@ public class FinalResolutionMetric extends AbstractDiscussionMetric {
 	}
 
 	public String decode(double d) {
+		if (d < 0)
+			return "unknown";
 		return this.resolutionTypes.get((int) d);
 	}
 
+	@Override
+	public int measurementType() {
+		return NOMINAL_TYPE;
+	}
 }

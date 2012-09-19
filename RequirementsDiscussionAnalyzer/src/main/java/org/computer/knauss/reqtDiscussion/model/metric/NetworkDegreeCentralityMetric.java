@@ -57,4 +57,10 @@ public class NetworkDegreeCentralityMetric extends AbstractNetworkMetric {
 		return nodeCentrality;
 	}
 
+	@Override
+	public int measurementType() {
+		// TODO I have no idea...
+		return ORDINAL_TYPE;
+	}
+
 }
