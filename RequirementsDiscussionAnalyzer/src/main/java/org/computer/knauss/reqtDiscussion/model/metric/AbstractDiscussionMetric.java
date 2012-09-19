@@ -25,13 +25,16 @@ public abstract class AbstractDiscussionMetric {
 	public final static AbstractDiscussionMetric NUMBER_COMMENTS = new CommentNumberMetric();
 	public final static AbstractDiscussionMetric NUMBER_CONTRIBUTORS = new ContributorNumberMetric();
 	public final static AbstractDiscussionMetric PATTERN_METRIC = new PatternMetric();
+	public final static AbstractDiscussionMetric RESOLUTION_CHANGES_METRIC = new ResolutionChangesMetric();
 	/**
 	 * A set of metrics that is often computed together.
 	 */
 	public static final AbstractDiscussionMetric[] STANDARD_METRICS = {
-			TIME_LENGTH, NUMBER_COMMENTS, NUMBER_CONTRIBUTORS };
+			TIME_LENGTH, NUMBER_COMMENTS, NUMBER_CONTRIBUTORS,
+			RESOLUTION_CHANGES_METRIC };
 
-	public static final AbstractDiscussionMetric[] OTHER_METRICS = {PATTERN_METRIC};
+	public static final AbstractDiscussionMetric[] OTHER_METRICS = { PATTERN_METRIC };
+
 	/**
 	 * Returns the name of the metric for GUI and Reports.
 	 * 
