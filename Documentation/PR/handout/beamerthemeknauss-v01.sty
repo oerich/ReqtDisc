@@ -25,7 +25,7 @@
 
 % footline colors and fonts
 \setbeamercolor{footline}{fg=white,bg=knbgcolor2}
-\setbeamerfont{footline}{fg=white, size=\normalsize}
+\setbeamerfont{footline}{fg=white, size=\footnotesize}
 
 % body colors and fonts
 \setbeamercolor*{normal text}{fg=black,bg=knbgcolor1}
@@ -33,11 +33,11 @@
 % block environment
 \setbeamercolor*{block body}{bg=white,fg=black}
 \setbeamercolor*{block title}{fg=knmaincolor,bg=lightgray}
-\setbeamerfont{block title}{size=\large,series=\bf}
+\setbeamerfont{block title}{size=\normalsize,series=\bf}
 
 % example environment
 \setbeamercolor*{example title}{fg=white,bg=knaccentcolor2}
-\setbeamerfont{example title}{size=\large,series=\bf,bg=knmaincolor,fg=white}
+\setbeamerfont{example title}{size=\normalsize,series=\bf,bg=knmaincolor,fg=white}
 
 
 %\setbeamercolor*{example body}{fg=black,bg=white}
@@ -92,19 +92,20 @@
       \begin{column}{.675\paperwidth}
         \vskip4ex
         \raggedleft
-        \usebeamercolor{title in headline}{\color{fg}\textbf{\LARGE{\inserttitle}}\\[1ex]}
-        \usebeamercolor{author in headline}{\color{fg}\large{\insertauthor}\\[1ex]}
-        \usebeamercolor{institute in headline}{\color{fg}\large{\insertinstitute}\\[1ex]}     
+        \usebeamercolor{title in headline}{\color{fg}\textbf{\large{\inserttitle}}\\[1ex]}
+        \usebeamercolor{author in headline}{\color{fg}\normalsize{\insertauthor}\\[1ex]}
+        \usebeamercolor{institute in headline}{\color{fg}\normalsize{\insertinstitute}\\[1ex]}     
       \end{column}
       \begin{column}{.25\paperwidth}
-        \vskip1cm
+        %\vskip1cm
         \begin{center}
         \setlength\fboxsep{0pt}
 \setlength\fboxrule{1pt}
-\color{knbgcolor1}\fbox{\includegraphics[viewport=20 1000 2600 4300,clip=true,height=7cm]{img/eric} }\hspace{2\columnsep}
-          \fbox{\includegraphics[height=7cm]{img/dana}}
+%\color{knbgcolor1}\fbox{\includegraphics[viewport=20 1000 2600 4300,clip=true,height=20ex]{img/eric} }%\hspace{2\columnsep}
+\hspace{1.2cm}\color{knbgcolor1}\fbox{\includegraphics[viewport=100 350 500 850,clip=true,height=22ex]{img/eric-unformal} }%\hspace{2\columnsep}
+          %\fbox{\includegraphics[height=7cm]{img/dana}}
         \end{center}
-        \vskip1.5cm
+        \vskip5ex
       \end{column}
       \begin{column}{.03\paperwidth}
       \end{column}
