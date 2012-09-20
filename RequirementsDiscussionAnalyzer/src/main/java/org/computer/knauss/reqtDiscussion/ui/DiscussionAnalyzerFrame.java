@@ -94,7 +94,7 @@ public class DiscussionAnalyzerFrame extends JFrame implements
 		setLayout(new BorderLayout());
 
 		this.networkAnalysisFrame = new NetworkFrame(configuration);
-		
+
 		this.table = new JTable();
 		add(new JScrollPane(this.table), BorderLayout.WEST);
 
@@ -251,14 +251,16 @@ public class DiscussionAnalyzerFrame extends JFrame implements
 
 	@Override
 	public void valueChanged(ListSelectionEvent arg0) {
-		try {
-			if (this.highlightRelated == null)
-				this.highlightRelated = new HighlightRelatedDiscussions();
+		if (configureVisualizationPanel.isShowRelatedDiscussions()) {
+			try {
+				if (this.highlightRelated == null)
+					this.highlightRelated = new HighlightRelatedDiscussions();
 
-			this.highlightRelated.highlightRelatedWorkitems(tableModel);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+				this.highlightRelated.highlightRelatedWorkitems(tableModel);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		configureVisualizationPanel.getDiscussionPartition().setTimeInterval(
 				tableModel.getSelectedWorkitems());

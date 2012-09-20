@@ -48,14 +48,23 @@ public class VisualizationConfigurationPanel extends JPanel implements
 	private JCheckBox gridPartition;
 	private JCheckBox showPattern;
 	private JCheckBox incidents;
+	private JCheckBox aggregateDiscussions;
 
 	public VisualizationConfigurationPanel() {
 		this.setLayout(new GridLayout(5, 1));
 
 		// 1. adjust partition type
+		JPanel dataAggregationPanel = new JPanel(new GridLayout(3, 1));
+		dataAggregationPanel.setBorder(BorderFactory
+				.createTitledBorder("Data Aggregation"));
+		this.aggregateDiscussions = new JCheckBox(
+				"Aggregate dependant discussions");
+		dataAggregationPanel.add(this.aggregateDiscussions);
+		this.aggregateDiscussions.addActionListener(this);
 		this.partitionTypeChooser = new JComboBox(PARTITION_TYPES);
 		this.partitionTypeChooser.addItemListener(this);
-		add(this.partitionTypeChooser);
+		dataAggregationPanel.add(this.partitionTypeChooser);
+		add(dataAggregationPanel);
 
 		// and if partition type 0 or -1:
 		// 1.a adjust partition count
@@ -228,5 +237,9 @@ public class VisualizationConfigurationPanel extends JPanel implements
 
 	public boolean isIncidentStyle() {
 		return this.incidents.isSelected();
+	}
+
+	public boolean isShowRelatedDiscussions() {
+		return this.aggregateDiscussions.isSelected();
 	}
 }
