@@ -26,4 +26,10 @@ public class ContributorNumberMetric extends AbstractDiscussionMetric {
 		}
 		return (double) contributors.size();
 	}
+
+	@Override
+	public int measurementType() {
+		return RATIO_TYPE;
+	}
+
 }

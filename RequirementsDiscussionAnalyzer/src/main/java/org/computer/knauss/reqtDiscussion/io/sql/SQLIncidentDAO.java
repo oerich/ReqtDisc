@@ -23,9 +23,9 @@ public class SQLIncidentDAO extends AbstractSQLDAO implements IIncidentDAO {
 	public Incident[] getIncidentsForDiscussion(int discussionID)
 			throws DAOException {
 		try {
-			// if (!existsTable(getConfiguration()
-			// .getProperty(INCIDENT_TABLE_NAME)))
-			// return new Incident[0];
+			if (!existsTable(getConfiguration()
+					.getProperty(INCIDENT_TABLE_NAME)))
+				return new Incident[0];
 			PreparedStatement stat = getPreparedStatement(getConfiguration()
 					.getProperty(SELECT_INCIDENT_BY_DISCUSSION_ID));
 			List<Incident> res = new LinkedList<Incident>();

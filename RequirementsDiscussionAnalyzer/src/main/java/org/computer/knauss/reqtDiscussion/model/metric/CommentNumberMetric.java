@@ -20,4 +20,9 @@ public class CommentNumberMetric extends AbstractDiscussionMetric {
 		return (double) length;
 	}
 
+	@Override
+	public int measurementType() {
+		return RATIO_TYPE;
+	}
+
 }

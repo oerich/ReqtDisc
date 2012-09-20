@@ -67,19 +67,43 @@ public class SQLDiscussionEventClassificationDAO extends AbstractSQLDAO
 			if (!existsTable(getConfiguration().getProperty(
 					DISCUSSION_EVENT_CLASSIFICATION_TABLE_NAME)))
 				createSchema();
+
 			PreparedStatement stat = getPreparedStatement(getConfiguration()
-					.getProperty(INSERT_DISCUSSION_EVENT_CLASSIFICATION));
-			// TODO use update if this tuple already exists.
+					.getProperty(EXISTS_DISCUSSION_EVENT_CLASSIFICATION));
 			stat.setInt(1, classification.getDiscussionEventID());
 			stat.setString(2, classification.getClassifiedby());
-			stat.setString(3, classification.getClassification());
-			stat.setDouble(4, classification.getConfidence());
-			stat.setString(5, classification.getComment());
+			ResultSet rs = stat.executeQuery();
+			int rows = 0;
+			if (rs.next()) {
+				rows = rs.getInt(1);
+			}
 
-			if (1 != stat.executeUpdate()) {
+			if (rows > 0) {
+				System.out.println("UPDATE");
+				stat = getPreparedStatement(getConfiguration().getProperty(
+						UPDATE_DISCUSSION_EVENT_CLASSIFICATION));
+				stat.setString(1, classification.getClassification());
+				stat.setDouble(2, classification.getConfidence());
+				stat.setString(3, classification.getComment());
+				stat.setInt(4, classification.getDiscussionEventID());
+				stat.setString(5, classification.getClassifiedby());
+			} else {
+				System.out.println("INSERT");
+				stat = getPreparedStatement(getConfiguration().getProperty(
+						INSERT_DISCUSSION_EVENT_CLASSIFICATION));
+				stat.setInt(1, classification.getDiscussionEventID());
+				stat.setString(2, classification.getClassifiedby());
+				stat.setString(3, classification.getClassification());
+				stat.setDouble(4, classification.getConfidence());
+				stat.setString(5, classification.getComment());
+			}
+			int executeUpdate = stat.executeUpdate();
+			if (1 != executeUpdate) {
 				// stat.close();
 				// ConnectionManager.getInstance().closeConnection();
-				throw new DAOException("INSERT should only affect one row");
+				throw new DAOException(
+						"INSERT/UPDATE should only affect one row but did affect "
+								+ executeUpdate + " rows.");
 			}
 			// stat.close();
 		} catch (SQLException e) {

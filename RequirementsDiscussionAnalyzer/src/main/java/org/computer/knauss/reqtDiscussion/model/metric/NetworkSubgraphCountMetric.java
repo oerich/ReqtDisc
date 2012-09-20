@@ -18,8 +18,8 @@ public class NetworkSubgraphCountMetric extends AbstractNetworkMetric {
 
 	@Override
 	public Double considerDiscussions(Discussion[] wi) {
-//		initNetwork(wi);
-		
+		// initNetwork(wi);
+
 		Node[] nodes = getSocialNetwork().getActors();
 		Set<Node> notVisited = new TreeSet<Node>(Arrays.asList(nodes));
 		List<Set<Node>> subGraphs = new LinkedList<Set<Node>>();
@@ -58,6 +58,11 @@ public class NetworkSubgraphCountMetric extends AbstractNetworkMetric {
 		}
 
 		return (double) subGraphs.size();
+	}
+
+	@Override
+	public int measurementType() {
+		return ORDINAL_TYPE;
 	}
 
 }

@@ -16,7 +16,7 @@ public class PushCSVToMySQL {
 	 * @param args
 	 * @throws IOException
 	 * @throws FileNotFoundException
-	 * @throws DAOException 
+	 * @throws DAOException
 	 */
 	public static void main(String[] args) throws FileNotFoundException,
 			IOException, DAOException {
@@ -33,7 +33,9 @@ public class PushCSVToMySQL {
 		p.setProperty(CSVDiscussionEventDAO.PROP_START_ROW, "1");
 
 		CSVDiscussionEventDAO csvDAO = new CSVDiscussionEventDAO();
-		SQLDAOManager sdm = new SQLDAOManager("trento-mysql-properties.txt", "mysql-default-schema-queries.txt");
+		SQLDAOManager sdm = new SQLDAOManager(new String[] {
+				"trento-mysql-properties.txt",
+				"mysql-default-schema-queries.txt" });
 		IDiscussionEventDAO sqlDAO = sdm.getDiscussionEventDAO();
 		csvDAO.configure(p);
 

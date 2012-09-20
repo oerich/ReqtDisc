@@ -19,7 +19,6 @@ import javax.swing.JTable;
 import javax.swing.event.ListDataListener;
 
 import org.computer.knauss.reqtDiscussion.model.metric.AbstractDiscussionMetric;
-import org.computer.knauss.reqtDiscussion.model.metric.PatternMetric;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.ExportTableCommand;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -73,10 +72,11 @@ public class MetricFrame extends JFrame {
 						.getMetrics()[metric2Box.getSelectedIndex()];
 
 				JFreeChart chart = null;
-				if (metric1.getName().equals("Pattern"))
+				if (metric1.measurementType() == AbstractDiscussionMetric.NOMINAL_TYPE
+						&& !(metric2.measurementType() == AbstractDiscussionMetric.NOMINAL_TYPE))
 					chart = createBoxPlot(metric1, metric2);
 				else
-					createScatterPlot(metric1, metric2);
+					chart = createScatterPlot(metric1, metric2);
 				tabbedPane.addTab(metric1.getName() + "/" + metric2.getName(),
 						new ChartPanel(chart));
 
@@ -116,7 +116,7 @@ public class MetricFrame extends JFrame {
 				// title
 				metric1.getName(), // x axis label
 				metric2.getName(), // y axis label
-				result, // data ***-----PROBLEM------***
+				result, // data 
 				PlotOrientation.VERTICAL, true, // include legend
 				true, // tooltips
 				false // urls
@@ -129,9 +129,7 @@ public class MetricFrame extends JFrame {
 
 		// Assume metric 1 are the patterns
 		for (int i = -1; i < 6; i++) {
-			String patternName = "unknown";
-			if (i >= 0)
-				patternName = PatternMetric.PATTERNS[i].getName();
+			String patternName = metric1.decode(i);
 			List<Double> values = new LinkedList<Double>();
 			for (int row = 0; row < metricTable.getRowCount(); row++) {
 				double x = metric1.getResults().get(

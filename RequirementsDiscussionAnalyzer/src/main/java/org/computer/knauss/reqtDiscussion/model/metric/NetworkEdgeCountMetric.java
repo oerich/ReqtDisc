@@ -23,4 +23,9 @@ public class NetworkEdgeCountMetric extends AbstractNetworkMetric {
 		return result;
 	}
 
+	@Override
+	public int measurementType() {
+		return RATIO_TYPE;
+	}
+
 }

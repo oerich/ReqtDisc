@@ -31,6 +31,9 @@ public abstract class AbstractSQLDAO implements IConfigurable {
 	protected abstract Properties getDefaultProperties();
 
 	protected boolean existsTable(String tableName) throws SQLException {
+		if (tableName == null || "".equals(tableName))
+			return false;
+
 		PreparedStatement ps = getPreparedStatement(getConfiguration()
 				.getProperty(EXISTS_TABLE));
 		ps.setString(1, tableName);
@@ -58,6 +61,7 @@ public abstract class AbstractSQLDAO implements IConfigurable {
 		return this.statementCache.get(name);
 	}
 
+	@Override
 	public Properties getConfiguration() {
 		// make sure that there is only one properties instance for the SQL DAOs
 		// and the ConnectionManager
@@ -75,8 +79,6 @@ public abstract class AbstractSQLDAO implements IConfigurable {
 
 	@Override
 	public Map<String, String> checkConfiguration() {
-		System.out.println(getClass().getSimpleName() + ".check: "
-				+ getConfiguration());
 		Map<String, String> ret = ConnectionManager.getInstance()
 				.checkConfiguration();
 

@@ -56,4 +56,17 @@ public class PatternMetric extends AbstractDiscussionMetric {
 			Collections.addAll(tmp, d.getDiscussionEvents());
 		return tmp.toArray(new DiscussionEvent[0]);
 	}
+
+	@Override
+	public int measurementType() {
+		return NOMINAL_TYPE;
+	}
+
+	@Override
+	public String decode(double val) {
+		if (val >= 0 && val < PATTERNS.length)
+			return PatternMetric.PATTERNS[(int) val].getName();
+		return "unknown";
+	}
+
 }
