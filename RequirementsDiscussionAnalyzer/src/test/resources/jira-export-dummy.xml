@@ -1,0 +1,106 @@
+<rss version="0.92">
+	<channel>
+		<title>Export Dummy JIRA</title>
+		<link>http://localhost:8080/secure/IssueNavigator.jspa?reset=true&amp;jqlQuery=CommentsCount+%3E%3D+5+ORDER+BY+CommentsCount+DESC
+		</link>
+		<description>An XML representation of a search request</description>
+		<language>en-uk</language>
+		<issue start="0" end="12" total="12" />
+		<build-info>
+			<version>0.0.1</version>
+			<build-number>1</build-number>
+			<build-date>20-09-2012</build-date>
+		</build-info>
+		<item>
+			<title>[EJD-1000] A first item in JIRA for testing purposes.</title>
+			<link>http://localhost:8080/browse/EDJ-1000</link>
+			<project id="10000" key="EDJ">Export Dummy JIRA</project>
+			<description>We need to have some test data not covered by an NDA.</description>
+			<environment></environment>
+			<key id="12345">EJD-1000</key>
+			<summary>A first item in JIRA for testing purposes.</summary>
+			<type id="2" iconUrl="http://localhost:8080/images/icons/newfeature.gif">Feature</type>
+			<priority id="3"
+				iconUrl="http://localhost:8080/images/icons/priority_major.gif">Major</priority>
+			<status id="6"
+				iconUrl="http://localhost:8080/images/icons/status_closed.gif">Closed</status>
+			<resolution id="1">Fixed</resolution>
+			<assignee username="user1">User One</assignee>
+			<reporter username="user2">User Two</reporter>
+			<labels>
+			</labels>
+			<created>Wed, 16 Aug 2006 13:55:42 +0200</created>
+			<updated>Fri, 22 Feb 2008 12:30:22 +0100</updated>
+			<resolved>Wed, 17 Oct 2007 18:59:47 +0200</resolved>
+			<version>ExportDummy 8.6.0.4</version>
+			<fixVersion>ExportDummy 2.0.0.1</fixVersion>
+			<fixVersion>ExportDummy 9.0.0</fixVersion>
+			<due></due>
+			<votes>0</votes>
+			<watches>0</watches>
+			<comments>
+				<comment id="11991" author="user2" created="Thu, 15 Mar 2007 17:29:52 +0100">
+					This issue might
+					be part of another goal.
+				</comment>
+				<comment id="11992" author="user2" created="Thu, 15 Mar 2007 17:29:52 +0100">
+					This issue might
+					be part of another goal.
+				</comment>
+				<comment id="11993" author="user2" created="Thu, 15 Mar 2007 17:29:52 +0100">
+					This issue might
+					be part of another goal.
+				</comment>
+				<comment id="11994" author="user2" created="Thu, 15 Mar 2007 17:29:52 +0100">
+					This issue might
+					be part of another goal.
+				</comment>
+				<comment id="11995" author="user2" created="Thu, 15 Mar 2007 17:29:52 +0100">
+					This issue might
+					be part of another goal.
+				</comment>
+				<comment id="11996" author="user2" created="Thu, 15 Mar 2007 17:29:52 +0100">
+					This issue might
+					be part of another goal.
+				</comment>
+				<comment id="11997" author="user2" created="Thu, 15 Mar 2007 17:29:52 +0100">
+					This issue might
+					be part of another goal.
+				</comment>
+			</comments>
+		</item>
+		<item>
+			<title>[EJD-1050] A second item in JIRA for testing purposes.</title>
+			<link>http://localhost:8080/browse/EDJ-1050</link>
+			<project id="10000" key="EDJ">Export Dummy JIRA</project>
+			<description>This is a second example for testing purposes.
+			</description>
+			<environment></environment>
+			<key id="12346">EJD-1050</key>
+			<summary>A second item in JIRA for testing purposes.</summary>
+			<type id="2" iconUrl="http://localhost:8080/images/icons/newfeature.gif">Feature</type>
+			<priority id="3"
+				iconUrl="http://localhost:8080/images/icons/priority_major.gif">Major</priority>
+			<status id="6"
+				iconUrl="http://localhost:8080/images/icons/status_closed.gif">Closed</status>
+			<resolution id="1">Fixed</resolution>
+			<assignee username="user1">User One</assignee>
+			<reporter username="user2">User Two</reporter>
+			<labels>
+			</labels>
+			<created>Wed, 16 Aug 2006 13:55:42 +0200</created>
+			<updated>Fri, 22 Feb 2008 12:30:22 +0100</updated>
+			<resolved>Wed, 17 Oct 2007 18:59:47 +0200</resolved>
+			<version>ExportDummy 8.6.0.4</version>
+			<fixVersion>ExportDummy 9.0.0</fixVersion>
+			<due></due>
+			<votes>0</votes>
+			<watches>0</watches>
+			<comments>
+				<comment id="11991" author="user2" created="Thu, 15 Mar 2007 17:29:52 +0100">
+					Some comment...
+				</comment>
+			</comments>
+		</item>
+	</channel>
+</rss>
