@@ -178,8 +178,10 @@ public class DiscussionVisualizationPanel extends JPanel implements
 			for (Discussion d : this.selectedDiscussions) {
 				Collections.addAll(incidentList, d.getIncidents());
 			}
-			applyVisualizationStyle(g2, incidentList.toArray(new Incident[0]),
-					this.incidentVisualization);
+			if (this.configureVisualizationPanel.isIncidentStyle())
+				applyVisualizationStyle(g2,
+						incidentList.toArray(new Incident[0]),
+						this.incidentVisualization);
 		}
 	}
 

@@ -47,6 +47,7 @@ public class VisualizationConfigurationPanel extends JPanel implements
 	private JCheckBox lsuInterpolarization;
 	private JCheckBox gridPartition;
 	private JCheckBox showPattern;
+	private JCheckBox incidents;
 
 	public VisualizationConfigurationPanel() {
 		this.setLayout(new GridLayout(5, 1));
@@ -124,6 +125,9 @@ public class VisualizationConfigurationPanel extends JPanel implements
 		this.gridPartition.addActionListener(this);
 		miscPanel.add(this.gridPartition);
 
+		this.incidents = new JCheckBox("Show relevant incidents");
+		this.incidents.addActionListener(this);
+		miscPanel.add(this.incidents);
 	}
 
 	public void setDiscussionPartition(IDiscussionOverTimePartition partition) {
@@ -220,5 +224,9 @@ public class VisualizationConfigurationPanel extends JPanel implements
 
 	public boolean isPatternStyle() {
 		return this.showPattern.isSelected();
+	}
+
+	public boolean isIncidentStyle() {
+		return this.incidents.isSelected();
 	}
 }
