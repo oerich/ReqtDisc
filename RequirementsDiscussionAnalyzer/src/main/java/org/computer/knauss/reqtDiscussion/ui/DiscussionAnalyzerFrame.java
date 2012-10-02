@@ -89,7 +89,7 @@ public class DiscussionAnalyzerFrame extends JFrame implements
 	// private SocialNetwork sn = new PartitionedSocialNetwork();
 
 	public DiscussionAnalyzerFrame(VisualizationConfiguration configuration) {
-		super("Jazz Discussion Analyzer");
+		super("V:issue:lizer");
 
 		setLayout(new BorderLayout());
 

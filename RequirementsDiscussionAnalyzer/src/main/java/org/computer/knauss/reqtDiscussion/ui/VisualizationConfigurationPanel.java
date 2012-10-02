@@ -88,7 +88,6 @@ public class VisualizationConfigurationPanel extends JPanel implements
 		chooseStylePanel.setBorder(BorderFactory
 				.createTitledBorder("Choose Style"));
 		this.commentStyleBoxes = new JCheckBox("Rectangles");
-		this.commentStyleBoxes.setSelected(true);
 		this.commentStyleBoxes.addActionListener(this);
 		chooseStylePanel.add(this.commentStyleBoxes);
 
@@ -137,6 +136,13 @@ public class VisualizationConfigurationPanel extends JPanel implements
 		this.incidents = new JCheckBox("Show relevant incidents");
 		this.incidents.addActionListener(this);
 		miscPanel.add(this.incidents);
+
+		// define default behavior
+		this.commentStyleBoxes.setSelected(true);
+		this.paintBackGround.setSelected(true);
+		this.paintGrid.setSelected(true);
+		this.paintLineOfUnderstanding.setSelected(true);
+		this.showPattern.setSelected(true);
 	}
 
 	public void setDiscussionPartition(IDiscussionOverTimePartition partition) {

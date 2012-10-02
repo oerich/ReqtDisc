@@ -19,6 +19,7 @@ import org.computer.knauss.reqtDiscussion.ui.ctrl.LoadDiscussionByID;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.LoadDiscussions;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.SetReferenceClassifierName;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.ShowStatistics;
+import org.computer.knauss.reqtDiscussion.ui.ctrl.StoreDiscussionEventClassifications;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.StoreDiscussions;
 import org.computer.knauss.reqtDiscussion.ui.uiModel.DiscussionTableModel;
 
@@ -45,17 +46,17 @@ public class DiscussionAnalyzer {
 		try {
 			daoRegistry = DAORegistry.getInstance();
 			// add the data sources
-			// daoRegistry.register("PSQL (default)", new SQLDAOManager(
-			// new String[] { "/local-postgres-properties.txt",
-			// "/psql-default-schema-queries.txt" }));
+			daoRegistry.register("PSQL (default)", new SQLDAOManager(
+					new String[] { "/local-postgres-properties.txt",
+							"/psql-default-schema-queries.txt" }));
 			daoRegistry.register("PSQL (ballroom)", new SQLDAOManager(
 					new String[] { "/ballroom-postgres-properties.txt",
 							"/psql-ballroom-schema-queries.txt" }));
 			daoRegistry.register("jazz.net", new JazzDAOManager());
 			// daoRegistry.register("Jira (xml)", new XmlDAOManager(
 			// "./bizzdesign-jira.txt"));
-			daoRegistry.register("Jira (sql)", new SQLDAOManager(
-					new String[] { "/bizzdesign-psql.txt" }));
+			// daoRegistry.register("Jira (sql)", new SQLDAOManager(
+			// new String[] { "/bizzdesign-psql.txt" }));
 			// "/jira-xml-properties.txt"));
 			// add the commands
 			daFrame.addAction(DiscussionAnalyzerFrame.DATA_MENU,
@@ -68,6 +69,8 @@ public class DiscussionAnalyzer {
 					configureCommand(new LoadDiscussionByID()));
 			daFrame.addAction(DiscussionAnalyzerFrame.DATA_MENU,
 					configureCommand(new StoreDiscussions()));
+			daFrame.addAction(DiscussionAnalyzerFrame.DATA_MENU,
+					configureCommand(new StoreDiscussionEventClassifications()));
 
 			daFrame.addAction(DiscussionAnalyzerFrame.EDIT_MENU,
 					configureCommand(new SetReferenceClassifierName()));
