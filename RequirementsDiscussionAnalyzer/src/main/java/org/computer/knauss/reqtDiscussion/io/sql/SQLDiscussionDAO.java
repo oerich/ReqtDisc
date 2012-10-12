@@ -67,12 +67,6 @@ public class SQLDiscussionDAO extends AbstractSQLDAO implements IDiscussionDAO {
 	}
 
 	@Override
-	public Discussion getNextDiscussion() throws DAOException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public Discussion[] getDiscussions() throws DAOException {
 		return getDiscussions(IDAOProgressMonitor.NULL_PROGRESS_MONITOR);
 	}
@@ -126,12 +120,12 @@ public class SQLDiscussionDAO extends AbstractSQLDAO implements IDiscussionDAO {
 			PreparedStatement ps = null;
 			int i = 1;
 			if (existsDiscussion(d.getID())) {
-				ps = getPreparedStatement(getConfiguration()
-						.getProperty(UPDATE_DISCUSSION));
+				ps = getPreparedStatement(getConfiguration().getProperty(
+						UPDATE_DISCUSSION));
 				ps.setInt(7, d.getID());
 			} else {
-				ps = getPreparedStatement(getConfiguration()
-						.getProperty(INSERT_DISCUSSION));
+				ps = getPreparedStatement(getConfiguration().getProperty(
+						INSERT_DISCUSSION));
 				ps.setInt(1, d.getID());
 				i++;
 			}
@@ -176,7 +170,8 @@ public class SQLDiscussionDAO extends AbstractSQLDAO implements IDiscussionDAO {
 	}
 
 	public void dropSchema() throws SQLException {
-		getPreparedStatement(getConfiguration().getProperty(DROP_DISCUSSION_TABLE))
+		getPreparedStatement(
+				getConfiguration().getProperty(DROP_DISCUSSION_TABLE))
 				.execute();
 		System.out.println("Dropped Table "
 				+ getConfiguration().getProperty(DISCUSSION_TABLE) + ".");
@@ -222,8 +217,8 @@ public class SQLDiscussionDAO extends AbstractSQLDAO implements IDiscussionDAO {
 	private int numberOfAllDiscussions() throws SQLException {
 		if (!existsTable(getConfiguration().getProperty(DISCUSSION_TABLE)))
 			return 0;
-		String numberQuery = getConfiguration()
-				.getProperty(NUMBER_OF_ALL_DISCUSSIONS);
+		String numberQuery = getConfiguration().getProperty(
+				NUMBER_OF_ALL_DISCUSSIONS);
 		if (numberQuery == null)
 			return -1;
 		PreparedStatement stat = getPreparedStatement(numberQuery);
@@ -267,13 +262,16 @@ public class SQLDiscussionDAO extends AbstractSQLDAO implements IDiscussionDAO {
 	@Override
 	protected Map<String, String> getMandatoryPropertiesAndHints() {
 		Map<String, String> ret = new HashMap<String, String>();
-		
+
 		ret.put(DISCUSSION_TABLE, "Name of the table with the discussions");
-		ret.put(SELECT_ALL_DISCUSSIONS, "SQL statement that selects all discussions");
-		ret.put(SELECT_DISCUSSION_BY_ID, "SQL statement that selects a discussion by ID");
-		ret.put(NUMBER_OF_ALL_DISCUSSIONS, "SQL statement that returns the number of discussions in the database");
-		
-		return ret ;
+		ret.put(SELECT_ALL_DISCUSSIONS,
+				"SQL statement that selects all discussions");
+		ret.put(SELECT_DISCUSSION_BY_ID,
+				"SQL statement that selects a discussion by ID");
+		ret.put(NUMBER_OF_ALL_DISCUSSIONS,
+				"SQL statement that returns the number of discussions in the database");
+
+		return ret;
 	}
 
 }

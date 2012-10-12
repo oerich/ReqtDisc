@@ -54,12 +54,6 @@ public class XMLDiscussionDAO implements IDiscussionDAO, IDiscussionEventDAO {
 	}
 
 	@Override
-	public Discussion getNextDiscussion() throws DAOException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public Discussion[] getMoreDiscussions(IDAOProgressMonitor progressMonitor)
 			throws DAOException {
 		// TODO Auto-generated method stub
