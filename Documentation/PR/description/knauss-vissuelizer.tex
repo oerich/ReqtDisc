@@ -1,0 +1,95 @@
+\documentclass[10pt, conference, compsocconf]{IEEEtran}
+
+\usepackage{cite}
+\ifCLASSINFOpdf
+  \usepackage[pdftex]{graphicx}
+  % declare the path(s) where your graphic files are
+  \graphicspath{{../pdf/}{../jpeg/}}
+  % and their extensions so you won't have to specify these with
+  % every instance of \includegraphics
+  \DeclareGraphicsExtensions{.pdf,.jpeg,.png}
+\else
+  % or other class option (dvipsone, dvipdf, if not using dvips). graphicx
+  % will default to the driver specified in the system graphics.cfg if no
+  % driver is specified.
+  \usepackage[dvips]{graphicx}
+  % declare the path(s) where your graphic files are
+  \graphicspath{{../eps/}}
+  % and their extensions so you won't have to specify these with
+  % every instance of \includegraphics
+  \DeclareGraphicsExtensions{.eps}
+\fi
+
+% *** FLOAT PACKAGES ***
+%
+\usepackage{fixltx2e}
+% fixltx2e, the successor to the earlier fix2col.sty, was written by
+% Frank Mittelbach and David Carlisle. This package corrects a few problems
+% in the LaTeX2e kernel, the most notable of which is that in current
+% LaTeX2e releases, the ordering of single and double column floats is not
+% guaranteed to be preserved. Thus, an unpatched LaTeX2e can allow a
+% single column figure to be placed prior to an earlier double column
+% figure. The latest version and documentation can be found at:
+% http://www.ctan.org/tex-archive/macros/latex/base/
+
+\usepackage{url}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+%\usepackage[colorinlistoftodos,textsize=footnotesize,textwidth=1cm]{todonotes}
+\usepackage[disable]{todonotes}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{array}
+\usepackage[cmex10]{amsmath}
+\usepackage[caption=false]{subfig}
+\usepackage{rotating}
+\usepackage{xcolor}
+\usepackage{colortbl}
+\usepackage[font=footnotesize]{caption}
+
+
+\newcolumntype{v}[1]{>{\raggedright \hspace {0pt}}p{#1}}
+\def\IEEEbibitemsep{4pt plus 1.6pt}
+
+% correct bad hyphenation here
+\hyphenation{op-tical net-works semi-conduc-tor}
+
+% Avoid orphans and widows (thx IEEE help!)
+          \clubpenalty = 10000
+          \widowpenalty = 10000
+          \displaywidowpenalty = 10000
+
+% Balance columns on last page (thx IEEE help!)
+          \usepackage{balance}
+
+\begin{document}
+
+
+
+% For peer review papers, you can put extra information on the cover
+% page as needed:
+% \ifCLASSOPTIONpeerreview
+% \begin{center} \bfseries EDICS Category: 3-BBND \end{center}
+% \fi
+%
+% For peerreview papers, this IEEEtran command inserts a page break and
+% creates the second title. It will be ignored for other modes.
+\IEEEpeerreviewmaketitle
+
+\input{frontmatter}
+\input{introduction}
+%\input{relatedwork}
+%\input{approach}
+%\input{classification}
+%\input{visualization}
+%\input{recommendations}
+%\input{discussion}
+%\input{conclusion}
+%\vspace{-1cm}
+\balance
+
+\listoftodos
+
+\bibliographystyle{IEEEtran}
+\bibliography{IEEEabrv,bibliography}
+\end{document}
