@@ -197,8 +197,8 @@ public class JazzJDOMDAO implements IJazzDAO, IDiscussionEventDAO,
 		this.changeRequestsXML.setDocument(r.getEntity().getContent());
 		List<Object> crElements = this.changeRequestsXML
 				.select("//ChangeRequest");
-		// moreQuery =
-		// ((Attribute)this.changeRequestsXML.select("//Collection/@next").get(0)).getValue();
+		this.moreQuery = ((Attribute) this.changeRequestsXML.select(
+				"//Colection/@next").get(0)).getValue();
 		String[] ret = new String[crElements.size()];
 		for (int i = 0; i < ret.length; i++) {
 			Element e = (Element) crElements.get(i);

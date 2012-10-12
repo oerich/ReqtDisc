@@ -2,6 +2,7 @@ package org.computer.knauss.reqtDiscussion.io.jazz.rest;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -202,8 +203,8 @@ public class JazzJDOMDAOTest {
 
 		assertFalse(this.dao.hasMoreDiscussions());
 		// XXX Start here to make JazzDAO functional!
-		// Discussion[] d = this.dao.getDiscussions();
-		// assertTrue(this.dao.hasMoreDiscussions());
+		Discussion[] d = this.dao.getDiscussions();
+		assertTrue(this.dao.hasMoreDiscussions());
 
 		// this.dao.setProjectArea("Rational Team Concert");
 		//

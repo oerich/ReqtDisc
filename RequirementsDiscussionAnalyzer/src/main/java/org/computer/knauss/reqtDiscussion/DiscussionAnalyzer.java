@@ -8,6 +8,7 @@ import javax.swing.JFrame;
 import org.computer.knauss.reqtDiscussion.io.DAORegistry;
 import org.computer.knauss.reqtDiscussion.io.jazz.JazzDAOManager;
 import org.computer.knauss.reqtDiscussion.io.sql.SQLDAOManager;
+import org.computer.knauss.reqtDiscussion.model.IClassificationFilter;
 import org.computer.knauss.reqtDiscussion.model.VisualizationConfiguration;
 import org.computer.knauss.reqtDiscussion.ui.DiscussionAnalyzerFrame;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.AbstractCommand;
@@ -55,8 +56,8 @@ public class DiscussionAnalyzer {
 			daoRegistry.register("jazz.net", new JazzDAOManager());
 			// daoRegistry.register("Jira (xml)", new XmlDAOManager(
 			// "./bizzdesign-jira.txt"));
-			// daoRegistry.register("Jira (sql)", new SQLDAOManager(
-			// new String[] { "/bizzdesign-psql.txt" }));
+			daoRegistry.register("Jira (sql)", new SQLDAOManager(
+					new String[] { "/bizzdesign-psql.txt" }));
 			// "/jira-xml-properties.txt"));
 			// add the commands
 			daFrame.addAction(DiscussionAnalyzerFrame.DATA_MENU,
@@ -85,7 +86,7 @@ public class DiscussionAnalyzer {
 			daFrame.addAction(DiscussionAnalyzerFrame.STATISTICS_MENU,
 					configureCommand(new ShowStatistics()));
 
-			// IClassificationFilter.NAME_FILTER.setName("robin");
+			IClassificationFilter.NAME_FILTER.setName("eric1");
 
 		} catch (NullPointerException e) {
 			System.err

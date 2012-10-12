@@ -92,10 +92,13 @@ public class DiscussionTableModel implements TableModel {
 			l.tableChanged(new TableModelEvent(this));
 		}
 	}
-	
-	public Discussion getSelectedWorkitem() {
-		return this.discussions[this.table.getRowSorter().convertRowIndexToModel(
-				this.table.getSelectedRow())];
+
+	public Discussion getSelectedDiscussion() {
+		int selectedRow = this.table.getSelectedRow();
+		if (selectedRow == -1 || selectedRow >= getRowCount())
+			return null;
+		return this.discussions[this.table.getRowSorter()
+				.convertRowIndexToModel(selectedRow)];
 	}
 
 	public Discussion[] getSelectedWorkitems() {

@@ -54,8 +54,10 @@ public class DiscussionAnalyzerFrame extends JFrame implements
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			getEditClassificationFrame().setWorkitem(
-					tableModel.getSelectedWorkitem());
+			Discussion selectedDiscussion = tableModel.getSelectedDiscussion();
+			if (selectedDiscussion == null)
+				return;
+			getEditClassificationFrame().setWorkitem(selectedDiscussion);
 			getEditClassificationFrame().setVisible(true);
 		}
 	};
