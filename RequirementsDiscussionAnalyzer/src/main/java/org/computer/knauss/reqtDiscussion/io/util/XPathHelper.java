@@ -24,26 +24,32 @@ public class XPathHelper {
 		builder = new SAXBuilder();
 	}
 
-	public synchronized void setDocument(InputStream is) throws JDOMException, IOException {
+	public synchronized void setDocument(InputStream is) throws JDOMException,
+			IOException {
 		if (this.inputStream != null)
 			this.inputStream.close();
 		this.inputStream = is;
-		
+
 		this.document = builder.build(is);
 
 		// XXX removing namespaces makes XPath easier but can introduce semantic
 		// errors
-		for (Element el : this.document.getRootElement().getDescendants(
-				new ElementFilter())) {
-			if (el.getNamespace() != null) {
-				// System.out.println("removing namespae" + el.getNamespace());
-				el.setNamespace(null);
-				for (Attribute a : el.getAttributes())
-					if (a.getNamespace() != null)
-						a.setNamespace(null);
+		Element rootElement = this.document.getRootElement();
+		for (Element el : rootElement.getDescendants(new ElementFilter())) {
+			removeNamespaceFromElement(el);
+		}
+		removeNamespaceFromElement(rootElement);
+	}
+
+	private void removeNamespaceFromElement(Element el) {
+		if (el.getNamespace() != null) {
+			el.setNamespace(null);
+		}
+		for (Attribute a : el.getAttributes()) {
+			if (a.getNamespace() != null) {
+				a.setNamespace(null);
 			}
 		}
-
 	}
 
 	public synchronized Document getDocument() {

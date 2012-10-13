@@ -11,7 +11,6 @@ import java.util.List;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
 
-import org.computer.knauss.reqtDiscussion.io.util.XPathHelper;
 import org.jdom2.Attribute;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
@@ -147,16 +146,11 @@ public class XPathHelperTest {
 			List<Object> list = helper.select(".");
 			assertEquals(1, list.size());
 
-			// assertEquals("Colection", ((Document)
-			// list.get(0)).getRootElement()
-			// .getChildren().get(0).getName());
-
-			// XXX continue to work with parsing jazz here.
-			// Attribute nextAttrib = (Attribute) helper.select(
-			// "//Collection/@next").get(0);
-			// assertEquals(
-			// "https://jazz.net/jazz/oslc/contexts/_1w8aQEmJEduIY7C8B09Hyw/workitems?oslc_cm.pageSize=50&amp;_resultToken=_qMxpUbTjEeGVKOo_oXemGQ&amp;_startIndex=50",
-			// nextAttrib.getValue());
+			Attribute nextAttrib = (Attribute) helper.select(
+					"//Colection/@next").get(0);
+			assertEquals(
+					"https://jazz.net/jazz/oslc/contexts/_1w8aQEmJEduIY7C8B09Hyw/workitems?oslc_cm.pageSize=50&_resultToken=_qMxpUbTjEeGVKOo_oXemGQ&_startIndex=50",
+					nextAttrib.getValue());
 			documentStream.close();
 		} else {
 			System.err
