@@ -66,8 +66,8 @@ public class JazzJDOMDAOTest {
 		assertEquals(50, this.dao.getLimit());
 		this.dao.setProjectArea("Rational Team Concert");
 
-		// The test fixture returns 50 items. But I need to query them to see if
-		// the query is correct.
+		// The test fixture returns 50 items, regardless of the limit. But I
+		// need to query them to see if the query is correct.
 		assertEquals(50, this.dao.getDiscussions().length);
 
 		Stack<String> requestURLs = this.connector.requestURL;
@@ -89,8 +89,8 @@ public class JazzJDOMDAOTest {
 
 		this.dao.setLimit(-5);
 		assertEquals(0, this.dao.getLimit());
-		// The test fixture returns 50 items. But I need to query them to see if
-		// the query is correct.
+		// The test fixture returns 50 items, regardless of the limit. But I
+		// need to query them to see if the query is correct.
 		assertEquals(50, this.dao.getDiscussions().length);
 		request = requestURLs.pop();
 		while (request.endsWith("cm:comments"))
