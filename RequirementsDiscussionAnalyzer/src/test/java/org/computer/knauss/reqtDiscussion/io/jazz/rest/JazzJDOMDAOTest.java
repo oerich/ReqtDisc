@@ -63,7 +63,7 @@ public class JazzJDOMDAOTest {
 
 	@Test
 	public void testLimit() throws DAOException {
-		assertEquals(10, this.dao.getLimit());
+		assertEquals(50, this.dao.getLimit());
 		this.dao.setProjectArea("Rational Team Concert");
 
 		// The test fixture returns 50 items. But I need to query them to see if
@@ -75,7 +75,7 @@ public class JazzJDOMDAOTest {
 		// get all the requests for comments from the stack
 		while (request.endsWith("cm:comments"))
 			request = requestURLs.pop();
-		assertEquals("pageSize=10", request.substring(request.length() - 11));
+		assertEquals("pageSize=50", request.substring(request.length() - 11));
 
 		this.dao.setLimit(25);
 		assertEquals(25, this.dao.getLimit());

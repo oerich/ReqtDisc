@@ -44,7 +44,7 @@ public class JazzJDOMDAO implements IJazzDAO, IDiscussionEventDAO,
 	private XPathHelper commentsXML;
 	private List<Object> projectAreaList;
 	private String selectedProjectArea;
-	private int limit = 10;
+	private int limit = 50;
 	private String moreQuery;
 
 	public JazzJDOMDAO(IJazzAccessConfiguration config) throws DAOException {
