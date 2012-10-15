@@ -147,7 +147,7 @@ public class XPathHelperTest {
 			assertEquals(1, list.size());
 
 			Attribute nextAttrib = (Attribute) helper.select(
-					"//Colection/@next").get(0);
+					"//Collection/@next").get(0);
 			assertEquals(
 					"https://jazz.net/jazz/oslc/contexts/_1w8aQEmJEduIY7C8B09Hyw/workitems?oslc_cm.pageSize=50&_resultToken=_qMxpUbTjEeGVKOo_oXemGQ&_startIndex=50",
 					nextAttrib.getValue());

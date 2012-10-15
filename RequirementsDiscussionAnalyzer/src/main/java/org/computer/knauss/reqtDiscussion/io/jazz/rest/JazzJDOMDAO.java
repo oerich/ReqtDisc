@@ -197,14 +197,19 @@ public class JazzJDOMDAO implements IJazzDAO, IDiscussionEventDAO,
 
 	private String[] getWorkitemsForQuery(String simpleQueryURI)
 			throws Exception, JDOMException, IOException {
-		HttpResponse r;
-		r = this.webConnector.performHTTPSRequestXML(simpleQueryURI);
+		System.out.println(simpleQueryURI);
+		HttpResponse r = this.webConnector.performHTTPSRequestXML(simpleQueryURI);
 		this.changeRequestsXML = new XPathHelper();
 		this.changeRequestsXML.setDocument(r.getEntity().getContent());
 		List<Object> crElements = this.changeRequestsXML
 				.select("//ChangeRequest");
-		this.moreQuery = ((Attribute) this.changeRequestsXML.select(
-				"//Colection/@next").get(0)).getValue();
+		List<Object> moreQueryAttributes = this.changeRequestsXML
+				.select("//Collection/@next");
+		if (moreQueryAttributes.size() > 0)
+			this.moreQuery = ((Attribute) moreQueryAttributes.get(0))
+					.getValue();
+		else
+			this.moreQuery = null;
 		String[] ret = new String[crElements.size()];
 		for (int i = 0; i < ret.length; i++) {
 			Element e = (Element) crElements.get(i);
