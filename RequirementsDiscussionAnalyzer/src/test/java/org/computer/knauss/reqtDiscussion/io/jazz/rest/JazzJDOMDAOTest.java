@@ -21,6 +21,7 @@ import org.apache.http.ProtocolVersion;
 import org.apache.http.StatusLine;
 import org.apache.http.message.BasicHttpResponse;
 import org.computer.knauss.reqtDiscussion.io.DAOException;
+import org.computer.knauss.reqtDiscussion.io.IDAOProgressMonitor;
 import org.computer.knauss.reqtDiscussion.io.Util;
 import org.computer.knauss.reqtDiscussion.model.Discussion;
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
@@ -62,11 +63,11 @@ public class JazzJDOMDAOTest {
 
 	@Test
 	public void testLimit() throws DAOException {
-		assertEquals(10, this.dao.getLimit());
+		assertEquals(50, this.dao.getLimit());
 		this.dao.setProjectArea("Rational Team Concert");
 
-		// The test fixture returns 50 items. But I need to query them to see if
-		// the query is correct.
+		// The test fixture returns 50 items, regardless of the limit. But I
+		// need to query them to see if the query is correct.
 		assertEquals(50, this.dao.getDiscussions().length);
 
 		Stack<String> requestURLs = this.connector.requestURL;
@@ -74,7 +75,7 @@ public class JazzJDOMDAOTest {
 		// get all the requests for comments from the stack
 		while (request.endsWith("cm:comments"))
 			request = requestURLs.pop();
-		assertEquals("pageSize=10", request.substring(request.length() - 11));
+		assertEquals("pageSize=50", request.substring(request.length() - 11));
 
 		this.dao.setLimit(25);
 		assertEquals(25, this.dao.getLimit());
@@ -88,8 +89,8 @@ public class JazzJDOMDAOTest {
 
 		this.dao.setLimit(-5);
 		assertEquals(0, this.dao.getLimit());
-		// The test fixture returns 50 items. But I need to query them to see if
-		// the query is correct.
+		// The test fixture returns 50 items, regardless of the limit. But I
+		// need to query them to see if the query is correct.
 		assertEquals(50, this.dao.getDiscussions().length);
 		request = requestURLs.pop();
 		while (request.endsWith("cm:comments"))
@@ -202,22 +203,25 @@ public class JazzJDOMDAOTest {
 		this.dao.setProjectArea("Rational Team Concert");
 
 		assertFalse(this.dao.hasMoreDiscussions());
-		// XXX Start here to make JazzDAO functional!
+
 		Discussion[] d = this.dao.getDiscussions();
 		assertTrue(this.dao.hasMoreDiscussions());
 
-		// this.dao.setProjectArea("Rational Team Concert");
-		//
-		// for (int i = 0; i < 51; i++) {
-		// Discussion d = this.dao.getNextDiscussion();
-		// // we have 50 stories, before the testframe gives the same file
-		// // again
-		// if (i == 0 || i == 50)
-		// assertEquals("Should be the same for i=0 and i=50 (i=" + i
-		// + ")", 117709, d.getID());
-		// else
-		// assertFalse(117709 == d.getID());
-		// }
+		this.dao.setProjectArea("Rational Team Concert");
+
+		ProgressMonitorProbe pm = new ProgressMonitorProbe();
+
+		// testframe gives the same file again
+		d = this.dao.getMoreDiscussions(pm);
+		assertEquals(50, d.length);
+
+		Discussion disc = d[0];
+		assertEquals("testframe gives the same file again", 117709,
+				disc.getID());
+
+		assertEquals("Adding DiscussionEvents", pm.message);
+		assertEquals(101, pm.step);
+		assertEquals(102, pm.totalSteps);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
@@ -230,6 +234,35 @@ public class JazzJDOMDAOTest {
 	public void testStoreDiscussions() throws DAOException {
 		this.dao.storeDiscussions(new Discussion[] { DiscussionFactory
 				.getInstance().getDiscussion(-1) });
+	}
+
+	private class ProgressMonitorProbe implements IDAOProgressMonitor {
+
+		int totalSteps = 0;
+		int step = 0;
+		String message = "";
+
+		@Override
+		public void setTotalSteps(int steps) {
+			this.totalSteps = steps;
+		}
+
+		@Override
+		public void setStep(int step) {
+			this.step = step;
+		}
+
+		@Override
+		public void setStep(int step, String message) {
+			this.step = step;
+			this.message = message;
+		}
+
+		@Override
+		public boolean isCancelled() {
+			return false;
+		}
+
 	}
 
 	private class ConnectorProbe implements IWebConnector {
@@ -276,6 +309,10 @@ public class JazzJDOMDAOTest {
 							getClass().getResource(
 									"/jazz.xml/50162-comments.xml").getFile());
 
+			} else if (requestURL.endsWith("_startIndex=50")) {
+				// this is the more-query!;
+				this.response.entity.stream = new FileInputStream(getClass()
+						.getResource("/jazz.xml/50-stories.xml").getFile());
 			}
 			return response;
 		}
@@ -287,13 +324,11 @@ public class JazzJDOMDAOTest {
 
 		@Override
 		public Properties getConfiguration() {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
 		@Override
 		public Map<String, String> checkConfiguration() {
-			// TODO Auto-generated method stub
 			return null;
 		}
 

@@ -44,9 +44,7 @@ public class JazzJDOMDAO implements IJazzDAO, IDiscussionEventDAO,
 	private XPathHelper commentsXML;
 	private List<Object> projectAreaList;
 	private String selectedProjectArea;
-	private int limit = 10;
-	private int discussionIndex;
-
+	private int limit = 50;
 	private String moreQuery;
 
 	public JazzJDOMDAO(IJazzAccessConfiguration config) throws DAOException {
@@ -182,30 +180,42 @@ public class JazzJDOMDAO implements IJazzDAO, IDiscussionEventDAO,
 		}
 		HttpResponse r = this.webConnector.performHTTPSRequestXML(servicesURI);
 		this.xpathHelper.setDocument(r.getEntity().getContent());
+
+		// 2. create a simple query according to
+		// http://open-services.net/bin/view/Main/CmQuerySyntaxV1
 		String simpleQueryURI = ((Element) this.xpathHelper.select(
 				"//simpleQuery/url").get(0)).getValue();
 		simpleQueryURI = simpleQueryURI.trim() + STORY_QUERY + getLimit();
 		// System.out.println("Query URL: "
 		// + URLDecoder.decode(simpleQueryURI, "UTF-8"));
 
-		// 2. create a simple query according to
-		// http://open-services.net/bin/view/Main/CmQuerySyntaxV1
-		r = this.webConnector.performHTTPSRequestXML(simpleQueryURI);
-
 		// 3. make sense of the result and return it
+		String[] ret = getWorkitemsForQuery(simpleQueryURI);
+
+		return ret;
+	}
+
+	private String[] getWorkitemsForQuery(String simpleQueryURI)
+			throws Exception, JDOMException, IOException {
+		System.out.println(simpleQueryURI);
+		HttpResponse r = this.webConnector.performHTTPSRequestXML(simpleQueryURI);
 		this.changeRequestsXML = new XPathHelper();
 		this.changeRequestsXML.setDocument(r.getEntity().getContent());
 		List<Object> crElements = this.changeRequestsXML
 				.select("//ChangeRequest");
-		this.moreQuery = ((Attribute) this.changeRequestsXML.select(
-				"//Colection/@next").get(0)).getValue();
+		List<Object> moreQueryAttributes = this.changeRequestsXML
+				.select("//Collection/@next");
+		if (moreQueryAttributes.size() > 0)
+			this.moreQuery = ((Attribute) moreQueryAttributes.get(0))
+					.getValue();
+		else
+			this.moreQuery = null;
 		String[] ret = new String[crElements.size()];
 		for (int i = 0; i < ret.length; i++) {
 			Element e = (Element) crElements.get(i);
 			// System.out.println(e.getChild("type").getAttribute("resource").getValue());
 			ret[i] = convertElementToString(e);
 		}
-
 		return ret;
 	}
 
@@ -394,24 +404,6 @@ public class JazzJDOMDAO implements IJazzDAO, IDiscussionEventDAO,
 	}
 
 	@Override
-	public Discussion getNextDiscussion() throws DAOException {
-		Discussion ret = null;
-
-		if (this.discussionIndex < getDiscussions().length)
-			ret = getDiscussions()[this.discussionIndex];
-		else {
-			// TODO
-			// otherwise: get the link for the next results.
-			// get the next discussions
-			this.discussionIndex = this.discussionIndex
-					- getDiscussions().length;
-			ret = getNextDiscussion();
-		}
-		this.discussionIndex++;
-		return ret;
-	}
-
-	@Override
 	public Discussion[] getDiscussions() throws DAOException {
 		return getDiscussions(IDAOProgressMonitor.NULL_PROGRESS_MONITOR);
 	}
@@ -488,8 +480,46 @@ public class JazzJDOMDAO implements IJazzDAO, IDiscussionEventDAO,
 	@Override
 	public Discussion[] getMoreDiscussions(IDAOProgressMonitor progressMonitor)
 			throws DAOException {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			if (!hasMoreDiscussions())
+				return new Discussion[0];
+			progressMonitor.setTotalSteps(-1);
+			int step = 0;
+
+			// 1. execute the more-query
+			progressMonitor.setStep(step++,
+					"Loading change requests from jazz.net");
+			getWorkitemsForQuery(this.moreQuery);
+
+			// 2. identify the changerequest with the discussionid and get the
+			// comment-url
+			progressMonitor.setStep(step++, "Parsing change requests");
+			List<Object> discussionElements = this.changeRequestsXML
+					.select("//ChangeRequest");
+
+			Discussion[] ret = new Discussion[discussionElements.size()];
+			progressMonitor.setTotalSteps(2 * ret.length + 2);
+			for (int i = 0; i < ret.length; i++) {
+				progressMonitor.setStep(step++, "Creating Discussions");
+				ret[i] = createDiscussion(discussionElements.get(i));
+			}
+
+			for (Discussion d : ret) {
+				progressMonitor.setStep(step++, "Adding DiscussionEvents");
+				d.addDiscussionEvents(getDiscussionEventsOfDiscussion(d.getID()));
+			}
+
+			return ret;
+		} catch (JDOMException e) {
+			throw new DAOException("Could not parse XML [" + e.getMessage()
+					+ "]", e);
+		} catch (IOException e) {
+			throw new DAOException(
+					"Could read stream [" + e.getMessage() + "]", e);
+		} catch (Exception e) {
+			throw new DAOException("General error reading discussion events ["
+					+ e.getMessage() + "]", e);
+		}
 	}
 
 	@Override

@@ -83,6 +83,18 @@ public class DiscussionTableModel implements TableModel {
 		fireTabledataChanged();
 	}
 
+	public void addDiscussions(Discussion[] discussions) {
+		Discussion[] temp = new Discussion[this.discussions.length
+				+ discussions.length];
+		for (int i = 0; i < this.discussions.length; i++) {
+			temp[i] = this.discussions[i];
+		}
+		for (int i = 0; i < discussions.length; i++) {
+			temp[i + this.discussions.length] = discussions[i];
+		}
+		this.discussions = temp;
+	}
+
 	public Discussion[] getDiscussions() {
 		return this.discussions;
 	}

@@ -7,14 +7,25 @@ import org.computer.knauss.reqtDiscussion.io.DAOException;
 import org.computer.knauss.reqtDiscussion.io.IDAOProgressMonitor;
 import org.computer.knauss.reqtDiscussion.ui.EditPropertiesFrame;
 
-public class LoadDiscussions extends AbstractCommand {
+public class LoadMoreDiscussions extends AbstractCommand {
 
-	private static final String NAME = "Load discussions...";
+	private static final String NAME = "Load more discussions...";
 	private static final long serialVersionUID = 1L;
 	private BackGroundDAOTask task;
 
-	public LoadDiscussions() {
+	public LoadMoreDiscussions() {
 		super(NAME);
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return true;
+//		try {
+//			return getDiscussionDAO().hasMoreDiscussions();
+//		} catch (DAOException e) {
+//			e.printStackTrace();
+//		}
+//		return false;
 	}
 
 	@Override
@@ -42,8 +53,8 @@ public class LoadDiscussions extends AbstractCommand {
 					@Override
 					public void perform(IDAOProgressMonitor progressMonitor)
 							throws DAOException {
-						getDiscussionTableModel().setDiscussions(
-								getDiscussionDAO().getDiscussions(
+						getDiscussionTableModel().addDiscussions(
+								getDiscussionDAO().getMoreDiscussions(
 										progressMonitor));
 					}
 
