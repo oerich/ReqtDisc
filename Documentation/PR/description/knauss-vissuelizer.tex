@@ -36,7 +36,8 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 %\usepackage[colorinlistoftodos,textsize=footnotesize,textwidth=1cm]{todonotes}
-\usepackage[disable]{todonotes}
+% \usepackage[disable]{todonotes}
+\usepackage{todonotes}
 \usepackage{booktabs}
 \usepackage{multirow}
 \usepackage{array}
@@ -47,6 +48,7 @@
 \usepackage{colortbl}
 \usepackage[font=footnotesize]{caption}
 
+\newcommand{\viss}{\textsc{V:Issue:lizer} }
 
 \newcolumntype{v}[1]{>{\raggedright \hspace {0pt}}p{#1}}
 \def\IEEEbibitemsep{4pt plus 1.6pt}
@@ -78,13 +80,13 @@
 
 \input{frontmatter}
 \input{introduction}
-%\input{relatedwork}
-%\input{approach}
-%\input{classification}
-%\input{visualization}
+\input{background}
+\input{vissuelizer}
+\input{scenarios}
+\input{evaluation}
 %\input{recommendations}
 %\input{discussion}
-%\input{conclusion}
+\input{conclusion}
 %\vspace{-1cm}
 \balance
 
