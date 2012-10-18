@@ -16,9 +16,9 @@ Comments that are concerned with clarifying requirements are depicted by red rec
 \item The manager scrolls through the issues and associated trajectories and decides based on this rich information where to invest more resources.
 \end{enumerate}
 \begin{figure}
-\missingfigure[figwidth=\columnwidth]{Some nice trajectory, e.g. the visual studio one.}
-\label{fig:example-trajectory}
+\includegraphics[width=\columnwidth]{img/example-trajectory}
 \caption{Example of a clarification trajectory}
+\label{fig:example-trajectory}
 \end{figure}
 Typically, there is a number of issues without pathological findings, e.g. user stories with some clarification in the beginning and other communication events later on that show progress. But there are also suspicious trajectories: a large amount of clarification late in the iteration, perhaps even after the issue seemed to be solved. 
 Or no clarification at all, even though the issue seems to be complex.
@@ -30,9 +30,9 @@ Often, he or she will investigate who participates in a discussion of an issue a
 More over, \viss also integrates information of the automatic analysis of online communication into these social networks, i.e. showing for each actor the percentage of clarification and other communication.
 Figure \ref{fig:example-sn} shows an example of an social network for the issue presented in Figure \ref{fig:example-trajectory}. 
 \begin{figure}
-\missingfigure[figwidth=\columnwidth]{Some nice social network for the trajectory above}
-\label{fig:example-sn}
+\includegraphics[width=\columnwidth]{img/example-sn}
 \caption{Example of a social network}
+\label{fig:example-sn}
 \end{figure}
 The developers are presented as nodes (here: anonymized), and connections between nodes are weighted by the amount of communication both developers share about a given issue in a specific time interval. 
 In the example above, the manager might conclude that there is no single person who is coordinating the work around this issue, because there is no actor who participates in all relevant time intervals.
@@ -45,8 +45,8 @@ To support managers in this task, \viss distinguishes between two types of knowl
 In order to leverage the power of \viss for this task, the manager selects a number of issues that are related to a given topic. 
 \viss integrates the social networks of these issues in a single large network (see Figure \ref{fig:example-sn-large}).
 \begin{figure}
-\missingfigure[figwidth=\columnwidth]{Some nice social network for a set of issues}
-\label{fig:example-sn-large}
+\includegraphics[width=\columnwidth]{img/example-sn-large}
 \caption{Example of a social network of a set of issues}
+\label{fig:example-sn-large}
 \end{figure}
 The manager looks for candidates with a balanced percentage of clarification and other communication and a medium centrality, actors with high centrality might already have a very high workload.
