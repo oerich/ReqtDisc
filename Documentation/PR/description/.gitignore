@@ -4,4 +4,5 @@
 *.blg
 *.log
 *.synctex.gz
-
+*.bak
+*.tdo
