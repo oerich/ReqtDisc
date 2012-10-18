@@ -47,7 +47,7 @@ public class HighlightRelatedDiscussions {
 	}
 
 	public void highlightRelatedWorkitems(DiscussionTableModel tm) {
-		Discussion[] selectedItems = tm.getSelectedWorkitems();
+		Discussion[] selectedItems = tm.getSelectedDiscussions();
 
 		// Do not interfere when user does multiple selections...
 		if (selectedItems.length == 1) {

@@ -105,15 +105,7 @@ public class DiscussionTableModel implements TableModel {
 		}
 	}
 
-	public Discussion getSelectedDiscussion() {
-		int selectedRow = this.table.getSelectedRow();
-		if (selectedRow == -1 || selectedRow >= getRowCount())
-			return null;
-		return this.discussions[this.table.getRowSorter()
-				.convertRowIndexToModel(selectedRow)];
-	}
-
-	public Discussion[] getSelectedWorkitems() {
+	public Discussion[] getSelectedDiscussions() {
 		int[] ind = this.table.getSelectedRows();
 		Discussion[] ret = new Discussion[ind.length];
 

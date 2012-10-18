@@ -54,10 +54,11 @@ public class DiscussionAnalyzerFrame extends JFrame implements
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			Discussion selectedDiscussion = tableModel.getSelectedDiscussion();
+			Discussion[] selectedDiscussion = tableModel
+					.getSelectedDiscussions();
 			if (selectedDiscussion == null)
 				return;
-			getEditClassificationFrame().setWorkitem(selectedDiscussion);
+			getEditClassificationFrame().setDiscussions(selectedDiscussion);
 			getEditClassificationFrame().setVisible(true);
 		}
 	};
@@ -78,8 +79,8 @@ public class DiscussionAnalyzerFrame extends JFrame implements
 
 		@Override
 		public void actionPerformed(ActionEvent event) {
-			networkAnalysisFrame
-					.setWorkitems(tableModel.getSelectedWorkitems());
+			networkAnalysisFrame.setWorkitems(tableModel
+					.getSelectedDiscussions());
 			networkAnalysisFrame.setVisible(true);
 		}
 
@@ -225,7 +226,7 @@ public class DiscussionAnalyzerFrame extends JFrame implements
 
 	@Override
 	public void tableChanged(TableModelEvent event) {
-		Discussion[] selected = this.tableModel.getSelectedWorkitems();
+		Discussion[] selected = this.tableModel.getSelectedDiscussions();
 		// get the standard metrics
 		StringBuffer metrics = new StringBuffer();
 		for (AbstractDiscussionMetric m : AbstractDiscussionMetric.STANDARD_METRICS) {
@@ -265,8 +266,8 @@ public class DiscussionAnalyzerFrame extends JFrame implements
 			}
 		}
 		configureVisualizationPanel.getDiscussionPartition().setTimeInterval(
-				tableModel.getSelectedWorkitems());
-		networkAnalysisFrame.setWorkitems(tableModel.getSelectedWorkitems());
+				tableModel.getSelectedDiscussions());
+		networkAnalysisFrame.setWorkitems(tableModel.getSelectedDiscussions());
 		tableChanged(null);
 	}
 }
