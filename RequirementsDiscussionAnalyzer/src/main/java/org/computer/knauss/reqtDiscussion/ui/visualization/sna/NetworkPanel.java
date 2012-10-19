@@ -28,6 +28,7 @@ public class NetworkPanel extends JPanel {
 
 	private static final Bounds BOUNDS = new Bounds(0, 0, 2000, 2000);
 	private static final long serialVersionUID = 1L;
+	private IScaler scaler = IScaler.DEFAULT_SCALER;
 	private SocialNetwork network;
 	private ForceBasedLayouter<SocialNetwork, Connection<Double, Node>, Node> layouter;
 	private SNAGraphProvider graphProvider;
@@ -57,7 +58,7 @@ public class NetworkPanel extends JPanel {
 		// this.graphProvider.printMatrix(network);
 
 		this.graphProvider.setMinWeight(this.network.getEdgeCutoffWeight());
-		
+
 		int nodeCount = network.getActors().length;
 		BOUNDS.setHeight(nodeCount * 100);
 		BOUNDS.setWidth(nodeCount * 100);
@@ -122,8 +123,8 @@ public class NetworkPanel extends JPanel {
 						.getTarget());
 
 				Stroke otherStroke = ((Graphics2D) g).getStroke();
-				((Graphics2D) g).setStroke(new BasicStroke(c.getWeight()
-						.floatValue()));
+				((Graphics2D) g).setStroke(new BasicStroke((float) this.scaler
+						.scaleDown(c.getWeight(), 32)));
 				g.drawLine((int) pos.x, (int) pos.y, (int) pos2.x, (int) pos2.y);
 				((Graphics2D) g).setStroke(otherStroke);
 			}
@@ -138,6 +139,7 @@ public class NetworkPanel extends JPanel {
 				new Slice(a.getCoordination(), Color.BLUE) };
 
 		int d = 8 + a.getClarification() + a.getCoordination();
+		d = (int) this.scaler.scaleDown(d, 64);
 
 		paintPie((Graphics2D) g, new Rectangle((int) pos.x - d / 2, (int) pos.y
 				- d / 2, d, d), slices);
@@ -182,5 +184,9 @@ public class NetworkPanel extends JPanel {
 
 	public double getZoomFactor() {
 		return this.zoomFactor;
+	}
+
+	public void setScaler(IScaler scaler) {
+		this.scaler = scaler;
 	}
 }
