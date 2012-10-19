@@ -49,6 +49,18 @@ public abstract class AbstractDiscussionOverTimePartition implements
 				.getReferenceClassification().toLowerCase()
 				.startsWith("clarif"));
 	}
+	
+	@Override
+	public boolean isClassified(ModelElement me) {
+		if (!(me instanceof DiscussionEvent))
+			return false;
+
+		DiscussionEvent de = (DiscussionEvent) me;
+
+		return (de.getReferenceClassification() != null && !de
+				.getReferenceClassification().toLowerCase()
+				.startsWith("no class"));	
+	}
 
 	@Override
 	public void setTimeInterval(ModelElement[] selectedElements) {

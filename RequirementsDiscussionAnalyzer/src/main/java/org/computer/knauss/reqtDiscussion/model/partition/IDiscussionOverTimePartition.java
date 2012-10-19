@@ -22,16 +22,18 @@ public interface IDiscussionOverTimePartition {
 
 	public int getPartitionCount();
 
-	public void setModelElements(ModelElement[] comments);
+	public void setModelElements(ModelElement[] elements);
 
 	public ModelElement[] getModelElements();
 
-	public int getPartitionForModelElement(ModelElement wc);
+	public int getPartitionForModelElement(ModelElement me);
 
 	public ModelElement[] getModelElementsForPartition(int partition);
 
-	public boolean isInClass(ModelElement wc);
+	public boolean isInClass(ModelElement me);
 
+	public boolean isClassified(ModelElement me);
+	
 	public void setTimeInterval(ModelElement[] selectedElements);
 
 }
