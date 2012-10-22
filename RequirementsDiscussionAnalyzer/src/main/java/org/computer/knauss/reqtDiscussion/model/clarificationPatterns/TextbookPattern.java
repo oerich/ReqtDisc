@@ -4,7 +4,7 @@ import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
 import org.computer.knauss.reqtDiscussion.model.ModelElement;
 import org.computer.knauss.reqtDiscussion.model.partition.IDiscussionOverTimePartition;
 
-public class PerfectPattern implements IPatternClass {
+public class TextbookPattern implements IPatternClass {
 
 	private IDiscussionOverTimePartition partition;
 
