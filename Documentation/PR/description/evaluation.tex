@@ -1,11 +1,11 @@
 % !TEX root = knauss-vissuelizer.tex
 \section{Preliminary Evaluation}
-In order to evaluate the \viss and its underlying concepts, we need to investigate several things.
-First we need to show that \viss is able to distinguish between communication events that deal with clarification and other events. 
-Secondly, we need to determine if and when the feedback from our \viss tool is beneficial for practitioners. 
+In order to evaluate the \viss\ and its underlying concepts, we need to investigate several things.
+First we need to show that \viss\ is able to distinguish between communication events that deal with clarification and other events. 
+Secondly, we need to determine if and when the feedback from our \viss\ tool is beneficial for practitioners. 
 
 \subsection{Ability to identify clarification events}
-\viss currently uses a Bayesian classifier to identify clarification events, i.e. a supervised machine learning algorithm.
+\viss\ currently uses a Bayesian classifier to identify clarification events, i.e. a supervised machine learning algorithm.
 In order to evaluate the ability to identify clarification events, we need to show(i)  that the classifier reaches an acceptable performance with realistic amount of training and (ii) that this performance is sufficient to generate meaningful trajectories on the fly.
 We investigated both aspects based on a case study in the IBM Rational Team Concert (RTC) project \cite{Knauss2012f}.
 RTC is a globally distributed software project and as such employs online communication to an extend that guarantees a sufficient amount of the overall communication to be available.
@@ -16,13 +16,13 @@ Especially the high recall leads to acceptable trajectories that are comparable 
 
 \subsection{Ability to support decisions of managers}
 We just started to evaluate the ability to support software managers in decision making. 
-For a preliminary evaluation, we presented \viss to several software managers, followed by a semi-structured interview.
+For a preliminary evaluation, we presented \viss\ to several software managers, followed by a semi-structured interview.
 First, we were able to interview participants of the VIATEC Software Management Round Table, a local group of software managers that regularly meet in Victoria to exchange experiences.
 Our interviewees agreed that the clarification trajectories provide significant information to support decisions on resource allocation and risk management. 
-In addition, they suggested that the \viss could also support project retrospectives and process improvement efforts. 
+In addition, they suggested that the \viss\ could also support project retrospectives and process improvement efforts. 
 The main issue raised by Victoria's software managers was the need of seeing who was participating in a given requirements related discussion. 
 Accordingly, a trajectory without clarification would be suspicious if no experienced developer participated in its underlying discussion. 
 
-As an reaction to this feedback, we integrated the ability to generate social networks into \viss and then  talked to managers of the IBM RTC project and related projects for a second round of interviews.
+As an reaction to this feedback, we integrated the ability to generate social networks into \viss\ and then  talked to managers of the IBM RTC project and related projects for a second round of interviews.
 At IBM, our interviewees agreed that the clarification trajectories together with the associated social network graphs are helpful. 
 Especially, when the software development reaches the \emph{end game}, i.e. a time close to the release where mostly testing and polishing takes place, clarification events would be very suspicious and would indicate a high risk that needs management attention. 

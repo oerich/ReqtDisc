@@ -1,11 +1,20 @@
 % !TEX root = knauss-vissuelizer.tex
 \section{V:Issue:lizer}
-\viss is an interactive tool that allows users to dynamically explore data from a software development task management system with a focus on communication and clarification of requirements related issues.
-The main control element shows a list of tasks (e.g. workitems in jazz, items in jira, issues in other systems) (see Figure \ref{fig:screenshot}).
-The power of \viss is to add visualizations to the selected issues that help to assess the communication in comments related to these issues.
+\viss\ is an interactive tool that allows users to dynamically explore requirements discussions in online repositories with a focus on communication and clarification of requirements related issues.
+The main control element shows a list of requirements discussions (e.g. workitems in jazz, items in jira, issues in other systems) (see Figure \ref{fig:screenshot}).
+The power of \viss is to add visualizations to the selected discussions that help to assess the communication through discussion events (e.g. comments) related to these requirements.
 
 \viss currently supports two different visualizations: 
 \begin{itemize}
-\item \textbf{Clarification Trajectories} show how the percentage of communication related to clarifying requirements changes over the lifetime of the issue.
-\item \textbf{Social Networks} show who is participating in a discussion related to (a set of) issue(s) and how the actors in the discussion are structured. 
+\item \textbf{Clarification Trajectories} show how the percentage of clarification events to other discussion events related to a requirement changes over its lifetime.
+\item \textbf{Social Networks} show who is participating in a discussion related to (a set of) requirements(s) and how the actors in the discussion are structured. 
 \end{itemize} 
+
+As the visualization of the clarification trajectory (c.f. Figure \ref{fig:example-trajectory}) is a new concept, it needs some explanation.
+The black line represents the lifetime of the requirement discussion from the creation of the requirement in the system to the last recorded discussion event.
+Dashed lines divide the lifeline into quarters and help to see in which part of the lifetime discussion occurs.
+Discussion events are depicted by rectangles.
+They are shown below the lifeline, if they are clarification events and above the lifeline if not.
+A grey line shows the sum of clarification.
+In a classic trajectory with clarification up-front and only implementation related communication in the end, this grey line will start in the bottom left and raise to the upper right corner.
+For increased readability, the different types of discussion events are coloured in the tool (clarification events: red, other: blue).
