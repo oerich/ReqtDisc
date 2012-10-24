@@ -50,7 +50,7 @@ public class HappyEndingPattern implements IPatternClass {
 
 	@Override
 	public String getName() {
-		return "happy-ending?";
+		return "happy-ending";
 	}
 
 }

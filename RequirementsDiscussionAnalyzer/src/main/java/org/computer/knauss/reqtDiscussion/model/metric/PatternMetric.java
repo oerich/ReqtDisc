@@ -7,21 +7,21 @@ import java.util.List;
 import org.computer.knauss.reqtDiscussion.model.Discussion;
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
 import org.computer.knauss.reqtDiscussion.model.clarificationPatterns.BackToDraftPattern;
-import org.computer.knauss.reqtDiscussion.model.clarificationPatterns.ClosingGatePattern;
+import org.computer.knauss.reqtDiscussion.model.clarificationPatterns.ProcrastinationPattern;
 import org.computer.knauss.reqtDiscussion.model.clarificationPatterns.HappyEndingPattern;
 import org.computer.knauss.reqtDiscussion.model.clarificationPatterns.IPatternClass;
 import org.computer.knauss.reqtDiscussion.model.clarificationPatterns.IndifferentPattern;
-import org.computer.knauss.reqtDiscussion.model.clarificationPatterns.NoSharedUnderstandingPattern;
-import org.computer.knauss.reqtDiscussion.model.clarificationPatterns.PerfectPattern;
+import org.computer.knauss.reqtDiscussion.model.clarificationPatterns.DiscordantPattern;
+import org.computer.knauss.reqtDiscussion.model.clarificationPatterns.TextbookPattern;
 import org.computer.knauss.reqtDiscussion.model.partition.FixedNumberPartition;
 import org.computer.knauss.reqtDiscussion.model.partition.IDiscussionOverTimePartition;
 
 public class PatternMetric extends AbstractDiscussionMetric {
 
 	public static final IPatternClass[] PATTERNS = new IPatternClass[] {
-			new IndifferentPattern(), new NoSharedUnderstandingPattern(),
-			new ClosingGatePattern(), new BackToDraftPattern(),
-			new HappyEndingPattern(), new PerfectPattern() };
+			new IndifferentPattern(), new DiscordantPattern(),
+			new ProcrastinationPattern(), new BackToDraftPattern(),
+			new HappyEndingPattern(), new TextbookPattern() };
 	private IDiscussionOverTimePartition partition;
 
 	@Override

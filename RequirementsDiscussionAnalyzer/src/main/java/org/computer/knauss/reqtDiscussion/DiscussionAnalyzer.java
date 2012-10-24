@@ -19,6 +19,7 @@ import org.computer.knauss.reqtDiscussion.ui.ctrl.InsertOrUpdateDiscussionEventC
 import org.computer.knauss.reqtDiscussion.ui.ctrl.LoadDiscussionByID;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.LoadDiscussions;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.LoadMoreDiscussions;
+import org.computer.knauss.reqtDiscussion.ui.ctrl.PrintTrajectoryFeatures;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.SetReferenceClassifierName;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.ShowStatistics;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.StoreDiscussionEventClassifications;
@@ -88,8 +89,9 @@ public class DiscussionAnalyzer {
 
 			daFrame.addAction(DiscussionAnalyzerFrame.STATISTICS_MENU,
 					configureCommand(new ShowStatistics()));
-
-			IClassificationFilter.NAME_FILTER.setName("eric1");
+			daFrame.addAction(DiscussionAnalyzerFrame.STATISTICS_MENU,
+					configureCommand(new PrintTrajectoryFeatures()));
+			IClassificationFilter.NAME_FILTER.setName("robin4");
 
 		} catch (NullPointerException e) {
 			System.err

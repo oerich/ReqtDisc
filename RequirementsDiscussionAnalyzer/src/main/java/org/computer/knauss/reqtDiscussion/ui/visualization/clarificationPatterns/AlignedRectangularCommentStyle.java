@@ -19,6 +19,7 @@ public class AlignedRectangularCommentStyle extends AbstractVisualizationStyle
 
 	private static final Color IN_CLASS_COLOR = new Color(0x9A0008);
 	private static final Color NOT_IN_CLASS_COLOR = new Color(0x00569A);
+	private static final Color NOT_CLASSIFIED_COLOR = Color.GRAY;
 
 	private IDiscussionOverTimePartition partition;
 	private int xOffset;
@@ -120,6 +121,9 @@ public class AlignedRectangularCommentStyle extends AbstractVisualizationStyle
 
 	@Override
 	public Color getFillColor(ModelElement comment, int i) {
+		if (!this.partition.isClassified(comment))
+			return NOT_CLASSIFIED_COLOR;
+
 		if (this.partition.isInClass(comment))
 			// return Color.MAGENTA;
 			return IN_CLASS_COLOR;

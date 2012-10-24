@@ -22,6 +22,7 @@ import java.util.TimerTask;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -76,11 +77,13 @@ public class NetworkFrame extends JFrame {
 
 	private VisualizationConfiguration configuration;
 
+	private JCheckBox scaleElementsBox;
+
 	public NetworkFrame(VisualizationConfiguration configuration) {
 		super("Social Network Analysis");
 
 		this.configuration = configuration;
-		
+
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		setLayout(new BorderLayout());
 
@@ -130,7 +133,7 @@ public class NetworkFrame extends JFrame {
 
 		JPanel ctrlPanel = new JPanel(new GridLayout(2, 1));
 
-		JPanel zoomPanel = new JPanel(new GridLayout(2, 1));
+		JPanel zoomPanel = new JPanel(new GridLayout(3, 1));
 		zoomPanel.setBorder(BorderFactory.createTitledBorder("Zoom"));
 
 		JButton fitToViewBtn = new JButton("fit to view");
@@ -161,6 +164,20 @@ public class NetworkFrame extends JFrame {
 		zoomPanel.add(this.zoomSlider);
 		ctrlPanel.add(zoomPanel, BorderLayout.WEST);
 
+		scaleElementsBox = new JCheckBox("Scale elements");
+		scaleElementsBox.setSelected(true);
+		scaleElementsBox.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if (scaleElementsBox.isSelected())
+					networkPanel.setScaler(IScaler.DEFAULT_SCALER);
+				else
+					networkPanel.setScaler(IScaler.NULL_SCALER);
+			}
+		});
+		zoomPanel.add(scaleElementsBox);
+
 		this.cutoffSlider = new JSlider();
 		this.cutoffSlider.setPaintLabels(true);
 		this.cutoffSlider.setValue(0);
@@ -182,7 +199,6 @@ public class NetworkFrame extends JFrame {
 		Timer t = new Timer();
 		t.schedule(this.timer, 50, 100);
 	}
-
 
 	public void setWorkitems(Discussion[] discussions) {
 		this.discussions = discussions;

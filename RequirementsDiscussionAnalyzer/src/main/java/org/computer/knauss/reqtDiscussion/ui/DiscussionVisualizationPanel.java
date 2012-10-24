@@ -224,7 +224,7 @@ public class DiscussionVisualizationPanel extends JPanel implements
 
 	@Override
 	public void valueChanged(ListSelectionEvent event) {
-		this.selectedDiscussions = this.dtm.getSelectedWorkitems();
+		this.selectedDiscussions = this.dtm.getSelectedDiscussions();
 		repaint();
 	}
 
