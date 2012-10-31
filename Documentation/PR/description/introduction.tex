@@ -1,16 +1,15 @@
 % !TEX root = knauss-vissuelizer.tex
 \section{Introduction}
 
-Large software projects are often affected by the need to collaborate across geographically distributed sites and to depend upon online communication to perform requirements related activities. 
+Large software projects often  need to collaborate across geographically distributed sites and to depend upon online communication to perform requirements related activities. 
 More and more teams employ agile approaches that aim at discovering requirements iteratively and rely on frequent communication instead of requirements documentation. 
 In such approaches, requirements are defined in the form of user stories, and ongoing discussions around these user stories serve as the main mechanism to clarify the meaning of requirements and to coordinate their implementation \cite{Cao2008}. 
 Recording such discussions and decisions in online project repositories is an emerging best practice, not only in large and distributed projects \cite{Aranda2007}.
 IBM\textsuperscript{\textregistered}'s Rational Team Concert\textsuperscript{\textregistered} project, with a large distributed team, is an example in which management mandates the recording of all decisions in the project repository for future use in the project\cite{Frost2007}. 
 Consequently, online project repositories contain a wealth of requirements-related communication.
 
-In these kinds of environments, however, the expected evolution of a requirement from an initial idea, through clarification, to design and full implementation, often stagnates. 
 %Process-related issues, inadequate tool support or inadequate communication [refs) are common reasons for such problems. 
-E.g. stakeholders continue to \emph{clarify} the requirement because it is ambiguous, incomplete, or has frequent changes. 
+When stakeholders continue to \emph{clarify} the requirement because it is ambiguous, incomplete, or has frequent changes, the expected evolution of a requirement from an initial idea, through clarification, to design and full implementation, often stagnates. 
 As a result, its implementation can be delayed or sometimes never get started. 
 %Bikeshedding, also known as the Parkinson's law of triviality\cite{Parkinson1958} is another common situation in which developers give disproportionate weight and time to solving trivial issues and delay development. 
 %An example from the RTC project (jazz.net) is the ongoing discussion of a large number of developers over the  text required in a UI element, and which blocked the development of this user story. 
@@ -29,11 +28,11 @@ Current requirements management tools offer little support for identifying requi
 
 %Studying recorded online communication fills this gap by offering the potential to reveal patterns of communication that correlate to problematic situations around requirements development. 
 In this demo we present a novel tool for analyzing online communication and differentiating between healthy and problematic patterns of communication associated with an individual requirement. 
-Our \viss\ tool helps managers to analyze the content of communication among stakeholders involved in the discussion of a particular requirement, identify specific instances of \emph{clarifying} communication, and examine the trajectory of clarifications (i.e. amount of communication and progression) throughout the lifetime of a requirement. 
+Our \viss\ tool helps managers to analyze the content of stakeholder communication about  a particular requirement, identify specific instances of \emph{clarifying} communication, and examine the trajectory of clarifications (i.e. amount and progression) throughout the lifetime of a requirement. 
 %Figure \ref{fig:basic-pattern} shows two distinct and quite different possible trajectories of \emph{clarifying} communication in the lifetime of a requirement. 
 %While one would expect clarification to diminish as development of a requirement nears the end (solid line trajectory), its predominance throughout the requirement's life may be indicative of problematic requirements (dashed line trajectory). 
 %The method proposed in this paper aims to identify these patterns automatically so that managers or involved stakeholders can be made aware of requirements that should be closely investigated.
-In addition, \viss\ can visualize social networks that allow to assess the constellation of communication actors and to identify experts for given topics.
+\viss\ can visualize social networks that allow to identify experts for given topics.
 
 %Figure \ref{fig:basic-pattern} depicts the characteristics of clarification communication related to a requirement (here: a story in Jazz).
 
@@ -57,7 +56,8 @@ In addition, \viss\ can visualize social networks that allow to assess the const
 %Whether they follow an iterative discovery of requirements as in agile projects \cite{Cao2008}, or the time zone differences between stakeholders are too great to allow for frequent synchronous interaction (ref)2, or follow processes that mandate the recording of requirements communication online (ref3), these stakeholders perform various Requirements Engineering related activities through online communication. 
 
 We conducted a preliminary evaluation in two ways. Firstly, we evaluated \viss's ability to correctly identify communication instances concerned with clarification and it's ability to derive meaningful visualizations of the clarification trajectory \cite{Knauss2012f}. 
-Secondly, we confronted software managers with \viss's visualizations and asked them, whether the visualization was useful, if it did offer information they would have missed otherwise, and what actions they would perform based on the feedback, if any. 
+Secondly, we showed  \viss's visualizations to software managers and asked them, whether the visualization was useful, if it did offer information they would have missed otherwise, and what actions they would perform based on the feedback, if any. 
+This feedback lead to the development of additional features.
 
 \begin{figure*}
 \centering
