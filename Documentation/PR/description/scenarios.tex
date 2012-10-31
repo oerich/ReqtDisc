@@ -26,28 +26,33 @@ But there are also suspicious trajectories, e.g. a large amount of clarification
 \subsection{Are there any communication breakdowns?}
 After identifying those hotspots, the manager most likely wants to continue with a closer investigation. 
 Often, he or she will investigate who participates in a discussion of a requirement and who is not.
-\viss\ helps managers in this scenario by creating social networks for a requirement or a set of requirements on the fly.
-More over, \viss\ also integrates information of the automatic analysis of online communication into these social networks, i.e. showing for each actor the percentage of clarification and other communication.
-Figure \ref{fig:example-sn} shows an example of an social network for the requirement presented in Figure \ref{fig:example-trajectory}. 
+\begin{enumerate}
+\item The manager opens the social network analysis view.
+\item \viss\ creates the social network for the selected requirement.
+\item The manager analyzes the network and investigates if structural communication problems exist.
+\end{enumerate}
+
 \begin{figure}
 \includegraphics[width=\columnwidth]{img/example-sn}
 \caption{Example of a requirements discussion's social network}
 \label{fig:example-sn}
 \end{figure}
-The developers are presented as nodes (here: anonymized), and connections between nodes are weighted by the amount of communication both developers share about a given requirement in a specific time interval. 
+
 In the example above, the manager might conclude that there is no single person who is coordinating the analysis and work around this requirement, because there is no actor who participates in all relevant time intervals.
 A suitable action might be to assign this responsibility to a more experienced developer.
 
 \subsection{Who is knowledgeable about a given topic?}
 
 Integrating the right persons in the loop for an important feature is a crucial ability for managers.
-To support managers in this task, \viss\ distinguishes between two types of knowledge: domain knowledge that shows in communication events related to clarification and technical knowledge that shows in other communication events.
-In order to leverage the power of \viss\ for this task, the manager selects a number of requirements that are related to a given topic. 
-\viss\ integrates the social networks of these requirements discussions in a single large network (see Figure \ref{fig:example-sn-large}).
+\begin{enumerate}
+\item The manager selects a number of requirements that are related to a given topic. 
+\item \viss\ integrates the social networks of these requirements discussions in a single large network (see Figure \ref{fig:example-sn-large}).
+\item The manager uses the pie charts in the social network to determine, which candidate has a balanced percentage of clarification and other communication.
+\item The manager looks for central developers. 
+\end{enumerate}
 \begin{figure}
 \includegraphics[width=\columnwidth]{img/example-sn-large}
 \caption{Example of a social network for a set of requirements discussions}
 \label{fig:example-sn-large}
 \end{figure}
-The manager looks for candidates with a balanced percentage of clarification and other communication.
-Candidates should also have at least a medium centrality, but actors with high centrality might already have a very high workload.
+Central actors with many connections might already have a very high workload, but there exist good candidates that are less central and connect two subnets.
