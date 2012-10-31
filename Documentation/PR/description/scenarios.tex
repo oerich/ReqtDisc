@@ -17,10 +17,11 @@ For a manager, it is important to know when problematic requirements surface, be
 \item \viss\ automatically analyzes the discussion events that are related to these requirements and that are available in online communication.  
 \item \viss\ creates a set of \emph{clarification trajectories} (c.f. Figure \ref{fig:example-trajectory}), one for each requirement. 
 %Discussion events that are concerned with clarifying requirements are depicted by red rectangles below the timeline, other comments are depicted by blue rectangles above the timeline.
-\item \viss\ also displays suggestive pattern names for distinctive trajectories (e.g. textbook-example, back-to-draft, procrastination).
-\item The manager scrolls through the requirements and associated trajectories and decides based on this rich information where to invest more resources.
+\item \viss\ also displays suggestive pattern names\todo{\footnotesize more introduction of patterns}\ for distinctive trajectories (e.g. \emph{textbook-example, back-to-draft, procrastination, happy-ending}, c.f. \cite{Knauss2012f}).
+\item The manager scrolls through the requirements and associated trajectories and decides based on this rich information where to invest more resources to tackle identified problematic requirements.
 \end{enumerate}
 Typically, there is a number of requirements without pathological findings, e.g. user stories with some clarification in the beginning and other communication events later on that show progress. 
+\todo{\footnotesize could not read comment on this para}
 But there are also suspicious trajectories, e.g. a large amount of clarification late in the iteration, perhaps even after the issue seemed to be solved, or no clarification at all, even though the requirement seems to be complex.
 
 \subsection{Are there any communication breakdowns?}
@@ -38,16 +39,17 @@ Often, he or she will investigate who participates in a discussion of a requirem
 \label{fig:example-sn}
 \end{figure}
 
-In the example above, the manager might conclude that there is no single person who is coordinating the analysis and work around this requirement, because there is no actor who participates in all relevant time intervals.
-A suitable action might be to assign this responsibility to a more experienced developer.
+Figure \ref{fig:example-sn}\todo{\footnotesize new screenshot}\ shows the social network for the requirement presented in Figure \ref{fig:example-trajectory}. 
+In this example, the manager might conclude that there is no single person who is coordinating the analysis and work around this requirement, because there is no actor who participates in all relevant time intervals.
+Thus, the manager decides to assign this responsibility to a more experienced developer.
 
 \subsection{Who is knowledgeable about a given topic?}
 
 Integrating the right persons in the loop for an important feature is a crucial ability for managers.
 \begin{enumerate}
-\item The manager selects a number of requirements that are related to a given topic. 
-\item \viss\ integrates the social networks of these requirements discussions in a single large network (see Figure \ref{fig:example-sn-large}).
-\item The manager uses the pie charts in the social network to determine, which candidate has a balanced percentage of clarification and other communication.
+\item The manager selects a number of related requirements. 
+\item \viss\ integrates the social networks of these requirements discussions in a single large network (see Figure \ref{fig:example-sn-large} \todo{\footnotesize new screenshot with zoom}).
+\item Based on the pie charts in the social network, the manager identifies candidates with a balanced percentage of clarification and implementation communication.
 \item The manager looks for central developers. 
 \end{enumerate}
 \begin{figure}

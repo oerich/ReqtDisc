@@ -3,8 +3,9 @@
 \viss\ is an interactive tool that allows users to dynamically explore the discussion of requirements  in online repositories with a focus on highlighting the difference between clarification and implementation related communication.
 The main assumption behind the visualizations is that clarification is most important for software projects, but a predominance of clarification late during the implementation of a requirement can indicate that the team does not have a sufficient understanding of the underlying requirement.
 
-The main window shows a list of requirements on the  left (e.g. workitems in jazz, items in jira, issues in other systems) (see Figure \ref{fig:screenshot}).
-\viss\ adds visualizations to the selected discussions in the centre or in an extra window. These visualizations help to assess the communication through discussion events (e.g. comments) related to these requirements.
+The main window shows a list of requirements on the  left (e.g. workitems in jazz, items in jira, issues in other systems) (see Figure \ref{fig:screenshot}).\todo[inline]{Describe configuration panel, time slices, and how they affect both visualizations}
+\viss\ adds visualizations to the selected discussions in the centre or in an extra window. 
+These visualizations help to assess the communication through discussion events (e.g. comments) related to these requirements.
 %
 \viss\ currently supports two different visualizations: 
 
@@ -21,7 +22,6 @@ In a classic trajectory with clarification up-front and only implementation rela
 
 \subsubsection{Social Networks} 
 This visualization shows who is participating in a discussion related to (a set of) requirements(s) and how the actors in the discussion are structured. 
-Figure \ref{fig:example-sn} shows an example of an social network for the requirement presented in Figure \ref{fig:example-trajectory}. 
-The developers are presented as nodes (here: anonymized), and connections between nodes are weighted by the amount of communication both developers share about a given requirement in a specific time interval. 
-More over, \viss\ also integrates information of the automatic analysis of online communication into the social networks, i.e. showing a pie chart with the percentage of each type of communication for this developer.
+The developers are presented as nodes (here: anonymized), and connections between nodes are weighted by the amount of communication both developers share about the requirement in a specific time interval\todo{\footnotesize elaborate on time intervals}. 
+More over, \viss\ also integrates information of the automatic analysis of online communication into the social networks, i.e. showing a pie chart with the percentage of clarification and implementation related communication for this developer.
 
