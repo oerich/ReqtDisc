@@ -47,6 +47,7 @@ import org.computer.knauss.reqtDiscussion.model.socialNetwork.Node;
 import org.computer.knauss.reqtDiscussion.model.socialNetwork.PartitionedSocialNetwork;
 import org.computer.knauss.reqtDiscussion.model.socialNetwork.ProximitySocialNetwork;
 import org.computer.knauss.reqtDiscussion.model.socialNetwork.SocialNetwork;
+import org.computer.knauss.reqtDiscussion.ui.visualization.ZoomPanel;
 
 public class NetworkFrame extends JFrame {
 
@@ -67,7 +68,6 @@ public class NetworkFrame extends JFrame {
 	private JComboBox socialNetworkBox;
 	private JLabel metricLabel;
 	private JScrollPane jScrollPane;
-	private JSlider zoomSlider;
 	private JSlider cutoffSlider;
 	private JSpinner weightSpinner;
 
@@ -133,35 +133,14 @@ public class NetworkFrame extends JFrame {
 
 		JPanel ctrlPanel = new JPanel(new GridLayout(2, 1));
 
-		JPanel zoomPanel = new JPanel(new GridLayout(3, 1));
+		ZoomPanel zoomPanel = new ZoomPanel();
 		zoomPanel.setBorder(BorderFactory.createTitledBorder("Zoom"));
-
-		JButton fitToViewBtn = new JButton("fit to view");
-		zoomPanel.add(fitToViewBtn);
-		fitToViewBtn.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				networkPanel.zoomToFitRect(jScrollPane.getBounds());
-				zoomSlider.setValue((int) (networkPanel.getZoomFactor() * 10));
-			}
-		});
+		zoomPanel.setLayout(new GridLayout(3, 1));
+		zoomPanel.setZoomable(this.networkPanel);
+		zoomPanel.setZoomableParent(jScrollPane);
 
 		add(ctrlPanel, BorderLayout.WEST);
-		this.zoomSlider = new JSlider(2, 20, 10);
-		Dictionary<Integer, JComponent> labels = new Hashtable<Integer, JComponent>();
-		labels.put(2, new JLabel("-"));
-		labels.put(20, new JLabel("+"));
-		this.zoomSlider.setLabelTable(labels);
-		this.zoomSlider.setPaintLabels(true);
-		this.zoomSlider.addChangeListener(new ChangeListener() {
 
-			@Override
-			public void stateChanged(ChangeEvent e) {
-				networkPanel.setZoomFactor(zoomSlider.getValue() / 10d);
-			}
-		});
-		zoomPanel.add(this.zoomSlider);
 		ctrlPanel.add(zoomPanel, BorderLayout.WEST);
 
 		scaleElementsBox = new JCheckBox("Scale elements");

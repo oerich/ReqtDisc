@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.event.ActionEvent;
@@ -30,6 +31,7 @@ import org.computer.knauss.reqtDiscussion.model.partition.IDiscussionOverTimePar
 import org.computer.knauss.reqtDiscussion.model.partition.PixelPartition;
 import org.computer.knauss.reqtDiscussion.ui.uiModel.DiscussionTableModel;
 import org.computer.knauss.reqtDiscussion.ui.visualization.IVisualizationStyle;
+import org.computer.knauss.reqtDiscussion.ui.visualization.IZoomable;
 import org.computer.knauss.reqtDiscussion.ui.visualization.clarificationPatterns.AlignedRectangularCommentStyle;
 import org.computer.knauss.reqtDiscussion.ui.visualization.clarificationPatterns.GreyBackgroundBox;
 import org.computer.knauss.reqtDiscussion.ui.visualization.clarificationPatterns.Grid;
@@ -39,7 +41,7 @@ import org.computer.knauss.reqtDiscussion.ui.visualization.clarificationPatterns
 import org.computer.knauss.reqtDiscussion.ui.visualization.clarificationPatterns.PatternClassVisualization;
 
 public class DiscussionVisualizationPanel extends JPanel implements
-		ListSelectionListener, ActionListener {
+		ListSelectionListener, ActionListener, IZoomable {
 
 	private static final int TXT_LINE_HEIGHT = 16;
 	private static final int TXT_HORIZONTAL_MARGIN = 2;
@@ -58,6 +60,7 @@ public class DiscussionVisualizationPanel extends JPanel implements
 	private IVisualizationStyle visualizationPattern;
 	private IVisualizationStyle incidentVisualization;
 	private VisualizationConfigurationPanel configureVisualizationPanel;
+	private double zoomFactor = 1.0d;
 
 	public DiscussionVisualizationPanel(
 			VisualizationConfigurationPanel configureVisualizationPanel) {
@@ -100,15 +103,19 @@ public class DiscussionVisualizationPanel extends JPanel implements
 	@Override
 	public void paint(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
-		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+		g.clearRect(getBounds().x, getBounds().y, getBounds().width,
+				getBounds().height);
+		((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 				RenderingHints.VALUE_ANTIALIAS_ON);
+		((Graphics2D) g).scale(zoomFactor, zoomFactor);
 		g2.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS,
 				RenderingHints.VALUE_FRACTIONALMETRICS_ON);
 
-		g2.clearRect(0, 0, 800, 600);
-		g2.setBackground(Color.WHITE);
+		// g2.clearRect(0, 0, 800, 600);
+		// g2.setBackground(Color.WHITE);
 		g2.setColor(Color.WHITE);
-		g2.fillRect(0, 0, 800, 600);
+		g2.fillRect(getBounds().x, getBounds().y, getBounds().width,
+				getBounds().height);
 
 		if (this.selectedDiscussions != null) {
 			g2.setStroke(new BasicStroke(1f));
@@ -255,5 +262,28 @@ public class DiscussionVisualizationPanel extends JPanel implements
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public void setZoomFactor(double zoom) {
+		this.zoomFactor = zoom;
+		setPreferredSize(new Dimension(
+				(int) (VISUALIZATION_DIMENSION.getWidth() * this.zoomFactor),
+				(int) (VISUALIZATION_DIMENSION.getHeight() * this.zoomFactor)));
+		revalidate();
+		repaint();
+	}
+
+	@Override
+	public double getZoomFactor() {
+		return this.zoomFactor;
+	}
+
+	@Override
+	public void zoomToFitRect(Rectangle rect) {
+		double xZoom = rect.getWidth() / VISUALIZATION_DIMENSION.getWidth();
+		double yZoom = rect.getHeight() / VISUALIZATION_DIMENSION.getHeight();
+
+		setZoomFactor(Math.min(xZoom, yZoom));
 	}
 }

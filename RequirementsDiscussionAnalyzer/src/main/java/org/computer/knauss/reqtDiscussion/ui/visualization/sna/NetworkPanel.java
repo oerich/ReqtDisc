@@ -16,6 +16,7 @@ import org.computer.knauss.reqtDiscussion.model.socialNetwork.Connection;
 import org.computer.knauss.reqtDiscussion.model.socialNetwork.Node;
 import org.computer.knauss.reqtDiscussion.model.socialNetwork.SNAGraphProvider;
 import org.computer.knauss.reqtDiscussion.model.socialNetwork.SocialNetwork;
+import org.computer.knauss.reqtDiscussion.ui.visualization.IZoomable;
 
 import de.te.layouting.geometry.Bounds;
 import de.te.layouting.geometry.IBounds;
@@ -24,7 +25,7 @@ import de.te.layouting.layouting.forcebased.forces.BorderRepulsionForce;
 import de.te.layouting.layouting.forcebased.forces.CoulumbNodeRepulsionForce;
 import de.te.layouting.layouting.forcebased.forces.HookeConnectionForce;
 
-public class NetworkPanel extends JPanel {
+public class NetworkPanel extends JPanel implements IZoomable {
 
 	private static final Bounds BOUNDS = new Bounds(0, 0, 2000, 2000);
 	private static final long serialVersionUID = 1L;

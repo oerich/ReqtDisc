@@ -26,6 +26,7 @@ import org.computer.knauss.reqtDiscussion.model.VisualizationConfiguration;
 import org.computer.knauss.reqtDiscussion.model.metric.AbstractDiscussionMetric;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.HighlightRelatedDiscussions;
 import org.computer.knauss.reqtDiscussion.ui.uiModel.DiscussionTableModel;
+import org.computer.knauss.reqtDiscussion.ui.visualization.ZoomPanel;
 import org.computer.knauss.reqtDiscussion.ui.visualization.sna.NetworkFrame;
 
 public class DiscussionAnalyzerFrame extends JFrame implements
@@ -115,7 +116,17 @@ public class DiscussionAnalyzerFrame extends JFrame implements
 
 		this.visualizer = new DiscussionVisualizationPanel(
 				this.configureVisualizationPanel);
-		add(this.visualizer, BorderLayout.CENTER);
+		JScrollPane scroller = new JScrollPane();
+		scroller.add(this.visualizer);
+		
+		JPanel centerPane = new JPanel(new BorderLayout());
+		centerPane.add(scroller, BorderLayout.CENTER);
+		ZoomPanel zoomPanel = new ZoomPanel();
+		zoomPanel.setZoomable(this.visualizer);
+		zoomPanel.setZoomableParent(scroller);
+		centerPane.add(zoomPanel, BorderLayout.SOUTH);
+		
+		add(centerPane, BorderLayout.CENTER);
 		this.table.getSelectionModel()
 				.addListSelectionListener(this.visualizer);
 		this.table.getSelectionModel().addListSelectionListener(this);
