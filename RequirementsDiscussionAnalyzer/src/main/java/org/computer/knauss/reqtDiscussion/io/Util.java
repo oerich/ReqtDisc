@@ -24,7 +24,7 @@ public class Util {
 
 		int[] tmp = new int[tokens.length];
 		for (int i = 0; i < tmp.length; i++) {
-			tmp[i] = Integer.parseInt(tokens[i]);
+			tmp[i] = Integer.parseInt(tokens[i].trim());
 		}
 		return tmp;
 	}
