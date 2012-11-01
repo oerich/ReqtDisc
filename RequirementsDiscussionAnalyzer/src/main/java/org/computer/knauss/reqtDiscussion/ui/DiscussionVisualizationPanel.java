@@ -114,7 +114,7 @@ public class DiscussionVisualizationPanel extends JPanel implements
 			g2.setStroke(new BasicStroke(1f));
 			g2.setColor(Color.black);
 
-			g2.drawString("Workitem", TXT_HORIZONTAL_MARGIN,
+			g2.drawString("Requirement", TXT_HORIZONTAL_MARGIN,
 					300 - (TXT_LINE_HEIGHT / 2));
 
 			IFilteredDiscussionEventList allDiscussionEventList = this.configureVisualizationPanel
