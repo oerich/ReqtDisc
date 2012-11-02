@@ -1,7 +1,9 @@
 % !TEX root = knauss-vissuelizer.tex
 \section{V:Issue:lizer}
-\viss\ is an interactive tool that allows users to dynamically explore the discussion of requirements  in online repositories with a focus on highlighting the difference between clarification and implementation related communication.
-The main assumption behind the visualizations is that clarification is most important for software projects, but a predominance of clarification late during the implementation of a requirement can indicate that the team does not have a sufficient understanding of the underlying requirement.
+
+
+\viss\ is an interactive tool that allows software developers and managers to dynamically explore the discussion of requirements  in online repositories with a focus on highlighting the difference between clarification and implementation related communication.
+
 
 The main window shows a list of requirements on the  left (e.g. workitems in jazz, items in jira, issues in other systems) (see Figure \ref{fig:screenshot}).
 \viss\ adds visualizations to the selected discussions in the centre or in an extra window. 
@@ -23,7 +25,11 @@ In a classic trajectory with clarification up-front and only implementation rela
 % For increased readability, the different types of discussion events are coloured in the tool (clarification events: red, other: blue).
 
 \subsubsection{Social Networks} 
-This visualization shows who is participating in a discussion related to (a set of) requirements(s) and how the actors in the discussion are structured. 
-The developers are presented as nodes (here: anonymized), and connections between nodes are weighted by the amount of communication both developers share about the requirement in a specific time interval. 
-More over, \viss\ also integrates information of the automatic analysis of online communication into the social networks, i.e. showing a pie chart with the percentage of clarification and implementation related communication for this developer.
+This visualization shows the communication pattern of those participating in a requirement's discussion. The developers are presented as nodes; the connections between nodes are weighted by the amount of communication both developers share about the requirement in a specific time interval in a requirement's lifetime. The interval can be a ....  
+\viss\ also displays the developer node as a pie chart to show the percentage of clarification vs. implementation-related communication in which the developer is involved.
+
+
+
+
+% integrates information of the automatic analysis of online communication into the social networks, i.e. showing a pie chart with the percentage of clarification and implementation related communication for this developer.
 

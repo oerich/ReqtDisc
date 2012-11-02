@@ -1,6 +1,6 @@
 % !TEX root = knauss-vissuelizer.tex
 \section{Example Scenarios}
-In this section we describe examples that highlight the functionality of the \viss\ tool.
+In this section we describe examples that highlight the functionality that \viss\ tool offers to developers and managers (referred to as users henceforth).
 
 \subsection{Where are the hotspots in a set of issues?}
 \begin{figure}[b]
@@ -8,28 +8,32 @@ In this section we describe examples that highlight the functionality of the \vi
 \caption{Example of a requirements discussion's clarification trajectory}
 \label{fig:example-trajectory}
 \end{figure}
-Often, a clear understanding of requirements only evolves during the development of software.
-This is especially true (but not limited to) agile software projects, where managers decide to frame only rudimentary requirements and refine the details on the go.
-For a manager, it is important to know when problematic requirements surface, because they can have a serious impact on the project.
-\viss\ helps managers in this scenario as follows:
+%Often, a clear understanding of requirements only evolves during the development of software.
+%This is especially true (but not limited to) agile software projects, where managers decide to frame only rudimentary requirements and refine the details on the go.
+To identify requirements for which the clarification trajectory indicates potential problems in their development, the user performs the following steps in \viss\ :
+
+%For a manager, it is important to know when problematic requirements surface, because they can have a serious impact on the project.
+%\viss\ helps managers in this scenario as follows:
 \begin{enumerate}
-\item The manager loads a set of requirements (e.g. user stories for the current iteration).
-\item \viss\ automatically analyzes the discussion events that are related to these requirements and that are available in online communication.  
-\item \viss\ creates a set of \emph{clarification trajectories} (c.f. Figure \ref{fig:example-trajectory}), one for each requirement. 
+\item The user loads a set of requirements (shown as the requirements list on the left panel in Fig 1).
+\item \viss\ automatically analyzes the online communication repository and the discussion related to each of these requirements.  
+\item \viss\ When a requirement is selected from the requirements list its \emph{clarification trajectory} is displayed in the middle panel (see Figure \ref{fig:example-trajectory})
 %Discussion events that are concerned with clarifying requirements are depicted by red rectangles below the timeline, other comments are depicted by blue rectangles above the timeline.
-\item \viss\ also displays suggestive pattern names\todo{\footnotesize more introduction of patterns}\ for distinctive trajectories (e.g. \emph{textbook-example, back-to-draft, procrastination, happy-ending}, c.f. \cite{Knauss2012f}).
-\item The manager scrolls through the requirements and associated trajectories and decides based on this rich information where to invest more resources to tackle identified problematic requirements.
-\end{enumerate}
+\item \viss\ also displays suggestive pattern names\todo{\footnotesize more introduction of patterns}\ for the respective requirement trajectory (e.g. \emph{textbook-example, back-to-draft, procrastination, happy-ending}, c.f. \cite{Knauss2012f}).
 Typically, there is a number of requirements without pathological findings, e.g. user stories with some clarification in the beginning and other communication events later on that show progress. 
 \todo{\footnotesize could not read comment on this para}
 But there are also suspicious trajectories, e.g. a large amount of clarification late in the iteration, perhaps even after the issue seemed to be solved, or no clarification at all, even though the requirement seems to be complex.
+\item By scrolling through the list of requirements and associated trajectories the user can decide based on this rich information where to invest more resources to tackle requirements that appear to have problematic development.
+\end{enumerate}
+
 
 \subsection{Are there any communication breakdowns?}
-After identifying those hotspots, the manager most likely wants to continue with a closer investigation. 
-Often, he or she will investigate who participates in a discussion of a requirement and who is not.
+Having identified potentially problematic requirements, \viss\  allows the user to more closely investigate who participates in the communication around a requirement (Figure \ref{fig:example-sn} shows the social network for the requirement presented in Figure \ref{fig:example-trajectory}) as follows:
+%by After identifying those hotspots, the manager most likely wants to continue with a closer investigation. 
+%Often, he or she will investigate who participates in a discussion of a requirement and who is not.
 \begin{enumerate}
-\item The manager opens the social network analysis view.
-\item \viss\ creates the social network for the selected requirement.
+\item The user opens the social network analysis view.
+\item \viss\ displays the social network for the selected requirement.
 \item The manager analyzes the network and investigates if structural communication problems exist.
 \end{enumerate}
 
@@ -39,7 +43,7 @@ Often, he or she will investigate who participates in a discussion of a requirem
 \label{fig:example-sn}
 \end{figure}
 
-Figure \ref{fig:example-sn} shows the social network for the requirement presented in Figure \ref{fig:example-trajectory}. 
+
 Note that subgraphs can be matched to specific time intervals (here: three) where all actors of the subgraph communicate. 
 In this example, the manager might conclude that there is no single person who is coordinating the analysis and work related to this requirement, because there is no actor who participates in all relevant time intervals.
 Thus, the manager decides to assign this responsibility to a more experienced developer.
@@ -48,8 +52,8 @@ Thus, the manager decides to assign this responsibility to a more experienced de
 
 Integrating the right persons in the loop for an important feature is a crucial ability for managers.
 \begin{enumerate}
-\item The manager selects a number of related requirements. 
-\item \viss\ integrates the social networks of these requirements discussions in a single large network (see Figure \ref{fig:example-sn-large}).
+\item The manager selects a number of requirements that relate to a feature or higher-level topic. 
+\item \viss\ creates the social networks generated from requirements' discussions and displays theSebastian in a single large network (see Figure \ref{fig:example-sn-large}).
 \item Based on the pie charts in the social network, the manager identifies candidates with a balanced percentage of clarification and implementation communication.
 \item The manager looks for central developers. 
 \end{enumerate}
