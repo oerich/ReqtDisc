@@ -1,28 +1,29 @@
 % !TEX root = knauss-vissuelizer.tex
 \section{Preliminary Evaluation}
 \todo[inline]{Dana, feel free to improve conclusion}
-In order to evaluate the \viss\ and its underlying concepts, we need to investigate several things.
-First we need to show that \viss\ is able to distinguish between communication events that deal with clarification and other events. 
-Secondly, we need to determine if and when the feedback from our \viss\ tool is beneficial for practitioners. 
+%In order to evaluate the \viss\ and its underlying concepts, we need to investigate several things.
+In our evaluation we sought confirmation that \viss\ (1) correctly identifies clarification of requirements in online discussions and (2) provides feedback that is useful to software practitioners. 
 
-\subsection{Ability to identify clarification events}
-\viss\ currently uses a Bayesian classifier to identify clarification events, i.e. a supervised machine learning algorithm.
-In order to evaluate the ability to identify clarification events, we need to show(i)  that the classifier reaches an acceptable performance with realistic amount of training and (ii) that this performance is sufficient to generate meaningful trajectories on the fly.
-We investigated both aspects based on a case study in the IBM Rational Team Concert (RTC) project \cite{Knauss2012f}.
-RTC is a globally distributed software project and as such employs online communication to an extend that guarantees a sufficient amount of the overall communication to be available.
+\subsection{Ability to correctly classify clarification communication}
+%\viss\ currently uses a Bayesian classifier to identify clarification events, i.e. a supervised machine learning algorithm.
+To check the correctness of our communication classifier we performed a case study of communication in the IBM Rational Team Concert (RTC) project \cite{Knauss2012f}. RTC is a globally distributed software project and as such employs online communication to an extent that guarantees a sufficient amount of the overall communication to be available online.
 
-In order to provide training data, two raters manually classified ca. 1200 communication events with an acceptable inter-rater agreement.  
-Based on this training data, we applied 10-fold cross evaluation and measured a recall of 0.943 and a precision of  0.678, resulting in an acceptable f-measure of 0.789.
-Especially the high recall leads to acceptable trajectories that are comparable with those constructed based on manual classification (c.f. discussion in \cite{Knauss2012f}).
+
+%In order to evaluate the ability to identify clarification events, we need to show(i)  that the classifier reaches an acceptable performance with realistic amount of training and (ii) that this performance is sufficient to generate meaningful trajectories on the fly.
+%We investigated both aspects based on 
+
+We analyzed xx requirements and their online discussions (1200 communication events). To create training data for our machine learning algorithm, two raters manually classified 1200 communication events with a high inter-rater agreement (xx).  
+We then performed a 10-fold cross validation and measured a recall of 0.94 and a precision of  0.67 (f-measure of 0.789). The automatically classified communication and clarification trajectories that thus comparable with those constructed based on manual classification (see \cite{Knauss2012f} for detailed discussion of this evaluation).
 
 \subsection{Ability to support decisions of managers}
-We started to evaluate the ability to support software managers in decision making, using the feedback for continues improvement. 
-For the first round of evaluation, we presented \viss\ to four software managers, followed by a semi-structured interview.
-We were able to interview participants of the VIATEC Software Management Round Table, a local group of software managers that regularly meet in Victoria to exchange experiences.
-Our interviewees agreed that the clarification trajectories provide significant information to support decisions on resource allocation and risk management. 
-In addition, they suggested that the \viss\ could also support project retrospectives and process improvement efforts. 
-The main issue raised by Victoria's software managers was the need of seeing who was participating in a given requirements related discussion. 
-Accordingly, a trajectory without clarification would be suspicious if no experienced developer participated in its underlying discussion. 
+Two rounds of evaluation with software practitioners have informed the iterative development of our tool. A first implementation of \viss\ that only visualized the clarification trajectory was presented to four software managers at the VIATEC Software Management Round Table meeting in Victoria, BC, Canada. The feedback we received was that (1) the clarification trajectories provided useful information to support resource allocation and risk management, as well as project retrospectives and process improvement; more importantly, the managers (2) suggested to add visualizations of communication patterns for each requirement, since a trajectory without much clarification would be suspicious if no experienced developer participated in the discussion. As a result we added the social network visualization feature to \viss\. 
+
+%We started to evaluate the ability to support software managers in decision making, using the feedback for continues improvement. 
+%For the first round of evaluation, we presented \Sebastian ss\ to four software managers, followed by a semi-structured interview.
+%We were able to interview participants of the  to exchange experiences.
+%Our interviewees agreed that the clarification trajectories 
+%The main issue raised by Victoria's software managers was the need of seeing who was participating in a given requirements related discussion. 
+%Accordingly, a trajectory without clarification would be suspicious if no experienced developer participated in its underlying discussion. 
 
 As an reaction to this feedback, we integrated the ability to generate social networks into \viss\ and then  talked to five managers of the IBM RTC project and related projects for a second round of evaluation.
 At IBM, our interviewees agreed that the clarification trajectories together with the associated social network graphs are helpful. 
