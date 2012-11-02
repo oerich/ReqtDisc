@@ -5,7 +5,7 @@ In this section we describe examples that highlight the functionality that \viss
 \subsection{Are there problematic requirements?}
 %Often, a clear understanding of requirements only evolves during the development of software.
 %This is especially true (but not limited to) agile software projects, where managers decide to frame only rudimentary requirements and refine the details on the go.
-To identify requirements for which the clarification trajectory indicates potential problems in their development, the user performs the following steps in \viss\ :
+To identify requirements for which the clarification trajectory indicates potential problems in their development, the user performs the following steps in \viss:
 
 %For a manager, it is important to know when problematic requirements surface, because they can have a serious impact on the project.
 %\viss\ helps managers in this scenario as follows:
@@ -20,7 +20,7 @@ To identify requirements for which the clarification trajectory indicates potent
 
 
 \subsection{Are there communication breakdowns?}
-Having identified potentially problematic requirements, \viss\  allows the user to more closely investigate who participates in the communication around a requirement (Figure \ref{fig:example-sn} shows the social network for the requirement presented in Figure \ref{fig:example-trajectory}) as follows:
+Having identified potentially problematic requirements, \viss\  allows the user to more closely investigate who participates in the communication of a requirement (Figure \ref{fig:example-sn} shows the social network for the requirement presented in Figure \ref{fig:example-trajectory}) as follows:
 %by After identifying those hotspots, the manager most likely wants to continue with a closer investigation. 
 %Often, he or she will investigate who participates in a discussion of a requirement and who is not.
 \begin{enumerate}
@@ -30,27 +30,29 @@ Having identified potentially problematic requirements, \viss\  allows the user 
 \end{enumerate}
 
 \begin{figure}
-\includegraphics[width=\columnwidth]{img/example-sn}
+\centering
+\includegraphics[width=0.8\columnwidth]{img/example-sn}
 \caption{Example of a requirements discussion's social network}
 \label{fig:example-sn}
 \end{figure}
 
-In this example, the user might conclude that there is no single person who is coordinating the analysis and work related to this requirement, because there is no actor who participates in all relevant time intervals.
-Thus, the user decides to assign this responsibility to a more experienced developer.
+In this example, the user might conclude that there is no single person who is coordinating the analysis and work related to this requirement, because there is no one actor who participates in all relevant time intervals.
+The user decides to assign this responsibility to an experienced developer.
 
 \subsection{Who is knowledgeable about a given topic?}
 
-Integrating the right persons in the loop for an important feature is a crucial ability for managers.
-To support managers in this task, \viss\ distinguishes between two types of knowledge: domain knowledge that shows in discussion events related to clarification and implementation specific knowledge that shows in other discussion events.
+Integrating the right persons into the loop for an important feature is a crucial ability for managers.
+To support managers in this task, \viss\ distinguishes between two types of knowledge: (i) domain knowledge that shows in discussion events related to clarification and (ii) implementation specific knowledge that shows in other discussion events.
 \begin{enumerate}
 \item The user selects a number of requirements that relate to a feature or higher-level topic. 
-\item \viss\ creates the social networks generated from requirements' discussions and displays them in a single large network (see Figure \ref{fig:example-sn-large}).
+\item \viss\ creates the social networks generated from requirement discussions and displays them in a single large network (see Figure \ref{fig:example-sn-large}).
 \item Based on the pie charts in the social network, the manager identifies candidates with a balanced percentage of clarification and implementation communication.
 \item The manager looks for central developers. 
 \end{enumerate}
 \begin{figure}
-\includegraphics[width=\columnwidth]{img/example-sn-large}
+\centering
+\includegraphics[width=0.8\columnwidth]{img/example-sn-large}
 \caption{Example of a social network for a set of requirements discussions}
 \label{fig:example-sn-large}
 \end{figure}
-Central actors with many connections might already have a very high workload, but there exist good candidates that are less central and connect two subnets.
+Central actors with many connections might already have a very high workload, but there exists good candidates that are less central and connect two subnets.
