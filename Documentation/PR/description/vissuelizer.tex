@@ -2,7 +2,7 @@
 \section{V:Issue:lizer}
 
 
-\viss\ is an interactive tool that allows software developers and managers to dynamically explore the discussion of requirements  in online repositories with a focus on highlighting the difference between clarification and implementation related communication.
+\viss \footnote{Source code available at \url{https: //github.com/oerich/ReqtDisc}} is an interactive tool that allows software developers and managers to dynamically explore the discussion of requirements  in online repositories with a focus on highlighting the difference between clarification and implementation related communication.
 
 
 The main window shows a list of requirements on the  left (e.g. workitems in jazz, items in jira, issues in other systems) (see Figure \ref{fig:screenshot}).
@@ -16,7 +16,8 @@ Most importantly, the resolution of time intervals for the visualization can be 
 \subsubsection{Clarification Trajectories} 
 This visualization shows how the percentage of clarification events to other discussion events related to a requirement changes over its lifetime.
 \begin{figure}[b]
-\includegraphics[width=\columnwidth]{img/example-trajectory}
+\centering
+\includegraphics[width=0.51\columnwidth]{img/example-trajectory}
 \caption{Example of a requirements discussion's clarification trajectory}
 \label{fig:example-trajectory}
 \end{figure}
@@ -28,7 +29,8 @@ They are shown below the lifeline, if they are clarification events and above th
 A grey line shows the sum of clarification.
 In a classic trajectory with clarification up-front and only implementation related communication in the end, this grey line will start in the bottom left and raise to the upper right corner.
 % For increased readability, the different types of discussion events are coloured in the tool (clarification events: red, other: blue).
-\viss\ generates these trajectory based on automatic classification of discussion events and identifies reoccurring patterns (\emph{textbook-example, indifferent, discordant, procrastination, back-to-draft, and happy-ending}) \cite{Knauss2012f}.
+\viss\ currently uses a Bayesian classifier to identify clarification events, i.e. a supervised machine learning algorithm.
+Based on this classification, \viss\ generates trajectorie's and identifies reoccurring patterns (\emph{textbook-example, indifferent, discordant, procrastination, back-to-draft, and happy-ending}) \cite{Knauss2012f}.
 Typically, there is a number of requirements without pathological findings, e.g. user stories with some clarification in the beginning and other communication events later on that show progress.
 More suspicious trajectories show large amounts of clarification late in the iteration, perhaps even after the issue seemed to be solved, or no clarification at all, even though the requirement seems to be complex.
 \subsubsection{Social Networks} 
