@@ -2,16 +2,13 @@ package org.computer.knauss.reqtDiscussion.ui.visualization.sna;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridLayout;
-import java.awt.Point;
-import java.awt.Rectangle;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
 import java.awt.image.BufferedImage;
 import java.sql.Date;
 import java.util.Arrays;
@@ -88,6 +85,14 @@ public class NetworkFrame extends JFrame {
 
 	private JScrollPane jScrollPane;
 
+	private JPanel buttonPanel;
+
+	private JPanel toggleButtonsPanel;
+
+	private JPanel ctrlPanel;
+
+	private JPanel toggleCtrlPanel;
+
 	public NetworkFrame(VisualizationConfiguration configuration) {
 		super("Social Network Analysis");
 
@@ -96,8 +101,31 @@ public class NetworkFrame extends JFrame {
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		setLayout(new BorderLayout());
 
-		JPanel buttonPanel = new JPanel();
-		add(buttonPanel, BorderLayout.NORTH);
+		toggleButtonsPanel = new JPanel(new BorderLayout());
+		JButton toggleButtons = new JButton(new ImageIcon(getClass()
+				.getResource("up.png")));
+		toggleButtons.addActionListener(new ActionListener() {
+			boolean showsButtons = false;
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if (showsButtons) {
+					toggleButtonsPanel.removeAll();
+					toggleButtonsPanel.add((JButton) arg0.getSource(),
+							BorderLayout.NORTH);
+				} else
+					toggleButtonsPanel.add(buttonPanel, BorderLayout.CENTER);
+				showsButtons = !showsButtons;
+				toggleButtonsPanel.invalidate();
+				pack();
+			}
+		});
+		toggleButtons.setBorderPainted(false);
+		toggleButtons.setMargin(new Insets(0, 0, 0, 0));
+		toggleButtonsPanel.add(toggleButtons, BorderLayout.NORTH);
+
+		buttonPanel = new JPanel();
+		add(toggleButtonsPanel, BorderLayout.NORTH);
 		playButton = new JButton("start");
 		playButton.addActionListener(new ActionListener() {
 
@@ -140,7 +168,7 @@ public class NetworkFrame extends JFrame {
 		jScrollPane = new JScrollPane(this.networkPanel);
 		add(jScrollPane, BorderLayout.CENTER);
 
-		JPanel ctrlPanel = new JPanel(new GridLayout(2, 1));
+		ctrlPanel = new JPanel(new GridLayout(2, 1));
 
 		zoomPanel = new ZoomPanel();
 		zoomPanel.setBorder(BorderFactory.createTitledBorder("Zoom"));
@@ -201,7 +229,30 @@ public class NetworkFrame extends JFrame {
 		//
 		// });
 
-		add(ctrlPanel, BorderLayout.WEST);
+		toggleCtrlPanel = new JPanel(new BorderLayout());
+		JButton toggleCtrl = new JButton(new ImageIcon(getClass().getResource(
+				"left.png")));
+		toggleCtrl.addActionListener(new ActionListener() {
+			boolean showsCtrls = false;
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if (showsCtrls) {
+					toggleCtrlPanel.removeAll();
+					toggleCtrlPanel.add((JButton) arg0.getSource(),
+							BorderLayout.WEST);
+				} else
+					toggleCtrlPanel.add(ctrlPanel, BorderLayout.CENTER);
+				showsCtrls = !showsCtrls;
+				toggleCtrlPanel.invalidate();
+				pack();
+			}
+		});
+		toggleCtrl.setBorderPainted(false);
+		toggleCtrl.setMargin(new Insets(0, 0, 0, 0));
+		toggleButtonsPanel.add(toggleCtrl, BorderLayout.WEST);
+		toggleButtonsPanel.add(ctrlPanel, BorderLayout.CENTER);
+		add(toggleCtrlPanel, BorderLayout.WEST);
 
 		ctrlPanel.add(zoomPanel, BorderLayout.WEST);
 
