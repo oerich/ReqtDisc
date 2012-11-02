@@ -54,7 +54,7 @@ public class VisualizationConfigurationPanel extends JPanel implements
 		this.setLayout(new GridLayout(5, 1));
 
 		// 1. adjust partition type
-		JPanel dataAggregationPanel = new JPanel(new GridLayout(3, 1));
+		JPanel dataAggregationPanel = new JPanel(new GridLayout(2, 1));
 		dataAggregationPanel.setBorder(BorderFactory
 				.createTitledBorder("Data Aggregation"));
 		this.aggregateDiscussions = new JCheckBox(
@@ -84,14 +84,14 @@ public class VisualizationConfigurationPanel extends JPanel implements
 		add(partitionCountPanel);
 
 		// 1.b activate styles (we can have both)
-		JPanel chooseStylePanel = new JPanel(new GridLayout(3, 2));
+		JPanel chooseStylePanel = new JPanel(new GridLayout(2, 3));
 		chooseStylePanel.setBorder(BorderFactory
 				.createTitledBorder("Choose Style"));
-		this.commentStyleBoxes = new JCheckBox("Rectangles");
+		this.commentStyleBoxes = new JCheckBox("Boxes");
 		this.commentStyleBoxes.addActionListener(this);
 		chooseStylePanel.add(this.commentStyleBoxes);
 
-		this.paintBackGround = new JCheckBox("Background");
+		this.paintBackGround = new JCheckBox("Backgr.");
 		this.paintBackGround.addActionListener(this);
 		chooseStylePanel.add(this.paintBackGround);
 
@@ -103,7 +103,7 @@ public class VisualizationConfigurationPanel extends JPanel implements
 		this.paintLineOfUnderstanding.addActionListener(this);
 		chooseStylePanel.add(this.paintLineOfUnderstanding);
 
-		this.commentStyleText = new JCheckBox("Lines and Text");
+		this.commentStyleText = new JCheckBox("Text");
 		this.commentStyleText.addActionListener(this);
 		chooseStylePanel.add(this.commentStyleText);
 
@@ -112,7 +112,7 @@ public class VisualizationConfigurationPanel extends JPanel implements
 		chooseStylePanel.add(this.showPattern);
 		add(chooseStylePanel);
 
-		JPanel filterPanel = new JPanel(new GridLayout(3, 2));
+		JPanel filterPanel = new JPanel(new GridLayout(2, 2));
 		filterPanel.setBorder(BorderFactory
 				.createTitledBorder("Filter comments"));
 		filterPanel.add(new JPanel());
@@ -123,12 +123,12 @@ public class VisualizationConfigurationPanel extends JPanel implements
 				getFilteredCommentList())));
 		add(filterPanel);
 
-		JPanel miscPanel = new JPanel(new GridLayout(3, 1));
+		JPanel miscPanel = new JPanel(new GridLayout(2, 1));
 		add(miscPanel);
 		miscPanel.setBorder(BorderFactory.createTitledBorder("Misc"));
-		this.lsuInterpolarization = new JCheckBox("SLU Interpolarization");
-		this.lsuInterpolarization.addActionListener(this);
-		miscPanel.add(this.lsuInterpolarization);
+//		this.lsuInterpolarization = new JCheckBox("SLU Interpolarization");
+//		this.lsuInterpolarization.addActionListener(this);
+//		miscPanel.add(this.lsuInterpolarization);
 		this.gridPartition = new JCheckBox("Use Partitions for Grid");
 		this.gridPartition.addActionListener(this);
 		miscPanel.add(this.gridPartition);
@@ -230,6 +230,8 @@ public class VisualizationConfigurationPanel extends JPanel implements
 	}
 
 	public boolean isLSUInterpolarization() {
+		if (lsuInterpolarization==null)
+			return false;
 		return this.lsuInterpolarization.isSelected();
 	}
 
