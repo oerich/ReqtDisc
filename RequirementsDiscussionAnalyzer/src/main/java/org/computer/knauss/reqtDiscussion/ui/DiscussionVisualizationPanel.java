@@ -65,9 +65,9 @@ public class DiscussionVisualizationPanel extends JPanel implements
 	public DiscussionVisualizationPanel(
 			VisualizationConfigurationPanel configureVisualizationPanel) {
 		setPreferredSize(VISUALIZATION_DIMENSION);
-		setMinimumSize(VISUALIZATION_DIMENSION);
-		setMaximumSize(VISUALIZATION_DIMENSION);
-		setSize(VISUALIZATION_DIMENSION);
+		// setMinimumSize(VISUALIZATION_DIMENSION);
+		// setMaximumSize(VISUALIZATION_DIMENSION);
+		// setSize(VISUALIZATION_DIMENSION);
 
 		setBackground(Color.WHITE);
 
@@ -114,8 +114,7 @@ public class DiscussionVisualizationPanel extends JPanel implements
 		// g2.clearRect(0, 0, 800, 600);
 		// g2.setBackground(Color.WHITE);
 		g2.setColor(Color.WHITE);
-		g2.fillRect(getBounds().x, getBounds().y, getBounds().width,
-				getBounds().height);
+		g2.fillRect(0, 0, getWidth(), getHeight());
 
 		if (this.selectedDiscussions != null) {
 			g2.setStroke(new BasicStroke(1f));

@@ -5,12 +5,14 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Stroke;
 import java.awt.geom.Point2D;
 
 import javax.swing.JPanel;
+import javax.swing.JViewport;
 
 import org.computer.knauss.reqtDiscussion.model.socialNetwork.Connection;
 import org.computer.knauss.reqtDiscussion.model.socialNetwork.Node;
@@ -36,11 +38,13 @@ public class NetworkPanel extends JPanel implements IZoomable {
 	private double zoomFactor = 1.0d;
 	private BorderRepulsionForce borderRepulsionForce = new BorderRepulsionForce(
 			new Bounds());
+	private Rectangle captureRect;
 
 	public NetworkPanel() {
 		this.graphProvider = new SNAGraphProvider();
 		setPreferredSize(new Dimension((int) BOUNDS.getWidth(),
 				(int) BOUNDS.getHeight()));
+
 	}
 
 	public SocialNetwork getNetwork() {
@@ -50,6 +54,13 @@ public class NetworkPanel extends JPanel implements IZoomable {
 	public void zoomToFitRect(Rectangle rect) {
 		double xZoom = rect.getWidth() / BOUNDS.getWidth();
 		double yZoom = rect.getHeight() / BOUNDS.getHeight();
+
+		setZoomFactor(Math.min(xZoom, yZoom));
+	}
+
+	public void zoomToFillRect(Rectangle rect) {
+		double xZoom = (BOUNDS.getWidth()) / rect.getWidth();
+		double yZoom = (BOUNDS.getHeight()) / rect.getHeight();
 
 		setZoomFactor(Math.min(xZoom, yZoom));
 	}
@@ -95,12 +106,39 @@ public class NetworkPanel extends JPanel implements IZoomable {
 	}
 
 	public void setZoomFactor(double d) {
+		// unscaled center:
+		Point2D oCenter = getViewportCenter();
+		oCenter.setLocation(oCenter.getX()/ this.zoomFactor, oCenter.getY() / this.zoomFactor);
+
 		this.zoomFactor = d;
 		setPreferredSize(new Dimension(
 				(int) (BOUNDS.getWidth() * this.zoomFactor),
 				(int) (BOUNDS.getHeight() * this.zoomFactor)));
-		revalidate();
+		
+		// scale center to new zoomfactor and set it:
+		oCenter.setLocation(oCenter.getX()*this.zoomFactor, oCenter.getY() * this.zoomFactor);
+		setViewportCenter(oCenter);
+//		revalidate();
+		invalidate();
 		repaint();
+	}
+
+	private Point2D getViewportCenter() {
+		JViewport vp = (JViewport) this.getParent();
+		Point2D p = vp.getViewPosition();
+		return new Point2D.Double(p.getX() + vp.getWidth() / 2, p.getY() + vp.getHeight() / 2);
+	}
+
+	private void setViewportCenter(Point2D p) {
+		JViewport vp = (JViewport) this.getParent();
+		Rectangle viewRect = vp.getViewRect();
+
+//		viewRect.x = (int) (p.getX() - viewRect.width / 2);
+//		viewRect.y = (int) (p.getY() - viewRect.height / 2);
+		viewRect.x = (int) (p.getX());
+		viewRect.y = (int) (p.getY());
+
+		scrollRectToVisible(viewRect);
 	}
 
 	@Override
@@ -132,6 +170,14 @@ public class NetworkPanel extends JPanel implements IZoomable {
 		}
 		for (Node a : this.network.getActors())
 			paintNode(a, this.graphProvider.getPosition(a), g);
+
+		((Graphics2D) g).scale(1 / zoomFactor, 1 / zoomFactor);
+		if (this.captureRect != null) {
+			g.setColor(Color.RED);
+			((Graphics2D) g).draw(captureRect);
+			g.setColor(new Color(255, 255, 255, 150));
+			((Graphics2D) g).fill(captureRect);
+		}
 	}
 
 	private void paintNode(Node a, Point2D.Double pos, Graphics g) {
@@ -189,5 +235,13 @@ public class NetworkPanel extends JPanel implements IZoomable {
 
 	public void setScaler(IScaler scaler) {
 		this.scaler = scaler;
+	}
+
+	public Rectangle getCaptureRect() {
+		return this.captureRect;
+	}
+
+	public void setCaptureRect(Rectangle r) {
+		this.captureRect = r;
 	}
 }

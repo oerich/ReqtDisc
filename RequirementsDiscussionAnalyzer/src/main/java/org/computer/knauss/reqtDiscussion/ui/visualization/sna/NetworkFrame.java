@@ -2,10 +2,16 @@ package org.computer.knauss.reqtDiscussion.ui.visualization.sna;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridLayout;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import java.awt.image.BufferedImage;
 import java.sql.Date;
 import java.util.Arrays;
@@ -67,7 +73,6 @@ public class NetworkFrame extends JFrame {
 	private JButton playButton;
 	private JComboBox socialNetworkBox;
 	private JLabel metricLabel;
-	private JScrollPane jScrollPane;
 	private JSlider cutoffSlider;
 	private JSpinner weightSpinner;
 
@@ -78,6 +83,10 @@ public class NetworkFrame extends JFrame {
 	private VisualizationConfiguration configuration;
 
 	private JCheckBox scaleElementsBox;
+
+	private ZoomPanel zoomPanel;
+
+	private JScrollPane jScrollPane;
 
 	public NetworkFrame(VisualizationConfiguration configuration) {
 		super("Social Network Analysis");
@@ -133,11 +142,64 @@ public class NetworkFrame extends JFrame {
 
 		JPanel ctrlPanel = new JPanel(new GridLayout(2, 1));
 
-		ZoomPanel zoomPanel = new ZoomPanel();
+		zoomPanel = new ZoomPanel();
 		zoomPanel.setBorder(BorderFactory.createTitledBorder("Zoom"));
 		zoomPanel.setLayout(new GridLayout(3, 1));
 		zoomPanel.setZoomable(this.networkPanel);
 		zoomPanel.setZoomableParent(jScrollPane);
+
+		networkPanel.addMouseListener(new MouseAdapter() {
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (e.getClickCount() == 2) {
+					networkPanel.setZoomFactor(2 * networkPanel.getZoomFactor());
+				}
+
+			}
+
+		});
+
+		// networkPanel.addMouseMotionListener(new MouseMotionAdapter() {
+		// Point start = new Point();
+		//
+		// @Override
+		// public void mouseMoved(MouseEvent me) {
+		// // XXX move this to NetworkPanel or AbstractZoomable!
+		// Rectangle captureRect = networkPanel.getCaptureRect();
+		// if (captureRect != null) {
+		// captureRect = new Rectangle(networkPanel.getCaptureRect());
+		// // where is the rectangle without zoom?
+		// captureRect.height /= networkPanel.getZoomFactor();
+		// captureRect.width /= networkPanel.getZoomFactor();
+		// captureRect.x /= networkPanel.getZoomFactor();
+		// captureRect.y /= networkPanel.getZoomFactor();
+		//
+		// // use the initial rectangle
+		// networkPanel.zoomToFillRect(networkPanel.getCaptureRect());
+		//
+		// // where is the rectangle with the new zoom?
+		// captureRect.height *= networkPanel.getZoomFactor();
+		// captureRect.width *= networkPanel.getZoomFactor();
+		// captureRect.x *= networkPanel.getZoomFactor();
+		// captureRect.y *= networkPanel.getZoomFactor();
+		// networkPanel.scrollRectToVisible(captureRect);
+		//
+		// networkPanel.setCaptureRect(null);
+		// }
+		// start = me.getPoint();
+		// networkPanel.repaint();
+		// }
+		//
+		// @Override
+		// public void mouseDragged(MouseEvent me) {
+		// Point end = me.getPoint();
+		// networkPanel.setCaptureRect(new Rectangle(start, new Dimension(
+		// end.x - start.x, end.y - start.y)));
+		// networkPanel.repaint();
+		// }
+		//
+		// });
 
 		add(ctrlPanel, BorderLayout.WEST);
 
@@ -192,7 +254,7 @@ public class NetworkFrame extends JFrame {
 			this.configuration.setSocialNetwork(sn);
 			this.networkPanel.setNetwork(sn);
 			// this.networkPanel.repaint();
-			this.networkPanel.zoomToFitRect(this.jScrollPane.getBounds());
+			this.zoomPanel.fitIntoParentBounds();
 
 			computeNetworkMetrics(discussions,
 					configuration.getDiscussionPartition(), sn);
@@ -281,7 +343,7 @@ public class NetworkFrame extends JFrame {
 		NetworkFrame f = new NetworkFrame(vc);
 
 		Random r = new Random();
-		int actorNumber = 7;
+		int actorNumber = 15;
 		DiscussionEvent[] wcs = new DiscussionEvent[20];
 		for (int i = 0; i < wcs.length; i++) {
 			wcs[i] = new DiscussionEvent();

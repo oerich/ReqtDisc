@@ -1,6 +1,7 @@
 package org.computer.knauss.reqtDiscussion.ui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -114,19 +115,23 @@ public class DiscussionAnalyzerFrame extends JFrame implements
 		flowPanel.add(this.configureVisualizationPanel);
 		add(flowPanel, BorderLayout.EAST);
 
+		// add the visualization panel
 		this.visualizer = new DiscussionVisualizationPanel(
 				this.configureVisualizationPanel);
-		JScrollPane scroller = new JScrollPane();
-		scroller.add(this.visualizer);
-		
+
+		// add zooming to the visualization panel
+		JScrollPane scroller = new JScrollPane(this.visualizer);
 		JPanel centerPane = new JPanel(new BorderLayout());
 		centerPane.add(scroller, BorderLayout.CENTER);
 		ZoomPanel zoomPanel = new ZoomPanel();
 		zoomPanel.setZoomable(this.visualizer);
 		zoomPanel.setZoomableParent(scroller);
 		centerPane.add(zoomPanel, BorderLayout.SOUTH);
-		
+		scroller.setPreferredSize(this.visualizer.getPreferredSize());
+		scroller.setBackground(Color.WHITE);
+
 		add(centerPane, BorderLayout.CENTER);
+		
 		this.table.getSelectionModel()
 				.addListSelectionListener(this.visualizer);
 		this.table.getSelectionModel().addListSelectionListener(this);

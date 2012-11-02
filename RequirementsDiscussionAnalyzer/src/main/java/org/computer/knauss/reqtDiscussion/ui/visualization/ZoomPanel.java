@@ -60,4 +60,8 @@ public class ZoomPanel extends JPanel {
 		this.zoomableParent = zoomableParent;
 	}
 
+	public void fitIntoParentBounds() {
+		this.zoomable.zoomToFitRect(this.zoomableParent.getBounds());
+	}
+
 }
