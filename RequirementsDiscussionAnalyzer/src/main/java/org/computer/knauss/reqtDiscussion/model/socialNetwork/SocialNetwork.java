@@ -31,15 +31,15 @@ public abstract class SocialNetwork {
 		this.discussions = discussions;
 
 		this.nodes.clear();
-		for (Discussion wi : this.discussions)
-			for (DiscussionEvent wc : wi.getDiscussionEvents()) {
-				Node n = this.nodes.get(wc.getCreator());
+		for (Discussion d : this.discussions)
+			for (DiscussionEvent de : d.getDiscussionEvents()) {
+				Node n = this.nodes.get(de.getCreator());
 				if (n == null) {
 					n = new Node();
-					n.setLabel(wc.getCreator());
-					this.nodes.put(wc.getCreator(), n);
+					n.setLabel(de.getCreator());
+					this.nodes.put(de.getCreator(), n);
 				}
-				if (partition.isInClass(wc))
+				if (partition.isInClass(de))
 					n.setClarification(n.getClarification() + 1);
 				else
 					n.setCoordination(n.getCoordination() + 1);

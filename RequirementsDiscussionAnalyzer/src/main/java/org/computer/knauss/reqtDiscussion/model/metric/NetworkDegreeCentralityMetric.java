@@ -11,8 +11,8 @@ public class NetworkDegreeCentralityMetric extends AbstractNetworkMetric {
 	}
 
 	@Override
-	public Double considerDiscussions(Discussion[] wi) {
-		if (wi.length == 0)
+	public Double considerDiscussions(Discussion[] d) {
+		if (d.length == 0)
 			return 0.0;
 
 		// initNetwork(wi);
@@ -22,24 +22,20 @@ public class NetworkDegreeCentralityMetric extends AbstractNetworkMetric {
 		if (nodes.length <= 2)
 			return 0.0;
 
+		// compute network centrality and remember the max
 		double[] centrality = new double[nodes.length];
-		for (int i = 0; i < nodes.length; i++) {
-			Node node = nodes[i];
-			double nodeCentrality = degreeCentrality(node);
-			centrality[i] = nodeCentrality;
-		}
-
-		// compute network centrality
 		double maxCentrality = 0;
-		for (double c : centrality)
-			if (c > maxCentrality)
-				maxCentrality = c;
+		for (int i = 0; i < nodes.length; i++) {
+			centrality[i] = degreeCentrality(nodes[i]);
+			if (centrality[i] > maxCentrality)
+				maxCentrality = centrality[i];
+		}
 
 		double ret = 0;
 		for (int i = 0; i < centrality.length; i++) {
 			ret += maxCentrality - centrality[i];
 		}
-		return ret / (nodes.length - 2);
+		return ret / ((nodes.length - 1) * (nodes.length - 2));
 	}
 
 	double degreeCentrality(Node node) {
@@ -47,14 +43,14 @@ public class NetworkDegreeCentralityMetric extends AbstractNetworkMetric {
 
 		if (nodes.length < 2)
 			return 0.0;
-		double nodeWeight = 0;
+		double ret =0;
 		for (int j = 0; j < nodes.length; j++) {
 			double weight = getSocialNetwork().getWeight(node, nodes[j]);
+					
 			if (weight > getMinWeight())
-				nodeWeight += weight;
+				ret++;
 		}
-		double nodeCentrality = nodeWeight / (nodes.length - 1);
-		return nodeCentrality;
+		return ret;
 	}
 
 	@Override

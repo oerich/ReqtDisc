@@ -5,7 +5,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Stroke;
@@ -152,6 +151,10 @@ public class NetworkPanel extends JPanel implements IZoomable {
 		g.fillRect(0, 0, (int) BOUNDS.getWidth(), (int) BOUNDS.getHeight());
 		g.setColor(Color.BLACK);
 		g.drawRect(0, 0, (int) BOUNDS.getWidth(), (int) BOUNDS.getHeight());
+		
+		if (this.network == null )
+			return;
+		
 		for (Node a : this.network.getActors()) {
 			g.setColor(Color.GRAY);
 

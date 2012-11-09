@@ -13,27 +13,25 @@ public class PartitionedSocialNetwork extends SocialNetwork {
 
 		double ret = 0;
 
-		boolean actor1Found;
-		boolean actor2Found;
+		int actor1Found;
+		int actor2Found;
 
-		for (Discussion wi : getDiscussions()) {
-			IDiscussionOverTimePartition p = getDiscussionOverTimePartition();
-			p.setModelElements(wi.getDiscussionEvents());
+		IDiscussionOverTimePartition p = getDiscussionOverTimePartition();
+		for (Discussion d : getDiscussions()) {
+			p.setModelElements(d.getDiscussionEvents());
 			// System.out.println("Partitions: " + p.getPartitionCount());
 			for (int i = 0; i < p.getPartitionCount(); i++) {
-				actor1Found = false;
-				actor2Found = false;
+				actor1Found = 0;
+				actor2Found = 0;
 				// System.out.println(i + " - " + p
 				// .getWorkitemsForPartition(i).length);
 				for (ModelElement wc : p.getModelElementsForPartition(i)) {
 					if (actor1.getLabel().equals(wc.getCreator()))
-						actor1Found = true;
+						actor1Found += 1;
 					if (actor2.getLabel().equals(wc.getCreator()))
-						actor2Found = true;
+						actor2Found += 1;
 				}
-				if (actor1Found && actor2Found) {
-					ret++;
-				}
+				ret += Math.min(actor1Found, actor2Found);
 			}
 		}
 
