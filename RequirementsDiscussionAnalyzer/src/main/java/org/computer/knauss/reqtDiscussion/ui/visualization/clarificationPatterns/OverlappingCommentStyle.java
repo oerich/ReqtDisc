@@ -35,7 +35,7 @@ public class OverlappingCommentStyle extends AbstractVisualizationStyle
 		int x = this.partition.getPartitionForModelElement(comment)
 				+ this.xOffset;
 		int y1 = this.yOffset;
-		int y2 = getWorkitemCommentY(comment);
+		int y2 = getDiscussionEventY(comment);
 
 		String referenceClassification = null;
 		if (comment instanceof DiscussionEvent)
@@ -64,8 +64,8 @@ public class OverlappingCommentStyle extends AbstractVisualizationStyle
 				v2.getOutline(x + TXT_HORIZONTAL_MARGIN, y2 + TXT_LINE_HEIGHT) };
 	}
 
-	private int getWorkitemCommentY(ModelElement wic) {
-		if (this.partition.isInClass(wic))
+	private int getDiscussionEventY(ModelElement me) {
+		if (this.partition.isInClass(me))
 			return this.yOffset + getUpperOffset();
 		return this.yOffset + getLowerOffset();
 	}

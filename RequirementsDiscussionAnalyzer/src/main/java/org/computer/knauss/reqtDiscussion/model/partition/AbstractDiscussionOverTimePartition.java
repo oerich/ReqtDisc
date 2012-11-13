@@ -59,11 +59,15 @@ public abstract class AbstractDiscussionOverTimePartition implements
 
 	@Override
 	public boolean isInClass(ModelElement me) {
+		if (!( me instanceof DiscussionEvent))
+			return false;
 		return ((DiscussionEvent) me).isInClass();
 	}
 
 	@Override
 	public boolean isClassified(ModelElement me) {
+		if (!( me instanceof DiscussionEvent))
+			return false;
 		return ((DiscussionEvent) me).isClassified();
 	}
 }
