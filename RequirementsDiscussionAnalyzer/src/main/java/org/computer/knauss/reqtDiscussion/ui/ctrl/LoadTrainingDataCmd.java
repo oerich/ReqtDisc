@@ -7,14 +7,13 @@ public class LoadTrainingDataCmd extends AbstractCommand {
 	private static final long serialVersionUID = 1L;
 
 	public LoadTrainingDataCmd() {
-		super("load classifier");
+		super("Load classifier");
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO open a file dialogue, load trainings data and use it on
 		// classifier
-
 	}
 
 }

@@ -28,14 +28,15 @@ public class TrainClassifierCmd extends AbstractDiscussionIterationCommand {
 		for (DiscussionEvent de : d.getDiscussionEvents()) {
 			// TODO consider to use more attributes (e.g. creator, length)
 			if (de.isClassified()) {
-			if (de.isInClass()) {
-				this.classifier.learnInClass(de.getContent());
-				System.out.print('!');
+				if (de.isInClass()) {
+					this.classifier.learnInClass(de.getContent());
+					System.out.print('!');
+				} else {
+					this.classifier.learnNotInClass(de.getContent());
+					System.out.print('.');
+				}
 			} else {
-				this.classifier.learnNotInClass(de.getContent());
-				System.out.print('.');
-			}} else {
-				System.out.print('?');				
+				System.out.print('?');
 			}
 		}
 		System.out.println();

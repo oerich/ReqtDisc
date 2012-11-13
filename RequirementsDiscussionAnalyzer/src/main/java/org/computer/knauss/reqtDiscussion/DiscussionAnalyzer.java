@@ -17,7 +17,6 @@ import org.computer.knauss.reqtDiscussion.ui.ctrl.ClassifyDataCmd;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.ClearClassifierCmd;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.ConfigureJazzDAO;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.EditDatasourceCommand;
-import org.computer.knauss.reqtDiscussion.ui.ctrl.EvaluateClassifierCmd;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.InsertOrUpdateDiscussionEventClassification;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.LoadDiscussionByID;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.LoadDiscussions;
@@ -26,6 +25,7 @@ import org.computer.knauss.reqtDiscussion.ui.ctrl.LoadTrainingDataCmd;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.PrintTrajectoryFeatures;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.SetReferenceClassifierName;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.ShowStatistics;
+import org.computer.knauss.reqtDiscussion.ui.ctrl.SimpleDiscussionClassifierEvaluationCmd;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.StoreDiscussionEventClassifications;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.StoreDiscussions;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.StoreTrainingDataCmd;
@@ -110,7 +110,7 @@ public class DiscussionAnalyzer {
 			daFrame.addAction(DiscussionAnalyzerFrame.ACTION_MENU,
 					configureCommand(classifyEvents));
 			daFrame.addAction(DiscussionAnalyzerFrame.ACTION_MENU,
-					configureCommand(new EvaluateClassifierCmd()));
+					configureCommand(new SimpleDiscussionClassifierEvaluationCmd()));
 			daFrame.addAction(DiscussionAnalyzerFrame.ACTION_MENU,
 					configureCommand(new ClearClassifierCmd()));
 
