@@ -19,8 +19,6 @@ public class TrainClassifierCmd extends AbstractDiscussionIterationCommand {
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		
-		
 
 	}
 
@@ -36,8 +34,10 @@ public class TrainClassifierCmd extends AbstractDiscussionIterationCommand {
 		// use currently loaded discussions for training.
 		for (DiscussionEvent de : d.getDiscussionEvents()) {
 			// TODO consider to use more attributes (e.g. creator, length)
-			
-			this.classifier.learnInClass(de.getContent());
+			if (de.isInClass())
+				this.classifier.learnInClass(de.getContent());
+			else
+				this.classifier.learnNotInClass(de.getContent());
 		}
 	}
 
