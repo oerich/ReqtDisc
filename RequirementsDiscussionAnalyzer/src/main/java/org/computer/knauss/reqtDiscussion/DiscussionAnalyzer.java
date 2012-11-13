@@ -13,17 +13,22 @@ import org.computer.knauss.reqtDiscussion.model.VisualizationConfiguration;
 import org.computer.knauss.reqtDiscussion.ui.DiscussionAnalyzerFrame;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.AbstractCommand;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.ChooseDAOManager;
+import org.computer.knauss.reqtDiscussion.ui.ctrl.ClassifyDataCmd;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.ConfigureJazzDAO;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.EditDatasourceCommand;
+import org.computer.knauss.reqtDiscussion.ui.ctrl.EvaluateClassifierCmd;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.InsertOrUpdateDiscussionEventClassification;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.LoadDiscussionByID;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.LoadDiscussions;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.LoadMoreDiscussions;
+import org.computer.knauss.reqtDiscussion.ui.ctrl.LoadTrainingDataCmd;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.PrintTrajectoryFeatures;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.SetReferenceClassifierName;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.ShowStatistics;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.StoreDiscussionEventClassifications;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.StoreDiscussions;
+import org.computer.knauss.reqtDiscussion.ui.ctrl.StoreTrainingDataCmd;
+import org.computer.knauss.reqtDiscussion.ui.ctrl.TrainClassifierCmd;
 import org.computer.knauss.reqtDiscussion.ui.uiModel.DiscussionTableModel;
 
 public class DiscussionAnalyzer {
@@ -91,6 +96,13 @@ public class DiscussionAnalyzer {
 					configureCommand(new ShowStatistics()));
 			daFrame.addAction(DiscussionAnalyzerFrame.STATISTICS_MENU,
 					configureCommand(new PrintTrajectoryFeatures()));
+			
+			daFrame.addAction(DiscussionAnalyzerFrame.ACTION_MENU, configureCommand(new TrainClassifierCmd()));
+			daFrame.addAction(DiscussionAnalyzerFrame.ACTION_MENU, configureCommand(new StoreTrainingDataCmd()));
+			daFrame.addAction(DiscussionAnalyzerFrame.ACTION_MENU, configureCommand(new LoadTrainingDataCmd()));
+			daFrame.addAction(DiscussionAnalyzerFrame.ACTION_MENU, configureCommand(new ClassifyDataCmd()));
+			daFrame.addAction(DiscussionAnalyzerFrame.ACTION_MENU, configureCommand(new EvaluateClassifierCmd()));
+			
 			IClassificationFilter.NAME_FILTER.setName("robin4");
 
 		} catch (NullPointerException e) {
