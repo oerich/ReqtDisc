@@ -12,10 +12,12 @@ public class ClassifyDataCmd extends AbstractDiscussionIterationCommand {
 
 	private static final long serialVersionUID = 1L;
 	private ILearningClassifier classifier;
-	private InsertOrUpdateDiscussionEventClassification insertOrUpdateCommand;
+
+	// private InsertOrUpdateDiscussionEventClassification
+	// insertOrUpdateCommand;
 
 	public ClassifyDataCmd() {
-		super("classify data");
+		super("Classify discussions");
 	}
 
 	@Override
@@ -44,13 +46,15 @@ public class ClassifyDataCmd extends AbstractDiscussionIterationCommand {
 			}
 			de.insertOrUpdateClassification(dec);
 
-			insertOrUpdateCommand.setWorkitemCommentClassification(dec);
-			insertOrUpdateCommand.actionPerformed(null);
+			// Currently no need to store classifications in database.
+			// insertOrUpdateCommand.setWorkitemCommentClassification(dec);
+			// insertOrUpdateCommand.actionPerformed(null);
 		}
 		System.out.println();
 	}
 
 	public void setInsertOrUpdateCommand(AbstractCommand insertOrUpdateCommand) {
-		this.insertOrUpdateCommand = (InsertOrUpdateDiscussionEventClassification) insertOrUpdateCommand;
+		// this.insertOrUpdateCommand =
+		// (InsertOrUpdateDiscussionEventClassification) insertOrUpdateCommand;
 	}
 }
