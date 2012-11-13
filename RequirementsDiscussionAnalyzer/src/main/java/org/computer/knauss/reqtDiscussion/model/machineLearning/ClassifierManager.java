@@ -1,5 +1,6 @@
 package org.computer.knauss.reqtDiscussion.model.machineLearning;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Vector;
@@ -22,8 +23,11 @@ public class ClassifierManager {
 			instance = new ClassifierManager();
 			try {
 				NewBayesianClassifier classifier = new NewBayesianClassifier();
+				classifier.init(new File("classifier.txt"));
 				instance.registerClassifier(classifier);
 			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}

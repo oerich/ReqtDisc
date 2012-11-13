@@ -19,7 +19,7 @@ public class StoreDiscussionEventClassifications extends
 		try {
 			for (DiscussionEvent e : d.getDiscussionEvents())
 				for (DiscussionEventClassification c : e
-						.getCommentClassifications())
+						.getDiscussionEventClassifications())
 					getDiscussionEventClassificationDAO()
 							.storeDiscussionEventClassification(c);
 		} catch (DAOException e) {

@@ -17,7 +17,7 @@ public class DiscussionEvent extends ModelElement {
 	private Date creationDate;
 	private String creator;
 	private Set<String> tags = new TreeSet<String>();
-	private List<DiscussionEventClassification> commentClassification = new Vector<DiscussionEventClassification>();
+	private List<DiscussionEventClassification> eventClassification = new Vector<DiscussionEventClassification>();
 
 	@Override
 	public int getID() {
@@ -86,15 +86,15 @@ public class DiscussionEvent extends ModelElement {
 		return this.tags.contains(tag);
 	}
 
-	public void setDiscussionEventClassification(
-			DiscussionEventClassification[] workitemCommentClassifications) {
-		this.commentClassification.clear();
-		for (DiscussionEventClassification wcc : workitemCommentClassifications)
-			this.commentClassification.add(wcc);
+	public void setDiscussionEventClassifications(
+			DiscussionEventClassification[] deClassifications) {
+		this.eventClassification.clear();
+		for (DiscussionEventClassification wcc : deClassifications)
+			this.eventClassification.add(wcc);
 	}
 
-	public DiscussionEventClassification[] getCommentClassifications() {
-		return this.commentClassification
+	public DiscussionEventClassification[] getDiscussionEventClassifications() {
+		return this.eventClassification
 				.toArray(new DiscussionEventClassification[0]);
 	}
 
@@ -104,7 +104,7 @@ public class DiscussionEvent extends ModelElement {
 
 	public DiscussionEventClassification getReferenceDiscussionEventClassification() {
 		return IClassificationFilter.NAME_FILTER
-				.filterCommentClassifications(getCommentClassifications());
+				.filterCommentClassifications(getDiscussionEventClassifications());
 	}
 
 	public void insertOrUpdateClassification(
@@ -113,15 +113,15 @@ public class DiscussionEvent extends ModelElement {
 			throw new IllegalArgumentException(
 					"Classification is not relevant for this DiscussionEvent");
 
-		for (DiscussionEventClassification wcc : this.commentClassification) {
-			if (wcc.getClassifiedby().equals(classification.getClassifiedby())) {
-				this.commentClassification.remove(wcc);
-				this.commentClassification.add(classification);
+		for (DiscussionEventClassification dec : this.eventClassification) {
+			if (dec.getClassifiedby().equals(classification.getClassifiedby())) {
+				this.eventClassification.remove(dec);
+				this.eventClassification.add(classification);
 				return;
 			}
 		}
 
-		this.commentClassification.add(classification);
+		this.eventClassification.add(classification);
 	}
 
 	public boolean isInClass() {

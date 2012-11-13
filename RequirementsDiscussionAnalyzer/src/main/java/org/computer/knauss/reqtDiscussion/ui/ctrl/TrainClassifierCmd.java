@@ -1,7 +1,5 @@
 package org.computer.knauss.reqtDiscussion.ui.ctrl;
 
-import java.awt.event.ActionEvent;
-
 import oerich.nlputils.classifier.machinelearning.ILearningClassifier;
 
 import org.computer.knauss.reqtDiscussion.model.Discussion;
@@ -18,11 +16,6 @@ public class TrainClassifierCmd extends AbstractDiscussionIterationCommand {
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent arg0) {
-
-	}
-
-	@Override
 	protected void preProcessingHook() {
 		classifier = ClassifierManager.getInstance().getClassifier();
 	}
@@ -34,11 +27,18 @@ public class TrainClassifierCmd extends AbstractDiscussionIterationCommand {
 		// use currently loaded discussions for training.
 		for (DiscussionEvent de : d.getDiscussionEvents()) {
 			// TODO consider to use more attributes (e.g. creator, length)
-			if (de.isInClass())
+			if (de.isClassified()) {
+			if (de.isInClass()) {
 				this.classifier.learnInClass(de.getContent());
-			else
+				System.out.print('!');
+			} else {
 				this.classifier.learnNotInClass(de.getContent());
+				System.out.print('.');
+			}} else {
+				System.out.print('?');				
+			}
 		}
+		System.out.println();
 	}
 
 }

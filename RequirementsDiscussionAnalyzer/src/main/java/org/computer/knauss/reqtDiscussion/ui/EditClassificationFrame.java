@@ -365,7 +365,7 @@ public class EditClassificationFrame extends JFrame implements
 		getDiscussionEventContentTextView().setCaretPosition(0);
 		this.classification = IClassificationFilter.NAME_FILTER
 				.filterCommentClassifications(this.discussionEvent
-						.getCommentClassifications());
+						.getDiscussionEventClassifications());
 		getClassificationTextField().setText(
 				this.classification.getClassification());
 		// getClassifiedByTextField().setText(
