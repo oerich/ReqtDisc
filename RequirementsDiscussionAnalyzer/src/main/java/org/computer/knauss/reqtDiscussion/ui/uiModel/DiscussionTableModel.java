@@ -89,6 +89,8 @@ public class DiscussionTableModel implements TableModel {
 
 			@Override
 			public boolean accept(Discussion d) {
+				if (d == null || d.getSummary() == null)
+					return false;
 				String summary = d.getSummary().trim().toLowerCase();
 				return !summary.equals("test") && !summary.equals("there")
 						&& !summary.equals("mine")
