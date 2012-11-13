@@ -132,7 +132,7 @@ public class DiscussionEvent extends ModelElement {
 
 	public boolean isClassified() {
 		String referenceClassification = getReferenceClassification();
-		return (referenceClassification != null && referenceClassification
+		return (referenceClassification != null && !referenceClassification
 				.toLowerCase().startsWith(NO_CLASS));
 	}
 }
