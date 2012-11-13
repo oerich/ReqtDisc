@@ -47,4 +47,5 @@ public class DiscussionEventClassification {
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
+	
 }

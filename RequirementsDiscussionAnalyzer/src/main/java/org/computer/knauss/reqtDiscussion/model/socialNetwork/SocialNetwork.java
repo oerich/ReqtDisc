@@ -39,7 +39,7 @@ public abstract class SocialNetwork {
 					n.setLabel(de.getCreator());
 					this.nodes.put(de.getCreator(), n);
 				}
-				if (partition.isInClass(de))
+				if (de.isInClass())
 					n.setClarification(n.getClarification() + 1);
 				else
 					n.setCoordination(n.getCoordination() + 1);

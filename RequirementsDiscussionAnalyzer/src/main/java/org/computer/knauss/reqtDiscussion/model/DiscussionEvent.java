@@ -8,6 +8,9 @@ import java.util.Vector;
 
 public class DiscussionEvent extends ModelElement {
 
+	private static final String NO_CLASS = "no class";
+	private static final String IN_CLASS = "clarif";
+
 	private int id;
 	private int discussionID;
 	private String content;
@@ -82,7 +85,7 @@ public class DiscussionEvent extends ModelElement {
 	public boolean hasTag(String tag) {
 		return this.tags.contains(tag);
 	}
-	
+
 	public void setDiscussionEventClassification(
 			DiscussionEventClassification[] workitemCommentClassifications) {
 		this.commentClassification.clear();
@@ -96,8 +99,12 @@ public class DiscussionEvent extends ModelElement {
 	}
 
 	public String getReferenceClassification() {
-		return IClassificationFilter.NAME_FILTER.filterCommentClassifications(
-				getCommentClassifications()).getClassification();
+		return getReferenceDiscussionEventClassification().getClassification();
+	}
+
+	public DiscussionEventClassification getReferenceDiscussionEventClassification() {
+		return IClassificationFilter.NAME_FILTER
+				.filterCommentClassifications(getCommentClassifications());
 	}
 
 	public void insertOrUpdateClassification(
@@ -115,5 +122,17 @@ public class DiscussionEvent extends ModelElement {
 		}
 
 		this.commentClassification.add(classification);
+	}
+
+	public boolean isInClass() {
+		String referenceClassification = getReferenceClassification();
+		return (referenceClassification != null && referenceClassification
+				.toLowerCase().startsWith(IN_CLASS));
+	}
+
+	public boolean isClassified() {
+		String referenceClassification = getReferenceClassification();
+		return (referenceClassification != null && referenceClassification
+				.toLowerCase().startsWith(NO_CLASS));
 	}
 }

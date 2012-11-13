@@ -60,11 +60,11 @@ public class TrajectoryFeatures extends AbstractDiscussionMetric {
 		StringBuffer sb = new StringBuffer();
 		sb.append(String.valueOf(id));
 		sb.append("\t");
-		
+
 		PatternMetric pm = new PatternMetric();
 		pm.initDiscussions(discussions);
 		sb.append(pm.decode(pm.considerDiscussions(discussions)));
-		
+
 		sb.append("\t");
 		sb.append(String.valueOf(hasClarification));
 		sb.append("\t");
@@ -85,8 +85,8 @@ public class TrajectoryFeatures extends AbstractDiscussionMetric {
 			sb.append(String.valueOf(i));
 			sb.append("\t");
 		}
-//		for (int i = 0; i < 14; i++)
-//			sb.append("\t");
+		// for (int i = 0; i < 14; i++)
+		// sb.append("\t");
 		sb.append(discussions.length);
 		System.out.println(sb.toString());
 		return 0.0;

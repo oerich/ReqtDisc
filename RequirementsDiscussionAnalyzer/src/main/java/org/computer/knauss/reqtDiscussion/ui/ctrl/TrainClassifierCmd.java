@@ -2,18 +2,43 @@ package org.computer.knauss.reqtDiscussion.ui.ctrl;
 
 import java.awt.event.ActionEvent;
 
-public class TrainClassifierCmd extends AbstractCommand {
+import oerich.nlputils.classifier.machinelearning.ILearningClassifier;
+
+import org.computer.knauss.reqtDiscussion.model.Discussion;
+import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
+import org.computer.knauss.reqtDiscussion.model.machineLearning.ClassifierManager;
+
+public class TrainClassifierCmd extends AbstractDiscussionIterationCommand {
 	private static final long serialVersionUID = 1L;
+	private ILearningClassifier classifier;
 
 	public TrainClassifierCmd() {
 		super("Train classifier");
+		// TODO use only selected discussions?
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		// TODO Ask if current classifier should be stored
-		// use currently loaded discussions for training.
+		
+		
 
+	}
+
+	@Override
+	protected void preProcessingHook() {
+		classifier = ClassifierManager.getInstance().getClassifier();
+	}
+
+	@Override
+	protected void processDiscussionHook(Discussion d) {
+		if (classifier == null)
+			return;
+		// use currently loaded discussions for training.
+		for (DiscussionEvent de : d.getDiscussionEvents()) {
+			// TODO consider to use more attributes (e.g. creator, length)
+			
+			this.classifier.learnInClass(de.getContent());
+		}
 	}
 
 }
