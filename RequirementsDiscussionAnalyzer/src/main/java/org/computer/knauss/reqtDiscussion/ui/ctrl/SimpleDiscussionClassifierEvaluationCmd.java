@@ -51,6 +51,7 @@ public class SimpleDiscussionClassifierEvaluationCmd extends
 		try {
 			// i is the left out part.
 			for (int i = 0; i < this.buckets.length; i++) {
+				System.out.println("Bucket " + i + "/10");
 				classifier.clear();
 
 				// use all buckets but i for training
@@ -71,20 +72,32 @@ public class SimpleDiscussionClassifierEvaluationCmd extends
 	}
 
 	private void evaluate(Bucket[] buckets) {
-		int[][] confusionMatrix = new int[8][8];
-
+		// TODO output as tex
+		// TODO sort output according to paper
+		// TODO add true positive, false positive, false negative, and true negative
+		// TODO add recall, precision, specificity, and f-measure
+		
+		// TODO review and double check results
+		
+		int[][] confusionMatrix = new int[7][7];
+		System.out.println("ID \t Actual \t Predicted");
 		for (Bucket bucket : buckets) {
-			this.metric.initDiscussions(bucket.toArray(new Discussion[0]));
 			for (Discussion d : bucket) {
+				this.metric.initDiscussions(new Discussion[] { d });
 				IClassificationFilter.NAME_FILTER.setName(REFERENCE_CLASSIFIER);
 				int reference = this.metric.considerDiscussions(
-						new Discussion[] { d }).intValue() + 1;
+						new Discussion[] { d }).intValue();
 				IClassificationFilter.NAME_FILTER.setName(this.classifier
 						.getClass().getSimpleName());
 				int classification = this.metric.considerDiscussions(
-						new Discussion[] { d }).intValue() + 1;
+						new Discussion[] { d }).intValue();
 
-				confusionMatrix[classification][reference]++;
+				// metric result starts at -1 (unknown)
+				confusionMatrix[classification + 1][reference + 1]++;
+
+				System.out.println(d.getID() + "\t"
+						+ this.metric.decode(reference) + "\t"
+						+ this.metric.decode(classification));
 			}
 		}
 
@@ -96,9 +109,9 @@ public class SimpleDiscussionClassifierEvaluationCmd extends
 				+ this.metric.decode(4) + "\t" + this.metric.decode(5) + "\t"
 				+ this.metric.decode(6));
 
-		for (int i = 0; i < 8; i++) {
+		for (int i = 0; i < 7; i++) {
 			String line = this.metric.decode(i - 1) + "\t";
-			for (int j = 0; j < 8; j++) {
+			for (int j = 0; j < 7; j++) {
 				line += confusionMatrix[i][j] + "\t";
 			}
 
@@ -118,14 +131,14 @@ public class SimpleDiscussionClassifierEvaluationCmd extends
 
 				if (classifier.getMatchValue() < confidence) {
 					dec.setClassification("clarif");
-					System.out.print('!');
+					// System.out.print('!');
 				} else {
 					dec.setClassification("other");
-					System.out.print('.');
+					// System.out.print('.');
 				}
 				de.insertOrUpdateClassification(dec);
 			}
-			System.out.println();
+			// System.out.println();
 		}
 	}
 
@@ -138,16 +151,16 @@ public class SimpleDiscussionClassifierEvaluationCmd extends
 				if (de.isClassified()) {
 					if (de.isInClass()) {
 						this.classifier.learnInClass(de.getContent());
-						System.out.print('!');
+						// System.out.print('!');
 					} else {
 						this.classifier.learnNotInClass(de.getContent());
-						System.out.print('.');
+						// System.out.print('.');
 					}
 				} else {
-					System.out.print('?');
+					// System.out.print('?');
 				}
 			}
-			System.out.println();
+			// System.out.println();
 		}
 	}
 

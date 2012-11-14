@@ -24,6 +24,7 @@ public class ClassifierManager {
 			try {
 				NewBayesianClassifier classifier = new NewBayesianClassifier();
 				classifier.init(new File("classifier.txt"));
+				classifier.setAutosave(false);
 				instance.registerClassifier(classifier);
 			} catch (IOException e) {
 				e.printStackTrace();
