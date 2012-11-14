@@ -13,17 +13,23 @@ import org.computer.knauss.reqtDiscussion.model.VisualizationConfiguration;
 import org.computer.knauss.reqtDiscussion.ui.DiscussionAnalyzerFrame;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.AbstractCommand;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.ChooseDAOManager;
+import org.computer.knauss.reqtDiscussion.ui.ctrl.ClassifyDataCmd;
+import org.computer.knauss.reqtDiscussion.ui.ctrl.ClearClassifierCmd;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.ConfigureJazzDAO;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.EditDatasourceCommand;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.InsertOrUpdateDiscussionEventClassification;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.LoadDiscussionByID;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.LoadDiscussions;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.LoadMoreDiscussions;
+import org.computer.knauss.reqtDiscussion.ui.ctrl.LoadTrainingDataCmd;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.PrintTrajectoryFeatures;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.SetReferenceClassifierName;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.ShowStatistics;
+import org.computer.knauss.reqtDiscussion.ui.ctrl.SimpleDiscussionClassifierEvaluationCmd;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.StoreDiscussionEventClassifications;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.StoreDiscussions;
+import org.computer.knauss.reqtDiscussion.ui.ctrl.StoreTrainingDataCmd;
+import org.computer.knauss.reqtDiscussion.ui.ctrl.TrainClassifierCmd;
 import org.computer.knauss.reqtDiscussion.ui.uiModel.DiscussionTableModel;
 
 public class DiscussionAnalyzer {
@@ -62,36 +68,65 @@ public class DiscussionAnalyzer {
 					new String[] { "/bizzdesign-psql.txt" }));
 			// "/jira-xml-properties.txt"));
 			// add the commands
+			daFrame.addSeperator(DiscussionAnalyzerFrame.DATA_MENU, "configure data access");
 			daFrame.addAction(DiscussionAnalyzerFrame.DATA_MENU,
 					configureCommand(new ChooseDAOManager()));
 			daFrame.addAction(DiscussionAnalyzerFrame.DATA_MENU,
 					configureCommand(new EditDatasourceCommand()));
+			daFrame.addAction(DiscussionAnalyzerFrame.DATA_MENU,
+					configureCommand(new ConfigureJazzDAO()));
+			daFrame.addSeperator(DiscussionAnalyzerFrame.DATA_MENU, "load discussions");
 			daFrame.addAction(DiscussionAnalyzerFrame.DATA_MENU,
 					configureCommand(new LoadDiscussions()));
 			daFrame.addAction(DiscussionAnalyzerFrame.DATA_MENU,
 					configureCommand(new LoadMoreDiscussions()));
 			daFrame.addAction(DiscussionAnalyzerFrame.DATA_MENU,
 					configureCommand(new LoadDiscussionByID()));
+			daFrame.addSeperator(DiscussionAnalyzerFrame.DATA_MENU, "store discussions");
 			daFrame.addAction(DiscussionAnalyzerFrame.DATA_MENU,
 					configureCommand(new StoreDiscussions()));
+			daFrame.addSeperator(DiscussionAnalyzerFrame.DATA_MENU, "store classifications");
 			daFrame.addAction(DiscussionAnalyzerFrame.DATA_MENU,
 					configureCommand(new StoreDiscussionEventClassifications()));
 
+			daFrame.addSeperator(DiscussionAnalyzerFrame.EDIT_MENU, "configure classification");
 			daFrame.addAction(DiscussionAnalyzerFrame.EDIT_MENU,
 					configureCommand(new SetReferenceClassifierName()));
 
-			daFrame.addAction(DiscussionAnalyzerFrame.EDIT_MENU,
-					configureCommand(new ConfigureJazzDAO()));
 
-			daFrame.getEditClassificationFrame()
-					.setInsertOrUpdateCommand(
-							configureCommand(new InsertOrUpdateDiscussionEventClassification()));
+			AbstractCommand insertOrUpdateDiscussionEventClassification = configureCommand(new InsertOrUpdateDiscussionEventClassification());
+			daFrame.getEditClassificationFrame().setInsertOrUpdateCommand(
+					insertOrUpdateDiscussionEventClassification);
 
 			daFrame.addAction(DiscussionAnalyzerFrame.STATISTICS_MENU,
 					configureCommand(new ShowStatistics()));
 			daFrame.addAction(DiscussionAnalyzerFrame.STATISTICS_MENU,
 					configureCommand(new PrintTrajectoryFeatures()));
-			IClassificationFilter.NAME_FILTER.setName("robin4");
+
+			daFrame.addAction(DiscussionAnalyzerFrame.ACTION_MENU,
+					configureCommand(new TrainClassifierCmd()));
+			StoreTrainingDataCmd storeTrainingDataCmd = new StoreTrainingDataCmd();
+			storeTrainingDataCmd.setEnabled(false);
+			daFrame.addAction(DiscussionAnalyzerFrame.ACTION_MENU,
+					configureCommand(storeTrainingDataCmd));
+			LoadTrainingDataCmd loadTrainingDataCmd = new LoadTrainingDataCmd();
+			loadTrainingDataCmd.setEnabled(false);
+			daFrame.addAction(DiscussionAnalyzerFrame.ACTION_MENU,
+					configureCommand(loadTrainingDataCmd));
+			daFrame.addSeperator(DiscussionAnalyzerFrame.ACTION_MENU, "use automatic classifier");
+			ClassifyDataCmd classifyEvents = new ClassifyDataCmd();
+			classifyEvents
+					.setInsertOrUpdateCommand(insertOrUpdateDiscussionEventClassification);
+			daFrame.addAction(DiscussionAnalyzerFrame.ACTION_MENU,
+					configureCommand(classifyEvents));
+			daFrame.addAction(
+					DiscussionAnalyzerFrame.ACTION_MENU,
+					configureCommand(new SimpleDiscussionClassifierEvaluationCmd()));
+			daFrame.addSeperator(DiscussionAnalyzerFrame.ACTION_MENU, "reset automatic classifier");
+			daFrame.addAction(DiscussionAnalyzerFrame.ACTION_MENU,
+					configureCommand(new ClearClassifierCmd()));
+
+			IClassificationFilter.NAME_FILTER.setName("no rater name set");
 
 		} catch (NullPointerException e) {
 			System.err

@@ -67,7 +67,7 @@ public class SQLDiscussionEventDAO extends AbstractSQLDAO implements
 				de.setContent(rs.getString("content"));
 				de.setCreationDate(rs.getDate("creationDate"));
 				de.setCreator(rs.getString("creator"));
-				de.setDiscussionEventClassification(this.discEventClassDAO
+				de.setDiscussionEventClassifications(this.discEventClassDAO
 						.getClassificationsForDiscussionEvent(de.getID()));
 				res.add(de);
 			}

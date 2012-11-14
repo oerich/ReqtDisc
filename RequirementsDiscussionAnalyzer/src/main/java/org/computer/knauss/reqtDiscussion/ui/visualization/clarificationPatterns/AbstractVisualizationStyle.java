@@ -56,4 +56,5 @@ public abstract class AbstractVisualizationStyle implements IVisualizationStyle 
 		this.xOffset = xOffset;
 		this.yOffset = yOffset;
 	}
+
 }

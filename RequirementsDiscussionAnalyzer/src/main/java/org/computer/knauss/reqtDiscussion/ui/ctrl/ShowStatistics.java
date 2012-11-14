@@ -27,7 +27,7 @@ public class ShowStatistics extends AbstractDiscussionIterationCommand {
 	HighlightRelatedDiscussions hrd = null;
 
 	public ShowStatistics() {
-		super("show statistics");
+		super("Show statistics");
 	}
 
 	@Override

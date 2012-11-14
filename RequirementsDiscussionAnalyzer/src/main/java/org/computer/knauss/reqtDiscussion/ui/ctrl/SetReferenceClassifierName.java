@@ -11,13 +11,13 @@ public class SetReferenceClassifierName extends AbstractCommand {
 	private static final long serialVersionUID = 1L;
 
 	public SetReferenceClassifierName() {
-		super("Set Name of Classifier for Reference");
+		super("Set rater name for reference");
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		IClassificationFilter.NAME_FILTER.setName(JOptionPane.showInputDialog(
-				null, "Please enter the name of the Reference Classifier",
+				null, "Please enter the name of the rater that should be used as reference.",
 				IClassificationFilter.NAME_FILTER.getName()));
 
 	}

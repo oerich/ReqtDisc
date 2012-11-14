@@ -29,11 +29,11 @@ public interface IDiscussionOverTimePartition {
 	public int getPartitionForModelElement(ModelElement me);
 
 	public ModelElement[] getModelElementsForPartition(int partition);
-
-	public boolean isInClass(ModelElement me);
-
-	public boolean isClassified(ModelElement me);
 	
 	public void setTimeInterval(ModelElement[] selectedElements);
+
+	boolean isClassified(ModelElement me);
+
+	boolean isInClass(ModelElement me);
 
 }

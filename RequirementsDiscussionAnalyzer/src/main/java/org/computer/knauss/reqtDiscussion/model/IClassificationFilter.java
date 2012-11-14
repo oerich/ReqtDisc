@@ -35,9 +35,9 @@ public interface IClassificationFilter {
 		public DiscussionEventClassification filterCommentClassifications(
 				DiscussionEventClassification[] classifications) {
 			for (String rater : this.name) {
-				for (DiscussionEventClassification wcc : classifications)
-					if (rater.equals(wcc.getClassifiedby()))
-						return wcc;
+				for (DiscussionEventClassification dec : classifications)
+					if (rater.equals(dec.getClassifiedby()))
+						return dec;
 			}
 			return new DiscussionEventClassification();
 		}
