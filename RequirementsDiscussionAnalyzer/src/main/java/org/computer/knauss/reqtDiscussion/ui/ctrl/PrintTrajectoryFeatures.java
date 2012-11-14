@@ -17,7 +17,7 @@ public class PrintTrajectoryFeatures extends AbstractDiscussionIterationCommand 
 	private TrajectoryFeatures tf;
 
 	public PrintTrajectoryFeatures() {
-		super("Print Features of Trajectories");
+		super("Print trajectory features to sysout");
 		this.visitedDiscussions = new HashMap<Integer, Discussion>();
 		try {
 			this.hrd = new HighlightRelatedDiscussions();

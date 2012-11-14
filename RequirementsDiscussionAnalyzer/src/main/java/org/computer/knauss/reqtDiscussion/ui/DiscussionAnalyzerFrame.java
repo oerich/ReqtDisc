@@ -14,6 +14,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
 import javax.swing.JTable;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -50,7 +51,7 @@ public class DiscussionAnalyzerFrame extends JFrame implements
 	private JMenu statisticMenu;
 	private JMenu helpMenu;
 	private JMenu actionMenu;
-	private AbstractAction detailsAction = new AbstractAction("Details...") {
+	private AbstractAction detailsAction = new AbstractAction("Edit discussion details") {
 
 		private static final long serialVersionUID = 1L;
 
@@ -65,7 +66,7 @@ public class DiscussionAnalyzerFrame extends JFrame implements
 		}
 	};
 	private AbstractAction exportAction = new AbstractAction(
-			"Export Visualization") {
+			"Export visualization") {
 
 		private static final long serialVersionUID = 1L;
 
@@ -75,7 +76,7 @@ public class DiscussionAnalyzerFrame extends JFrame implements
 		}
 
 	};
-	private AbstractAction socialNetworkAnalysis = new AbstractAction("SNA") {
+	private AbstractAction socialNetworkAnalysis = new AbstractAction("Show social network") {
 
 		private static final long serialVersionUID = 1L;
 
@@ -131,7 +132,7 @@ public class DiscussionAnalyzerFrame extends JFrame implements
 		scroller.setBackground(Color.WHITE);
 
 		add(centerPane, BorderLayout.CENTER);
-		
+
 		this.table.getSelectionModel()
 				.addListSelectionListener(this.visualizer);
 		this.table.getSelectionModel().addListSelectionListener(this);
@@ -202,6 +203,28 @@ public class DiscussionAnalyzerFrame extends JFrame implements
 			return;
 		}
 		this.getActionMenu().add(a);
+	}
+
+	public void addSeperator(int menuType, String seperatorName) {
+		JSeparator sep = new JSeparator();
+		sep.setName(seperatorName);
+		if (DATA_MENU == menuType) {
+			this.dataMenu.add(sep);
+			return;
+		}
+		if (EDIT_MENU == menuType) {
+			getEditMenu().add(sep);
+			return;
+		}
+		if (STATISTICS_MENU == menuType) {
+			getStatisticsMenu().add(sep);
+			return;
+		}
+		if (HELP_MENU == menuType) {
+			getHelpMenu().add(sep);
+			return;
+		}
+		this.getActionMenu().add(sep);
 	}
 
 	private JMenu getEditMenu() {

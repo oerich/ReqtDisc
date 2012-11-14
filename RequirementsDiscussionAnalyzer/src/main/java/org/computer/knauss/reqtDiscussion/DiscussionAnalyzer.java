@@ -68,26 +68,31 @@ public class DiscussionAnalyzer {
 					new String[] { "/bizzdesign-psql.txt" }));
 			// "/jira-xml-properties.txt"));
 			// add the commands
+			daFrame.addSeperator(DiscussionAnalyzerFrame.DATA_MENU, "configure data access");
 			daFrame.addAction(DiscussionAnalyzerFrame.DATA_MENU,
 					configureCommand(new ChooseDAOManager()));
 			daFrame.addAction(DiscussionAnalyzerFrame.DATA_MENU,
 					configureCommand(new EditDatasourceCommand()));
+			daFrame.addAction(DiscussionAnalyzerFrame.DATA_MENU,
+					configureCommand(new ConfigureJazzDAO()));
+			daFrame.addSeperator(DiscussionAnalyzerFrame.DATA_MENU, "load discussions");
 			daFrame.addAction(DiscussionAnalyzerFrame.DATA_MENU,
 					configureCommand(new LoadDiscussions()));
 			daFrame.addAction(DiscussionAnalyzerFrame.DATA_MENU,
 					configureCommand(new LoadMoreDiscussions()));
 			daFrame.addAction(DiscussionAnalyzerFrame.DATA_MENU,
 					configureCommand(new LoadDiscussionByID()));
+			daFrame.addSeperator(DiscussionAnalyzerFrame.DATA_MENU, "store discussions");
 			daFrame.addAction(DiscussionAnalyzerFrame.DATA_MENU,
 					configureCommand(new StoreDiscussions()));
+			daFrame.addSeperator(DiscussionAnalyzerFrame.DATA_MENU, "store classifications");
 			daFrame.addAction(DiscussionAnalyzerFrame.DATA_MENU,
 					configureCommand(new StoreDiscussionEventClassifications()));
 
+			daFrame.addSeperator(DiscussionAnalyzerFrame.EDIT_MENU, "configure classification");
 			daFrame.addAction(DiscussionAnalyzerFrame.EDIT_MENU,
 					configureCommand(new SetReferenceClassifierName()));
 
-			daFrame.addAction(DiscussionAnalyzerFrame.EDIT_MENU,
-					configureCommand(new ConfigureJazzDAO()));
 
 			AbstractCommand insertOrUpdateDiscussionEventClassification = configureCommand(new InsertOrUpdateDiscussionEventClassification());
 			daFrame.getEditClassificationFrame().setInsertOrUpdateCommand(
@@ -100,21 +105,28 @@ public class DiscussionAnalyzer {
 
 			daFrame.addAction(DiscussionAnalyzerFrame.ACTION_MENU,
 					configureCommand(new TrainClassifierCmd()));
+			StoreTrainingDataCmd storeTrainingDataCmd = new StoreTrainingDataCmd();
+			storeTrainingDataCmd.setEnabled(false);
 			daFrame.addAction(DiscussionAnalyzerFrame.ACTION_MENU,
-					configureCommand(new StoreTrainingDataCmd()));
+					configureCommand(storeTrainingDataCmd));
+			LoadTrainingDataCmd loadTrainingDataCmd = new LoadTrainingDataCmd();
+			loadTrainingDataCmd.setEnabled(false);
 			daFrame.addAction(DiscussionAnalyzerFrame.ACTION_MENU,
-					configureCommand(new LoadTrainingDataCmd()));
+					configureCommand(loadTrainingDataCmd));
+			daFrame.addSeperator(DiscussionAnalyzerFrame.ACTION_MENU, "use automatic classifier");
 			ClassifyDataCmd classifyEvents = new ClassifyDataCmd();
 			classifyEvents
 					.setInsertOrUpdateCommand(insertOrUpdateDiscussionEventClassification);
 			daFrame.addAction(DiscussionAnalyzerFrame.ACTION_MENU,
 					configureCommand(classifyEvents));
-			daFrame.addAction(DiscussionAnalyzerFrame.ACTION_MENU,
+			daFrame.addAction(
+					DiscussionAnalyzerFrame.ACTION_MENU,
 					configureCommand(new SimpleDiscussionClassifierEvaluationCmd()));
+			daFrame.addSeperator(DiscussionAnalyzerFrame.ACTION_MENU, "reset automatic classifier");
 			daFrame.addAction(DiscussionAnalyzerFrame.ACTION_MENU,
 					configureCommand(new ClearClassifierCmd()));
 
-			IClassificationFilter.NAME_FILTER.setName("robin4");
+			IClassificationFilter.NAME_FILTER.setName("no rater name set");
 
 		} catch (NullPointerException e) {
 			System.err
