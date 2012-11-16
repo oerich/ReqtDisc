@@ -9,12 +9,13 @@ import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
 import org.computer.knauss.reqtDiscussion.model.DiscussionFactory;
 import org.computer.knauss.reqtDiscussion.model.socialNetwork.Node;
 import org.computer.knauss.reqtDiscussion.model.socialNetwork.SocialNetwork;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class NetworkSubgraphCountMetricTest {
 
-	@BeforeClass
+	@AfterClass
 	public static void setup() {
 		DiscussionFactory.getInstance().clear();
 	}
