@@ -3,6 +3,8 @@ package org.computer.knauss.reqtDiscussion.model.metric.eval;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.computer.knauss.reqtDiscussion.model.ComplexDiscussion;
 import org.computer.knauss.reqtDiscussion.model.Discussion;
@@ -67,7 +69,25 @@ public abstract class AbstractBucketBalancingStrategy {
 			return d;
 		return new ComplexDiscussion(tmp.toArray(new Discussion[0]));
 	}
-	
+
+	protected Discussion[] aggregateDiscussions(Discussion[] discussions) {
+		Set<Integer> visited = new TreeSet<Integer>();
+		List<Discussion> ret = new LinkedList<Discussion>();
+
+		for (Discussion d : discussions) {
+			if (!visited.contains(d.getID())) {
+				int ids[] = getDiscussionAggregator().getRelatedDiscussionIDs(
+						d.getID());
+				for (Integer i : ids) {
+					visited.add(i);
+				}
+				ret.add(aggregateDiscussion(d));
+			}
+		}
+
+		return ret.toArray(new Discussion[0]);
+	}
+
 	protected int getBucketSize(Bucket b) {
 		int ret = 0;
 
@@ -78,5 +98,5 @@ public abstract class AbstractBucketBalancingStrategy {
 
 		return ret;
 	}
-	
+
 }

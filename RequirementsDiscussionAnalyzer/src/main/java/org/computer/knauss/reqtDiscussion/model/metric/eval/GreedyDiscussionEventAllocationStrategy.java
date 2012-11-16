@@ -2,8 +2,6 @@ package org.computer.knauss.reqtDiscussion.model.metric.eval;
 
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
 
 import org.computer.knauss.reqtDiscussion.model.Discussion;
 
@@ -16,11 +14,7 @@ class GreedyDiscussionEventAllocationStrategy extends
 
 		// Create complex discussions if needed
 		if (aggregateDiscussions) {
-			List<Discussion> tmp = new LinkedList<Discussion>();
-			for (Discussion d : discussions) {
-				tmp.add(aggregateDiscussion(d));
-			}
-			discussions = tmp.toArray(new Discussion[0]);
+			discussions = aggregateDiscussions(discussions);
 		}
 
 		// largest Discussions first
