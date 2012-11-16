@@ -7,6 +7,7 @@ import javax.swing.event.TableModelListener;
 
 import org.computer.knauss.reqtDiscussion.model.Discussion;
 import org.computer.knauss.reqtDiscussion.model.DiscussionFactory;
+import org.junit.After;
 import org.junit.Test;
 
 public class DiscussionTableModelTest {
@@ -22,6 +23,11 @@ public class DiscussionTableModelTest {
 		assertNull(dtm.getValueAt(3, 1));
 	}
 
+	@After
+	public void tearDown() throws Exception {
+		DiscussionFactory.getInstance().clear();
+	}
+	
 	@Test
 	public void testAddData() {
 		DiscussionTableModel wtm = new DiscussionTableModel();
