@@ -1,20 +1,40 @@
 package org.computer.knauss.reqtDiscussion.model.metric.eval;
 
+import java.text.DecimalFormat;
+
 import org.computer.knauss.reqtDiscussion.model.metric.PatternMetric;
 
 public class ConfigurableLayouter implements IConfusionMatrixLayouter {
 
 	private String rowSep;
 	private String colSep;
+	private DecimalFormat df;
 
 	public ConfigurableLayouter(String colSep, String rowSep) {
 		this.colSep = colSep;
 		this.rowSep = rowSep;
 	}
 
+	public String getRowSep() {
+		return rowSep;
+	}
+
+	public void setRowSep(String rowSep) {
+		this.rowSep = rowSep;
+	}
+
+	public String getColSep() {
+		return colSep;
+	}
+
+	public void setColSep(String colSep) {
+		this.colSep = colSep;
+	}
+
 	@Override
 	public String layoutConfusionMatrix(int[][] matrix, StringArrayOrderConverter converter,
 			PatternMetric metric) {
+		DecimalFormat df = getDecimalFormat();
 		// Print the heading of the confusion matrix
 		StringBuffer line = new StringBuffer();
 		line.append("predicted");
@@ -77,20 +97,27 @@ public class ConfigurableLayouter implements IConfusionMatrixLayouter {
 			// recall
 			double recall = ((double) tp) / (((double) tp) + ((double) fn));
 			line.append(colSep);
-			line.append(recall);
+			line.append(df.format(recall));
 			// precision
 			double precision = ((double) tp)
 					/ (((double) tp) + ((double) fp));
 			line.append(colSep);
-			line.append(precision);
+			line.append(df.format(precision));
 			// f-measure
 			line.append(colSep);
-			line.append((2 * recall * precision) / (recall + precision));
+			line.append(df.format((2 * recall * precision) / (recall + precision)));
 			// specificity
 			line.append(colSep);
-			line.append(((double) tn) / (((double) tn) + ((double) fp)));
+			line.append(df.format(((double) tn) / (((double) tn) + ((double) fp))));
 		}
 		return line.toString();
 	}
 
+	
+	private DecimalFormat getDecimalFormat() {
+		if (this.df == null) {
+			this.df = new DecimalFormat("#.###");
+		}
+		return this.df;
+	}
 }

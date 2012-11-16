@@ -18,9 +18,9 @@ final class RandomBucketAllocationStrategy extends
 	public Bucket[] distributedOverKBuckets(int k, Discussion[] discussions,
 			boolean aggregateDiscussions) {
 		Bucket[] ret = new Bucket[k];
-for (int i = 0; i < ret.length; i++) {
-	ret[i]=new Bucket();
-}
+		for (int i = 0; i < ret.length; i++) {
+			ret[i] = new Bucket();
+		}
 		Random r = new Random(System.currentTimeMillis());
 
 		for (Discussion d : discussions) {
