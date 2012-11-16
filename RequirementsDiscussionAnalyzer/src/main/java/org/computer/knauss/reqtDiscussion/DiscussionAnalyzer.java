@@ -18,6 +18,7 @@ import org.computer.knauss.reqtDiscussion.ui.ctrl.ClearClassifierCmd;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.ConfigureJazzDAO;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.EditDatasourceCommand;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.InsertOrUpdateDiscussionEventClassification;
+import org.computer.knauss.reqtDiscussion.ui.ctrl.KFoldCrossDiscussionEvaluationCmd;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.LoadDiscussionByID;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.LoadDiscussions;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.LoadMoreDiscussions;
@@ -68,31 +69,35 @@ public class DiscussionAnalyzer {
 					new String[] { "/bizzdesign-psql.txt" }));
 			// "/jira-xml-properties.txt"));
 			// add the commands
-			daFrame.addSeperator(DiscussionAnalyzerFrame.DATA_MENU, "configure data access");
+			daFrame.addSeperator(DiscussionAnalyzerFrame.DATA_MENU,
+					"configure data access");
 			daFrame.addAction(DiscussionAnalyzerFrame.DATA_MENU,
 					configureCommand(new ChooseDAOManager()));
 			daFrame.addAction(DiscussionAnalyzerFrame.DATA_MENU,
 					configureCommand(new EditDatasourceCommand()));
 			daFrame.addAction(DiscussionAnalyzerFrame.DATA_MENU,
 					configureCommand(new ConfigureJazzDAO()));
-			daFrame.addSeperator(DiscussionAnalyzerFrame.DATA_MENU, "load discussions");
+			daFrame.addSeperator(DiscussionAnalyzerFrame.DATA_MENU,
+					"load discussions");
 			daFrame.addAction(DiscussionAnalyzerFrame.DATA_MENU,
 					configureCommand(new LoadDiscussions()));
 			daFrame.addAction(DiscussionAnalyzerFrame.DATA_MENU,
 					configureCommand(new LoadMoreDiscussions()));
 			daFrame.addAction(DiscussionAnalyzerFrame.DATA_MENU,
 					configureCommand(new LoadDiscussionByID()));
-			daFrame.addSeperator(DiscussionAnalyzerFrame.DATA_MENU, "store discussions");
+			daFrame.addSeperator(DiscussionAnalyzerFrame.DATA_MENU,
+					"store discussions");
 			daFrame.addAction(DiscussionAnalyzerFrame.DATA_MENU,
 					configureCommand(new StoreDiscussions()));
-			daFrame.addSeperator(DiscussionAnalyzerFrame.DATA_MENU, "store classifications");
+			daFrame.addSeperator(DiscussionAnalyzerFrame.DATA_MENU,
+					"store classifications");
 			daFrame.addAction(DiscussionAnalyzerFrame.DATA_MENU,
 					configureCommand(new StoreDiscussionEventClassifications()));
 
-			daFrame.addSeperator(DiscussionAnalyzerFrame.EDIT_MENU, "configure classification");
+			daFrame.addSeperator(DiscussionAnalyzerFrame.EDIT_MENU,
+					"configure classification");
 			daFrame.addAction(DiscussionAnalyzerFrame.EDIT_MENU,
 					configureCommand(new SetReferenceClassifierName()));
-
 
 			AbstractCommand insertOrUpdateDiscussionEventClassification = configureCommand(new InsertOrUpdateDiscussionEventClassification());
 			daFrame.getEditClassificationFrame().setInsertOrUpdateCommand(
@@ -113,7 +118,8 @@ public class DiscussionAnalyzer {
 			loadTrainingDataCmd.setEnabled(false);
 			daFrame.addAction(DiscussionAnalyzerFrame.ACTION_MENU,
 					configureCommand(loadTrainingDataCmd));
-			daFrame.addSeperator(DiscussionAnalyzerFrame.ACTION_MENU, "use automatic classifier");
+			daFrame.addSeperator(DiscussionAnalyzerFrame.ACTION_MENU,
+					"use automatic classifier");
 			ClassifyDataCmd classifyEvents = new ClassifyDataCmd();
 			classifyEvents
 					.setInsertOrUpdateCommand(insertOrUpdateDiscussionEventClassification);
@@ -122,7 +128,10 @@ public class DiscussionAnalyzer {
 			daFrame.addAction(
 					DiscussionAnalyzerFrame.ACTION_MENU,
 					configureCommand(new SimpleDiscussionClassifierEvaluationCmd()));
-			daFrame.addSeperator(DiscussionAnalyzerFrame.ACTION_MENU, "reset automatic classifier");
+			daFrame.addAction(DiscussionAnalyzerFrame.ACTION_MENU,
+					configureCommand(new KFoldCrossDiscussionEvaluationCmd()));
+			daFrame.addSeperator(DiscussionAnalyzerFrame.ACTION_MENU,
+					"reset automatic classifier");
 			daFrame.addAction(DiscussionAnalyzerFrame.ACTION_MENU,
 					configureCommand(new ClearClassifierCmd()));
 
