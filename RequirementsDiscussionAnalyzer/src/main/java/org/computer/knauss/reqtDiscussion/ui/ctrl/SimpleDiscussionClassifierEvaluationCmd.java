@@ -1,5 +1,6 @@
 package org.computer.knauss.reqtDiscussion.ui.ctrl;
 
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Random;
 
@@ -9,24 +10,18 @@ import org.computer.knauss.reqtDiscussion.model.Discussion;
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
 import org.computer.knauss.reqtDiscussion.model.DiscussionEventClassification;
 import org.computer.knauss.reqtDiscussion.model.IClassificationFilter;
-import org.computer.knauss.reqtDiscussion.model.clarificationPatterns.BackToDraftPattern;
-import org.computer.knauss.reqtDiscussion.model.clarificationPatterns.DiscordantPattern;
-import org.computer.knauss.reqtDiscussion.model.clarificationPatterns.HappyEndingPattern;
-import org.computer.knauss.reqtDiscussion.model.clarificationPatterns.IndifferentPattern;
-import org.computer.knauss.reqtDiscussion.model.clarificationPatterns.ProcrastinationPattern;
-import org.computer.knauss.reqtDiscussion.model.clarificationPatterns.TextbookPattern;
 import org.computer.knauss.reqtDiscussion.model.machineLearning.ClassifierManager;
 import org.computer.knauss.reqtDiscussion.model.metric.PatternMetric;
 
 public class SimpleDiscussionClassifierEvaluationCmd extends
 		AbstractDiscussionIterationCommand {
-
 	private static final String REFERENCE_CLASSIFIER = "gpoo,eric1";
 
 	private Bucket[] buckets;
 	private Random r = new Random();
 	private ILearningClassifier classifier;
 	private PatternMetric metric;
+	private HighlightRelatedDiscussions discussionAggregator;
 
 	public SimpleDiscussionClassifierEvaluationCmd() {
 		super("Evaluate discussion classification");
@@ -37,11 +32,31 @@ public class SimpleDiscussionClassifierEvaluationCmd extends
 		}
 	}
 
+	private boolean visitedDiscussion(Discussion nd) {
+		for (Bucket b : this.buckets)
+			for (Discussion d : b) {
+				if (d.equals(nd))
+					return true;
+			}
+		return false;
+	}
+
 	private static final long serialVersionUID = 1L;
 
 	@Override
 	protected void processDiscussionHook(Discussion d) {
+		// TODO balance buckets
 		this.buckets[r.nextInt(10)].add(d);
+	}
+
+	private HighlightRelatedDiscussions getDiscussionAggregator() {
+		if (this.discussionAggregator == null)
+			try {
+				this.discussionAggregator = new HighlightRelatedDiscussions();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		return this.discussionAggregator;
 	}
 
 	@Override
@@ -52,8 +67,6 @@ public class SimpleDiscussionClassifierEvaluationCmd extends
 
 	@Override
 	protected void postProcessingHook() {
-		// TODO balance buckets
-
 		try {
 			// i is the left out part.
 			for (int i = 0; i < this.buckets.length; i++) {
@@ -78,7 +91,6 @@ public class SimpleDiscussionClassifierEvaluationCmd extends
 	}
 
 	private void evaluate(Bucket[] buckets) {
-		// TODO output as tex
 		// map from PatternMetric results (+1) to order of patterns in the
 		// paper, e.g. PatternMetric returns -1 for "unknown", on index 0
 		// (=-1+1) we refer to index 6, which is the position the unknown values
@@ -98,14 +110,14 @@ public class SimpleDiscussionClassifierEvaluationCmd extends
 		IConfusionMatrixLayouter layouter = new TabLayouter();
 		System.out.println(layouter.layoutConfusionMatrix(confusionMatrix,
 				ordering, metric));
-		
+
 		layouter = new ConfigurableLayouter("\t", "\n");
 		System.out.println(layouter.layoutConfusionMatrix(confusionMatrix,
 				ordering, metric));
 		layouter = new ConfigurableLayouter(" & ", "\\tabularnewline \n");
 		System.out.println(layouter.layoutConfusionMatrix(confusionMatrix,
-				ordering, metric));	
-		
+				ordering, metric));
+
 	}
 
 	private int[][] createConfusionMatrix(Bucket[] buckets, int[] ordering) {
@@ -355,5 +367,4 @@ public class SimpleDiscussionClassifierEvaluationCmd extends
 		}
 
 	}
-
 }

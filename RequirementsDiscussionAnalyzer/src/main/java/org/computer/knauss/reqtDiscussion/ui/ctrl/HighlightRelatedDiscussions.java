@@ -46,7 +46,7 @@ public class HighlightRelatedDiscussions {
 		return new int[] { id };
 	}
 
-	public void highlightRelatedWorkitems(DiscussionTableModel tm) {
+	public void highlightRelatedDiscussions(DiscussionTableModel tm) {
 		Discussion[] selectedItems = tm.getSelectedDiscussions();
 
 		// Do not interfere when user does multiple selections...

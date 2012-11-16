@@ -298,7 +298,7 @@ public class DiscussionAnalyzerFrame extends JFrame implements
 				if (this.highlightRelated == null)
 					this.highlightRelated = new HighlightRelatedDiscussions();
 
-				this.highlightRelated.highlightRelatedWorkitems(tableModel);
+				this.highlightRelated.highlightRelatedDiscussions(tableModel);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
