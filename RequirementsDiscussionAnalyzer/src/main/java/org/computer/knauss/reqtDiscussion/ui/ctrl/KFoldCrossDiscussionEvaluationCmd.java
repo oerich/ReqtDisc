@@ -2,7 +2,6 @@ package org.computer.knauss.reqtDiscussion.ui.ctrl;
 
 import java.awt.event.ActionEvent;
 
-import org.computer.knauss.reqtDiscussion.model.machineLearning.ClassifierManager;
 import org.computer.knauss.reqtDiscussion.model.metric.eval.AbstractBucketBalancingStrategy;
 import org.computer.knauss.reqtDiscussion.model.metric.eval.ConfigurableLayouter;
 import org.computer.knauss.reqtDiscussion.model.metric.eval.HybridKFoldCrossDiscussionEvaluation;
