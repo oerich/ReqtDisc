@@ -1,4 +1,6 @@
 classifier.txt
+coordClassifier.txt
+clarifClassifier.txt
 target
 /trento-mysql-properties.txt
 /jazz-properties.txt

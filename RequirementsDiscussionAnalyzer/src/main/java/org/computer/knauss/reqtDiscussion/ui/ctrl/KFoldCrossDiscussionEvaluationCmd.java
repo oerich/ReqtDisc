@@ -5,7 +5,7 @@ import java.awt.event.ActionEvent;
 import org.computer.knauss.reqtDiscussion.model.machineLearning.ClassifierManager;
 import org.computer.knauss.reqtDiscussion.model.metric.eval.AbstractBucketBalancingStrategy;
 import org.computer.knauss.reqtDiscussion.model.metric.eval.ConfigurableLayouter;
-import org.computer.knauss.reqtDiscussion.model.metric.eval.KFoldCrossDiscussionEvaluation;
+import org.computer.knauss.reqtDiscussion.model.metric.eval.HybridKFoldCrossDiscussionEvaluation;
 
 public class KFoldCrossDiscussionEvaluationCmd extends AbstractCommand {
 
@@ -19,7 +19,8 @@ public class KFoldCrossDiscussionEvaluationCmd extends AbstractCommand {
 	public KFoldCrossDiscussionEvaluationCmd(
 			AbstractBucketBalancingStrategy alloc, int style, boolean aggregate) {
 		super("K-fold cross evaluation on discussions ("
-				+ alloc.getClass().getSimpleName() + ", LaTeX:" + (style == 0) + ", aggregate:"+aggregate);
+				+ alloc.getClass().getSimpleName() + ", LaTeX:" + (style == 0)
+				+ ", aggregate:" + aggregate);
 		this.alloc = alloc;
 		this.style = style;
 		this.aggregate = aggregate;
@@ -27,10 +28,12 @@ public class KFoldCrossDiscussionEvaluationCmd extends AbstractCommand {
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		KFoldCrossDiscussionEvaluation eval = new KFoldCrossDiscussionEvaluation();
+		HybridKFoldCrossDiscussionEvaluation eval = new HybridKFoldCrossDiscussionEvaluation();
+		// KFoldCrossDiscussionEvaluation eval = new
+		// KFoldCrossDiscussionEvaluation();
 
 		// Configure it
-		eval.setClassifier(ClassifierManager.getInstance().getClassifier());
+		// eval.setClassifier(ClassifierManager.getInstance().getClassifier());
 		eval.setBucketAllocationStrategy(alloc);
 
 		if (style == LATEX_STYLE) {
