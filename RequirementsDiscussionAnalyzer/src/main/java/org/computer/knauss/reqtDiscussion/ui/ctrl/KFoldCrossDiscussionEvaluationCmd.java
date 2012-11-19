@@ -2,9 +2,9 @@ package org.computer.knauss.reqtDiscussion.ui.ctrl;
 
 import java.awt.event.ActionEvent;
 
-import org.computer.knauss.reqtDiscussion.model.metric.eval.AbstractBucketBalancingStrategy;
-import org.computer.knauss.reqtDiscussion.model.metric.eval.ConfigurableLayouter;
-import org.computer.knauss.reqtDiscussion.model.metric.eval.HybridKFoldCrossDiscussionEvaluation;
+import org.computer.knauss.reqtDiscussion.model.machineLearning.eval.AbstractBucketBalancingStrategy;
+import org.computer.knauss.reqtDiscussion.model.machineLearning.eval.ConfigurableLayouter;
+import org.computer.knauss.reqtDiscussion.model.machineLearning.eval.HybridKFoldCrossDiscussionEvaluation;
 
 public class KFoldCrossDiscussionEvaluationCmd extends AbstractCommand {
 

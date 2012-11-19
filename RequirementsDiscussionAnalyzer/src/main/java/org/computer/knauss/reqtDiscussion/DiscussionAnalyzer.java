@@ -10,7 +10,7 @@ import org.computer.knauss.reqtDiscussion.io.jazz.JazzDAOManager;
 import org.computer.knauss.reqtDiscussion.io.sql.SQLDAOManager;
 import org.computer.knauss.reqtDiscussion.model.IClassificationFilter;
 import org.computer.knauss.reqtDiscussion.model.VisualizationConfiguration;
-import org.computer.knauss.reqtDiscussion.model.metric.eval.AbstractBucketBalancingStrategy;
+import org.computer.knauss.reqtDiscussion.model.machineLearning.eval.AbstractBucketBalancingStrategy;
 import org.computer.knauss.reqtDiscussion.ui.DiscussionAnalyzerFrame;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.AbstractCommand;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.ChooseDAOManager;

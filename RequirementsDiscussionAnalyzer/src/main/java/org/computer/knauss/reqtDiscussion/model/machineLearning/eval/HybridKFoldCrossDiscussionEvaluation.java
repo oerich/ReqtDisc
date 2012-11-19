@@ -1,4 +1,4 @@
-package org.computer.knauss.reqtDiscussion.model.metric.eval;
+package org.computer.knauss.reqtDiscussion.model.machineLearning.eval;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,8 +11,8 @@ import org.computer.knauss.reqtDiscussion.model.Discussion;
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
 import org.computer.knauss.reqtDiscussion.model.DiscussionEventClassification;
 import org.computer.knauss.reqtDiscussion.model.IClassificationFilter;
+import org.computer.knauss.reqtDiscussion.model.machineLearning.eval.AbstractBucketBalancingStrategy.Bucket;
 import org.computer.knauss.reqtDiscussion.model.metric.PatternMetric;
-import org.computer.knauss.reqtDiscussion.model.metric.eval.AbstractBucketBalancingStrategy.Bucket;
 
 public class HybridKFoldCrossDiscussionEvaluation {
 

@@ -1,4 +1,4 @@
-package org.computer.knauss.reqtDiscussion.model.metric.eval;
+package org.computer.knauss.reqtDiscussion.model.machineLearning.eval;
 
 import org.computer.knauss.reqtDiscussion.model.metric.PatternMetric;
 

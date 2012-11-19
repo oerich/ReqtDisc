@@ -2,6 +2,7 @@ package org.computer.knauss.reqtDiscussion.model.metric.eval;
 
 import static org.junit.Assert.*;
 
+import org.computer.knauss.reqtDiscussion.model.machineLearning.eval.StringArrayOrderConverter;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
