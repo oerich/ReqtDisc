@@ -1,11 +1,10 @@
-package org.computer.knauss.reqtDiscussion.model.metric.eval;
+package org.computer.knauss.reqtDiscussion.model.machineLearning.eval;
 
 import static org.junit.Assert.assertEquals;
 
 import org.computer.knauss.reqtDiscussion.model.Discussion;
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
 import org.computer.knauss.reqtDiscussion.model.DiscussionFactory;
-import org.computer.knauss.reqtDiscussion.model.machineLearning.eval.GreedyDiscussionEventAllocationStrategy;
 import org.computer.knauss.reqtDiscussion.model.machineLearning.eval.AbstractBucketBalancingStrategy.Bucket;
 import org.junit.After;
 import org.junit.Before;

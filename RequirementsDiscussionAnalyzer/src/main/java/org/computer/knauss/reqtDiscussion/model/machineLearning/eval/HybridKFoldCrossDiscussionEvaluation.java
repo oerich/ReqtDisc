@@ -80,6 +80,7 @@ public class HybridKFoldCrossDiscussionEvaluation {
 			for (int i = 0; i < buckets.length; i++) {
 				System.out.println("Bucket " + i + "/10");
 				this.clarifClassifier.clear();
+				this.coordClassifier.clear();
 
 				// use all buckets but i for training
 				for (int j = 0; j < buckets.length; j++) {

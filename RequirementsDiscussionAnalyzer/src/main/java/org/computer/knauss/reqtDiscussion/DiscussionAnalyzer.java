@@ -20,6 +20,7 @@ import org.computer.knauss.reqtDiscussion.ui.ctrl.ConfigureJazzDAO;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.EditDatasourceCommand;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.InsertOrUpdateDiscussionEventClassification;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.KFoldCrossDiscussionEvaluationCmd;
+import org.computer.knauss.reqtDiscussion.ui.ctrl.KFoldCrossDiscussionEventEvaluationCmd;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.LoadDiscussionByID;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.LoadDiscussions;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.LoadMoreDiscussions;
@@ -155,6 +156,9 @@ public class DiscussionAnalyzer {
 							AbstractBucketBalancingStrategy.RANDOM_BUCKET,
 							KFoldCrossDiscussionEvaluationCmd.LATEX_STYLE,
 							false)));
+			daFrame.addAction(
+					DiscussionAnalyzerFrame.ACTION_MENU,
+					configureCommand(new KFoldCrossDiscussionEventEvaluationCmd()));
 			daFrame.addSeperator(DiscussionAnalyzerFrame.ACTION_MENU,
 					"reset automatic classifier");
 			daFrame.addAction(DiscussionAnalyzerFrame.ACTION_MENU,
