@@ -44,7 +44,8 @@ public class NetworkSubgraphCountMetric extends AbstractNetworkMetric {
 				List<Node> tmp = new LinkedList<Node>();
 				for (Node n1 : subgraph) {
 					for (Node n2 : notVisited) {
-						if (getSocialNetwork().getWeight(n1, n2) > getMinWeight()) {
+						if (getSocialNetwork().getWeight(n1, n2)
+								+ getSocialNetwork().getWeight(n2, n1) > getMinWeight()) {
 							tmp.add(n2);
 						}
 					}

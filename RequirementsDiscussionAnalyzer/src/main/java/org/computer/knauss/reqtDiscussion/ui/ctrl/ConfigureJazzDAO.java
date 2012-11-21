@@ -14,7 +14,7 @@ public class ConfigureJazzDAO extends AbstractCommand {
 	private static final long serialVersionUID = 1L;
 
 	public ConfigureJazzDAO() {
-		super("Configure Jazz Datasource");
+		super("Edit configuration for jazz.net");
 	}
 
 	@Override

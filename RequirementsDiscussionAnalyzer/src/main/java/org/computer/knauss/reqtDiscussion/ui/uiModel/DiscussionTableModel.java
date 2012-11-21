@@ -9,6 +9,7 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
 import org.computer.knauss.reqtDiscussion.model.Discussion;
+import org.computer.knauss.reqtDiscussion.model.IDiscussionFilter;
 
 public class DiscussionTableModel implements TableModel {
 
@@ -79,8 +80,41 @@ public class DiscussionTableModel implements TableModel {
 	}
 
 	public void setDiscussions(Discussion[] discussions) {
-		this.discussions = discussions;
+		this.discussions = filterDiscussions(discussions);
 		fireTabledataChanged();
+	}
+
+	private Discussion[] filterDiscussions(Discussion[] discussions) {
+		IDiscussionFilter filter = new IDiscussionFilter() {
+
+			@Override
+			public boolean accept(Discussion d) {
+				if (d == null || d.getSummary() == null)
+					return false;
+				String summary = d.getSummary().trim().toLowerCase();
+				return !summary.equals("test") && !summary.equals("there")
+						&& !summary.equals("mine")
+						&& !summary.equals("test story");
+			}
+
+		};
+		List<Discussion> tmp = new LinkedList<Discussion>();
+		for (Discussion d : discussions)
+			if (filter.accept(d))
+				tmp.add(d);
+		return tmp.toArray(new Discussion[0]);
+	}
+
+	public void addDiscussions(Discussion[] discussions) {
+		Discussion[] temp = new Discussion[this.discussions.length
+				+ discussions.length];
+		for (int i = 0; i < this.discussions.length; i++) {
+			temp[i] = this.discussions[i];
+		}
+		for (int i = 0; i < discussions.length; i++) {
+			temp[i + this.discussions.length] = discussions[i];
+		}
+		this.discussions = temp;
 	}
 
 	public Discussion[] getDiscussions() {
@@ -92,13 +126,8 @@ public class DiscussionTableModel implements TableModel {
 			l.tableChanged(new TableModelEvent(this));
 		}
 	}
-	
-	public Discussion getSelectedWorkitem() {
-		return this.discussions[this.table.getRowSorter().convertRowIndexToModel(
-				this.table.getSelectedRow())];
-	}
 
-	public Discussion[] getSelectedWorkitems() {
+	public Discussion[] getSelectedDiscussions() {
 		int[] ind = this.table.getSelectedRows();
 		Discussion[] ret = new Discussion[ind.length];
 

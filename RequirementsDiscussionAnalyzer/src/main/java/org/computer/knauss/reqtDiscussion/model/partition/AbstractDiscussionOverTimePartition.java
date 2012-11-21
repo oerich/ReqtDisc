@@ -39,22 +39,13 @@ public abstract class AbstractDiscussionOverTimePartition implements
 	}
 
 	@Override
-	public boolean isInClass(ModelElement me) {
-		if (!(me instanceof DiscussionEvent))
-			return false;
-
-		DiscussionEvent de = (DiscussionEvent) me;
-
-		return (de.getReferenceClassification() != null && de
-				.getReferenceClassification().toLowerCase()
-				.startsWith("clarif"));
-	}
-
-	@Override
 	public void setTimeInterval(ModelElement[] selectedElements) {
 		Date firstDate = new Date(Long.MAX_VALUE);
 		Date lastDate = new Date(0);
 		for (ModelElement d : selectedElements) {
+			if (d.getCreationDate() == null)
+				throw new RuntimeException("Cannot process ModelElement "
+						+ d.getID() + ", creation date is null");
 			if (firstDate.after(d.getCreationDate()))
 				firstDate = d.getCreationDate();
 			if (lastDate.before(d.getCreationDate()))
@@ -67,5 +58,19 @@ public abstract class AbstractDiscussionOverTimePartition implements
 				}
 		}
 		setTimeInterval(firstDate, lastDate);
+	}
+
+	@Override
+	public boolean isInClass(ModelElement me) {
+		if (!(me instanceof DiscussionEvent))
+			return false;
+		return ((DiscussionEvent) me).isInClass();
+	}
+
+	@Override
+	public boolean isClassified(ModelElement me) {
+		if (!(me instanceof DiscussionEvent))
+			return false;
+		return ((DiscussionEvent) me).isClassified();
 	}
 }

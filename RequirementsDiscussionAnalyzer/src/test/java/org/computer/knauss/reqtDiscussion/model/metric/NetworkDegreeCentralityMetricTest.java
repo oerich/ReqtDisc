@@ -7,10 +7,16 @@ import java.sql.Date;
 import org.computer.knauss.reqtDiscussion.model.Discussion;
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
 import org.computer.knauss.reqtDiscussion.model.DiscussionFactory;
+import org.junit.After;
 import org.junit.Test;
 
 public class NetworkDegreeCentralityMetricTest {
 
+	@After
+	public void tearDown() throws Exception {
+		DiscussionFactory.getInstance().clear();
+	}
+	
 	@Test
 	public void testGetName() {
 		AbstractNetworkMetric m = new NetworkDegreeCentralityMetric();

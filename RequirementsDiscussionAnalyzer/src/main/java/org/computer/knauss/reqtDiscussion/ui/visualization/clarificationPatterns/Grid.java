@@ -7,18 +7,13 @@ import java.awt.Stroke;
 import java.awt.geom.Line2D;
 
 import org.computer.knauss.reqtDiscussion.model.ModelElement;
-import org.computer.knauss.reqtDiscussion.model.partition.IDiscussionOverTimePartition;
 
 public class Grid extends AbstractVisualizationStyle {
 
 	private static final BasicStroke DASHED_STROKE = new BasicStroke(1f,
 			BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 1f, new float[] {
 					5f, 10f }, 2f);
-
-	@Override
-	public void setDiscussionOverTimePartition(
-			IDiscussionOverTimePartition partition, int xOffset, int yOffset) {
-	}
+	private boolean usePartitionForGrid = false;
 
 	@Override
 	public Shape[] getShape(ModelElement comment) {
@@ -26,11 +21,23 @@ public class Grid extends AbstractVisualizationStyle {
 	}
 
 	public Shape[] layout(ModelElement[] comments) {
-		return new Shape[] { new Line2D.Double(100, 0, 100, 600),
-				new Line2D.Double(250, 0, 250, 600),
-				new Line2D.Double(400, 0, 400, 600),
-				new Line2D.Double(550, 0, 550, 600),
-				new Line2D.Double(700, 0, 700, 600), };
+		if (!this.usePartitionForGrid)
+			return new Shape[] { new Line2D.Double(100, 0, 100, 600),
+					new Line2D.Double(250, 0, 250, 600),
+					new Line2D.Double(400, 0, 400, 600),
+					new Line2D.Double(550, 0, 550, 600),
+					new Line2D.Double(700, 0, 700, 600), };
+		if (this.partition == null)
+			return new Shape[0];
+
+		Shape[] ret = new Shape[this.partition.getPartitionCount() + 1];
+
+		int n = (700 - 100) / this.partition.getPartitionCount();
+
+		for (int i = 0; i < ret.length; i++) {
+			ret[i] = new Line2D.Double(100 + i * n, 0, 100 + i * n, 700);
+		}
+		return ret;
 	}
 
 	@Override
@@ -53,7 +60,6 @@ public class Grid extends AbstractVisualizationStyle {
 	}
 
 	public void setUsePartition(boolean usePartitionForGrid) {
-		// TODO Auto-generated method stub
-
+		this.usePartitionForGrid = usePartitionForGrid;
 	}
 }

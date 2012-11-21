@@ -19,12 +19,6 @@ public interface IDiscussionDAO extends IConfigurable {
 	 * Especially when loading data from the web, it is delivered in chunks
 	 * (typically 50-100 items, e.g. from jazz.net).
 	 */
-	public Discussion getNextDiscussion() throws DAOException;
-
-	/**
-	 * Especially when loading data from the web, it is delivered in chunks
-	 * (typically 50-100 items, e.g. from jazz.net).
-	 */
 	public Discussion[] getMoreDiscussions(IDAOProgressMonitor progressMonitor)
 			throws DAOException;
 

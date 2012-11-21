@@ -8,6 +8,7 @@ import org.computer.knauss.reqtDiscussion.model.Discussion;
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
 import org.computer.knauss.reqtDiscussion.model.DiscussionFactory;
 import org.computer.knauss.reqtDiscussion.model.partition.FixedNumberPartition;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,7 +19,7 @@ public class ProximitySocialNetworkTest {
 
 	@Before
 	public void setup() {
-		DiscussionFactory.getInstance().clear();
+//		DiscussionFactory.getInstance().clear();
 		discussion = DiscussionFactory.getInstance().getDiscussion(1);
 		discussion.setCreator("1");
 		discussion.setCreationDate(new Date(System.currentTimeMillis() - 1000));
@@ -40,6 +41,11 @@ public class ProximitySocialNetworkTest {
 		this.sn = new ProximitySocialNetwork();
 		this.sn.setDiscussionData(new Discussion[] { this.discussion },
 				new FixedNumberPartition());
+	}
+	
+	@After
+	public void tearDown() throws Exception {
+		DiscussionFactory.getInstance().clear();
 	}
 
 	@Test
