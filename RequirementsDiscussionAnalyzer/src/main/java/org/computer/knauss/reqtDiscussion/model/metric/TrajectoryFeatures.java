@@ -21,7 +21,7 @@ public class TrajectoryFeatures extends AbstractDiscussionMetric {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-
+	
 	@Override
 	public Double considerDiscussions(Discussion[] discussions) {
 		int resolution = 8;
@@ -69,15 +69,13 @@ public class TrajectoryFeatures extends AbstractDiscussionMetric {
 		sb.append(String.valueOf(hasClarification));
 		sb.append("\t");
 		for (int i = 0; i < resolution; i++) {
-			if (other[i] == 0)
-				sb.append(clarifications[i]);
-			else if (clarifications[i] == 0)
+			if (total[i] == 0)
 				sb.append("0");
 			else {
 				sb.append("=");
 				sb.append(clarifications[i]);
 				sb.append("/");
-				sb.append(other[i]);
+				sb.append(total[i]);
 			}
 			sb.append("\t");
 		}
