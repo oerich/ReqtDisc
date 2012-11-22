@@ -30,4 +30,12 @@ public class StringArrayOrderConverter {
 		return convertL2R(i, this.right, this.left);
 	}
 
+	public String[] getRight() {
+		return this.right;
+	}
+
+	public String[] getLeft() {
+		return this.left;
+	}
+
 }
