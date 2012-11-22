@@ -2,8 +2,6 @@ package org.computer.knauss.reqtDiscussion.model.machineLearning.eval;
 
 import java.text.DecimalFormat;
 
-import org.computer.knauss.reqtDiscussion.model.metric.PatternMetric;
-
 public class ConfigurableLayouter implements IConfusionMatrixLayouter {
 
 	private String rowSep;
@@ -31,18 +29,24 @@ public class ConfigurableLayouter implements IConfusionMatrixLayouter {
 		this.colSep = colSep;
 	}
 
+	private DecimalFormat getDecimalFormat() {
+		if (this.df == null) {
+			this.df = new DecimalFormat("#.###");
+		}
+		return this.df;
+	}
+
 	@Override
-	public String layoutConfusionMatrix(int[][] matrix, StringArrayOrderConverter converter,
-			PatternMetric metric) {
+	public String layoutConfusionMatrix(ConfusionMatrix confusionMatrix) {
 		DecimalFormat df = getDecimalFormat();
 		// Print the heading of the confusion matrix
 		StringBuffer line = new StringBuffer();
-		line.append("predicted");
-		line.append("/");
 		line.append("actual");
-		for (int i = 0; i < 7; i++) {
+		line.append("/");
+		line.append("predicted");
+		for (int i = 0; i < confusionMatrix.getCategories().length; i++) {
 			line.append(colSep);
-			line.append(metric.decode(converter.convertR2L(i) - 1));
+			line.append(confusionMatrix.getCategories()[i]);
 		}
 		line.append(colSep);
 		line.append("true positive");
@@ -61,63 +65,33 @@ public class ConfigurableLayouter implements IConfusionMatrixLayouter {
 		line.append(colSep);
 		line.append("specificity");
 
-		int sum = 0;
-		for (int i = 0; i < 7; i++) {
-			for (int j = 0; j < 7; j++) {
-				sum += matrix[i][j];
-			}
-		}
+		int[][] matrix = confusionMatrix.getConfusionMatrix();
 
-		for (int i = 0; i < 7; i++) {
+		for (int row = 0; row < matrix.length; row++) {
 			line.append(rowSep);
-			line.append(metric.decode(converter.convertR2L(i) - 1));
+			String rowCategory = confusionMatrix.getCategories()[row];
+			line.append(rowCategory);
 			line.append(colSep);
-			int tp = 0, fp = 0, fn = 0, tn = 0;
-			for (int j = 0; j < 7; j++) {
-				line.append(matrix[i][j]);
+			for (int col = 0; col < matrix[row].length; col++) {
+				line.append(matrix[row][col]);
 				line.append(colSep);
-				if (i == j) {
-					tp = matrix[i][j];
-					for (int n = 0; n < 7; n++) {
-						if (n != j)
-							fn += matrix[n][j];
-					}
-				} else {
-					fp += matrix[i][j];
-				}
 			}
-			tn = sum - (tp + fp + fn);
-			line.append(tp);
+			line.append(confusionMatrix.getTruePositives(rowCategory));
 			line.append(colSep);
-			line.append(fp);
+			line.append(confusionMatrix.getFalsePositives(rowCategory));
 			line.append(colSep);
-			line.append(fn);
+			line.append(confusionMatrix.getFalseNegatives(rowCategory));
 			line.append(colSep);
-			line.append(tn);
-			// recall
-			double recall = ((double) tp) / (((double) tp) + ((double) fn));
+			line.append(confusionMatrix.getTrueNegatives(rowCategory));
 			line.append(colSep);
-			line.append(df.format(recall));
-			// precision
-			double precision = ((double) tp)
-					/ (((double) tp) + ((double) fp));
+			line.append(df.format(confusionMatrix.getRecall(rowCategory)));
 			line.append(colSep);
-			line.append(df.format(precision));
-			// f-measure
+			line.append(df.format(confusionMatrix.getPrecision(rowCategory)));
 			line.append(colSep);
-			line.append(df.format((2 * recall * precision) / (recall + precision)));
-			// specificity
+			line.append(df.format(confusionMatrix.getFMeasure(rowCategory)));
 			line.append(colSep);
-			line.append(df.format(((double) tn) / (((double) tn) + ((double) fp))));
+			line.append(df.format(confusionMatrix.getSpecificity(rowCategory)));
 		}
 		return line.toString();
-	}
-
-	
-	private DecimalFormat getDecimalFormat() {
-		if (this.df == null) {
-			this.df = new DecimalFormat("#.###");
-		}
-		return this.df;
 	}
 }

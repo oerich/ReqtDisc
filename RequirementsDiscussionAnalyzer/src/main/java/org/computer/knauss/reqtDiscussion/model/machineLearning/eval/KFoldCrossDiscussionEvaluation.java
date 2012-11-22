@@ -20,22 +20,13 @@ public class KFoldCrossDiscussionEvaluation {
 	private PatternMetric patternMetric = new PatternMetric();
 	private ILearningClassifier classifier;
 	private IConfusionMatrixLayouter confusionMatrixLayout;
-	private StringArrayOrderConverter orderConverter;
 
 	public KFoldCrossDiscussionEvaluation() {
-		orderConverter = new StringArrayOrderConverter();
-		orderConverter.setLeft(new String[] { "unknown", "indifferent",
-				"discordant", "procrastination", "back-to-draft",
-				"happy-ending", "text-book" });
-		orderConverter.setRight(new String[] { "indifferent", "happy-ending",
-				"discordant", "back-to-draft", "text-book", "procrastination",
-				"unknown" });
-
 		// print a tex compatible table
-//		this.confusionMatrixLayout = new ConfigurableLayouter(" & ",
-//				"\\tabularnewline \n");
+		// this.confusionMatrixLayout = new ConfigurableLayouter(" & ",
+		// "\\tabularnewline \n");
 		// print an excel compatible table
-		 this.confusionMatrixLayout = new ConfigurableLayouter("\t","\n");
+		this.confusionMatrixLayout = new ConfigurableLayouter("\t", "\n");
 	}
 
 	/**
@@ -71,9 +62,8 @@ public class KFoldCrossDiscussionEvaluation {
 
 				classify(buckets[i]);
 			}
-			return evaluate(buckets);
+			return evaluate(buckets).getConfusionMatrix();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
@@ -129,14 +119,16 @@ public class KFoldCrossDiscussionEvaluation {
 		}
 	}
 
-	public void printConfusionMatrix(int[][] confusionMatrix) {
-
-		System.out.println(confusionMatrixLayout.layoutConfusionMatrix(
-				confusionMatrix, orderConverter, patternMetric));
+	public void printConfusionMatrix(ConfusionMatrix confusionMatrix) {
+		System.out.println(confusionMatrixLayout
+				.layoutConfusionMatrix(confusionMatrix));
 	}
 
-	private int[][] evaluate(Bucket[] buckets) {
-		int[][] confusionMatrix = new int[PatternMetric.PATTERNS.length + 1][PatternMetric.PATTERNS.length + 1];
+	private ConfusionMatrix evaluate(Bucket[] buckets) {
+		ConfusionMatrix confusionMatrix = new ConfusionMatrix();
+		confusionMatrix.init(new String[] { "indifferent", "happy-ending",
+				"discordant", "back-to-draft", "textbook-example",
+				"procrastination", "unknown" });
 		System.out.println("ID \t Actual \t Predicted");
 		for (Bucket bucket : buckets) {
 			for (Discussion[] complexTrajectory : bucket) {
@@ -152,10 +144,9 @@ public class KFoldCrossDiscussionEvaluation {
 					int classification = this.patternMetric
 							.considerDiscussions(complexTrajectory).intValue();
 
-					// metric result starts at -1 (unknown)
-					confusionMatrix[orderConverter
-							.convertL2R(classification + 1)][orderConverter
-							.convertL2R(reference + 1)]++;
+					confusionMatrix.report(
+							this.patternMetric.decode(reference),
+							this.patternMetric.decode(classification));
 
 					Arrays.sort(complexTrajectory,
 							new Comparator<Discussion>() {
@@ -223,84 +214,6 @@ public class KFoldCrossDiscussionEvaluation {
 	public void setConfusionMatrixLayout(
 			IConfusionMatrixLayouter confusionMatrixLayout) {
 		this.confusionMatrixLayout = confusionMatrixLayout;
-	}
-
-	/**
-	 * Converts the order of the metrics from how it is used in PatternMetric to
-	 * any other order.
-	 * 
-	 * e.g. in the RE paper, the ordering is
-	 * <ol>
-	 * <li>indifferent,</li>
-	 * <li>
-	 * happy-ending,</li>
-	 * <li>discordant,</li>
-	 * <li>back-to-draft,</li>
-	 * <li>text-book,</li>
-	 * <li>procrastination, unknown</li>
-	 * <li>unknown</li>
-	 * </ol>
-	 * the order in Pattern metric is
-	 * <ol>
-	 * <li>unknown,</li>
-	 * <li>Indifferent,</li>
-	 * <li>Discordant,</li>
-	 * <li>Procrastination,</li>
-	 * <li>BackToDraft,</li>
-	 * <li>HappyEnding,</li>
-	 * <li>Textbook</li>
-	 * </ol>
-	 * Just add the order you desire as a String array:
-	 * <p>
-	 * <code>
-	 * getOrderConverter().setRight(new String[]{"indifferent", "happy-ending",
-	 * "discordant", "back-to-draft", "text-book", "procrastination",
-	 * "unknown"});</code>
-	 * </p>
-	 * 
-	 * @return
-	 */
-	public StringArrayOrderConverter getOrderConverter() {
-		return orderConverter;
-	}
-
-	/**
-	 * Converts the order of the metrics from how it is used in PatternMetric to
-	 * any other order.
-	 * 
-	 * e.g. in the RE paper, the ordering is
-	 * <ol>
-	 * <li>indifferent,</li>
-	 * <li>
-	 * happy-ending,</li>
-	 * <li>discordant,</li>
-	 * <li>back-to-draft,</li>
-	 * <li>text-book,</li>
-	 * <li>procrastination, unknown</li>
-	 * <li>unknown</li>
-	 * </ol>
-	 * the order in Pattern metric is
-	 * <ol>
-	 * <li>unknown,</li>
-	 * <li>Indifferent,</li>
-	 * <li>Discordant,</li>
-	 * <li>Procrastination,</li>
-	 * <li>BackToDraft,</li>
-	 * <li>HappyEnding,</li>
-	 * <li>Textbook</li>
-	 * </ol>
-	 * Just add the order you desire as a String array:
-	 * <p>
-	 * <code>
-	 * getOrderConverter().setRight(new String[]{"indifferent", "happy-ending",
-	 * "discordant", "back-to-draft", "text-book", "procrastination",
-	 * "unknown"});</code>
-	 * </p>
-	 * 
-	 * @param orderConverter
-	 */
-	public void setOrderConverter(StringArrayOrderConverter orderConverter) {
-		this.orderConverter = orderConverter;
 	}
 
 }

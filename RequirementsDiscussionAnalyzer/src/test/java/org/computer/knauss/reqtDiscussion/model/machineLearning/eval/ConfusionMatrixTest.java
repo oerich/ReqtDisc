@@ -1,7 +1,9 @@
 package org.computer.knauss.reqtDiscussion.model.machineLearning.eval;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
+import org.computer.knauss.reqtDiscussion.model.metric.PatternMetric;
 import org.junit.Test;
 
 public class ConfusionMatrixTest {
@@ -42,11 +44,8 @@ public class ConfusionMatrixTest {
 	@Test
 	public void testConvertMatrixOnWikipediaExample() {
 		ConfusionMatrix cm = createWikipediaExample();
-		StringArrayOrderConverter saoc = new StringArrayOrderConverter();
-		saoc.setLeft(new String[] { "Cat", "Dog", "Rabbit" });
-		saoc.setRight(new String[] { "Dog", "Cat", "Rabbit" });
 
-		ConfusionMatrix cm2 = cm.convertOrdering(saoc);
+		ConfusionMatrix cm2 = cm.convertOrdering(new String[] { "Dog", "Cat", "Rabbit" });
 		int[][] confusionMatrixRaw = cm2.getConfusionMatrix();
 		assertEquals(3, confusionMatrixRaw[0][0]);
 		assertEquals(5, confusionMatrixRaw[1][1]);
@@ -77,22 +76,40 @@ public class ConfusionMatrixTest {
 		assertEquals(17.0 / (17.0 + 2.0), cm2.getSpecificity("Cat"), 0.001);
 	}
 
-	
-	@Test(expected=RuntimeException.class)
+	@Test(expected = RuntimeException.class)
 	public void testBadNewOrder() {
 		ConfusionMatrix cm = createWikipediaExample();
-		StringArrayOrderConverter saoc = new StringArrayOrderConverter();
-		saoc.setRight(new String[] { "Cat", "Dog", "Rabbit" });
-		saoc.setLeft(new String[] { "Dog", "Cat", "Rabbit" });
 
-		cm.convertOrdering(saoc);
+		cm.convertOrdering(new String[] { "Dog", "Tiger", "Rabbit" });
 	}
-	
-	@Test(expected=ArrayIndexOutOfBoundsException.class) 
+
+	@Test
 	public void testWrongCategory() {
 		ConfusionMatrix cm = createWikipediaExample();
-		cm.getTruePositives("Tiger");
+		try {
+			cm.getTruePositives("Tiger");
+		} catch (RuntimeException re) {
+			assertTrue(re.getMessage().indexOf("Tiger") > 0);
+		}
 	}
+
+	@Test
+	public void testWithPatternMetric() {
+		// basically tests the string array for initialization...
+		ConfusionMatrix confusionMatrix = new ConfusionMatrix();
+		confusionMatrix.init(new String[] { "indifferent", "happy-ending",
+				"discordant", "back-to-draft", "textbook-example", "procrastination",
+				"unknown" });
+		
+		PatternMetric m = new PatternMetric();
+		for (int i = 0; i <= PatternMetric.PATTERNS.length; i++) {
+			confusionMatrix.report(m.decode(i-1), m.decode(i));
+		}
+		
+		ConfigurableLayouter cl = new ConfigurableLayouter(" \t ", " \n");
+		System.out.println(cl.layoutConfusionMatrix(confusionMatrix));
+	}
+
 	private ConfusionMatrix createWikipediaExample() {
 		ConfusionMatrix cm = new ConfusionMatrix();
 		cm.init(new String[] { "Cat", "Dog", "Rabbit" });

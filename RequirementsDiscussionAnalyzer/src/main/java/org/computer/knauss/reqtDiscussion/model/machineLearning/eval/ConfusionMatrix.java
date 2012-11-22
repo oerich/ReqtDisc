@@ -15,7 +15,17 @@ public class ConfusionMatrix {
 			if (categories[i].equals(cat))
 				return i;
 		}
-		return -1;
+		StringBuffer msg = new StringBuffer();
+		msg.append("Category '");
+		msg.append(cat);
+		msg.append("' does not exist in [");
+		for (String c : this.categories) {
+			msg.append(c);
+			msg.append(',');
+		}
+		msg.append("]");
+
+		throw new RuntimeException(msg.toString());
 	}
 
 	public void report(String actual, String predicted) {
@@ -87,17 +97,15 @@ public class ConfusionMatrix {
 		return trueNegatives / (trueNegatives + falsePositives);
 	}
 
-	public ConfusionMatrix convertOrdering(
-			StringArrayOrderConverter orderConverter) {
+	public ConfusionMatrix convertOrdering(String[] newCategoryOrder) {
 		// check if this works out:
-		for (int i = 0; i < this.categories.length; i++) {
-			if (!this.categories[i].equals(orderConverter.getLeft()[i]))
-				throw new RuntimeException(
-						"Order of left array in OrderConverter does not match.");
+		for (int i = 0; i < newCategoryOrder.length; i++) {
+			// throws an Exception if it does not exist.
+			index(newCategoryOrder[i]);
 		}
 
 		ConfusionMatrix ret = new ConfusionMatrix();
-		ret.init(orderConverter.getRight());
+		ret.init(newCategoryOrder);
 
 		for (int row = 0; row < this.matrix.length; row++) {
 			for (int col = 0; col < this.matrix[row].length; col++) {
@@ -112,6 +120,10 @@ public class ConfusionMatrix {
 
 	public int[][] getConfusionMatrix() {
 		return this.matrix;
+	}
+
+	public String[] getCategories() {
+		return this.categories;
 	}
 
 }

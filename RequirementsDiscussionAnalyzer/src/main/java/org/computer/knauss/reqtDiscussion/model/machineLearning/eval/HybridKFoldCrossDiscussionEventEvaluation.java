@@ -2,7 +2,6 @@ package org.computer.knauss.reqtDiscussion.model.machineLearning.eval;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.DecimalFormat;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -22,8 +21,6 @@ public class HybridKFoldCrossDiscussionEventEvaluation {
 	private ILearningClassifier clariClassifier;
 	private ILearningClassifier coordClassifier;
 
-	private DecimalFormat df;
-
 	private class DiscussionEventBucket extends LinkedList<DiscussionEvent> {
 
 		private static final long serialVersionUID = 1L;
@@ -36,8 +33,6 @@ public class HybridKFoldCrossDiscussionEventEvaluation {
 			this.coordClassifier = new NewBayesianClassifier();
 			coordClassifier.init(new File("coordClassifier.txt"));
 			clariClassifier.init(new File("clariClassifier.txt"));
-
-			this.df = new DecimalFormat("#.###");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -61,7 +56,7 @@ public class HybridKFoldCrossDiscussionEventEvaluation {
 	 *         rows. Size is PatternMetric.PATTERNS.length + 1 (we have the
 	 *         unknown value to store, too)
 	 */
-	public int[][] evaluate(int k, Discussion[] discussions) {
+	public ConfusionMatrix evaluate(int k, Discussion[] discussions) {
 		DiscussionEventBucket[] buckets = distributedOverKBuckets(k,
 				discussions);
 
@@ -159,56 +154,49 @@ public class HybridKFoldCrossDiscussionEventEvaluation {
 		// System.out.println();
 	}
 
-	public void printConfusionMatrix(int[][] confusionMatrix) {
+	public void printConfusionMatrix(ConfusionMatrix cm) {
 
-		System.out.println("predicted/actual \t clarif \t other ");
-		for (int row = 0; row < confusionMatrix.length; row++) {
-			if (row == 0)
-				System.out.print("clarif \t");
-			else if (row == 1)
-				System.out.print("other \t");
-			else
-				System.out.print("unknown row \t");
-			for (int col = 0; col < confusionMatrix[row].length; col++) {
-				System.out.print(confusionMatrix[row][col] + "\t");
-			}
-			System.out.println();
-		}
-		double precision = ((double) confusionMatrix[0][0])
-				/ ((double) confusionMatrix[0][0] + (double) confusionMatrix[0][1]);
-		double recall = (double) confusionMatrix[0][0]
-				/ ((double) confusionMatrix[0][0] + (double) confusionMatrix[1][0]);
-		double specificity = (double) confusionMatrix[1][1]
-				/ ((double) confusionMatrix[1][1] + (double) confusionMatrix[0][1]);
-		double fMeasure = (2 * recall * precision) / (recall + precision);
-		System.out.println("recall \t precision \t f-measure \t specificity");
-		System.out.println(df.format(recall) + "\t" + df.format(precision)
-				+ "\t" + df.format(fMeasure) + "\t" + df.format(specificity));
+		ConfigurableLayouter cl = new ConfigurableLayouter(" \t ", "\n");
+		System.out.println(cl.layoutConfusionMatrix(cm));
+		// int[][] confusionMatrix = cm.getConfusionMatrix();
+		// System.out.println("predicted/actual \t clarif \t other ");
+		// for (int row = 0; row < confusionMatrix.length; row++) {
+		// if (row == 0)
+		// System.out.print("clarif \t");
+		// else if (row == 1)
+		// System.out.print("other \t");
+		// else
+		// System.out.print("unknown row \t");
+		// for (int col = 0; col < confusionMatrix[row].length; col++) {
+		// System.out.print(confusionMatrix[row][col] + "\t");
+		// }
+		// System.out.println();
+		// }
+		// double precision = cm.getPrecision("clarif");
+		// double recall = cm.getRecall("clarif");
+		// double specificity = cm.getSpecificity("clarif");
+		// double fMeasure = cm.getFMeasure("clarif");
+		// System.out.println("recall \t precision \t f-measure \t specificity");
+		// System.out.println(df.format(recall) + "\t" + df.format(precision)
+		// + "\t" + df.format(fMeasure) + "\t" + df.format(specificity));
 	}
 
-	private int[][] evaluate(DiscussionEventBucket[] buckets) {
-		int[][] confusionMatrix = new int[2][2];
+	private ConfusionMatrix evaluate(DiscussionEventBucket[] buckets) {
+		ConfusionMatrix confusionMatrix = new ConfusionMatrix();
+		confusionMatrix.init(new String[] { "clari", "coord", "other", "no cl" });
 		System.out.println("ID \t Actual \t Predicted");
 		for (DiscussionEventBucket bucket : buckets) {
 			for (DiscussionEvent de : bucket) {
 				IClassificationFilter.NAME_FILTER.setName(REFERENCE_CLASSIFIER);
-				String reference = de.getReferenceClassification();
+				String reference = de.getReferenceClassification().substring(0,
+						5);
 				IClassificationFilter.NAME_FILTER.setName(this.clariClassifier
 						.getClass().getSimpleName());
-				String classification = de.getReferenceClassification();
+				String classification = de.getReferenceClassification().substring(0,
+						5);
 
-				if (reference.startsWith("clarif")
-						&& classification.startsWith("clarif"))
-					confusionMatrix[0][0]++;
-				else if (reference.startsWith("clarif")
-						&& !classification.startsWith("clarif"))
-					confusionMatrix[1][0]++;
-				if (!reference.startsWith("clarif")
-						&& classification.startsWith("clarif"))
-					confusionMatrix[0][1]++;
-				if (!reference.startsWith("clarif")
-						&& !classification.startsWith("clarif"))
-					confusionMatrix[1][1]++;
+				confusionMatrix.report(reference, classification);
+
 				// metric result starts at -1 (unknown)
 
 				StringBuffer line = new StringBuffer();

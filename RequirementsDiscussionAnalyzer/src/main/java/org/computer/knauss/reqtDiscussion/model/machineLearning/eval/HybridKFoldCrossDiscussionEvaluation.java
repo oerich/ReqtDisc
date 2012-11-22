@@ -24,16 +24,17 @@ public class HybridKFoldCrossDiscussionEvaluation {
 	private NewBayesianClassifier clarifClassifier;
 	private NewBayesianClassifier coordClassifier;
 	private IConfusionMatrixLayouter confusionMatrixLayout;
-	private StringArrayOrderConverter orderConverter;
+
+	// private StringArrayOrderConverter orderConverter;
 
 	public HybridKFoldCrossDiscussionEvaluation() {
-		orderConverter = new StringArrayOrderConverter();
-		orderConverter.setLeft(new String[] { "unknown", "indifferent",
-				"discordant", "procrastination", "back-to-draft",
-				"happy-ending", "text-book" });
-		orderConverter.setRight(new String[] { "indifferent", "happy-ending",
-				"discordant", "back-to-draft", "text-book", "procrastination",
-				"unknown" });
+		// orderConverter = new StringArrayOrderConverter();
+		// orderConverter.setLeft(new String[] { "unknown", "indifferent",
+		// "discordant", "procrastination", "back-to-draft",
+		// "happy-ending", "text-book" });
+		// orderConverter.setRight(new String[] { "indifferent", "happy-ending",
+		// "discordant", "back-to-draft", "text-book", "procrastination",
+		// "unknown" });
 
 		try {
 			clarifClassifier = new NewBayesianClassifier();
@@ -43,10 +44,8 @@ public class HybridKFoldCrossDiscussionEvaluation {
 			coordClassifier.init(new File("coordClassifier.txt"));
 			coordClassifier.setAutosave(false);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -71,7 +70,7 @@ public class HybridKFoldCrossDiscussionEvaluation {
 	 *         rows. Size is PatternMetric.PATTERNS.length + 1 (we have the
 	 *         unknown value to store, too)
 	 */
-	public int[][] evaluate(int k, Discussion[] discussions,
+	public ConfusionMatrix evaluate(int k, Discussion[] discussions,
 			boolean aggregateBuckets) {
 		Bucket[] buckets = this.bucketAllocationStrategy
 				.distributedOverKBuckets(k, discussions, aggregateBuckets);
@@ -114,7 +113,8 @@ public class HybridKFoldCrossDiscussionEvaluation {
 									.getContent());
 							// System.out.print('!');
 						} else {
-							this.clarifClassifier.learnNotInClass(de.getContent());
+							this.clarifClassifier.learnNotInClass(de
+									.getContent());
 							this.coordClassifier.learnInClass(de.getContent());
 							// System.out.print('.');
 						}
@@ -160,14 +160,18 @@ public class HybridKFoldCrossDiscussionEvaluation {
 		}
 	}
 
-	public void printConfusionMatrix(int[][] confusionMatrix) {
-
-		System.out.println(confusionMatrixLayout.layoutConfusionMatrix(
-				confusionMatrix, orderConverter, patternMetric));
+	public void printConfusionMatrix(ConfusionMatrix confusionMatrix) {
+		System.out.println(confusionMatrixLayout
+				.layoutConfusionMatrix(confusionMatrix));
 	}
 
-	private int[][] evaluate(Bucket[] buckets) {
-		int[][] confusionMatrix = new int[PatternMetric.PATTERNS.length + 1][PatternMetric.PATTERNS.length + 1];
+	private ConfusionMatrix evaluate(Bucket[] buckets) {
+
+		ConfusionMatrix confusionMatrix = new ConfusionMatrix();
+		confusionMatrix.init(new String[] { "indifferent", "happy-ending",
+				"discordant", "back-to-draft", "textbook-example",
+				"procrastination", "unknown" });
+
 		System.out.println("ID \t Actual \t Predicted");
 		for (Bucket bucket : buckets) {
 			for (Discussion[] complexTrajectory : bucket) {
@@ -184,10 +188,9 @@ public class HybridKFoldCrossDiscussionEvaluation {
 					int classification = this.patternMetric
 							.considerDiscussions(complexTrajectory).intValue();
 
-					// metric result starts at -1 (unknown)
-					confusionMatrix[orderConverter
-							.convertL2R(classification + 1)][orderConverter
-							.convertL2R(reference + 1)]++;
+					confusionMatrix.report(
+							this.patternMetric.decode(reference),
+							this.patternMetric.decode(classification));
 
 					Arrays.sort(complexTrajectory,
 							new Comparator<Discussion>() {
@@ -247,84 +250,6 @@ public class HybridKFoldCrossDiscussionEvaluation {
 	public void setConfusionMatrixLayout(
 			IConfusionMatrixLayouter confusionMatrixLayout) {
 		this.confusionMatrixLayout = confusionMatrixLayout;
-	}
-
-	/**
-	 * Converts the order of the metrics from how it is used in PatternMetric to
-	 * any other order.
-	 * 
-	 * e.g. in the RE paper, the ordering is
-	 * <ol>
-	 * <li>indifferent,</li>
-	 * <li>
-	 * happy-ending,</li>
-	 * <li>discordant,</li>
-	 * <li>back-to-draft,</li>
-	 * <li>text-book,</li>
-	 * <li>procrastination, unknown</li>
-	 * <li>unknown</li>
-	 * </ol>
-	 * the order in Pattern metric is
-	 * <ol>
-	 * <li>unknown,</li>
-	 * <li>Indifferent,</li>
-	 * <li>Discordant,</li>
-	 * <li>Procrastination,</li>
-	 * <li>BackToDraft,</li>
-	 * <li>HappyEnding,</li>
-	 * <li>Textbook</li>
-	 * </ol>
-	 * Just add the order you desire as a String array:
-	 * <p>
-	 * <code>
-	 * getOrderConverter().setRight(new String[]{"indifferent", "happy-ending",
-	 * "discordant", "back-to-draft", "text-book", "procrastination",
-	 * "unknown"});</code>
-	 * </p>
-	 * 
-	 * @return
-	 */
-	public StringArrayOrderConverter getOrderConverter() {
-		return orderConverter;
-	}
-
-	/**
-	 * Converts the order of the metrics from how it is used in PatternMetric to
-	 * any other order.
-	 * 
-	 * e.g. in the RE paper, the ordering is
-	 * <ol>
-	 * <li>indifferent,</li>
-	 * <li>
-	 * happy-ending,</li>
-	 * <li>discordant,</li>
-	 * <li>back-to-draft,</li>
-	 * <li>text-book,</li>
-	 * <li>procrastination, unknown</li>
-	 * <li>unknown</li>
-	 * </ol>
-	 * the order in Pattern metric is
-	 * <ol>
-	 * <li>unknown,</li>
-	 * <li>Indifferent,</li>
-	 * <li>Discordant,</li>
-	 * <li>Procrastination,</li>
-	 * <li>BackToDraft,</li>
-	 * <li>HappyEnding,</li>
-	 * <li>Textbook</li>
-	 * </ol>
-	 * Just add the order you desire as a String array:
-	 * <p>
-	 * <code>
-	 * getOrderConverter().setRight(new String[]{"indifferent", "happy-ending",
-	 * "discordant", "back-to-draft", "text-book", "procrastination",
-	 * "unknown"});</code>
-	 * </p>
-	 * 
-	 * @param orderConverter
-	 */
-	public void setOrderConverter(StringArrayOrderConverter orderConverter) {
-		this.orderConverter = orderConverter;
 	}
 
 }
