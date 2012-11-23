@@ -64,7 +64,8 @@ public abstract class AbstractKFoldCrossEvaluation {
 		protected ConfusionMatrix evaluate(
 				AbstractBucketBalancingStrategy buckets) {
 			ConfusionMatrix cm = new ConfusionMatrix();
-			cm.init(new String[] { "clari", "coord", "other", "autog", "no cl", "Solut" });
+			cm.init(new String[] { "clari", "coord", "other", "autog", "no cl",
+					"Solut" });
 			// System.out.println("ID \t Actual \t Predicted");
 			for (int b = 0; b < buckets.getNumberOfBuckets(); b++) {
 				for (DiscussionEvent de : buckets
@@ -110,11 +111,12 @@ public abstract class AbstractKFoldCrossEvaluation {
 	};
 	private ITrainingStrategy trainingStrat = ITrainingStrategy.DEFAULT_STRAT;
 
-	public ConfusionMatrix evaluate(int k, Discussion[] discussions, IDAOProgressMonitor progressMonitor) {
+	public ConfusionMatrix evaluate(int k, Discussion[] discussions,
+			IDAOProgressMonitor progressMonitor) {
 		getBucketAllocationStrategy().distributedOverKBuckets(k, discussions,
 				isAggregateDiscussions());
 
-		progressMonitor.setTotalSteps(2*k+1);
+		progressMonitor.setTotalSteps(2 * k + 1);
 		progressMonitor.setStep(0, "Preparing...");
 		try {
 			for (int i = 0; i < k; i++) {

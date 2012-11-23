@@ -1,10 +1,12 @@
 package org.computer.knauss.reqtDiscussion.model.machineLearning;
 
 import java.io.File;
+import java.io.IOException;
 
 import javax.swing.table.TableModel;
 
 import oerich.nlputils.classifier.machinelearning.ILearningClassifier;
+import oerich.nlputils.classifier.machinelearning.NewBayesianClassifier;
 
 public class HybridBayesianClassifier implements ILearningClassifier {
 
@@ -13,44 +15,70 @@ public class HybridBayesianClassifier implements ILearningClassifier {
 
 	@Override
 	public double getMinimalValue() {
-		return this.inClassDelegate.getMinimalValue();
+		return getInClassDelegate().getMinimalValue();
 	}
 
 	@Override
 	public double getMaximumValue() {
-		return this.inClassDelegate.getMinimalValue();
+		return getInClassDelegate().getMinimalValue();
+	}
+
+	private ILearningClassifier getInClassDelegate() {
+		if (this.inClassDelegate == null)
+			try {
+				this.inClassDelegate = new NewBayesianClassifier();
+				((NewBayesianClassifier) this.inClassDelegate)
+						.setAutosave(false);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		;
+		return this.inClassDelegate;
+	}
+
+	private ILearningClassifier getNotInClassDelegate() {
+		if (this.notinClassDelegate == null)
+			try {
+				this.notinClassDelegate = new NewBayesianClassifier();
+
+				((NewBayesianClassifier) this.notinClassDelegate)
+						.setAutosave(false);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		;
+		return this.notinClassDelegate;
 	}
 
 	@Override
 	public void init(File initData) throws Exception {
-		this.inClassDelegate.init(initData);
-		File nicFile = new File(initData.getParentFile().getPath() + "nic-"
-				+ initData.getName());
-		this.notinClassDelegate.init(nicFile);
+		getInClassDelegate().init(initData);
+		File nicFile = new File("nic-" + initData.getName());
+		getNotInClassDelegate().init(nicFile);
 	}
 
 	@Override
 	public double classify(String text) throws IllegalArgumentException {
-		double pInClass = this.inClassDelegate.classify(text);
-		double pNinClass = this.notinClassDelegate.classify(text);
+		double pInClass = getInClassDelegate().classify(text);
+		double pNinClass = getNotInClassDelegate().classify(text);
 
-		if (pNinClass <= this.notinClassDelegate.getMatchValue()
-				&& pInClass > this.inClassDelegate.getMatchValue()) {
+		if (pNinClass <= getNotInClassDelegate().getMatchValue()
+				&& pInClass > getInClassDelegate().getMatchValue()) {
 			// everything is fine: We have a hit.
 			return pInClass;
 		}
-		if (pNinClass <= this.notinClassDelegate.getMatchValue()
-				&& pInClass <= this.inClassDelegate.getMatchValue()) {
+		if (pNinClass <= getNotInClassDelegate().getMatchValue()
+				&& pInClass <= getInClassDelegate().getMatchValue()) {
 			// funny: It is neither in nor out.
 			return 0.4;
 		}
-		if (pNinClass > this.notinClassDelegate.getMatchValue()
-				&& pInClass <= this.inClassDelegate.getMatchValue()) {
+		if (pNinClass > getNotInClassDelegate().getMatchValue()
+				&& pInClass <= getInClassDelegate().getMatchValue()) {
 			// everything is fine: This thing is most likely not in class.
 			return pInClass;
 		}
-		if (pNinClass > this.notinClassDelegate.getMatchValue()
-				&& pInClass > this.inClassDelegate.getMatchValue()) {
+		if (pNinClass > getNotInClassDelegate().getMatchValue()
+				&& pInClass > getInClassDelegate().getMatchValue()) {
 			// funny: it is both in and out.
 			return 0.6;
 		}
@@ -61,52 +89,52 @@ public class HybridBayesianClassifier implements ILearningClassifier {
 
 	@Override
 	public boolean isMatch(String text) throws IllegalArgumentException {
-		return this.inClassDelegate.isMatch(text)
-				&& !this.notinClassDelegate.isMatch(text);
+		return getInClassDelegate().isMatch(text)
+				&& !getNotInClassDelegate().isMatch(text);
 	}
 
 	@Override
 	public void setMatchValue(double value) {
-		this.inClassDelegate.setMatchValue(value);
-		this.notinClassDelegate.setMatchValue(value);
+		getInClassDelegate().setMatchValue(value);
+		getNotInClassDelegate().setMatchValue(value);
 	}
 
 	@Override
 	public double getMatchValue() {
-		return this.inClassDelegate.getMatchValue();
+		return getInClassDelegate().getMatchValue();
 	}
 
 	@Override
 	public TableModel explainClassification(String text) {
-		return this.inClassDelegate.explainClassification(text);
+		return getInClassDelegate().explainClassification(text);
 	}
 
 	@Override
 	public void learnInClass(String text) {
-		this.inClassDelegate.learnInClass(text);
-		this.notinClassDelegate.learnNotInClass(text);
+		getInClassDelegate().learnInClass(text);
+		getNotInClassDelegate().learnNotInClass(text);
 	}
 
 	@Override
 	public void learnNotInClass(String text) {
-		this.inClassDelegate.learnNotInClass(text);
-		this.notinClassDelegate.learnInClass(text);
+		getInClassDelegate().learnNotInClass(text);
+		getNotInClassDelegate().learnInClass(text);
 	}
 
 	@Override
 	public int thingsInClass() {
-		return this.inClassDelegate.thingsInClass();
+		return getInClassDelegate().thingsInClass();
 	}
 
 	@Override
 	public int thingsNotInClass() {
-		return this.inClassDelegate.thingsNotInClass();
+		return getInClassDelegate().thingsNotInClass();
 	}
 
 	@Override
 	public void clear() throws Exception {
-		this.inClassDelegate.clear();
-		this.notinClassDelegate.clear();
+		getInClassDelegate().clear();
+		getNotInClassDelegate().clear();
 	}
 
 }

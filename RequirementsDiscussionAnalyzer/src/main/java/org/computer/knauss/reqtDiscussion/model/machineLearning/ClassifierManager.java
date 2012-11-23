@@ -26,6 +26,10 @@ public class ClassifierManager {
 				classifier.init(new File("classifier.txt"));
 				classifier.setAutosave(false);
 				instance.registerClassifier(classifier);
+
+				HybridBayesianClassifier hclass = new HybridBayesianClassifier();
+				hclass.init(new File("hybrid-classifier.txt"));
+				instance.registerClassifier(hclass);
 			} catch (IOException e) {
 				e.printStackTrace();
 			} catch (Exception e) {
