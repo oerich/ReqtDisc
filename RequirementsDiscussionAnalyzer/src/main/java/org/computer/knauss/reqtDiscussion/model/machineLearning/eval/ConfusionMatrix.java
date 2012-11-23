@@ -1,9 +1,12 @@
 package org.computer.knauss.reqtDiscussion.model.machineLearning.eval;
 
+import java.text.DecimalFormat;
+
 public class ConfusionMatrix {
 
 	private String[] categories;
 	private int[][] matrix;
+	private DecimalFormat df;
 
 	public void init(String[] categories) {
 		this.categories = categories;
@@ -126,4 +129,68 @@ public class ConfusionMatrix {
 		return this.categories;
 	}
 
+	private DecimalFormat getDecimalFormat() {
+		if (this.df == null) {
+			this.df = new DecimalFormat("#.###");
+		}
+		return this.df;
+	}
+
+	public String layoutConfusionMatrix(String colSep, String rowSep) {
+		DecimalFormat df = getDecimalFormat();
+		// Print the heading of the confusion matrix
+		StringBuffer line = new StringBuffer();
+		line.append("actual");
+		line.append("/");
+		line.append("predicted");
+		for (int i = 0; i < getCategories().length; i++) {
+			line.append(colSep);
+			line.append(getCategories()[i]);
+		}
+		line.append(colSep);
+		line.append("true positive");
+		line.append(colSep);
+		line.append("false positive");
+		line.append(colSep);
+		line.append("false negative");
+		line.append(colSep);
+		line.append("true negative");
+		line.append(colSep);
+		line.append("recall");
+		line.append(colSep);
+		line.append("precision");
+		line.append(colSep);
+		line.append("f-measure");
+		line.append(colSep);
+		line.append("specificity");
+
+		int[][] matrix = getConfusionMatrix();
+
+		for (int row = 0; row < matrix.length; row++) {
+			line.append(rowSep);
+			String rowCategory = getCategories()[row];
+			line.append(rowCategory);
+			line.append(colSep);
+			for (int col = 0; col < matrix[row].length; col++) {
+				line.append(matrix[row][col]);
+				line.append(colSep);
+			}
+			line.append(getTruePositives(rowCategory));
+			line.append(colSep);
+			line.append(getFalsePositives(rowCategory));
+			line.append(colSep);
+			line.append(getFalseNegatives(rowCategory));
+			line.append(colSep);
+			line.append(getTrueNegatives(rowCategory));
+			line.append(colSep);
+			line.append(df.format(getRecall(rowCategory)));
+			line.append(colSep);
+			line.append(df.format(getPrecision(rowCategory)));
+			line.append(colSep);
+			line.append(df.format(getFMeasure(rowCategory)));
+			line.append(colSep);
+			line.append(df.format(getSpecificity(rowCategory)));
+		}
+		return line.toString();
+	}
 }

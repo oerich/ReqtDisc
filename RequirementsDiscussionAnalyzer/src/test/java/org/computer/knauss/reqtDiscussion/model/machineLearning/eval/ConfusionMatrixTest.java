@@ -45,7 +45,8 @@ public class ConfusionMatrixTest {
 	public void testConvertMatrixOnWikipediaExample() {
 		ConfusionMatrix cm = createWikipediaExample();
 
-		ConfusionMatrix cm2 = cm.convertOrdering(new String[] { "Dog", "Cat", "Rabbit" });
+		ConfusionMatrix cm2 = cm.convertOrdering(new String[] { "Dog", "Cat",
+				"Rabbit" });
 		int[][] confusionMatrixRaw = cm2.getConfusionMatrix();
 		assertEquals(3, confusionMatrixRaw[0][0]);
 		assertEquals(5, confusionMatrixRaw[1][1]);
@@ -98,16 +99,15 @@ public class ConfusionMatrixTest {
 		// basically tests the string array for initialization...
 		ConfusionMatrix confusionMatrix = new ConfusionMatrix();
 		confusionMatrix.init(new String[] { "indifferent", "happy-ending",
-				"discordant", "back-to-draft", "textbook-example", "procrastination",
-				"unknown" });
-		
+				"discordant", "back-to-draft", "textbook-example",
+				"procrastination", "unknown" });
+
 		PatternMetric m = new PatternMetric();
 		for (int i = 0; i <= PatternMetric.PATTERNS.length; i++) {
-			confusionMatrix.report(m.decode(i-1), m.decode(i));
+			confusionMatrix.report(m.decode(i - 1), m.decode(i));
 		}
-		
-		ConfigurableLayouter cl = new ConfigurableLayouter(" \t ", " \n");
-		System.out.println(cl.layoutConfusionMatrix(confusionMatrix));
+
+		System.out.println(confusionMatrix.layoutConfusionMatrix(" \t ", "\n"));
 	}
 
 	private ConfusionMatrix createWikipediaExample() {

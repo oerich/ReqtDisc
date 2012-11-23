@@ -2,14 +2,19 @@ package org.computer.knauss.reqtDiscussion.model.machineLearning.eval;
 
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.computer.knauss.reqtDiscussion.model.Discussion;
+import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
 
-class GreedyDiscussionEventAllocationStrategy extends
+public class GreedyDiscussionEventAllocationStrategy extends
 		AbstractBucketBalancingStrategy {
 
+	private DiscussionBucket[] buckets;
+
 	@Override
-	public Bucket[] distributedOverKBuckets(int k, Discussion[] discussions,
+	public void distributedOverKBuckets(int k, Discussion[] discussions,
 			boolean aggregateDiscussions) {
 
 		// Create complex discussions if needed
@@ -28,27 +33,49 @@ class GreedyDiscussionEventAllocationStrategy extends
 			}
 		});
 
-		Bucket[] ret = new Bucket[k];
+		DiscussionBucket[] ret = new DiscussionBucket[k];
 		for (int i = 0; i < ret.length; i++) {
-			ret[i] = new Bucket();
+			ret[i] = new DiscussionBucket();
 		}
 		for (Discussion d : discussions) {
-			Arrays.sort(ret, new Comparator<Bucket>() {
+			Arrays.sort(ret, new Comparator<DiscussionBucket>() {
 
 				@Override
-				public int compare(Bucket o1, Bucket o2) {
+				public int compare(DiscussionBucket o1, DiscussionBucket o2) {
 					return ((Integer) getBucketSize(o1))
 							.compareTo(getBucketSize(o2));
 				}
 
 			});
-			ret[0].add(new Discussion[] { d });
+			ret[0].add(d);
 		}
 		System.out.print("Bucket sizes: ");
-		for (Bucket b : ret)
+		for (DiscussionBucket b : ret)
 			System.out.print(getBucketSize(b) + ",");
 		System.out.println();
-		return ret;
+		this.buckets = ret;
 	}
 
+	@Override
+	public Discussion[] getDiscussionsForBucket(int k) {
+		return this.buckets[k].toArray(new Discussion[0]);
+	}
+
+	@Override
+	public DiscussionEvent[] getDiscussionEventsForBucket(int k) {
+		List<DiscussionEvent> tmp = new LinkedList<DiscussionEvent>();
+
+		for (Discussion d : this.buckets[k])
+			for (DiscussionEvent de : d.getDiscussionEvents())
+				tmp.add(de);
+
+		return tmp.toArray(new DiscussionEvent[0]);
+	}
+
+	@Override
+	public int getNumberOfBuckets() {
+		if (this.buckets == null)
+			return 0;
+		return this.buckets.length;
+	}
 }

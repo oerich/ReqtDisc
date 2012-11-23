@@ -2,54 +2,122 @@ package org.computer.knauss.reqtDiscussion.ui.ctrl;
 
 import java.awt.event.ActionEvent;
 
+import javax.swing.JOptionPane;
+
+import oerich.nlputils.classifier.machinelearning.ILearningClassifier;
+
+import org.computer.knauss.reqtDiscussion.io.DAOException;
+import org.computer.knauss.reqtDiscussion.io.IDAOProgressMonitor;
+import org.computer.knauss.reqtDiscussion.model.machineLearning.ClassifierManager;
 import org.computer.knauss.reqtDiscussion.model.machineLearning.eval.AbstractBucketBalancingStrategy;
-import org.computer.knauss.reqtDiscussion.model.machineLearning.eval.ConfigurableLayouter;
-import org.computer.knauss.reqtDiscussion.model.machineLearning.eval.HybridKFoldCrossDiscussionEvaluation;
+import org.computer.knauss.reqtDiscussion.model.machineLearning.eval.AbstractKFoldCrossEvaluation;
+import org.computer.knauss.reqtDiscussion.model.machineLearning.eval.ConfusionMatrix;
+import org.computer.knauss.reqtDiscussion.model.machineLearning.eval.EventBasedRandomAllocationStrategy;
+import org.computer.knauss.reqtDiscussion.model.machineLearning.eval.GreedyDiscussionEventAllocationStrategy;
+import org.computer.knauss.reqtDiscussion.model.machineLearning.eval.RandomBucketAllocationStrategy;
 
 public class KFoldCrossDiscussionEvaluationCmd extends AbstractCommand {
 
 	public static final int LATEX_STYLE = 0;
 	public static final int TAB_SEPARATED_STYLE = 1;
 	private static final long serialVersionUID = 1L;
-	private AbstractBucketBalancingStrategy alloc;
-	private int style;
-	private boolean aggregate;
 
-	public KFoldCrossDiscussionEvaluationCmd(
-			AbstractBucketBalancingStrategy alloc, int style, boolean aggregate) {
-		super("K-fold cross evaluation on discussions ("
-				+ alloc.getClass().getSimpleName() + ", LaTeX:" + (style == 0)
-				+ ", aggregate:" + aggregate);
-		this.alloc = alloc;
-		this.style = style;
-		this.aggregate = aggregate;
+	public KFoldCrossDiscussionEvaluationCmd() {
+		super("K-fold cross evaluation");
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		HybridKFoldCrossDiscussionEvaluation eval = new HybridKFoldCrossDiscussionEvaluation();
-		// KFoldCrossDiscussionEvaluation eval = new
-		// KFoldCrossDiscussionEvaluation();
+		// Discussion or DiscussionEvent level?
+		Object[] options = { "DiscussionEvent", "Discussion", "Cancel" };
+		int n = JOptionPane.showOptionDialog(null,
+				"Please select the level of evaluation.", "Evaluation Level",
+				JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE,
+				null, options, options[1]);
+		if (n == 2)
+			return;
 
-		// Configure it
-		// eval.setClassifier(ClassifierManager.getInstance().getClassifier());
+		final AbstractKFoldCrossEvaluation eval;
+		if (n == 0)
+			eval = AbstractKFoldCrossEvaluation.DISCUSSION_EVENT_LEVEL;
+		else
+			eval = AbstractKFoldCrossEvaluation.DISCUSSION_LEVEL;
+
+		// Which classifier to use?
+		options = ClassifierManager.getInstance().getAvailableClassifiers();
+		ILearningClassifier classifier = (ILearningClassifier) JOptionPane
+				.showInputDialog(null,
+						"Please select the classifier for evaluation.",
+						"Classifier", JOptionPane.QUESTION_MESSAGE, null,
+						options, options[0]);
+		if (classifier == null)
+			return;
+		eval.setClassifier(classifier);
+
+		// reference rater is currently fixed
+		eval.setReferenceRaterName("gpoo,eric1");
+
+		// Aggregate discussions?
+		options = new Object[] { "Aggregate Discussions",
+				"Separate Discussions", "Cancel" };
+		n = JOptionPane.showOptionDialog(null,
+				"Do you want to aggregate discussions?",
+				"Aggregation of complex discussions",
+				JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE,
+				null, options, options[0]);
+		if (n == 2)
+			return;
+		eval.setAggregateDiscussions(n == 0);
+
+		// How to distribute discussions over k buckets?
+		options = new AbstractBucketBalancingStrategy[] {
+				new GreedyDiscussionEventAllocationStrategy(),
+				new RandomBucketAllocationStrategy(),
+				new EventBasedRandomAllocationStrategy() };
+		AbstractBucketBalancingStrategy alloc = (AbstractBucketBalancingStrategy) JOptionPane
+				.showInputDialog(null,
+						"Please select the classifier for evaluation.",
+						"Classifier", JOptionPane.QUESTION_MESSAGE, null,
+						options, options[0]);
+		if (alloc == null)
+			return;
 		eval.setBucketAllocationStrategy(alloc);
 
-		if (style == LATEX_STYLE) {
-			((ConfigurableLayouter) eval.getConfusionMatrixLayout())
-					.setColSep(" & ");
-			((ConfigurableLayouter) eval.getConfusionMatrixLayout())
-					.setRowSep(" \\tabularnewline \n ");
-		} else {
-			((ConfigurableLayouter) eval.getConfusionMatrixLayout())
-					.setColSep(" \t ");
-			((ConfigurableLayouter) eval.getConfusionMatrixLayout())
-					.setRowSep(" \n ");
-		}
+		// If relevant: How many buckets do we need anyway?
+		final int k = 10;
 
-		// run it and print it to the cmd line
-		eval.printConfusionMatrix(eval.evaluate(10, getDiscussionTableModel()
-				.getDiscussions(), this.aggregate));
+		// Print it to the cmd line
+		options = new Object[] { "LaTeX", "Tabulator", "Cancel" };
+		final int outputStyle = JOptionPane.showOptionDialog(null,
+				"Please choose the output format.", "Evaluation Level",
+				JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE,
+				null, options, options[1]);
+		if (outputStyle == 2)
+			return;
+
+		// Run it
+		BackGroundDAOTask task = new BackGroundDAOTask(new Subtask(
+				getDiscussionTableModel(), null) {
+
+			@Override
+			public void perform(IDAOProgressMonitor progressMonitor)
+					throws DAOException {
+				ConfusionMatrix cm = eval.evaluate(k, getDiscussionTableModel()
+						.getDiscussions(), progressMonitor);
+				if (outputStyle == LATEX_STYLE) {
+					System.out.println(cm.layoutConfusionMatrix(" & ",
+							" \\tabularnewline \n "));
+				} else {
+					System.out.println(cm.layoutConfusionMatrix(" \t ", "\n"));
+				}
+			}
+
+			@Override
+			public String getName() {
+				return "K Fold Cross Evaluation";
+			}
+		});
+
+		task.execute();
 	}
-
 }
