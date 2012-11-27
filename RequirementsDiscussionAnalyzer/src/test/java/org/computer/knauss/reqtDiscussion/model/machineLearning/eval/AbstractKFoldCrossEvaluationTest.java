@@ -50,6 +50,18 @@ public class AbstractKFoldCrossEvaluationTest {
 
 		System.out.println(cm.layoutConfusionMatrix(" \t ", "\n"));
 	}
+	@Test
+	public void testLeaveOneOut() {
+		AbstractKFoldCrossEvaluation eval = AbstractKFoldCrossEvaluation.DISCUSSION_LEVEL;
+		eval.setAggregateDiscussions(false);
+		eval.setBucketAllocationStrategy(new LeaveOneOutAllocationStrategy());
+		eval.setClassifier(ClassifierManager.getInstance().getClassifier());
+		eval.setReferenceRaterName("gpoo,eric1");
+		ProgressMonitorProbe pmb = new ProgressMonitorProbe();
+		ConfusionMatrix cm = eval.evaluate(10, createRandomTestData(), pmb);
+		
+		System.out.println(cm.layoutConfusionMatrix(" \t ", "\n"));
+	}
 
 	private Discussion[] createRandomTestData() {
 		Random r = new Random();

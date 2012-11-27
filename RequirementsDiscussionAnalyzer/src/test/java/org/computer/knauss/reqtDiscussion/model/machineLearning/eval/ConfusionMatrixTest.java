@@ -108,6 +108,37 @@ public class ConfusionMatrixTest {
 		}
 
 		System.out.println(confusionMatrix.layoutConfusionMatrix(" \t ", "\n"));
+		ConfusionMatrix cm2 = confusionMatrix.collapseCategories("suspicious",
+				new String[] { "back-to-draft", "happy-ending",
+						"discordant" });
+		cm2 = cm2.collapseCategories("unsuspicious", new String[] {
+				"textbook-example", "indifferent" });
+		cm2 = cm2.collapseCategories("unknown", new String[] {"unknown","procrastination"});
+		cm2 = cm2.collapseCategories("other", new String[] { "coord",
+				"other", "no cl", "autog", "Solut" });
+		System.out.println("---------------");
+		System.out.println(cm2.layoutConfusionMatrix(" \t ", "\n"));
+	}
+
+	@Test
+	public void testCollapseCategories() {
+		ConfusionMatrix cm = createWikipediaExample();
+
+		ConfusionMatrix cm2 = cm.collapseCategories("Cats'n'Dogs",
+				new String[] { "Cat", "Dog" });
+
+		assertEquals(2, cm2.getCategories().length);
+		assertEquals("Cats'n'Dogs", cm2.getCategories()[0]);
+		assertEquals(13, cm2.getTruePositives("Cats'n'Dogs"));
+		assertEquals(11, cm2.getTruePositives("Rabbit"));
+
+		ConfusionMatrix cm3 = cm.collapseCategories("No-Miao", new String[] {
+				"Dog", "Rabbit" });
+		assertEquals(2, cm3.getCategories().length);
+		assertEquals("No-Miao", cm3.getCategories()[1]);
+		assertEquals(17, cm3.getTruePositives("No-Miao"));
+		assertEquals(5, cm3.getTruePositives("Cat"));
+
 	}
 
 	private ConfusionMatrix createWikipediaExample() {

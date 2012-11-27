@@ -1,6 +1,8 @@
 package org.computer.knauss.reqtDiscussion.model.machineLearning.eval;
 
 import java.text.DecimalFormat;
+import java.util.LinkedList;
+import java.util.List;
 
 public class ConfusionMatrix {
 
@@ -192,5 +194,47 @@ public class ConfusionMatrix {
 			line.append(df.format(getSpecificity(rowCategory)));
 		}
 		return line.toString();
+	}
+
+	public ConfusionMatrix collapseCategories(String string, String[] strings) {
+		ConfusionMatrix ret = new ConfusionMatrix();
+		List<String> tmp = new LinkedList<String>();
+		boolean found = false;
+		for (String c : this.categories) {
+			if (contains(c, strings)) {
+				if (!found) {
+					tmp.add(string);
+					found = true;
+				}
+			} else {
+				tmp.add(c);
+			}
+		}
+
+		ret.init(tmp.toArray(new String[0]));
+		for (int row = 0; row < this.matrix.length; row++) {
+			String rowCat = this.categories[row];
+			if (contains(rowCat, strings)) {
+				rowCat = string;
+			}
+			for (int col = 0; col < this.matrix[row].length; col++) {
+				String colCat = this.categories[col];
+				if (contains(colCat, strings)) {
+					colCat = string;
+				}
+				for (int val = this.matrix[row][col]; val > 0; val--) {
+					ret.report(rowCat, colCat);
+				}
+			}
+		}
+
+		return ret;
+	}
+
+	private boolean contains(String keyword, String[] array) {
+		for (String a : array)
+			if (a.equals(keyword))
+				return true;
+		return false;
 	}
 }

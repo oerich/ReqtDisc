@@ -25,7 +25,7 @@ public abstract class AbstractKFoldCrossEvaluation {
 			for (int b = 0; b < buckets.getNumberOfBuckets(); b++) {
 				for (Discussion discussion : buckets.getDiscussionsForBucket(b)) {
 					if (getDiscussionFilter().accept(discussion)) {
-
+						System.out.print('.');
 						// workaround until the composite discussion has made it
 						// through the whole system
 						Discussion[] ds = new Discussion[] { discussion };
@@ -115,6 +115,9 @@ public abstract class AbstractKFoldCrossEvaluation {
 			IDAOProgressMonitor progressMonitor) {
 		getBucketAllocationStrategy().distributedOverKBuckets(k, discussions,
 				isAggregateDiscussions());
+
+		// allow the strategy to change the k
+		k = getBucketAllocationStrategy().getNumberOfBuckets();
 
 		progressMonitor.setTotalSteps(2 * k + 1);
 		progressMonitor.setStep(0, "Preparing...");

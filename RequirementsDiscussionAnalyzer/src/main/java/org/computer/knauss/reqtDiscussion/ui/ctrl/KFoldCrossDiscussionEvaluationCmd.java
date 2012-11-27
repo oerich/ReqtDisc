@@ -14,6 +14,7 @@ import org.computer.knauss.reqtDiscussion.model.machineLearning.eval.AbstractKFo
 import org.computer.knauss.reqtDiscussion.model.machineLearning.eval.ConfusionMatrix;
 import org.computer.knauss.reqtDiscussion.model.machineLearning.eval.EventBasedRandomAllocationStrategy;
 import org.computer.knauss.reqtDiscussion.model.machineLearning.eval.GreedyDiscussionEventAllocationStrategy;
+import org.computer.knauss.reqtDiscussion.model.machineLearning.eval.LeaveOneOutAllocationStrategy;
 import org.computer.knauss.reqtDiscussion.model.machineLearning.eval.RandomBucketAllocationStrategy;
 
 public class KFoldCrossDiscussionEvaluationCmd extends AbstractCommand {
@@ -73,7 +74,8 @@ public class KFoldCrossDiscussionEvaluationCmd extends AbstractCommand {
 		options = new AbstractBucketBalancingStrategy[] {
 				new GreedyDiscussionEventAllocationStrategy(),
 				new RandomBucketAllocationStrategy(),
-				new EventBasedRandomAllocationStrategy() };
+				new EventBasedRandomAllocationStrategy(),
+				new LeaveOneOutAllocationStrategy() };
 		AbstractBucketBalancingStrategy alloc = (AbstractBucketBalancingStrategy) JOptionPane
 				.showInputDialog(null,
 						"Please select the classifier for evaluation.",
@@ -87,12 +89,12 @@ public class KFoldCrossDiscussionEvaluationCmd extends AbstractCommand {
 		final int k = 10;
 
 		// Print it to the cmd line
-		options = new Object[] { "LaTeX", "Tabulator", "Cancel" };
+		options = new Object[] { "LaTeX", "Tabulator", "Both", "Cancel" };
 		final int outputStyle = JOptionPane.showOptionDialog(null,
 				"Please choose the output format.", "Evaluation Level",
 				JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE,
 				null, options, options[1]);
-		if (outputStyle == 2)
+		if (outputStyle == 3)
 			return;
 
 		// Run it
@@ -104,10 +106,29 @@ public class KFoldCrossDiscussionEvaluationCmd extends AbstractCommand {
 					throws DAOException {
 				ConfusionMatrix cm = eval.evaluate(k, getDiscussionTableModel()
 						.getDiscussions(), progressMonitor);
+				printConfusionMatrix(outputStyle, cm);
+				ConfusionMatrix cm2 = cm.collapseCategories("suspicious",
+						new String[] { "back-to-draft", "happy-ending",
+								"discordant" });
+				cm2 = cm2.collapseCategories("unsuspicious", new String[] {
+						"textbook-example", "indifferent" });
+				cm2 = cm2.collapseCategories("unknown", new String[] {
+						"unknown", "procrastination" });
+				cm2 = cm2.collapseCategories("other", new String[] { "coord",
+						"other", "no cl", "autog", "Solut" });
+				printConfusionMatrix(outputStyle, cm2);
+			}
+
+			private void printConfusionMatrix(final int outputStyle,
+					ConfusionMatrix cm) {
 				if (outputStyle == LATEX_STYLE) {
 					System.out.println(cm.layoutConfusionMatrix(" & ",
 							" \\tabularnewline \n "));
+				} else if (outputStyle == TAB_SEPARATED_STYLE) {
+					System.out.println(cm.layoutConfusionMatrix(" \t ", "\n"));
 				} else {
+					System.out.println(cm.layoutConfusionMatrix(" & ",
+							" \\tabularnewline \n "));
 					System.out.println(cm.layoutConfusionMatrix(" \t ", "\n"));
 				}
 			}
