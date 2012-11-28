@@ -24,4 +24,6 @@ public interface IDiscussionEventClassifier {
 
 	void trainDiscussionEvent(DiscussionEvent de, String referenceRaterName);
 
+	void storeToFile();
+
 }

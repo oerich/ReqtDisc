@@ -1,9 +1,5 @@
 package org.computer.knauss.reqtDiscussion.ui.ctrl;
 
-import java.io.IOException;
-
-import oerich.nlputils.classifier.machinelearning.NewBayesianClassifier;
-
 import org.computer.knauss.reqtDiscussion.model.Discussion;
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
 import org.computer.knauss.reqtDiscussion.model.machineLearning.ClassifierManager;
@@ -31,11 +27,7 @@ public class TrainClassifierCmd extends AbstractDiscussionIterationCommand {
 		for (DiscussionEvent de : d.getDiscussionEvents()) {
 			this.classifier.trainDiscussionEvent(de);
 		}
-		try {
-			((NewBayesianClassifier) classifier).storeToFile();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		classifier.storeToFile();
 		System.out.println();
 	}
 

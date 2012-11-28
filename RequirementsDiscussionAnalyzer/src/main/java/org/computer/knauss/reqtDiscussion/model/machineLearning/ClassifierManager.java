@@ -40,8 +40,9 @@ public class ClassifierManager {
 				instance.registerClassifier(hwrapper);
 				
 				MultiClassDiscussionEventClassifier mclass = new MultiClassDiscussionEventClassifier();
-				mclass.setTrainingStrategy(ITrainingStrategy.DEFAULT_STRAT);
+				mclass.setTrainingStrategy(ITrainingStrategy.META_DATA_STRATEGY);
 				instance.registerClassifier(mclass);
+				instance.setClassifier(mclass);
 			} catch (IOException e) {
 				e.printStackTrace();
 			} catch (Exception e) {

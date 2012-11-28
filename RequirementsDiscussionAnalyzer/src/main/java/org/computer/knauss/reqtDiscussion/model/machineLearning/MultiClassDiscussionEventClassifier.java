@@ -1,6 +1,7 @@
 package org.computer.knauss.reqtDiscussion.model.machineLearning;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -48,7 +49,7 @@ public class MultiClassDiscussionEventClassifier implements
 					}
 				}
 			}
-			
+
 			return primClassVal;
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
@@ -137,6 +138,18 @@ public class MultiClassDiscussionEventClassifier implements
 		if (getName() == null)
 			return getClass().getSimpleName();
 		return getName();
+	}
+
+	@Override
+	public void storeToFile() {
+		for (ILearningClassifier classifier : this.classifiers.values())
+			if (classifier instanceof NewBayesianClassifier)
+				try {
+					((NewBayesianClassifier) classifier).storeToFile();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 	}
 
 }

@@ -1,6 +1,9 @@
 package org.computer.knauss.reqtDiscussion.model.machineLearning;
 
+import java.io.IOException;
+
 import oerich.nlputils.classifier.machinelearning.ILearningClassifier;
+import oerich.nlputils.classifier.machinelearning.NewBayesianClassifier;
 
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
 
@@ -77,5 +80,16 @@ public class LearningClassifierWrapper implements IDiscussionEventClassifier {
 			String referenceRaterName) {
 		this.trainingStrategy.trainClassifier(this.delegate, de,
 				referenceRaterName);
+	}
+
+	@Override
+	public void storeToFile() {
+		if (this.delegate instanceof NewBayesianClassifier)
+			try {
+				((NewBayesianClassifier) this.delegate).storeToFile();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 	}
 }
