@@ -1,4 +1,4 @@
-package org.computer.knauss.reqtDiscussion.model.machineLearning.eval;
+package org.computer.knauss.reqtDiscussion.model.machineLearning;
 
 import oerich.nlputils.classifier.machinelearning.ILearningClassifier;
 
@@ -18,18 +18,25 @@ public interface ITrainingStrategy {
 			// length)
 			if (de.isClassified()) {
 				if (de.isInClass()) {
-					classifier.learnInClass(de.getContent());
+					classifier.learnInClass(getStringForClassification(de));
 					// System.out.print('!');
 				} else {
-					classifier.learnNotInClass(de.getContent());
+					classifier.learnNotInClass(getStringForClassification(de));
 					// System.out.print('.');
 				}
 			} else {
 				// System.out.print('?');
 			}
 		}
+
+		@Override
+		public String getStringForClassification(DiscussionEvent de) {
+			return de.getContent();
+		}
 	};
 
 	void trainClassifier(ILearningClassifier classifier, DiscussionEvent de,
 			String referenceRaterName);
+	
+	String getStringForClassification(DiscussionEvent de);
 }

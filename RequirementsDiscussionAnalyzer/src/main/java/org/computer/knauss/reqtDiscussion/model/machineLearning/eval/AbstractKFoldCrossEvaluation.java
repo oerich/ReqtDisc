@@ -1,13 +1,13 @@
 package org.computer.knauss.reqtDiscussion.model.machineLearning.eval;
 
-import oerich.nlputils.classifier.machinelearning.ILearningClassifier;
-
 import org.computer.knauss.reqtDiscussion.io.IDAOProgressMonitor;
 import org.computer.knauss.reqtDiscussion.model.Discussion;
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
 import org.computer.knauss.reqtDiscussion.model.DiscussionEventClassification;
 import org.computer.knauss.reqtDiscussion.model.IClassificationFilter;
 import org.computer.knauss.reqtDiscussion.model.IDiscussionFilter;
+import org.computer.knauss.reqtDiscussion.model.machineLearning.IDiscussionEventClassifier;
+import org.computer.knauss.reqtDiscussion.model.machineLearning.ITrainingStrategy;
 import org.computer.knauss.reqtDiscussion.model.metric.PatternMetric;
 
 public abstract class AbstractKFoldCrossEvaluation {
@@ -95,7 +95,7 @@ public abstract class AbstractKFoldCrossEvaluation {
 		}
 	};
 	private AbstractBucketBalancingStrategy bucketAllocationStrat;
-	private ILearningClassifier classifier;
+	private IDiscussionEventClassifier classifier;
 	private String referenceRaterName = "gpoo,eric1";
 	private boolean aggregateDiscussions;
 	private PatternMetric metric;
@@ -148,8 +148,7 @@ public abstract class AbstractKFoldCrossEvaluation {
 
 	private void trainClassifier(DiscussionEvent[] des) {
 		for (DiscussionEvent de : des) {
-			getTrainingStrategy().trainClassifier(getClassifier(), de,
-					getReferenceRaterName());
+			getClassifier().trainDiscussionEvent(de, getReferenceRaterName());
 		}
 	}
 
@@ -165,7 +164,7 @@ public abstract class AbstractKFoldCrossEvaluation {
 		for (DiscussionEvent de : des) {
 			DiscussionEventClassification dec = new DiscussionEventClassification();
 
-			double confidence = classifier.classify(de.getContent());
+			double confidence = classifier.classify(de);
 			dec.setClassifiedby(classifier.getClass().getSimpleName());
 			dec.setConfidence(confidence);
 			dec.setWorkitemcommentid(de.getID());
@@ -191,12 +190,13 @@ public abstract class AbstractKFoldCrossEvaluation {
 		return this.metric;
 	}
 
-	public ILearningClassifier getClassifier() {
+	public IDiscussionEventClassifier getClassifier() {
 		return this.classifier;
 	}
 
-	public void setClassifier(ILearningClassifier classifier) {
-		this.classifier = classifier;
+	public void setClassifier(
+			IDiscussionEventClassifier iDiscussionEventClassifier) {
+		this.classifier = iDiscussionEventClassifier;
 	}
 
 	public boolean isAggregateDiscussions() {

@@ -4,11 +4,10 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.JOptionPane;
 
-import oerich.nlputils.classifier.machinelearning.ILearningClassifier;
-
 import org.computer.knauss.reqtDiscussion.io.DAOException;
 import org.computer.knauss.reqtDiscussion.io.IDAOProgressMonitor;
 import org.computer.knauss.reqtDiscussion.model.machineLearning.ClassifierManager;
+import org.computer.knauss.reqtDiscussion.model.machineLearning.IDiscussionEventClassifier;
 import org.computer.knauss.reqtDiscussion.model.machineLearning.eval.AbstractBucketBalancingStrategy;
 import org.computer.knauss.reqtDiscussion.model.machineLearning.eval.AbstractKFoldCrossEvaluation;
 import org.computer.knauss.reqtDiscussion.model.machineLearning.eval.ConfusionMatrix;
@@ -46,7 +45,7 @@ public class KFoldCrossDiscussionEvaluationCmd extends AbstractCommand {
 
 		// Which classifier to use?
 		options = ClassifierManager.getInstance().getAvailableClassifiers();
-		ILearningClassifier classifier = (ILearningClassifier) JOptionPane
+		IDiscussionEventClassifier classifier = (IDiscussionEventClassifier) JOptionPane
 				.showInputDialog(null,
 						"Please select the classifier for evaluation.",
 						"Classifier", JOptionPane.QUESTION_MESSAGE, null,
