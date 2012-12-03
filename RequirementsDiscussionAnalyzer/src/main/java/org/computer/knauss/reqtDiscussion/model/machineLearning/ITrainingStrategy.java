@@ -34,6 +34,8 @@ public interface ITrainingStrategy {
 
 		@Override
 		public String getStringForClassification(DiscussionEvent de) {
+			if (de == null)
+				return null;
 			return de.getContent();
 		}
 	};
@@ -62,6 +64,9 @@ public interface ITrainingStrategy {
 
 		@Override
 		public String getStringForClassification(DiscussionEvent de) {
+			if (de == null)
+				return null;
+
 			StringBuffer text = new StringBuffer();
 			text.append(de.getContent());
 
@@ -76,18 +81,22 @@ public interface ITrainingStrategy {
 					.getDiscussion(de.getDiscussionID()).getStatus());
 			text.append(" 0discussiontype0");
 			text.append(DiscussionFactory.getInstance()
-					.getDiscussion(de.getDiscussionID()).getType().replace('.', '1'));
+					.getDiscussion(de.getDiscussionID()).getType()
+					.replace('.', '1'));
 
 			for (AbstractDiscussionMetric m : AbstractDiscussionMetric.STANDARD_METRICS) {
 				text.append(" 0discussion");
-				text.append(m.getName().replace(' ', '0').replace('[', '1').replace(']', '1'));
+				text.append(m.getClass().getSimpleName());
 				text.append("0");
-				text.append(String.valueOf(m
+				Double metricResult = m
 						.considerDiscussions(new Discussion[] { DiscussionFactory
 								.getInstance().getDiscussion(
-										de.getDiscussionID()) })));
+										de.getDiscussionID()) });
+				// we have only integer values in the standard metrics. Also,
+				// the classifier would replace the dot by a space.
+				text.append(metricResult.intValue());
 			}
-//			System.out.println(text.toString());
+			// System.out.println(text.toString());
 			return text.toString();
 		}
 	};

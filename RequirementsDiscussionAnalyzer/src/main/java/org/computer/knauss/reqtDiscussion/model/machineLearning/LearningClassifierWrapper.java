@@ -2,6 +2,8 @@ package org.computer.knauss.reqtDiscussion.model.machineLearning;
 
 import java.io.IOException;
 
+import javax.swing.table.TableModel;
+
 import oerich.nlputils.classifier.machinelearning.ILearningClassifier;
 import oerich.nlputils.classifier.machinelearning.NewBayesianClassifier;
 
@@ -91,5 +93,11 @@ public class LearningClassifierWrapper implements IDiscussionEventClassifier {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+	}
+
+	@Override
+	public TableModel explainClassification(DiscussionEvent de) {
+		return this.delegate.explainClassification(this.trainingStrategy
+				.getStringForClassification(de));
 	}
 }

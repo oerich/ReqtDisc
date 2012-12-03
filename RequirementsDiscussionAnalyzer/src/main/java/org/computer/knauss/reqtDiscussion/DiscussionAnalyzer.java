@@ -17,6 +17,7 @@ import org.computer.knauss.reqtDiscussion.ui.ctrl.ClassifyDataCmd;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.ClearClassifierCmd;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.ConfigureJazzDAO;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.EditDatasourceCommand;
+import org.computer.knauss.reqtDiscussion.ui.ctrl.ExplainClassification;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.InsertOrUpdateDiscussionEventClassification;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.KFoldCrossDiscussionEvaluationCmd;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.LoadDiscussionByID;
@@ -134,6 +135,8 @@ public class DiscussionAnalyzer {
 					"reset automatic classifier");
 			daFrame.addAction(DiscussionAnalyzerFrame.ACTION_MENU,
 					configureCommand(new ClearClassifierCmd()));
+			daFrame.addAction(DiscussionAnalyzerFrame.ACTION_MENU,
+					configureCommand(new ExplainClassification()));
 
 			IClassificationFilter.NAME_FILTER.setName("no rater name set");
 

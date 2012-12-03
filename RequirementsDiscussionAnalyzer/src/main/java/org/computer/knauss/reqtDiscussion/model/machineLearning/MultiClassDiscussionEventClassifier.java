@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.table.TableModel;
+
 import oerich.nlputils.classifier.machinelearning.ILearningClassifier;
 import oerich.nlputils.classifier.machinelearning.NewBayesianClassifier;
 
@@ -13,7 +15,7 @@ import org.computer.knauss.reqtDiscussion.model.IClassificationFilter;
 
 public class MultiClassDiscussionEventClassifier implements
 		IDiscussionEventClassifier {
-
+	private static final String PRIMARY_CLASS = "clari";
 	private Map<String, ILearningClassifier> classifiers = new HashMap<String, ILearningClassifier>();
 	private ITrainingStrategy trainingStrat;
 	private String name = getClass().getSimpleName();
@@ -30,10 +32,8 @@ public class MultiClassDiscussionEventClassifier implements
 
 	@Override
 	public double classify(DiscussionEvent de) {
-		String primaryClass = "clari";
-
 		try {
-			ILearningClassifier classifier = getClassifier(primaryClass);
+			ILearningClassifier classifier = getClassifier(PRIMARY_CLASS);
 			String stringForClassification = this.trainingStrat
 					.getStringForClassification(de);
 			double primClassVal = classifier.classify(stringForClassification);
@@ -42,7 +42,7 @@ public class MultiClassDiscussionEventClassifier implements
 			}
 
 			for (String otherClass : this.classifiers.keySet()) {
-				if (!primaryClass.equals(otherClass)) {
+				if (!PRIMARY_CLASS.equals(otherClass)) {
 					if (getClassifier(otherClass).isMatch(
 							stringForClassification)) {
 						return 0.4;
@@ -150,6 +150,16 @@ public class MultiClassDiscussionEventClassifier implements
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+	}
+
+	@Override
+	public TableModel explainClassification(DiscussionEvent de) {
+		try {
+			return getClassifier(PRIMARY_CLASS).explainClassification(this.trainingStrat.getStringForClassification(de));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }

@@ -1,5 +1,7 @@
 package org.computer.knauss.reqtDiscussion.model.machineLearning;
 
+import javax.swing.table.TableModel;
+
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
 
 public interface IDiscussionEventClassifier {
@@ -25,5 +27,7 @@ public interface IDiscussionEventClassifier {
 	void trainDiscussionEvent(DiscussionEvent de, String referenceRaterName);
 
 	void storeToFile();
+
+	TableModel explainClassification(DiscussionEvent de);
 
 }
