@@ -69,6 +69,10 @@ public class DiscussionAnalyzer {
 			daoRegistry.register("Jira (sql)", new SQLDAOManager(
 					new String[] { "/bizzdesign-psql.txt" }));
 			// "/jira-xml-properties.txt"));
+			daoRegistry.register("MySQL (trento)", new SQLDAOManager(
+					new String[] { "/mysql-default-schema-queries.txt",
+							"/trento-mysql-properties.txt" }));
+
 			// add the commands
 			daFrame.addSeperator(DiscussionAnalyzerFrame.DATA_MENU,
 					"configure data access");
