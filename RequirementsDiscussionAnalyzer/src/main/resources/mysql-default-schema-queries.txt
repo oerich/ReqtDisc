@@ -12,7 +12,7 @@ SELECT_DISCUSSION_BY_ID = SELECT * FROM discussion WHERE ID = ?;
 SELECT_ALL_DISCUSSIONS = SELECT * FROM discussion;
 NUMBER_OF_ALL_DISCUSSIONS = SELECT count(*) FROM discussion;
 CREATE_DISCUSSION_TABLE = CREATE TABLE discussion (id INTEGER PRIMARY KEY, topic TEXT, description TEXT, type TEXT, date DATE, status TEXT, creator TEXT);
-INSERT_DISCUSSION = INSERT INTO discussion values (?,?,?,?,?,?,?);
+INSERT_DISCUSSION = INSERT INTO discussion (id, summary, description, type, dateCreated, status, creator) values (?,?,?,?,?,?,?);
 UPDATE_DISCUSSION = UPDATE discussion SET topic = ?, description = ?, type = ?, date = ?, status = ?, creator = ? WHERE id = ?;
 DROP_DISCUSSION_TABLE = DROP TABLE discussion;
 
