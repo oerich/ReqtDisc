@@ -115,6 +115,7 @@ public class DiscussionTableModel implements TableModel {
 			temp[i + this.discussions.length] = discussions[i];
 		}
 		this.discussions = temp;
+		fireTabledataChanged();
 	}
 
 	public Discussion[] getDiscussions() {

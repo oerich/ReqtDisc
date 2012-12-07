@@ -3,7 +3,7 @@ SELECT_DISCUSSION_EVENT_BY_DISCUSSION_ID = SELECT * FROM discussionEvent WHERE d
 SELECT_NEW_DISCUSSION_EVENT_ID = SELECT max(id) from discussionEvent;
 INSERT_DISCUSSION_EVENT = INSERT INTO discussionEvent (id, discussionId, content, creationDate, creator) VALUES (?,?,?,?,?);
 DELETE_DISCUSSION_EVENT_OF_DISCUSSION = DELETE FROM discussionEvent WHERE discussionId = ?;
-CREATE_DISCUSSION_EVENT_TABLE = CREATE TABLE `discussionEvent` (`id` int(11) NOT NULL, `discussionId` int(11) NOT NULL, `content` varchar(5000) DEFAULT NULL, `creationDate` datetime NOT NULL, `creator` varchar(45) NOT NULL, PRIMARY KEY (`id`,`discussionId`)); 
+CREATE_DISCUSSION_EVENT_TABLE = CREATE TABLE `discussionEvent` (`id` int(11) NOT NULL, `discussionId` int(11) NOT NULL, `content` TEXT DEFAULT NULL, `creationDate` datetime NOT NULL, `creator` TEXT NOT NULL, PRIMARY KEY (`id`,`discussionId`)); 
 DROP_DISCUSSION_EVENT_TABLE = DROP TABLE discussionEvent;
 EXISTS_TABLE = SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = 'developers' AND table_name = ?;
 
@@ -11,9 +11,9 @@ DISCUSSION_TABLE = discussion
 SELECT_DISCUSSION_BY_ID = SELECT * FROM discussion WHERE ID = ?;
 SELECT_ALL_DISCUSSIONS = SELECT * FROM discussion;
 NUMBER_OF_ALL_DISCUSSIONS = SELECT count(*) FROM discussion;
-CREATE_DISCUSSION_TABLE = CREATE TABLE discussion (id INTEGER PRIMARY KEY, topic TEXT, description TEXT, type TEXT, date DATE, status TEXT, creator TEXT);
+CREATE_DISCUSSION_TABLE = CREATE TABLE discussion (id INTEGER PRIMARY KEY, summary TEXT, description TEXT, type TEXT, dateCreated DATE, status TEXT, creator TEXT);
 INSERT_DISCUSSION = INSERT INTO discussion (id, summary, description, type, dateCreated, status, creator) values (?,?,?,?,?,?,?);
-UPDATE_DISCUSSION = UPDATE discussion SET topic = ?, description = ?, type = ?, date = ?, status = ?, creator = ? WHERE id = ?;
+UPDATE_DISCUSSION = UPDATE discussion SET summary = ?, description = ?, type = ?, dateCreated = ?, status = ?, creator = ? WHERE id = ?;
 DROP_DISCUSSION_TABLE = DROP TABLE discussion;
 
 DISCUSSION_EVENT_CLASSIFICATION_TABLE_NAME = discussioneventclassification
