@@ -22,7 +22,7 @@ public class MultiClassDiscussionEventClassifier implements
 
 	@Override
 	public void trainDiscussionEvent(DiscussionEvent de) {
-		trainDiscussionEvent(de, "gpoo,eric1");
+		trainDiscussionEvent(de, IClassificationFilter.NAME_FILTER.getName());
 	}
 
 	@Override
@@ -82,7 +82,7 @@ public class MultiClassDiscussionEventClassifier implements
 	@Override
 	public double getMatchValue() {
 		try {
-			return getClassifier("clari").getMatchValue();
+			return getClassifier(PRIMARY_CLASS).getMatchValue();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -155,7 +155,8 @@ public class MultiClassDiscussionEventClassifier implements
 	@Override
 	public TableModel explainClassification(DiscussionEvent de) {
 		try {
-			return getClassifier(PRIMARY_CLASS).explainClassification(this.trainingStrat.getStringForClassification(de));
+			return getClassifier(PRIMARY_CLASS).explainClassification(
+					this.trainingStrat.getStringForClassification(de));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

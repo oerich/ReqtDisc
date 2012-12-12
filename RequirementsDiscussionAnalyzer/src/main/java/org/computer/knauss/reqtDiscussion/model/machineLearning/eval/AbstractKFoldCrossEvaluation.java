@@ -65,7 +65,7 @@ public abstract class AbstractKFoldCrossEvaluation {
 				AbstractBucketBalancingStrategy buckets) {
 			ConfusionMatrix cm = new ConfusionMatrix();
 			cm.init(new String[] { "clari", "coord", "other", "autog", "no cl",
-					"Solut" });
+					"Solut", "unkno" });
 			// System.out.println("ID \t Actual \t Predicted");
 			for (int b = 0; b < buckets.getNumberOfBuckets(); b++) {
 				for (DiscussionEvent de : buckets
@@ -96,7 +96,7 @@ public abstract class AbstractKFoldCrossEvaluation {
 	};
 	private AbstractBucketBalancingStrategy bucketAllocationStrat;
 	private IDiscussionEventClassifier classifier;
-	private String referenceRaterName = "gpoo,eric1";
+	private String referenceRaterName;
 	private boolean aggregateDiscussions;
 	private PatternMetric metric;
 	private IDiscussionFilter discussionFilter = new IDiscussionFilter() {

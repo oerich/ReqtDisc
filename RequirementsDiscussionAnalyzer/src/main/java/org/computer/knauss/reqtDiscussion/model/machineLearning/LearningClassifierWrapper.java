@@ -8,6 +8,7 @@ import oerich.nlputils.classifier.machinelearning.ILearningClassifier;
 import oerich.nlputils.classifier.machinelearning.NewBayesianClassifier;
 
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
+import org.computer.knauss.reqtDiscussion.model.IClassificationFilter;
 
 public class LearningClassifierWrapper implements IDiscussionEventClassifier {
 
@@ -21,7 +22,7 @@ public class LearningClassifierWrapper implements IDiscussionEventClassifier {
 
 	@Override
 	public void trainDiscussionEvent(DiscussionEvent de) {
-		trainDiscussionEvent(de, "gpoo,eric1");
+		trainDiscussionEvent(de, IClassificationFilter.NAME_FILTER.getName());
 	}
 
 	@Override

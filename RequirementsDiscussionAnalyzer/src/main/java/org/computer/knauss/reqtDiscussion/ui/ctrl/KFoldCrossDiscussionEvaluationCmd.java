@@ -6,6 +6,7 @@ import javax.swing.JOptionPane;
 
 import org.computer.knauss.reqtDiscussion.io.DAOException;
 import org.computer.knauss.reqtDiscussion.io.IDAOProgressMonitor;
+import org.computer.knauss.reqtDiscussion.model.IClassificationFilter;
 import org.computer.knauss.reqtDiscussion.model.machineLearning.ClassifierManager;
 import org.computer.knauss.reqtDiscussion.model.machineLearning.IDiscussionEventClassifier;
 import org.computer.knauss.reqtDiscussion.model.machineLearning.eval.AbstractBucketBalancingStrategy;
@@ -55,7 +56,7 @@ public class KFoldCrossDiscussionEvaluationCmd extends AbstractCommand {
 		eval.setClassifier(classifier);
 
 		// reference rater is currently fixed
-		eval.setReferenceRaterName("gpoo,eric1");
+		eval.setReferenceRaterName(IClassificationFilter.NAME_FILTER.getName());
 
 		// Aggregate discussions?
 		options = new Object[] { "Aggregate Discussions",

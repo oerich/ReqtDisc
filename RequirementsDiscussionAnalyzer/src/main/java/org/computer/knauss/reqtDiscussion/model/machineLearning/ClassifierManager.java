@@ -27,7 +27,7 @@ public class ClassifierManager {
 
 				LearningClassifierWrapper wrapper = new LearningClassifierWrapper();
 				wrapper.setLearningClassifier(classifier);
-				wrapper.setTrainingStrategy(ITrainingStrategy.DEFAULT_STRAT);
+				wrapper.setTrainingStrategy(ITrainingStrategy.META_DATA_STRATEGY);
 
 				instance.registerClassifier(wrapper);
 
@@ -35,7 +35,7 @@ public class ClassifierManager {
 				hclass.init(new File("hybrid-classifier.txt"));
 				LearningClassifierWrapper hwrapper = new LearningClassifierWrapper();
 				hwrapper.setLearningClassifier(hclass);
-				hwrapper.setTrainingStrategy(ITrainingStrategy.DEFAULT_STRAT);
+				hwrapper.setTrainingStrategy(ITrainingStrategy.META_DATA_STRATEGY);
 
 				instance.registerClassifier(hwrapper);
 				
