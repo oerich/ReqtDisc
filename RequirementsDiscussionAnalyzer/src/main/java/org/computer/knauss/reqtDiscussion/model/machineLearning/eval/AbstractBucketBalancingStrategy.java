@@ -8,6 +8,7 @@ import java.util.TreeSet;
 
 import org.computer.knauss.reqtDiscussion.model.ComplexDiscussion;
 import org.computer.knauss.reqtDiscussion.model.Discussion;
+import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
 import org.computer.knauss.reqtDiscussion.model.DiscussionFactory;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.HighlightRelatedDiscussions;
 
@@ -26,22 +27,31 @@ public abstract class AbstractBucketBalancingStrategy {
 	 * (http://stackoverflow.
 	 * com/questions/217065/cannot-create-an-array-of-linkedlists-in-java)
 	 */
-	public class Bucket extends LinkedList<Discussion[]> {
+	protected class DiscussionBucket extends LinkedList<Discussion> {
 
 		private static final long serialVersionUID = 1L;
 
 	}
 
-	public abstract Bucket[] distributedOverKBuckets(int k,
+	protected class DiscussionEventBucket extends LinkedList<DiscussionEvent> {
+
+		private static final long serialVersionUID = 1L;
+
+	}
+
+	public abstract void distributedOverKBuckets(int k,
 			Discussion[] discussions, boolean aggregateDiscussions);
 
-	protected boolean discussionAllocated(Discussion nd, Bucket[] buckets) {
-		for (Bucket b : buckets)
-			for (Discussion ds[] : b) {
-				for (Discussion d : ds) {
-					if (d.equals(nd))
-						return true;
-				}
+	public abstract Discussion[] getDiscussionsForBucket(int k);
+
+	public abstract DiscussionEvent[] getDiscussionEventsForBucket(int k);
+
+	protected boolean discussionAllocated(Discussion nd,
+			DiscussionBucket[] buckets) {
+		for (DiscussionBucket b : buckets)
+			for (Discussion d : b) {
+				if (d.equals(nd))
+					return true;
 			}
 		return false;
 	}
@@ -88,15 +98,19 @@ public abstract class AbstractBucketBalancingStrategy {
 		return ret.toArray(new Discussion[0]);
 	}
 
-	protected int getBucketSize(Bucket b) {
+	protected int getBucketSize(DiscussionBucket b) {
 		int ret = 0;
 
-		for (Discussion[] ds : b) {
-			for (Discussion d : ds)
-				ret += d.getDiscussionEvents().length;
-		}
+		for (Discussion d : b)
+			ret += d.getDiscussionEvents().length;
 
 		return ret;
 	}
+
+	protected int getBucketSize(DiscussionEventBucket b) {
+		return b.size();
+	}
+
+	public abstract int getNumberOfBuckets();
 
 }

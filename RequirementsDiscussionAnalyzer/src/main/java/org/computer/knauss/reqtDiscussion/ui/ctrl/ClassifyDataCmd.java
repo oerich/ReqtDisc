@@ -1,17 +1,16 @@
 package org.computer.knauss.reqtDiscussion.ui.ctrl;
 
-import oerich.nlputils.classifier.machinelearning.ILearningClassifier;
-
 import org.computer.knauss.reqtDiscussion.model.Discussion;
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
 import org.computer.knauss.reqtDiscussion.model.DiscussionEventClassification;
 import org.computer.knauss.reqtDiscussion.model.IClassificationFilter;
 import org.computer.knauss.reqtDiscussion.model.machineLearning.ClassifierManager;
+import org.computer.knauss.reqtDiscussion.model.machineLearning.IDiscussionEventClassifier;
 
 public class ClassifyDataCmd extends AbstractDiscussionIterationCommand {
 
 	private static final long serialVersionUID = 1L;
-	private ILearningClassifier classifier;
+	private IDiscussionEventClassifier classifier;
 
 	// private InsertOrUpdateDiscussionEventClassification
 	// insertOrUpdateCommand;
@@ -32,7 +31,7 @@ public class ClassifyDataCmd extends AbstractDiscussionIterationCommand {
 		for (DiscussionEvent de : d.getDiscussionEvents()) {
 			DiscussionEventClassification dec = new DiscussionEventClassification();
 
-			double confidence = classifier.classify(de.getContent());
+			double confidence = classifier.classify(de);
 			dec.setClassifiedby(classifier.getClass().getSimpleName());
 			dec.setConfidence(confidence);
 			dec.setWorkitemcommentid(de.getID());

@@ -1,17 +1,13 @@
 package org.computer.knauss.reqtDiscussion.ui.ctrl;
 
-import java.io.IOException;
-
-import oerich.nlputils.classifier.machinelearning.ILearningClassifier;
-import oerich.nlputils.classifier.machinelearning.NewBayesianClassifier;
-
 import org.computer.knauss.reqtDiscussion.model.Discussion;
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
 import org.computer.knauss.reqtDiscussion.model.machineLearning.ClassifierManager;
+import org.computer.knauss.reqtDiscussion.model.machineLearning.IDiscussionEventClassifier;
 
 public class TrainClassifierCmd extends AbstractDiscussionIterationCommand {
 	private static final long serialVersionUID = 1L;
-	private ILearningClassifier classifier;
+	private IDiscussionEventClassifier classifier;
 
 	public TrainClassifierCmd() {
 		super("Train classifier");
@@ -29,24 +25,9 @@ public class TrainClassifierCmd extends AbstractDiscussionIterationCommand {
 			return;
 		// use currently loaded discussions for training.
 		for (DiscussionEvent de : d.getDiscussionEvents()) {
-			// TODO consider to use more attributes (e.g. creator, length)
-			if (de.isClassified()) {
-				if (de.isInClass()) {
-					this.classifier.learnInClass(de.getContent());
-					System.out.print('!');
-				} else {
-					this.classifier.learnNotInClass(de.getContent());
-					System.out.print('.');
-				}
-			} else {
-				System.out.print('?');
-			}
+			this.classifier.trainDiscussionEvent(de);
 		}
-		try {
-			((NewBayesianClassifier)classifier).storeToFile();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		classifier.storeToFile();
 		System.out.println();
 	}
 

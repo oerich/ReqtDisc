@@ -10,7 +10,6 @@ import org.computer.knauss.reqtDiscussion.io.jazz.JazzDAOManager;
 import org.computer.knauss.reqtDiscussion.io.sql.SQLDAOManager;
 import org.computer.knauss.reqtDiscussion.model.IClassificationFilter;
 import org.computer.knauss.reqtDiscussion.model.VisualizationConfiguration;
-import org.computer.knauss.reqtDiscussion.model.machineLearning.eval.AbstractBucketBalancingStrategy;
 import org.computer.knauss.reqtDiscussion.ui.DiscussionAnalyzerFrame;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.AbstractCommand;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.ChooseDAOManager;
@@ -18,9 +17,9 @@ import org.computer.knauss.reqtDiscussion.ui.ctrl.ClassifyDataCmd;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.ClearClassifierCmd;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.ConfigureJazzDAO;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.EditDatasourceCommand;
+import org.computer.knauss.reqtDiscussion.ui.ctrl.ExplainClassification;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.InsertOrUpdateDiscussionEventClassification;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.KFoldCrossDiscussionEvaluationCmd;
-import org.computer.knauss.reqtDiscussion.ui.ctrl.KFoldCrossDiscussionEventEvaluationCmd;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.LoadDiscussionByID;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.LoadDiscussions;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.LoadMoreDiscussions;
@@ -69,6 +68,10 @@ public class DiscussionAnalyzer {
 			daoRegistry.register("Jira (sql)", new SQLDAOManager(
 					new String[] { "/bizzdesign-psql.txt" }));
 			// "/jira-xml-properties.txt"));
+			daoRegistry.register("MySQL (trento)", new SQLDAOManager(
+					new String[] { "/mysql-default-schema-queries.txt",
+							"/trento-mysql-properties.txt" }));
+
 			// add the commands
 			daFrame.addSeperator(DiscussionAnalyzerFrame.DATA_MENU,
 					"configure data access");
@@ -129,40 +132,15 @@ public class DiscussionAnalyzer {
 			// daFrame.addAction(
 			// DiscussionAnalyzerFrame.ACTION_MENU,
 			// configureCommand(new SimpleDiscussionClassifierEvaluationCmd()));
-			daFrame.addAction(
-					DiscussionAnalyzerFrame.ACTION_MENU,
-					configureCommand(new KFoldCrossDiscussionEvaluationCmd(
-							AbstractBucketBalancingStrategy.RANDOM_BUCKET,
-							KFoldCrossDiscussionEvaluationCmd.TAB_SEPARATED_STYLE,
-							true)));
-			daFrame.addAction(
-					DiscussionAnalyzerFrame.ACTION_MENU,
-					configureCommand(new KFoldCrossDiscussionEvaluationCmd(
-							AbstractBucketBalancingStrategy.GREEDY_DISCUSSION_EVENT,
-							KFoldCrossDiscussionEvaluationCmd.TAB_SEPARATED_STYLE,
-							true)));
-			daFrame.addAction(
-					DiscussionAnalyzerFrame.ACTION_MENU,
-					configureCommand(new KFoldCrossDiscussionEvaluationCmd(
-							AbstractBucketBalancingStrategy.RANDOM_BUCKET,
-							KFoldCrossDiscussionEvaluationCmd.LATEX_STYLE, true)));
-			daFrame.addAction(
-					DiscussionAnalyzerFrame.ACTION_MENU,
-					configureCommand(new KFoldCrossDiscussionEvaluationCmd(
-							AbstractBucketBalancingStrategy.GREEDY_DISCUSSION_EVENT,
-							KFoldCrossDiscussionEvaluationCmd.LATEX_STYLE, true)));
 			daFrame.addAction(DiscussionAnalyzerFrame.ACTION_MENU,
-					configureCommand(new KFoldCrossDiscussionEvaluationCmd(
-							AbstractBucketBalancingStrategy.RANDOM_BUCKET,
-							KFoldCrossDiscussionEvaluationCmd.LATEX_STYLE,
-							false)));
-			daFrame.addAction(
-					DiscussionAnalyzerFrame.ACTION_MENU,
-					configureCommand(new KFoldCrossDiscussionEventEvaluationCmd()));
+					configureCommand(new KFoldCrossDiscussionEvaluationCmd()));
+
 			daFrame.addSeperator(DiscussionAnalyzerFrame.ACTION_MENU,
 					"reset automatic classifier");
 			daFrame.addAction(DiscussionAnalyzerFrame.ACTION_MENU,
 					configureCommand(new ClearClassifierCmd()));
+			daFrame.addAction(DiscussionAnalyzerFrame.ACTION_MENU,
+					configureCommand(new ExplainClassification()));
 
 			IClassificationFilter.NAME_FILTER.setName("no rater name set");
 

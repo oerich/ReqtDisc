@@ -13,6 +13,8 @@ public interface IJazzAccessConfiguration {
 
 	public abstract String getPassword();
 	
+	public abstract String getRootservicesURL();
+	
 	public abstract void configure(Properties properties);
 
 }

@@ -21,11 +21,11 @@ import org.apache.http.ProtocolVersion;
 import org.apache.http.StatusLine;
 import org.apache.http.message.BasicHttpResponse;
 import org.computer.knauss.reqtDiscussion.io.DAOException;
-import org.computer.knauss.reqtDiscussion.io.IDAOProgressMonitor;
 import org.computer.knauss.reqtDiscussion.io.Util;
 import org.computer.knauss.reqtDiscussion.model.Discussion;
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
 import org.computer.knauss.reqtDiscussion.model.DiscussionFactory;
+import org.computer.knauss.reqtDiscussion.ui.ctrl.ProgressMonitorProbe;
 import org.jdom2.JDOMException;
 import org.junit.Before;
 import org.junit.Test;
@@ -58,7 +58,7 @@ public class JazzJDOMDAOTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void testSelectWorkitemsNoProjectArea() throws JDOMException,
 			IOException, Exception {
-		this.dao.getWorkitemsForType();
+		this.dao.getWorkitemsForType("?oslc_cm.query=dc%3Atype=%22com.ibm.team.apt.workItemType.story%22&oslc_cm./sort=dc:created&oslc_cm.pageSize=10");
 	}
 
 	@Test
@@ -102,7 +102,8 @@ public class JazzJDOMDAOTest {
 	public void testSimpleQuery() throws JDOMException, IOException, Exception {
 		this.dao.setProjectArea("Rational Team Concert");
 
-		String[] results = this.dao.getWorkitemsForType();
+		String[] results = this.dao
+				.getWorkitemsForType("?oslc_cm.query=dc%3Atype=%22com.ibm.team.apt.workItemType.story%22&oslc_cm./sort=dc:created&oslc_cm.pageSize=50");
 		assertEquals(50, results.length);
 
 		// System.out.println(results[0]);
@@ -234,35 +235,6 @@ public class JazzJDOMDAOTest {
 	public void testStoreDiscussions() throws DAOException {
 		this.dao.storeDiscussions(new Discussion[] { DiscussionFactory
 				.getInstance().getDiscussion(-1) });
-	}
-
-	private class ProgressMonitorProbe implements IDAOProgressMonitor {
-
-		int totalSteps = 0;
-		int step = 0;
-		String message = "";
-
-		@Override
-		public void setTotalSteps(int steps) {
-			this.totalSteps = steps;
-		}
-
-		@Override
-		public void setStep(int step) {
-			this.step = step;
-		}
-
-		@Override
-		public void setStep(int step, String message) {
-			this.step = step;
-			this.message = message;
-		}
-
-		@Override
-		public boolean isCancelled() {
-			return false;
-		}
-
 	}
 
 	private class ConnectorProbe implements IWebConnector {

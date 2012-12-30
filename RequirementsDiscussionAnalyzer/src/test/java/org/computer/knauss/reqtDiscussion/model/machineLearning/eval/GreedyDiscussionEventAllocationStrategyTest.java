@@ -5,7 +5,6 @@ import static org.junit.Assert.assertEquals;
 import org.computer.knauss.reqtDiscussion.model.Discussion;
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
 import org.computer.knauss.reqtDiscussion.model.DiscussionFactory;
-import org.computer.knauss.reqtDiscussion.model.machineLearning.eval.AbstractBucketBalancingStrategy.Bucket;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,11 +29,12 @@ public class GreedyDiscussionEventAllocationStrategyTest {
 		createDiscussions(discussions, 6);
 
 		GreedyDiscussionEventAllocationStrategy alloc = new GreedyDiscussionEventAllocationStrategy();
-		Bucket[] buckets = alloc.distributedOverKBuckets(3, discussions, false);
+		alloc.distributedOverKBuckets(3, discussions, false);
 
-		assertEquals(3, buckets.length);
-		for (int j = 0; j < buckets.length; j++) {
-			assertEquals("bucket " + j, 7, alloc.getBucketSize(buckets[j]));
+		assertEquals(3, alloc.getNumberOfBuckets());
+		for (int j = 0; j < 3; j++) {
+			assertEquals("bucket " + j, 7,
+					alloc.getDiscussionEventsForBucket(j).length);
 		}
 	}
 
@@ -47,11 +47,12 @@ public class GreedyDiscussionEventAllocationStrategyTest {
 		int[] workitemIds = new int[] { 13764, 40774, 40775 };
 		createDiscussions(discussions, n, workitemIds);
 
-		Bucket[] buckets = alloc.distributedOverKBuckets(3, discussions, true);
+		alloc.distributedOverKBuckets(3, discussions, true);
 
-		assertEquals(3, buckets.length);
-		for (int j = 0; j < buckets.length; j++) {
-			assertEquals("bucket " + j, 9, alloc.getBucketSize(buckets[j]));
+		assertEquals(3, alloc.getNumberOfBuckets());
+		for (int j = 0; j < 3; j++) {
+			assertEquals("bucket " + j, 9,
+					alloc.getDiscussionEventsForBucket(j).length);
 		}
 	}
 
