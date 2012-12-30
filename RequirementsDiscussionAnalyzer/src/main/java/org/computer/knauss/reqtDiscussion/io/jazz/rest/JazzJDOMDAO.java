@@ -45,9 +45,11 @@ public class JazzJDOMDAO implements IJazzDAO, IDiscussionEventDAO,
 	private String selectedProjectArea;
 	private int limit = 50;
 	private String moreQuery;
+	private IJazzAccessConfiguration config;
 
 	public JazzJDOMDAO(IJazzAccessConfiguration config) throws DAOException {
 		this(new FormBasedAuthenticatedConnector(config));
+		this.config = config;
 	}
 
 	JazzJDOMDAO(IWebConnector connector) {
@@ -113,9 +115,8 @@ public class JazzJDOMDAO implements IJazzDAO, IDiscussionEventDAO,
 		if (this.projectAreaList != null) {
 			return this.projectAreaList;
 		}
-		// 1. get the rootservices and extract the catalog-URI
 		HttpResponse response = this.webConnector
-				.performHTTPSRequestXML("https://jazz.net/jazz/rootservices");
+				.performHTTPSRequestXML(this.config.getRootservicesURL());
 		this.xpathHelper.setDocument(response.getEntity().getContent());
 		String catalogURI = ((Attribute) this.xpathHelper.select(
 				"//cmServiceProviders/@resource").get(0)).getValue();
