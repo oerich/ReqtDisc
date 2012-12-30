@@ -18,6 +18,7 @@ public class DialogBasedJazzAccessConfiguration implements
 	private URI jazzAuthUrl;
 	private String userName;
 	private char[] password;
+	private String rootservicesURL;
 	private String error;
 	private JTextField userNameField = new JTextField();
 	private JPasswordField passwordField = new JPasswordField();
@@ -26,6 +27,8 @@ public class DialogBasedJazzAccessConfiguration implements
 	// "https://jazz.net/jazz/oauth-authorize");
 	// "https://jazz.net/hub/ccm/oauth-authorize");
 			"https://jazz.net/auth/login");
+	private JTextField rootservicesURLField = new JTextField(
+			"https://jazz.net/jazz/rootservices");
 
 	/*
 	 * (non-Javadoc)
@@ -73,11 +76,13 @@ public class DialogBasedJazzAccessConfiguration implements
 	private void showUserDialog() {
 		JOptionPane.showConfirmDialog(null, new Object[] { this.error, "User:",
 				userNameField, "Pwd:", passwordField, "Hostname:",
-				hostNameField, "Auth URL", authURLField },
-				"Specify Connection Details", JOptionPane.OK_CANCEL_OPTION);
+				hostNameField, "Auth URL", authURLField, "Rootservices",
+				rootservicesURLField }, "Specify Connection Details",
+				JOptionPane.OK_CANCEL_OPTION);
 		this.userName = userNameField.getText();
 		this.password = passwordField.getPassword();
 		this.hostname = hostNameField.getText();
+		this.rootservicesURL = rootservicesURLField.getText();
 		try {
 			this.jazzAuthUrl = new URI(authURLField.getText());
 		} catch (URISyntaxException e) {
@@ -115,5 +120,12 @@ public class DialogBasedJazzAccessConfiguration implements
 			} catch (URISyntaxException e) {
 				e.printStackTrace();
 			}
+	}
+
+	@Override
+	public String getRootservicesURL() {
+		if (this.rootservicesURL == null)
+			showUserDialog();
+		return this.rootservicesURL;
 	}
 }
