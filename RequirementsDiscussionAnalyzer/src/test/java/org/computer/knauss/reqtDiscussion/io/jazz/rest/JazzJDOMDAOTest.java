@@ -58,7 +58,7 @@ public class JazzJDOMDAOTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void testSelectWorkitemsNoProjectArea() throws JDOMException,
 			IOException, Exception {
-		this.dao.getWorkitemsForType();
+		this.dao.getWorkitemsForType("?oslc_cm.query=dc%3Atype=%22com.ibm.team.apt.workItemType.story%22&oslc_cm./sort=dc:created&oslc_cm.pageSize=10");
 	}
 
 	@Test
@@ -102,7 +102,8 @@ public class JazzJDOMDAOTest {
 	public void testSimpleQuery() throws JDOMException, IOException, Exception {
 		this.dao.setProjectArea("Rational Team Concert");
 
-		String[] results = this.dao.getWorkitemsForType();
+		String[] results = this.dao
+				.getWorkitemsForType("?oslc_cm.query=dc%3Atype=%22com.ibm.team.apt.workItemType.story%22&oslc_cm./sort=dc:created&oslc_cm.pageSize=50");
 		assertEquals(50, results.length);
 
 		// System.out.println(results[0]);

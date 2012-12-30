@@ -1,6 +1,5 @@
 package org.computer.knauss.reqtDiscussion.io.jazz.rest;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -16,7 +15,6 @@ import org.computer.knauss.reqtDiscussion.io.IDiscussionEventDAO;
 import org.computer.knauss.reqtDiscussion.io.IIncidentDAO;
 import org.computer.knauss.reqtDiscussion.io.Util;
 import org.computer.knauss.reqtDiscussion.io.jazz.IJazzDAO;
-import org.computer.knauss.reqtDiscussion.io.jazz.util.ui.DialogBasedJazzAccessConfiguration;
 import org.computer.knauss.reqtDiscussion.io.util.XPathHelper;
 import org.computer.knauss.reqtDiscussion.model.Discussion;
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
@@ -37,6 +35,7 @@ public class JazzJDOMDAO implements IJazzDAO, IDiscussionEventDAO,
 		IDiscussionDAO, IIncidentDAO {
 
 	private static final String STORY_QUERY = "?oslc_cm.query=dc%3Atype=%22com.ibm.team.apt.workItemType.story%22&oslc_cm./sort=dc:created&oslc_cm.pageSize=";
+	private static final String STORY_BY_ID_QUERY = "?oslc_cm.query=dc%3Aid=";
 
 	private IWebConnector webConnector;
 	private XPathHelper xpathHelper;
@@ -153,8 +152,8 @@ public class JazzJDOMDAO implements IJazzDAO, IDiscussionEventDAO,
 		return this.limit;
 	}
 
-	public synchronized String[] getWorkitemsForType() throws JDOMException,
-			IOException, Exception {
+	public synchronized String[] getWorkitemsForType(String query)
+			throws JDOMException, IOException, Exception {
 		// 0. check if project area is set
 		if (this.selectedProjectArea == null) {
 			StringBuffer b = new StringBuffer();
@@ -185,7 +184,7 @@ public class JazzJDOMDAO implements IJazzDAO, IDiscussionEventDAO,
 		// http://open-services.net/bin/view/Main/CmQuerySyntaxV1
 		String simpleQueryURI = ((Element) this.xpathHelper.select(
 				"//simpleQuery/url").get(0)).getValue();
-		simpleQueryURI = simpleQueryURI.trim() + STORY_QUERY + getLimit();
+		simpleQueryURI = simpleQueryURI.trim() + query;
 		// System.out.println("Query URL: "
 		// + URLDecoder.decode(simpleQueryURI, "UTF-8"));
 
@@ -197,8 +196,9 @@ public class JazzJDOMDAO implements IJazzDAO, IDiscussionEventDAO,
 
 	private String[] getWorkitemsForQuery(String simpleQueryURI)
 			throws Exception, JDOMException, IOException {
-		System.out.println(simpleQueryURI);
-		HttpResponse r = this.webConnector.performHTTPSRequestXML(simpleQueryURI);
+		// System.out.println(simpleQueryURI);
+		HttpResponse r = this.webConnector
+				.performHTTPSRequestXML(simpleQueryURI);
 		this.changeRequestsXML = new XPathHelper();
 		this.changeRequestsXML.setDocument(r.getEntity().getContent());
 		List<Object> crElements = this.changeRequestsXML
@@ -252,22 +252,6 @@ public class JazzJDOMDAO implements IJazzDAO, IDiscussionEventDAO,
 		return ret.toString();
 	}
 
-	public static void main(String[] args) throws JDOMException, IOException,
-			Exception {
-		Properties p = new Properties();
-		p.load(new FileInputStream(JazzJDOMDAO.class.getResource(
-				"jazz-properties.txt").getFile()));
-
-		DialogBasedJazzAccessConfiguration config = new DialogBasedJazzAccessConfiguration();
-		config.configure(p);
-		JazzJDOMDAO dao = new JazzJDOMDAO(config);
-		dao.setProjectArea("Rational Team Concert");
-
-		for (String element : dao.getWorkitemsForType()) {
-			System.out.println(element);
-		}
-	}
-
 	@Override
 	public void configure(Properties p) {
 		this.webConnector.configure(p);
@@ -280,7 +264,7 @@ public class JazzJDOMDAO implements IJazzDAO, IDiscussionEventDAO,
 			// 1. make sure that the change requests are already loaded.
 			// Otherwise query them.
 			if (this.changeRequestsXML == null) {
-				getWorkitemsForType();
+				getWorkitemsForType(STORY_BY_ID_QUERY + discussionId);
 			}
 
 			// 2. identify the change request with the discussion id and get the
@@ -358,7 +342,7 @@ public class JazzJDOMDAO implements IJazzDAO, IDiscussionEventDAO,
 			// Otherwise
 			// query them.
 			if (this.changeRequestsXML == null) {
-				getWorkitemsForType();
+				getWorkitemsForType(STORY_BY_ID_QUERY + discussionID);
 			}
 
 			// 2. identify the changerequest with the discussionid and get the
@@ -421,7 +405,7 @@ public class JazzJDOMDAO implements IJazzDAO, IDiscussionEventDAO,
 			progressMonitor.setStep(step++,
 					"Loading change requests from jazz.net");
 			if (this.changeRequestsXML == null) {
-				getWorkitemsForType();
+				getWorkitemsForType(STORY_QUERY + getLimit());
 			}
 
 			// 2. identify the changerequest with the discussionid and get the
