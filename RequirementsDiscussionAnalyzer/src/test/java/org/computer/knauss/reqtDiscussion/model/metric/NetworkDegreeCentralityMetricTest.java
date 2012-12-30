@@ -58,6 +58,7 @@ public class NetworkDegreeCentralityMetricTest {
 			assertEquals(0,
 					m.getPartition().getModelElementsForPartition(2).length);
 		} else {
+			// XXX fragile test? Seems to fail sometimes.
 			assertEquals(1,
 					m.getPartition().getModelElementsForPartition(0).length);
 			assertEquals(0,
