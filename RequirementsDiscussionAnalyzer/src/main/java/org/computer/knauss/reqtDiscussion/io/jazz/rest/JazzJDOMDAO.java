@@ -8,12 +8,12 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.apache.http.HttpResponse;
+import org.computer.knauss.reqtDiscussion.Util;
 import org.computer.knauss.reqtDiscussion.io.DAOException;
 import org.computer.knauss.reqtDiscussion.io.IDAOProgressMonitor;
 import org.computer.knauss.reqtDiscussion.io.IDiscussionDAO;
 import org.computer.knauss.reqtDiscussion.io.IDiscussionEventDAO;
 import org.computer.knauss.reqtDiscussion.io.IIncidentDAO;
-import org.computer.knauss.reqtDiscussion.io.Util;
 import org.computer.knauss.reqtDiscussion.io.jazz.IJazzDAO;
 import org.computer.knauss.reqtDiscussion.io.util.XPathHelper;
 import org.computer.knauss.reqtDiscussion.model.Discussion;
@@ -47,13 +47,13 @@ public class JazzJDOMDAO implements IJazzDAO, IDiscussionEventDAO,
 	private String moreQuery;
 	private IJazzAccessConfiguration config;
 
-	public JazzJDOMDAO(IJazzAccessConfiguration config) throws DAOException {
-		this(new FormBasedAuthenticatedConnector(config));
+	public JazzJDOMDAO(IJazzAccessConfiguration config) {
 		this.config = config;
+		this.xpathHelper = new XPathHelper();
 	}
 
-	JazzJDOMDAO(IWebConnector connector) {
-		this.xpathHelper = new XPathHelper();
+	JazzJDOMDAO(IWebConnector connector, IJazzAccessConfiguration config) {
+		this(config);
 		this.webConnector = connector;
 	}
 
