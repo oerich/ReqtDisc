@@ -25,7 +25,7 @@ public class FormBasedAuthenticatedConnectorTest {
 		System.out.println(response);
 		// System.out.println(fbac.readResponse(response));
 
-		JazzJDOMDAO domReader = new JazzJDOMDAO(fbac);
+		JazzJDOMDAO domReader = new JazzJDOMDAO(fbac, new JazzAccessConfigurationDummy());
 		domReader.readDocument(response.getEntity().getContent());
 		// now that we have the rootservices, there are two paths to follow
 		// 1. use SPARQL to query the first 10 stories according to

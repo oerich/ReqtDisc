@@ -20,8 +20,8 @@ import org.apache.http.HttpResponse;
 import org.apache.http.ProtocolVersion;
 import org.apache.http.StatusLine;
 import org.apache.http.message.BasicHttpResponse;
+import org.computer.knauss.reqtDiscussion.Util;
 import org.computer.knauss.reqtDiscussion.io.DAOException;
-import org.computer.knauss.reqtDiscussion.io.Util;
 import org.computer.knauss.reqtDiscussion.model.Discussion;
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
 import org.computer.knauss.reqtDiscussion.model.DiscussionFactory;
@@ -39,7 +39,7 @@ public class JazzJDOMDAOTest {
 	public void setup() throws IOException {
 		DiscussionFactory.getInstance().clear();
 		connector = new ConnectorProbe();
-		this.dao = new JazzJDOMDAO(connector);
+		this.dao = new JazzJDOMDAO(connector, new JazzAccessConfigurationDummy());
 	}
 
 	@Test
