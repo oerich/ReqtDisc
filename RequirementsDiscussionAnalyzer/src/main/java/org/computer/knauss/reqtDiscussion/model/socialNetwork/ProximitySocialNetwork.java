@@ -1,5 +1,8 @@
 package org.computer.knauss.reqtDiscussion.model.socialNetwork;
 
+import java.util.Arrays;
+import java.util.Comparator;
+
 import org.computer.knauss.reqtDiscussion.model.Discussion;
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
 import org.computer.knauss.reqtDiscussion.model.partition.TimeIntervalPartition;
@@ -13,10 +16,17 @@ public class ProximitySocialNetwork extends SocialNetwork {
 
 		double ret = 0;
 
-		// Based on Remko's Master thesis
+		// Based on Gabor's Masters thesis
 		for (Discussion d : getDiscussions()) {
 
 			DiscussionEvent[] events = d.getDiscussionEvents();
+			Arrays.sort(events, new Comparator<DiscussionEvent>() {
+
+				@Override
+				public int compare(DiscussionEvent o1, DiscussionEvent o2) {
+					return o1.getCreationDate().compareTo(o2.getCreationDate());
+				}
+			});
 			// we are determining the distance between two posts:
 			if (events.length > 0) {
 				DiscussionEvent event1 = events[0];

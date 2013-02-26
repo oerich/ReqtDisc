@@ -1,4 +1,4 @@
-package org.computer.knauss.reqtDiscussion.io;
+package org.computer.knauss.reqtDiscussion;
 
 import java.sql.Date;
 

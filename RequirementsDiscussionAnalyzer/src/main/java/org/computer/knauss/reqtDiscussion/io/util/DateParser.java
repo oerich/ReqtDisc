@@ -6,6 +6,9 @@ import java.sql.Time;
 public abstract class DateParser {
 
 	private static DateParser INSTANCE;
+	/**
+	 * Expect something like 2013-01-16 16:29:23.437
+	 */
 	static final DateParser PSQL_PARSER = new DateParser() {
 		private String split = " ";
 
