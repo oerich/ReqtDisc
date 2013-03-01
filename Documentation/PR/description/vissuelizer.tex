@@ -1,21 +1,25 @@
 % !TEX root = knauss-vissuelizer.tex
 \section{V:Issue:lizer}
 
-\viss\  is an interactive tool that allows software developers and managers to dynamically explore the discussion of requirements  in online repositories with a focus on highlighting the difference between clarification and implementation related communication. (Source code available at \url{https: //github.com/oerich/ReqtDisc})
+\viss\  is an interactive tool that allows software developers and managers to dynamically explore the discussion of requirements  in online repositories with a focus on highlighting the difference between clarification and implementation related communication (Sources: \url{https: //github.com/oerich/ReqtDisc}). %Available data sources include the webservice of IBM Jazz and the RSS feed of Atlassian Jira.
+%Data sources for other issue trackers can be easily added.
+\viss\ can read data from the IBM Jazz webservice and the RSS feed of Atlassian Jira.
+Support for other issue trackers can be easily added.
 
 The main window shows a list of requirements on the  left \todo{\footnotesize move to conclusion: (e.g. workitems in jazz, items in jira, issues in other systems)} (see Figure \ref{fig:screenshot}).
 \viss\ adds visualizations to the selected discussions in the centre or in an extra window. 
 These visualizations help to assess the communication through discussion events (e.g. comments) that are related to these requirements.
 The panel on the right allows users to adjust parameters of the visualization.
 Most importantly, the resolution of time intervals for the visualization can be adjusted, either as a fixed number of intervals (e.g. eight intervals in Figure \ref{fig:example-trajectory}), or as a fixed time interval (e.g. days, weeks, month).
-%
+This allows to adjust the visualization to the particularities of a given process.
+
 \viss\  offers  two visualizations: 
 
 \subsubsection{Clarification Trajectories} 
 This visualization shows how the percentage of clarification events to other discussion events related to a requirement changes over its lifetime.
 \begin{figure}[b]
 \centering
-\includegraphics[width=0.51\columnwidth]{img/example-trajectory}
+\includegraphics[width=0.627\columnwidth]{img/example-trajectory}
 \caption{Example of a requirement discussion's clarification trajectory}
 \label{fig:example-trajectory}
 \end{figure}
@@ -32,12 +36,12 @@ Typically, there are many requirements without pathological findings, e.g. user 
 More suspicious trajectories show large amounts of clarification late in the iteration, perhaps even after the issue seemed to be solved. Others show no clarification at all, even though the requirement seems to be complex.
 \subsubsection{Social Networks} 
 This visualization shows the communication pattern of those participating in a requirement's discussion. 
-The developers are presented as nodes and connections between nodes are weighted by the amount of communication both developers share about the requirement in a specific time interval (as defined above) in a requirement's lifetime. 
+Developers are presented as nodes and connections between nodes are weighted by the amount of communication both developers share about the requirement in a specific time interval (as defined above) in a requirement's lifetime. 
 Thus, subgraphs of the contributors to the discussion in each time interval are created.
 Subgraphs are connected if  stakeholders appear in several time intervals. 
 %Note that subgraphs can be matched to specific time intervals (here: three) where all actors of the subgraph communicate. 
 %The interval can be a either a either a fixed number (here: three intervals), or a fixed time interval (e.g. days, weeks, month). 
-\viss\ also displays the developer node as a pie chart to show the percentage of clarification vs. implementation-related communication in which the developer is involved (as highlighted in Figure \ref{fig:example-sn-large}).
+\viss\ displays developer nodes as pie charts to show the percentage of clarification vs. implementation-related communication in which a developer is involved (as highlighted in Figure \ref{fig:example-sn-large}).
 
 
 
