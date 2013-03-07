@@ -11,7 +11,7 @@ import java.util.Set;
 
 import javax.swing.JFrame;
 
-import org.computer.knauss.reqtDiscussion.io.Util;
+import org.computer.knauss.reqtDiscussion.Util;
 import org.computer.knauss.reqtDiscussion.model.Discussion;
 import org.computer.knauss.reqtDiscussion.model.metric.AbstractDiscussionMetric;
 import org.computer.knauss.reqtDiscussion.model.metric.AbstractNetworkMetric;

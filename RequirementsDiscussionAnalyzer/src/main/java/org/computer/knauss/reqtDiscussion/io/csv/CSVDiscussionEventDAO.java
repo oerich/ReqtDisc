@@ -9,8 +9,8 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Vector;
 
+import org.computer.knauss.reqtDiscussion.Util;
 import org.computer.knauss.reqtDiscussion.io.IDiscussionEventDAO;
-import org.computer.knauss.reqtDiscussion.io.Util;
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
 import org.computer.knauss.reqtDiscussion.model.IDiscussionEventFilter;
 
