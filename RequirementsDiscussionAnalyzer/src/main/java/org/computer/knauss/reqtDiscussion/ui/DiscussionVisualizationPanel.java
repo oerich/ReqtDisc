@@ -114,7 +114,9 @@ public class DiscussionVisualizationPanel extends JPanel implements
 		// g2.clearRect(0, 0, 800, 600);
 		// g2.setBackground(Color.WHITE);
 		g2.setColor(Color.WHITE);
-		g2.fillRect(0, 0, getWidth(), getHeight());
+		// g2.fillRect(0, 0, getWidth(), getHeight());
+		g2.fillRect(0, 0, VISUALIZATION_DIMENSION.width,
+				VISUALIZATION_DIMENSION.height);
 
 		if (this.selectedDiscussions != null) {
 			g2.setStroke(new BasicStroke(1f));
