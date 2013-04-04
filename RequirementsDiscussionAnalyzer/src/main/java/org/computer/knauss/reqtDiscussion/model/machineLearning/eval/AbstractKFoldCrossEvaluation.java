@@ -160,7 +160,7 @@ public abstract class AbstractKFoldCrossEvaluation {
 		this.referenceRaterName = raterName;
 	}
 
-	private void classify(DiscussionEvent[] des) {
+	private void classify(DiscussionEvent[] des) throws Exception {
 		for (DiscussionEvent de : des) {
 			DiscussionEventClassification dec = new DiscussionEventClassification();
 

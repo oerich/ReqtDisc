@@ -28,28 +28,32 @@ public class ClassifyDataCmd extends AbstractDiscussionIterationCommand {
 
 	@Override
 	protected void processDiscussionHook(Discussion d) {
-		for (DiscussionEvent de : d.getDiscussionEvents()) {
-			DiscussionEventClassification dec = new DiscussionEventClassification();
+		try {
+			for (DiscussionEvent de : d.getDiscussionEvents()) {
+				DiscussionEventClassification dec = new DiscussionEventClassification();
 
-			double confidence = classifier.classify(de);
-			dec.setClassifiedby(classifier.getClass().getSimpleName());
-			dec.setConfidence(confidence);
-			dec.setWorkitemcommentid(de.getID());
+				double confidence = classifier.classify(de);
+				dec.setClassifiedby(classifier.getClass().getSimpleName());
+				dec.setConfidence(confidence);
+				dec.setWorkitemcommentid(de.getID());
 
-			if (classifier.getMatchValue() < confidence) {
-				dec.setClassification("clarif");
-				System.out.print('!');
-			} else {
-				dec.setClassification("other");
-				System.out.print('.');
+				if (classifier.getMatchValue() < confidence) {
+					dec.setClassification("clarif");
+					System.out.print('!');
+				} else {
+					dec.setClassification("other");
+					System.out.print('.');
+				}
+				de.insertOrUpdateClassification(dec);
+
+				// Currently no need to store classifications in database.
+				// insertOrUpdateCommand.setWorkitemCommentClassification(dec);
+				// insertOrUpdateCommand.actionPerformed(null);
 			}
-			de.insertOrUpdateClassification(dec);
-
-			// Currently no need to store classifications in database.
-			// insertOrUpdateCommand.setWorkitemCommentClassification(dec);
-			// insertOrUpdateCommand.actionPerformed(null);
+			System.out.println();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		System.out.println();
 	}
 
 	public void setInsertOrUpdateCommand(AbstractCommand insertOrUpdateCommand) {

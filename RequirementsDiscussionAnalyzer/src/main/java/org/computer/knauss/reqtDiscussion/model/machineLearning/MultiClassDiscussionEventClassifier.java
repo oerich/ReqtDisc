@@ -127,6 +127,14 @@ public class MultiClassDiscussionEventClassifier implements
 			NewBayesianClassifier classifier = new NewBayesianClassifier();
 			classifier.init(new File(classif + "-classifier.txt"));
 			classifier.setAutosave(false);
+			// Using stemmer or stopword filter does not really help
+			// classifier.setStopWordFilter(StopWordFilterFactory.getInstance());
+			// classifier.setStemmer(new Stemmer());
+
+			// TODO try out those values:
+			classifier.setProClassBias(0.8);
+			classifier.setUnknownWordValue(0.3);
+			
 			ret = classifier;
 			this.classifiers.put(classif, ret);
 		}

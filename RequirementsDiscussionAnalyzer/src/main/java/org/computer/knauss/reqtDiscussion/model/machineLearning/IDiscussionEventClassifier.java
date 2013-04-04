@@ -8,9 +8,9 @@ public interface IDiscussionEventClassifier {
 
 	void trainDiscussionEvent(DiscussionEvent de);
 
-	boolean inClass(DiscussionEvent de);
+	boolean inClass(DiscussionEvent de) throws Exception;
 
-	double classify(DiscussionEvent de);
+	double classify(DiscussionEvent de) throws Exception;
 
 	void setTrainingStrategy(ITrainingStrategy strat);
 

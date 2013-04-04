@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import javax.swing.table.TableModel;
 
+import oerich.nlputils.NLPInitializationException;
 import oerich.nlputils.classifier.machinelearning.ILearningClassifier;
 import oerich.nlputils.classifier.machinelearning.NewBayesianClassifier;
 
@@ -26,13 +27,15 @@ public class LearningClassifierWrapper implements IDiscussionEventClassifier {
 	}
 
 	@Override
-	public boolean inClass(DiscussionEvent de) {
+	public boolean inClass(DiscussionEvent de)
+			throws NLPInitializationException {
 		return this.delegate.isMatch(this.trainingStrategy
 				.getStringForClassification(de));
 	}
 
 	@Override
-	public double classify(DiscussionEvent de) {
+	public double classify(DiscussionEvent de)
+			throws NLPInitializationException {
 		return this.delegate.classify(this.trainingStrategy
 				.getStringForClassification(de));
 	}

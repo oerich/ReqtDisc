@@ -17,8 +17,6 @@ public interface ITrainingStrategy {
 				DiscussionEvent de, String referenceRaterName) {
 			IClassificationFilter.NAME_FILTER.setName(referenceRaterName);
 
-			// TODO consider to use more attributes (e.g. creator,
-			// length)
 			if (de.isClassified()) {
 				if (de.isInClass()) {
 					classifier.learnInClass(getStringForClassification(de));
@@ -47,8 +45,6 @@ public interface ITrainingStrategy {
 				DiscussionEvent de, String referenceRaterName) {
 			IClassificationFilter.NAME_FILTER.setName(referenceRaterName);
 
-			// TODO consider to use more attributes (e.g. creator,
-			// length)
 			if (de.isClassified()) {
 				if (de.isInClass()) {
 					classifier.learnInClass(getStringForClassification(de));
@@ -62,6 +58,7 @@ public interface ITrainingStrategy {
 			}
 		}
 
+		@SuppressWarnings("deprecation")
 		@Override
 		public String getStringForClassification(DiscussionEvent de) {
 			if (de == null)
