@@ -33,6 +33,7 @@ import org.computer.knauss.reqtDiscussion.ui.uiModel.DiscussionTableModel;
 import org.computer.knauss.reqtDiscussion.ui.visualization.IVisualizationStyle;
 import org.computer.knauss.reqtDiscussion.ui.visualization.IZoomable;
 import org.computer.knauss.reqtDiscussion.ui.visualization.clarificationPatterns.AlignedRectangularCommentStyle;
+import org.computer.knauss.reqtDiscussion.ui.visualization.clarificationPatterns.CommunicationFocusBoxStyle;
 import org.computer.knauss.reqtDiscussion.ui.visualization.clarificationPatterns.GreyBackgroundBox;
 import org.computer.knauss.reqtDiscussion.ui.visualization.clarificationPatterns.Grid;
 import org.computer.knauss.reqtDiscussion.ui.visualization.clarificationPatterns.IncidentTextStyle;
@@ -61,6 +62,7 @@ public class DiscussionVisualizationPanel extends JPanel implements
 	private IVisualizationStyle incidentVisualization;
 	private VisualizationConfigurationPanel configureVisualizationPanel;
 	private double zoomFactor = 1.0d;
+	private CommunicationFocusBoxStyle visualizationBlocks;
 
 	public DiscussionVisualizationPanel(
 			VisualizationConfigurationPanel configureVisualizationPanel) {
@@ -82,6 +84,7 @@ public class DiscussionVisualizationPanel extends JPanel implements
 		this.visualizationLineOfUnderstanding = new LineOfUnderstanding();
 		this.visualizationStyleText = new OverlappingCommentStyle();
 		this.visualizationPattern = new PatternClassVisualization();
+		this.visualizationBlocks = new CommunicationFocusBoxStyle();
 		this.incidentVisualization = new IncidentTextStyle();
 		this.visualizationBackground.setDiscussionOverTimePartition(
 				this.discussionPartition, 100, 300);
@@ -95,6 +98,8 @@ public class DiscussionVisualizationPanel extends JPanel implements
 				this.discussionPartition, 100, 300);
 		this.visualizationStyleText.setDiscussionOverTimePartition(
 				this.discussionPixelPartition, 100, 300);
+		this.visualizationBlocks.setDiscussionOverTimePartition(
+				this.discussionPartition, 100, 300);
 		this.incidentVisualization.setDiscussionOverTimePartition(
 				this.discussionPixelPartition, 100, 300);
 		this.discussionPixelPartition.setPartitionCount(600);
@@ -160,6 +165,7 @@ public class DiscussionVisualizationPanel extends JPanel implements
 				applyVisualizationStyle(g2, allDiscussionEvents,
 						this.visualizationGrid);
 			}
+			applyVisualizationStyle(g2, allDiscussionEvents, this.visualizationBlocks);
 			// draw a horizontal time line
 			g2.setStroke(new BasicStroke(3f));
 			g2.setColor(Color.BLACK);
