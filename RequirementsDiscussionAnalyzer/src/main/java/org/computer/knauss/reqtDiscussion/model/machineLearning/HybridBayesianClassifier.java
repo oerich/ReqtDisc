@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import javax.swing.table.TableModel;
 
+import oerich.nlputils.NLPInitializationException;
 import oerich.nlputils.classifier.machinelearning.ILearningClassifier;
 import oerich.nlputils.classifier.machinelearning.NewBayesianClassifier;
 
@@ -58,7 +59,7 @@ public class HybridBayesianClassifier implements ILearningClassifier {
 	}
 
 	@Override
-	public double classify(String text) throws IllegalArgumentException {
+	public double classify(String text) throws NLPInitializationException {
 		double pInClass = getInClassDelegate().classify(text);
 		double pNinClass = getNotInClassDelegate().classify(text);
 
@@ -88,7 +89,7 @@ public class HybridBayesianClassifier implements ILearningClassifier {
 	}
 
 	@Override
-	public boolean isMatch(String text) throws IllegalArgumentException {
+	public boolean isMatch(String text) throws NLPInitializationException {
 		return getInClassDelegate().isMatch(text)
 				&& !getNotInClassDelegate().isMatch(text);
 	}

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Vector;
 
 import oerich.nlputils.classifier.machinelearning.NewBayesianClassifier;
+import oerich.nlputils.classifier.machinelearning.WekaClassifier;
 
 public class ClassifierManager {
 
@@ -31,6 +32,16 @@ public class ClassifierManager {
 
 				instance.registerClassifier(wrapper);
 
+				WekaClassifier smo = new WekaClassifier();
+				smo.init(new File("classifier.txt"));
+
+				LearningClassifierWrapper smowrapper = new LearningClassifierWrapper();
+				smowrapper.setLearningClassifier(smo);
+				smowrapper
+						.setTrainingStrategy(ITrainingStrategy.META_DATA_STRATEGY);
+
+				instance.registerClassifier(smowrapper);
+
 				HybridBayesianClassifier hclass = new HybridBayesianClassifier();
 				hclass.init(new File("hybrid-classifier.txt"));
 				LearningClassifierWrapper hwrapper = new LearningClassifierWrapper();
@@ -38,7 +49,7 @@ public class ClassifierManager {
 				hwrapper.setTrainingStrategy(ITrainingStrategy.META_DATA_STRATEGY);
 
 				instance.registerClassifier(hwrapper);
-				
+
 				MultiClassDiscussionEventClassifier mclass = new MultiClassDiscussionEventClassifier();
 				mclass.setTrainingStrategy(ITrainingStrategy.META_DATA_STRATEGY);
 				instance.registerClassifier(mclass);

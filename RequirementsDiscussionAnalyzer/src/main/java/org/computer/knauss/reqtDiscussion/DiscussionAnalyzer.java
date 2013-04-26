@@ -18,6 +18,7 @@ import org.computer.knauss.reqtDiscussion.ui.ctrl.ClearClassifierCmd;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.ConfigureJazzDAO;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.EditDatasourceCommand;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.ExplainClassification;
+import org.computer.knauss.reqtDiscussion.ui.ctrl.ExportDiscussionEvents;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.InsertOrUpdateDiscussionEventClassification;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.KFoldCrossDiscussionEvaluationCmd;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.LoadDiscussionByID;
@@ -97,6 +98,8 @@ public class DiscussionAnalyzer {
 					"store classifications");
 			daFrame.addAction(DiscussionAnalyzerFrame.DATA_MENU,
 					configureCommand(new StoreDiscussionEventClassifications()));
+			daFrame.addAction(DiscussionAnalyzerFrame.DATA_MENU,
+					configureCommand(new ExportDiscussionEvents()));
 
 			daFrame.addSeperator(DiscussionAnalyzerFrame.EDIT_MENU,
 					"configure classification");

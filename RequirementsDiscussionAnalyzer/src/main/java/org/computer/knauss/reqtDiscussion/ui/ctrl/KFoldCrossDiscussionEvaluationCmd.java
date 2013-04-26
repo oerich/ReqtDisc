@@ -78,7 +78,7 @@ public class KFoldCrossDiscussionEvaluationCmd extends AbstractCommand {
 				new LeaveOneOutAllocationStrategy() };
 		AbstractBucketBalancingStrategy alloc = (AbstractBucketBalancingStrategy) JOptionPane
 				.showInputDialog(null,
-						"Please select the classifier for evaluation.",
+						"Please select the bucket allocation strategy.",
 						"Classifier", JOptionPane.QUESTION_MESSAGE, null,
 						options, options[0]);
 		if (alloc == null)

@@ -15,6 +15,7 @@ import org.computer.knauss.reqtDiscussion.io.IDiscussionDAO;
 import org.computer.knauss.reqtDiscussion.io.IDiscussionEventDAO;
 import org.computer.knauss.reqtDiscussion.io.IIncidentDAO;
 import org.computer.knauss.reqtDiscussion.io.jazz.IJazzDAO;
+import org.computer.knauss.reqtDiscussion.io.jazz.util.ui.DialogBasedJazzAccessConfiguration;
 import org.computer.knauss.reqtDiscussion.io.util.XPathHelper;
 import org.computer.knauss.reqtDiscussion.model.Discussion;
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
@@ -49,7 +50,15 @@ public class JazzJDOMDAO implements IJazzDAO, IDiscussionEventDAO,
 
 	public JazzJDOMDAO(IJazzAccessConfiguration config) {
 		this.config = config;
+		if (this.config == null) {
+			this.config = new DialogBasedJazzAccessConfiguration();
+		}
 		this.xpathHelper = new XPathHelper();
+		try {
+			this.webConnector = new FormBasedAuthenticatedConnector(this.config);
+		} catch (DAOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	JazzJDOMDAO(IWebConnector connector, IJazzAccessConfiguration config) {
@@ -401,8 +410,7 @@ public class JazzJDOMDAO implements IJazzDAO, IDiscussionEventDAO,
 			int step = 0;
 
 			// 1. make sure that the changerequests are already loaded.
-			// Otherwise
-			// query them.
+			// Otherwise query them.
 			progressMonitor.setStep(step++,
 					"Loading change requests from jazz.net");
 			if (this.changeRequestsXML == null) {
