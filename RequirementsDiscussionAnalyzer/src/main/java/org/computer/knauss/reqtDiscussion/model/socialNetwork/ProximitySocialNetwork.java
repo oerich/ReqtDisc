@@ -19,8 +19,8 @@ public class ProximitySocialNetwork extends SocialNetwork {
 		// Based on Gabor's Masters thesis
 		for (Discussion d : getDiscussions()) {
 
-			DiscussionEvent[] events = d.getDiscussionEvents();
-			Arrays.sort(events, new Comparator<DiscussionEvent>() {
+			DiscussionEvent[] des = d.getDiscussionEvents();
+			Arrays.sort(des, new Comparator<DiscussionEvent>() {
 
 				@Override
 				public int compare(DiscussionEvent o1, DiscussionEvent o2) {
@@ -28,38 +28,49 @@ public class ProximitySocialNetwork extends SocialNetwork {
 				}
 			});
 			// we are determining the distance between two posts:
-			if (events.length > 0) {
-				DiscussionEvent event1 = events[0];
-				DiscussionEvent event2;
+			if (des.length > 0) {
+				DiscussionEvent de1 = des[0];
+				DiscussionEvent de2;
 
 				// 1. if actor1 started the thread, there is a link to actor2.
-				if (actor1.getLabel().equals(event1.getCreator())) {
-					for (int i = 0; i < events.length; i++) {
-						event2 = events[i];
-						if (actor2.getLabel().equals(event2.getCreator())) {
-							ret += getWeight(events, event1, event2);
+				if (actor1.getLabel().equals(de1.getCreator())) {
+					for (int i = 0; i < des.length; i++) {
+						de2 = des[i];
+						if (actor2.getLabel().equals(de2.getCreator())) {
+							ret += getWeight(des, de1, de2);
 						}
 					}
 				}
 
-				event1 = null;
+				de1 = null;
 				// 2. if actor1 has a post after actor2, there is a link to
 				// actor2.
-				for (int i = 0; i < events.length; i++) {
-					DiscussionEvent wc = events[i];
-					if (actor2.getLabel().equals(wc.getCreator())) {
-						event1 = wc;
-					} else if (actor1.getLabel().equals(wc.getCreator())
-							&& event1 != null) {
-						// weight conversations higher
-						int factor = 1;
-						if (ret > 0)
-							factor = 2;
-						ret += getWeight(events, event1, wc) * factor;
-						// only the first answer counts
-						event1 = null;
+
+				// The fact that Actor1 is the thread starter implies ret != 0.
+				int lastActor1Comment = -1;
+				if (ret != 0)
+					lastActor1Comment = 0;
+				for (int i = 1; i < des.length; i++) {
+					// 2.1 find the next occurrence of actor1
+					if (actor1.getLabel().equals(des[i].getCreator())) {
+						// 2.2 find the last comment from actor2 before that
+						for (int j = i; j > lastActor1Comment; j--) {
+							if (actor2.getLabel().equals(des[j].getCreator())) {
+								// weight conversations higher
+								int factor = 1;
+								if (ret > 0)
+									factor = 2;
+								ret += getWeight(des, des[j], des[i]) * factor;
+								// do not look further into history
+								j = 0;
+							}
+
+						}
+
+						lastActor1Comment = i;
 					}
 				}
+
 			}
 		}
 		return ret;
@@ -85,9 +96,8 @@ public class ProximitySocialNetwork extends SocialNetwork {
 			return 0;
 
 		long time = post2.getCreationDate().getTime()
-				- post2.getCreationDate().getTime();
-		int days = (int) (time / TimeIntervalPartition.MILLIS_PER_DAY);
-
+				- post1.getCreationDate().getTime();
+		double days = ((double) time / (double) TimeIntervalPartition.MILLIS_PER_DAY);
 		ret = Math.pow(0.6, posts) + Math.pow(0.6, days);
 		return ret;
 	}
