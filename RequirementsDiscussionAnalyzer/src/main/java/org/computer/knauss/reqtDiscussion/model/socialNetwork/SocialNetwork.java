@@ -18,7 +18,19 @@ public abstract class SocialNetwork {
 	private double edgeCutoffWeight;
 	private AutomaticCutoffStrategy cutoff = INTEGER_CUTOFF;
 
-	public abstract double getWeight(Node actor1, Node actor2);
+	public final double getWeight(Node actor1, Node actor2) {
+		double ret = getRawWeight(actor1, actor2);
+		if (ret > getEdgeCutoffWeight())
+			return ret;
+		return 0;
+	}
+
+	/**
+	 * Ignore any cutoffs.
+	 * 
+	 * @return
+	 */
+	protected abstract double getRawWeight(Node actor1, Node actor2);
 
 	public Node[] getActors() {
 		return nodes.values().toArray(new Node[0]);
@@ -64,7 +76,7 @@ public abstract class SocialNetwork {
 			List<Double> weights = new LinkedList<Double>();
 			for (Node n1 : getActors())
 				for (Node n2 : getActors()) {
-					double w = getWeight(n1, n2);
+					double w = getRawWeight(n1, n2);
 					if (w > 0)
 						weights.add(w);
 				}

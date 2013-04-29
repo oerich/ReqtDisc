@@ -7,7 +7,7 @@ import org.computer.knauss.reqtDiscussion.model.partition.IDiscussionOverTimePar
 public class PartitionedSocialNetwork extends SocialNetwork {
 
 	@Override
-	public double getWeight(Node actor1, Node actor2) {
+	protected double getRawWeight(Node actor1, Node actor2) {
 		if (actor1.equals(actor2))
 			return 0.0;
 

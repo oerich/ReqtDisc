@@ -10,7 +10,6 @@ import org.computer.knauss.reqtDiscussion.model.DiscussionFactory;
 import org.computer.knauss.reqtDiscussion.model.socialNetwork.Node;
 import org.computer.knauss.reqtDiscussion.model.socialNetwork.SocialNetwork;
 import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class NetworkSubgraphCountMetricTest {
@@ -64,6 +63,8 @@ public class NetworkSubgraphCountMetricTest {
 		// need to test later, if it correctly initializes social network and
 		// time partition.
 		assertEquals(1, m.considerDiscussions(new Discussion[0]), 0.01);
+		sn.setEdgeCutoffWeight(4);
+		assertEquals(6, m.considerDiscussions(new Discussion[0]), 0.01);
 	}
 
 	@Test
@@ -149,7 +150,7 @@ public class NetworkSubgraphCountMetricTest {
 		private double[][] weightMatrix;
 
 		@Override
-		public double getWeight(Node actor1, Node actor2) {
+		protected double getRawWeight(Node actor1, Node actor2) {
 			return this.weightMatrix[Integer.valueOf(actor1.getLabel())][Integer
 					.valueOf(actor2.getLabel())];
 		}
