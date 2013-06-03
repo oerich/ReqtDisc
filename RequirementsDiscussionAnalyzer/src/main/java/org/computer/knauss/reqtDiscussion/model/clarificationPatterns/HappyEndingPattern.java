@@ -39,7 +39,7 @@ public class HappyEndingPattern implements IPatternClass {
 				}
 			} else {
 				if (inClass >= notInClass && inClass + notInClass > 0) {
-					if (i > secondHalf)
+					if (i >= secondHalf)
 						backToDraft = true;
 					happyEnding = false;
 				}
