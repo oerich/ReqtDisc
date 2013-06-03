@@ -7,6 +7,7 @@ import java.util.List;
 import org.computer.knauss.reqtDiscussion.model.Discussion;
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
 import org.computer.knauss.reqtDiscussion.model.ModelElement;
+import org.computer.knauss.reqtDiscussion.model.clarificationPatterns.SystematicPattern;
 import org.computer.knauss.reqtDiscussion.model.partition.FixedNumberPartition;
 
 public class TrajectoryFeatures extends AbstractDiscussionMetric {
@@ -24,7 +25,7 @@ public class TrajectoryFeatures extends AbstractDiscussionMetric {
 	
 	@Override
 	public Double considerDiscussions(Discussion[] discussions) {
-		int resolution = 8;
+		int resolution = 32;
 		int[] clarifications = new int[resolution];
 		int[] other = new int[resolution];
 		int[] total = new int[resolution];
@@ -65,6 +66,11 @@ public class TrajectoryFeatures extends AbstractDiscussionMetric {
 		pm.initDiscussions(discussions);
 		sb.append(pm.decode(pm.considerDiscussions(discussions)));
 
+		sb.append("\t");
+		SystematicPattern sp = new SystematicPattern();
+		sp.setCommentPartition(partition);
+		sp.matchesPattern(getEvents(discussions));
+		sb.append(sp.getName());
 		sb.append("\t");
 		sb.append(String.valueOf(hasClarification));
 		sb.append("\t");
