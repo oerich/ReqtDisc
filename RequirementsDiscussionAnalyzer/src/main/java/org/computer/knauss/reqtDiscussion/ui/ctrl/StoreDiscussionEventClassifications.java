@@ -15,9 +15,9 @@ public class StoreDiscussionEventClassifications extends
 	}
 
 	@Override
-	protected void processDiscussionHook(Discussion d) {
+	protected void processDiscussionHook(Discussion[] d) {
 		try {
-			for (DiscussionEvent e : d.getDiscussionEvents())
+			for (DiscussionEvent e : getDiscussionEvents(d))
 				for (DiscussionEventClassification c : e
 						.getDiscussionEventClassifications())
 					getDiscussionEventClassificationDAO()

@@ -20,11 +20,11 @@ public class TrainClassifierCmd extends AbstractDiscussionIterationCommand {
 	}
 
 	@Override
-	protected void processDiscussionHook(Discussion d) {
+	protected void processDiscussionHook(Discussion[] d) {
 		if (classifier == null)
 			return;
 		// use currently loaded discussions for training.
-		for (DiscussionEvent de : d.getDiscussionEvents()) {
+		for (DiscussionEvent de : getDiscussionEvents(d)) {
 			this.classifier.trainDiscussionEvent(de);
 		}
 		classifier.storeToFile();

@@ -27,9 +27,9 @@ public class ClassifyDataCmd extends AbstractDiscussionIterationCommand {
 	}
 
 	@Override
-	protected void processDiscussionHook(Discussion d) {
+	protected void processDiscussionHook(Discussion[] d) {
 		try {
-			for (DiscussionEvent de : d.getDiscussionEvents()) {
+			for (DiscussionEvent de : getDiscussionEvents(d)) {
 				DiscussionEventClassification dec = new DiscussionEventClassification();
 
 				double confidence = classifier.classify(de);

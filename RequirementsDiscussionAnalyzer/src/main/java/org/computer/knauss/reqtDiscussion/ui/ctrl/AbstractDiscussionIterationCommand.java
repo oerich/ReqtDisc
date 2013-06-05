@@ -3,6 +3,10 @@ package org.computer.knauss.reqtDiscussion.ui.ctrl;
 import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.JOptionPane;
@@ -10,6 +14,7 @@ import javax.swing.ProgressMonitor;
 import javax.swing.SwingWorker;
 
 import org.computer.knauss.reqtDiscussion.model.Discussion;
+import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
 
 public abstract class AbstractDiscussionIterationCommand extends
 		AbstractCommand implements PropertyChangeListener {
@@ -17,6 +22,7 @@ public abstract class AbstractDiscussionIterationCommand extends
 	private static final long serialVersionUID = 1L;
 	private ProgressMonitor progressMonitor;
 	private ClassificationItemTask task;
+	private HighlightRelatedDiscussions hrd;
 
 	public AbstractDiscussionIterationCommand(String name) {
 		super(name);
@@ -43,6 +49,17 @@ public abstract class AbstractDiscussionIterationCommand extends
 		}
 	}
 
+	protected HighlightRelatedDiscussions getHRD() {
+		if (this.hrd == null) {
+			try {
+				this.hrd = new HighlightRelatedDiscussions();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return this.hrd;
+	}
+
 	protected void preProcessingHook() {
 
 	}
@@ -51,7 +68,15 @@ public abstract class AbstractDiscussionIterationCommand extends
 
 	}
 
-	protected abstract void processDiscussionHook(Discussion d);
+	protected abstract void processDiscussionHook(Discussion[] d);
+
+	protected DiscussionEvent[] getDiscussionEvents(Discussion[] d) {
+		List<DiscussionEvent> ret = new LinkedList<DiscussionEvent>();
+		for (Discussion disc : d) {
+			ret.addAll(Arrays.asList(disc.getDiscussionEvents()));
+		}
+		return ret.toArray(new DiscussionEvent[0]);
+	}
 
 	class ClassificationItemTask extends SwingWorker<Void, Void> {
 		@Override
@@ -61,13 +86,25 @@ public abstract class AbstractDiscussionIterationCommand extends
 			Discussion[] discussions = getDiscussionTableModel()
 					.getDiscussions();
 
+			// Deal with complex discussions
+			List<Discussion[]> aggregatedDiscussions;
+			if (getVisualizationConfiguration().isAggregateDiscussions())
+				aggregatedDiscussions = getHRD().getAllAggregatedDiscussions(
+						discussions);
+			else {
+				aggregatedDiscussions = new LinkedList<Discussion[]>();
+				for (Discussion d : discussions) {
+					aggregatedDiscussions.add(new Discussion[] { d });
+				}
+			}
+
 			int progress = 0;
 			int total = discussions.length;
 
 			setProgress(0);
 
 			try {
-				for (Discussion d : discussions) {
+				for (Discussion[] d : aggregatedDiscussions) {
 					if (isCancelled()) {
 						System.err.println(getClass().getSimpleName()
 								+ ": Canceled.");

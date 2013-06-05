@@ -22,34 +22,38 @@ public class ExportDiscussionEvents extends AbstractDiscussionIterationCommand {
 
 	@SuppressWarnings("deprecation")
 	@Override
-	protected void processDiscussionHook(Discussion d) {
+	protected void processDiscussionHook(Discussion[] discussions) {
 		// TODO write arff header
 		// TODO remove com.ibm stuff from type and status
 		// TODO remove / escape href quotes
 		if (this.out == null)
 			return;
 		try {
-			for (DiscussionEvent de : d.getDiscussionEvents()) {
-				this.out.write("\"" + de.getContent() + "\",");
-				this.out.write("\"" + de.getCreator() + "\",");
-				this.out.write("\"" + de.getCreationDate().getMonth() + "\",");
-				this.out.write("\"" + de.getCreationDate().getYear() + "\",");
-				this.out.write("\"" + d.getStatus() + "\",");
-				this.out.write("\"" + d.getType() + "\",");
-				for (AbstractDiscussionMetric m : AbstractDiscussionMetric.STANDARD_METRICS) {
-					Double metricResult = m
-							.considerDiscussions(new Discussion[] { DiscussionFactory
-									.getInstance().getDiscussion(
-											de.getDiscussionID()) });
-					// we have only integer values in the standard metrics.
-					// Also,
-					// the classifier would replace the dot by a space.
-					this.out.write("\"" + metricResult.intValue() + "\",");
+			for (Discussion d : discussions)
+				for (DiscussionEvent de : d.getDiscussionEvents()) {
+					this.out.write("\"" + de.getContent() + "\",");
+					this.out.write("\"" + de.getCreator() + "\",");
+					this.out.write("\"" + de.getCreationDate().getMonth()
+							+ "\",");
+					this.out.write("\"" + de.getCreationDate().getYear()
+							+ "\",");
+					this.out.write("\"" + d.getStatus() + "\",");
+					this.out.write("\"" + d.getType() + "\",");
+					for (AbstractDiscussionMetric m : AbstractDiscussionMetric.STANDARD_METRICS) {
+						Double metricResult = m
+								.considerDiscussions(new Discussion[] { DiscussionFactory
+										.getInstance().getDiscussion(
+												de.getDiscussionID()) });
+						// we have only integer values in the standard metrics.
+						// Also,
+						// the classifier would replace the dot by a space.
+						this.out.write("\"" + metricResult.intValue() + "\",");
+					}
+					this.out.write("\""
+							+ de.getReferenceClassification().substring(0, 5)
+									.toLowerCase() + "\"");
+					this.out.newLine();
 				}
-				this.out.write("\"" + de.getReferenceClassification().substring(0, 5)
-						.toLowerCase() + "\"");
-				this.out.newLine();
-			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

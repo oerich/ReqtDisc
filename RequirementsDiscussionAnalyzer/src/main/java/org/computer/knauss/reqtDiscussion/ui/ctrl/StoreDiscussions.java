@@ -12,9 +12,10 @@ public class StoreDiscussions extends AbstractDiscussionIterationCommand {
 	}
 
 	@Override
-	protected void processDiscussionHook(Discussion d) {
+	protected void processDiscussionHook(Discussion[] discussions) {
 		try {
-			getDiscussionDAO().storeDiscussion(d);
+			for (Discussion d : discussions)
+				getDiscussionDAO().storeDiscussion(d);
 		} catch (DAOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
