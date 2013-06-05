@@ -22,7 +22,7 @@ public class TrajectoryFeatures extends AbstractDiscussionMetric {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-	
+
 	@Override
 	public Double considerDiscussions(Discussion[] discussions) {
 		int resolution = 32;

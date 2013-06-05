@@ -23,7 +23,7 @@ public class SystematicPattern implements IPatternClass {
 		this.partition.setPartitionCount(4);
 
 		for (int i = 0; i < this.partition.getPartitionCount(); i++) {
-			if (i >0)
+			if (i > 0)
 				patternNo += "\t";
 			int inClass = 0, notInClass = 0;
 
