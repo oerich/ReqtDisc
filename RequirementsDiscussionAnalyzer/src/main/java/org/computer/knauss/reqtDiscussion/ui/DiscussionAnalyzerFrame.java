@@ -51,7 +51,8 @@ public class DiscussionAnalyzerFrame extends JFrame implements
 	private JMenu statisticMenu;
 	private JMenu helpMenu;
 	private JMenu actionMenu;
-	private AbstractAction detailsAction = new AbstractAction("Edit discussion details") {
+	private AbstractAction detailsAction = new AbstractAction(
+			"Edit discussion details") {
 
 		private static final long serialVersionUID = 1L;
 
@@ -76,7 +77,19 @@ public class DiscussionAnalyzerFrame extends JFrame implements
 		}
 
 	};
-	private AbstractAction socialNetworkAnalysis = new AbstractAction("Show social network") {
+	private AbstractAction exportAllAction = new AbstractAction(
+			"Export all visualizations") {
+
+		private static final long serialVersionUID = 1L;
+
+		@Override
+		public void actionPerformed(ActionEvent event) {
+			visualizer.exportVisualization();
+		}
+
+	};
+	private AbstractAction socialNetworkAnalysis = new AbstractAction(
+			"Show social network") {
 
 		private static final long serialVersionUID = 1L;
 
@@ -109,9 +122,8 @@ public class DiscussionAnalyzerFrame extends JFrame implements
 		this.menu.add(this.dataMenu);
 		add(this.menu, BorderLayout.NORTH);
 
-		this.configureVisualizationPanel = new VisualizationConfigurationPanel();
-		this.configureVisualizationPanel.setDiscussionPartition(configuration
-				.getDiscussionPartition());
+		this.configureVisualizationPanel = new VisualizationConfigurationPanel(
+				configuration);
 		JPanel flowPanel = new JPanel();
 		flowPanel.add(this.configureVisualizationPanel);
 		add(flowPanel, BorderLayout.EAST);
@@ -278,15 +290,15 @@ public class DiscussionAnalyzerFrame extends JFrame implements
 
 		int x = 0;
 		int y = 0;
-		for (Discussion w : selected) {
-			for (DiscussionEvent wc : w.getDiscussionEvents()) {
-				if (wc.getReferenceClassification().startsWith("clarif"))
+		for (Discussion d : selected) {
+			for (DiscussionEvent de : d.getDiscussionEvents()) {
+				if (de.getReferenceClassification().startsWith("clarif"))
 					x++;
 				else
 					y++;
 			}
 		}
-		this.infoLabel.setText(this.tableModel.getRowCount() + " workitems | "
+		this.infoLabel.setText(this.tableModel.getRowCount() + " discussions | "
 				+ selected.length + " selected | " + x + " clarification | "
 				+ y + " other" + metrics.toString());
 	}

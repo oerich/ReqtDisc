@@ -21,6 +21,7 @@ import javax.swing.event.ChangeListener;
 
 import org.computer.knauss.reqtDiscussion.model.FilteredDiscussionEventList;
 import org.computer.knauss.reqtDiscussion.model.IFilteredDiscussionEventList;
+import org.computer.knauss.reqtDiscussion.model.VisualizationConfiguration;
 import org.computer.knauss.reqtDiscussion.model.partition.IDiscussionOverTimePartition;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.AddFilterCommand;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.RemoveFilterCommand;
@@ -49,8 +50,10 @@ public class VisualizationConfigurationPanel extends JPanel implements
 	private JCheckBox showPattern;
 	private JCheckBox incidents;
 	private JCheckBox aggregateDiscussions;
+	private VisualizationConfiguration configuration;
 
-	public VisualizationConfigurationPanel() {
+	public VisualizationConfigurationPanel(
+			VisualizationConfiguration configuration) {
 		this.setLayout(new GridLayout(5, 1));
 
 		// 1. adjust partition type
@@ -126,9 +129,9 @@ public class VisualizationConfigurationPanel extends JPanel implements
 		JPanel miscPanel = new JPanel(new GridLayout(2, 1));
 		add(miscPanel);
 		miscPanel.setBorder(BorderFactory.createTitledBorder("Misc"));
-//		this.lsuInterpolarization = new JCheckBox("SLU Interpolarization");
-//		this.lsuInterpolarization.addActionListener(this);
-//		miscPanel.add(this.lsuInterpolarization);
+		// this.lsuInterpolarization = new JCheckBox("SLU Interpolarization");
+		// this.lsuInterpolarization.addActionListener(this);
+		// miscPanel.add(this.lsuInterpolarization);
 		this.gridPartition = new JCheckBox("Use Partitions for Grid");
 		this.gridPartition.addActionListener(this);
 		miscPanel.add(this.gridPartition);
@@ -143,6 +146,9 @@ public class VisualizationConfigurationPanel extends JPanel implements
 		this.paintGrid.setSelected(true);
 		this.paintLineOfUnderstanding.setSelected(true);
 		this.showPattern.setSelected(true);
+
+		this.configuration = configuration;
+		setDiscussionPartition(configuration.getDiscussionPartition());
 	}
 
 	public void setDiscussionPartition(IDiscussionOverTimePartition partition) {
@@ -198,6 +204,7 @@ public class VisualizationConfigurationPanel extends JPanel implements
 	}
 
 	private void fireConfigurationChanged() {
+		this.configuration.setAggregateDiscussions(isShowRelatedDiscussions());
 		for (ActionListener l : this.listeners) {
 			l.actionPerformed(null);
 		}
@@ -230,7 +237,7 @@ public class VisualizationConfigurationPanel extends JPanel implements
 	}
 
 	public boolean isLSUInterpolarization() {
-		if (lsuInterpolarization==null)
+		if (lsuInterpolarization == null)
 			return false;
 		return this.lsuInterpolarization.isSelected();
 	}

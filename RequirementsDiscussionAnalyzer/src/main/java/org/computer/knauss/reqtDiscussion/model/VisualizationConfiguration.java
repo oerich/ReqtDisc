@@ -14,6 +14,7 @@ public class VisualizationConfiguration {
 
 	private IDiscussionOverTimePartition partition = new TimeIntervalPartition();
 	private SocialNetwork socialNetwork;
+	private boolean aggregateDiscussions;
 
 	public IDiscussionOverTimePartition getDiscussionPartition() {
 		return partition;
@@ -29,6 +30,14 @@ public class VisualizationConfiguration {
 
 	public void setSocialNetwork(SocialNetwork socialNetwork) {
 		this.socialNetwork = socialNetwork;
+	}
+
+	public boolean isAggregateDiscussions() {
+		return aggregateDiscussions;
+	}
+
+	public void setAggregateDiscussions(boolean aggregateDiscussions) {
+		this.aggregateDiscussions = aggregateDiscussions;
 	}
 
 }
