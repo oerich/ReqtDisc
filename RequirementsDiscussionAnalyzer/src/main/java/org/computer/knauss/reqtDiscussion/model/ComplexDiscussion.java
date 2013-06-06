@@ -1,10 +1,10 @@
 package org.computer.knauss.reqtDiscussion.model;
 
 import java.sql.Date;
-import java.util.Arrays;
-import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
+
+import org.computer.knauss.reqtDiscussion.Util;
 
 public class ComplexDiscussion extends Discussion {
 
@@ -13,14 +13,7 @@ public class ComplexDiscussion extends Discussion {
 
 	public ComplexDiscussion(Discussion[] discussions) {
 		this.discussions = discussions;
-		Arrays.sort(this.discussions, new Comparator<Discussion>() {
-
-			@Override
-			public int compare(Discussion o1, Discussion o2) {
-				return ((Integer) o1.getID()).compareTo(o2.getID());
-			}
-
-		});
+		Util.sortByID(this.discussions);
 	}
 
 	@Override
