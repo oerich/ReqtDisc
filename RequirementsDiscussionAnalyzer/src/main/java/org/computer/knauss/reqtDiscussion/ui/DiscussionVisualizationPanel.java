@@ -10,14 +10,10 @@ import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -245,26 +241,6 @@ public class DiscussionVisualizationPanel extends JPanel implements
 		repaint();
 	}
 
-	public void exportVisualization() {
-		BufferedImage bi = new BufferedImage(VISUALIZATION_DIMENSION.width,
-				VISUALIZATION_DIMENSION.height, BufferedImage.TYPE_INT_RGB);
-		Graphics2D g2 = bi.createGraphics();
-		paint(g2);
-		String filename = "";
-		if (this.selectedDiscussions != null
-				&& this.selectedDiscussions.length > 0)
-			for (Discussion wi : this.selectedDiscussions)
-				filename += wi.getID() + "-";
-		else
-			filename = "empty-";
-		File f = new File(filename.substring(0, filename.length() - 1) + ".png");
-		try {
-			ImageIO.write(bi, "png", f);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
 	@Override
 	public void setZoomFactor(double zoom) {
 		this.zoomFactor = zoom;
@@ -287,8 +263,12 @@ public class DiscussionVisualizationPanel extends JPanel implements
 
 		setZoomFactor(Math.min(xZoom, yZoom));
 	}
-	
+
 	public void setDiscussions(Discussion[] discussions) {
 		this.selectedDiscussions = discussions;
+	}
+
+	public Dimension getVisualizationDimension() {
+		return VISUALIZATION_DIMENSION;
 	}
 }

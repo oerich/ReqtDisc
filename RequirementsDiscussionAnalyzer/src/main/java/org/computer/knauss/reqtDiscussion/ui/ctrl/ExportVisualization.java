@@ -1,6 +1,12 @@
 package org.computer.knauss.reqtDiscussion.ui.ctrl;
 
+import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 import org.computer.knauss.reqtDiscussion.Util;
 import org.computer.knauss.reqtDiscussion.model.Discussion;
@@ -19,12 +25,32 @@ public class ExportVisualization extends AbstractCommand {
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent arg0) {
-		Discussion[] d = getDiscussionTableModel().getSelectedDiscussions();
-		Util.sortByID(d);
+	public void actionPerformed(ActionEvent event) {
+		Discussion[] discussions = getDiscussionTableModel().getSelectedDiscussions();
+		Util.sortByID(discussions);
 
-		this.discussionVisualization.setDiscussions(d);
-		this.discussionVisualization.exportVisualization();
+		// Create the picture
+		this.discussionVisualization.setDiscussions(discussions);
+		BufferedImage bi = new BufferedImage(
+				this.discussionVisualization.getVisualizationDimension().width,
+				this.discussionVisualization.getVisualizationDimension().height,
+				BufferedImage.TYPE_INT_RGB);
+		Graphics2D g2 = bi.createGraphics();
+		this.discussionVisualization.paint(g2);
+		
+		// Save it
+		String filename = "";
+		if (discussions != null && discussions.length > 0)
+			for (Discussion d : discussions)
+				filename += d.getID() + "-";
+		else
+			filename = "empty-";
+		File f = new File(filename.substring(0, filename.length() - 1) + ".png");
+		try {
+			ImageIO.write(bi, "png", f);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 }
