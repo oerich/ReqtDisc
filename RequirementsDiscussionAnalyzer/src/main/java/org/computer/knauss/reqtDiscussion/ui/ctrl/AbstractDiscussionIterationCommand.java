@@ -99,7 +99,7 @@ public abstract class AbstractDiscussionIterationCommand extends
 			}
 
 			int progress = 0;
-			int total = discussions.length;
+			int total = aggregatedDiscussions.size();
 
 			setProgress(0);
 
