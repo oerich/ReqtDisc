@@ -18,6 +18,7 @@ import org.computer.knauss.reqtDiscussion.ui.ctrl.ClearClassifierCmd;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.ConfigureJazzDAO;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.EditDatasourceCommand;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.ExplainClassification;
+import org.computer.knauss.reqtDiscussion.ui.ctrl.ExportAllVisualizations;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.ExportDiscussionEvents;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.InsertOrUpdateDiscussionEventClassification;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.KFoldCrossDiscussionEvaluationCmd;
@@ -74,6 +75,10 @@ public class DiscussionAnalyzer {
 							"/trento-mysql-properties.txt" }));
 
 			// add the commands
+			daFrame.addAction(
+					DiscussionAnalyzerFrame.DATA_MENU,
+					configureCommand(new ExportAllVisualizations(daFrame
+							.getDiscussionVisualizationPanel())));
 			daFrame.addSeperator(DiscussionAnalyzerFrame.DATA_MENU,
 					"configure data access");
 			daFrame.addAction(DiscussionAnalyzerFrame.DATA_MENU,

@@ -77,17 +77,6 @@ public class DiscussionAnalyzerFrame extends JFrame implements
 		}
 
 	};
-	private AbstractAction exportAllAction = new AbstractAction(
-			"Export all visualizations") {
-
-		private static final long serialVersionUID = 1L;
-
-		@Override
-		public void actionPerformed(ActionEvent event) {
-			visualizer.exportVisualization();
-		}
-
-	};
 	private AbstractAction socialNetworkAnalysis = new AbstractAction(
 			"Show social network") {
 
@@ -298,9 +287,9 @@ public class DiscussionAnalyzerFrame extends JFrame implements
 					y++;
 			}
 		}
-		this.infoLabel.setText(this.tableModel.getRowCount() + " discussions | "
-				+ selected.length + " selected | " + x + " clarification | "
-				+ y + " other" + metrics.toString());
+		this.infoLabel.setText(this.tableModel.getRowCount()
+				+ " discussions | " + selected.length + " selected | " + x
+				+ " clarification | " + y + " other" + metrics.toString());
 	}
 
 	@Override
@@ -320,5 +309,9 @@ public class DiscussionAnalyzerFrame extends JFrame implements
 				tableModel.getSelectedDiscussions());
 		networkAnalysisFrame.setWorkitems(tableModel.getSelectedDiscussions());
 		tableChanged(null);
+	}
+
+	public DiscussionVisualizationPanel getDiscussionVisualizationPanel() {
+		return this.visualizer;
 	}
 }

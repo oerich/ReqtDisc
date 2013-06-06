@@ -287,4 +287,8 @@ public class DiscussionVisualizationPanel extends JPanel implements
 
 		setZoomFactor(Math.min(xZoom, yZoom));
 	}
+	
+	public void setDiscussions(Discussion[] discussions) {
+		this.selectedDiscussions = discussions;
+	}
 }
