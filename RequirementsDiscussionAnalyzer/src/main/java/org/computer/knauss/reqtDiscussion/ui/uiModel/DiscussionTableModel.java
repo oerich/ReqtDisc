@@ -150,4 +150,21 @@ public class DiscussionTableModel implements TableModel {
 	public void setTable(JTable table) {
 		this.table = table;
 	}
+
+	public void selectDiscussions(int[] ids) {
+		Discussion[] discussions = getDiscussions();
+		for (int j = 0; j < discussions.length; j++) {
+			Discussion d = discussions[j];
+			for (int i : ids) {
+				if (d.getID() == i) {
+					int convertedRow = getTable()
+							.convertRowIndexToView(j);
+					getTable()
+							.getSelectionModel()
+							.addSelectionInterval(convertedRow,
+									convertedRow);
+				}
+			}
+		}
+	}
 }

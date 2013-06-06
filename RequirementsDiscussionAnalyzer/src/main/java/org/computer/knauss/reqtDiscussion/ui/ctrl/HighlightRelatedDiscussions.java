@@ -61,20 +61,7 @@ public class HighlightRelatedDiscussions {
 			int[] ids = getRelatedDiscussionIDs(selectedItems[0].getID());
 
 			if (ids.length > 1) {
-				Discussion[] wis = tm.getDiscussions();
-				for (int j = 0; j < wis.length; j++) {
-					Discussion wi = wis[j];
-					for (int i : ids) {
-						if (wi.getID() == i) {
-							int convertedRow = tm.getTable()
-									.convertRowIndexToView(j);
-							tm.getTable()
-									.getSelectionModel()
-									.addSelectionInterval(convertedRow,
-											convertedRow);
-						}
-					}
-				}
+				tm.selectDiscussions(ids);
 
 			}
 		}
