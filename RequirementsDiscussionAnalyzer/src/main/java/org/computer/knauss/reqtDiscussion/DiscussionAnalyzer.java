@@ -20,6 +20,7 @@ import org.computer.knauss.reqtDiscussion.ui.ctrl.EditDatasourceCommand;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.ExplainClassification;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.ExportAllVisualizations;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.ExportDiscussionEvents;
+import org.computer.knauss.reqtDiscussion.ui.ctrl.ExportVisualization;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.InsertOrUpdateDiscussionEventClassification;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.KFoldCrossDiscussionEvaluationCmd;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.LoadDiscussionByID;
@@ -75,6 +76,10 @@ public class DiscussionAnalyzer {
 							"/trento-mysql-properties.txt" }));
 
 			// add the commands
+			daFrame.addAction(
+					DiscussionAnalyzerFrame.DATA_MENU,
+					configureCommand(new ExportVisualization(daFrame
+							.getDiscussionVisualizationPanel())));
 			daFrame.addAction(
 					DiscussionAnalyzerFrame.DATA_MENU,
 					configureCommand(new ExportAllVisualizations(daFrame

@@ -66,17 +66,6 @@ public class DiscussionAnalyzerFrame extends JFrame implements
 			getEditClassificationFrame().setVisible(true);
 		}
 	};
-	private AbstractAction exportAction = new AbstractAction(
-			"Export visualization") {
-
-		private static final long serialVersionUID = 1L;
-
-		@Override
-		public void actionPerformed(ActionEvent event) {
-			visualizer.exportVisualization();
-		}
-
-	};
 	private AbstractAction socialNetworkAnalysis = new AbstractAction(
 			"Show social network") {
 
@@ -162,7 +151,6 @@ public class DiscussionAnalyzerFrame extends JFrame implements
 
 		addAction(EDIT_MENU, detailsAction);
 		addAction(EDIT_MENU, socialNetworkAnalysis);
-		addAction(DATA_MENU, exportAction);
 	}
 
 	public EditClassificationFrame getEditClassificationFrame() {
