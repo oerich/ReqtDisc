@@ -269,7 +269,7 @@ public class DiscussionAnalyzerFrame extends JFrame implements
 		int y = 0;
 		for (Discussion d : selected) {
 			for (DiscussionEvent de : d.getDiscussionEvents()) {
-				if (de.getReferenceClassification().startsWith("clarif"))
+				if (de.getReferenceClassification().startsWith("clari"))
 					x++;
 				else
 					y++;
