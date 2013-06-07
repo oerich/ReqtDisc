@@ -29,6 +29,15 @@ public class DAORegistry {
 		return this.managers.keySet().toArray(new String[0]);
 	}
 
+	public String getNameForDAOManager(IDAOManager mgr) {
+		for (String key : availableDAOManagers()) {
+			IDAOManager mgr2 = this.managers.get(key);
+			if (mgr2.equals(mgr))
+				return key;
+		}
+		return null;
+	}
+
 	public IDAOManager getDAOManager(String name) {
 		return this.managers.get(name);
 	}

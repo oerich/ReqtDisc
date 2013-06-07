@@ -17,9 +17,11 @@ public class ChooseDAOManager extends AbstractCommand {
 	@Override
 	public void actionPerformed(ActionEvent event) {
 		String[] sources = DAORegistry.getInstance().availableDAOManagers();
+		String current = DAORegistry.getInstance().getNameForDAOManager(
+				DAORegistry.getInstance().getSelectedDAOManager());
 		String choice = (String) JOptionPane.showInputDialog(null,
 				"Available datasources:", "Choose data source",
-				JOptionPane.QUESTION_MESSAGE, null, sources, sources[0]);
+				JOptionPane.QUESTION_MESSAGE, null, sources, current);
 		DAORegistry.getInstance().selectDAOManager(choice);
 	}
 
