@@ -34,6 +34,7 @@ import org.computer.knauss.reqtDiscussion.ui.ctrl.ShowStatistics;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.StoreDiscussionEventClassifications;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.StoreDiscussions;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.StoreTrainingDataCmd;
+import org.computer.knauss.reqtDiscussion.ui.ctrl.SysoutCommentStatistics;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.TrainClassifierCmd;
 import org.computer.knauss.reqtDiscussion.ui.uiModel.DiscussionTableModel;
 
@@ -125,6 +126,8 @@ public class DiscussionAnalyzer {
 					configureCommand(new ShowStatistics()));
 			daFrame.addAction(DiscussionAnalyzerFrame.STATISTICS_MENU,
 					configureCommand(new PrintTrajectoryFeatures()));
+			daFrame.addAction(DiscussionAnalyzerFrame.STATISTICS_MENU,
+					configureCommand(new SysoutCommentStatistics()));
 
 			daFrame.addAction(DiscussionAnalyzerFrame.ACTION_MENU,
 					configureCommand(new TrainClassifierCmd()));
