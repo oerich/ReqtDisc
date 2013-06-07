@@ -1,7 +1,6 @@
 package org.computer.knauss.reqtDiscussion.model.machineLearning.eval;
 
-import java.util.Random;
-
+import org.computer.knauss.reqtDiscussion.Util;
 import org.computer.knauss.reqtDiscussion.model.Discussion;
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
 
@@ -17,11 +16,10 @@ public class EventBasedRandomAllocationStrategy extends
 		for (int i = 0; i < ret.length; i++) {
 			ret[i] = new DiscussionEventBucket();
 		}
-		Random r = new Random(System.currentTimeMillis());
 
 		for (Discussion d : discussions) {
 			for (DiscussionEvent de : d.getDiscussionEvents()) {
-				ret[r.nextInt(k)].add(de);
+				ret[Util.getRandom().nextInt(k)].add(de);
 			}
 		}
 		System.out.print("Bucket sizes: ");

@@ -2,8 +2,8 @@ package org.computer.knauss.reqtDiscussion.model.machineLearning.eval;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
 
+import org.computer.knauss.reqtDiscussion.Util;
 import org.computer.knauss.reqtDiscussion.model.Discussion;
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
 
@@ -23,13 +23,11 @@ public final class RandomBucketAllocationStrategy extends
 		for (int i = 0; i < ret.length; i++) {
 			ret[i] = new DiscussionBucket();
 		}
-		Random r = new Random(System.currentTimeMillis());
-
 		if (aggregateDiscussions)
 			discussions = aggregateDiscussions(discussions);
 
 		for (Discussion d : discussions) {
-			ret[r.nextInt(k)].add(d);
+			ret[Util.getRandom().nextInt(k)].add(d);
 		}
 		System.out.print("Bucket sizes: ");
 		for (DiscussionBucket b : ret)

@@ -3,6 +3,7 @@ package org.computer.knauss.reqtDiscussion.model.machineLearning.eval;
 import java.sql.Date;
 import java.util.Random;
 
+import org.computer.knauss.reqtDiscussion.Util;
 import org.computer.knauss.reqtDiscussion.model.Discussion;
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
 import org.computer.knauss.reqtDiscussion.model.DiscussionEventClassification;
@@ -50,6 +51,7 @@ public class AbstractKFoldCrossEvaluationTest {
 
 		System.out.println(cm.layoutConfusionMatrix(" \t ", "\n"));
 	}
+
 	@Test
 	public void testLeaveOneOut() {
 		AbstractKFoldCrossEvaluation eval = AbstractKFoldCrossEvaluation.DISCUSSION_LEVEL;
@@ -59,17 +61,17 @@ public class AbstractKFoldCrossEvaluationTest {
 		eval.setReferenceRaterName("gpoo,eric1");
 		ProgressMonitorProbe pmb = new ProgressMonitorProbe();
 		ConfusionMatrix cm = eval.evaluate(10, createRandomTestData(), pmb);
-		
+
 		System.out.println(cm.layoutConfusionMatrix(" \t ", "\n"));
 	}
 
 	private Discussion[] createRandomTestData() {
-		Random r = new Random();
 		@SuppressWarnings("deprecation")
 		Date baseDate = new Date(77, 8, 17);
 		Discussion[] ret = new Discussion[100];
 		for (int i = 0; i < ret.length; i++) {
-			DiscussionEvent[] des = new DiscussionEvent[r.nextInt(20)];
+			DiscussionEvent[] des = new DiscussionEvent[Util.getRandom()
+					.nextInt(20)];
 			for (int j = 0; j < des.length; j++) {
 				des[j] = new DiscussionEvent();
 				des[j].setCreationDate(new Date(baseDate.getTime() + i
@@ -79,7 +81,7 @@ public class AbstractKFoldCrossEvaluationTest {
 				des[j].setDiscussionID(i);
 				des[j].setID(j);
 				DiscussionEventClassification dec = new DiscussionEventClassification();
-				if (r.nextBoolean()) {
+				if (Util.getRandom().nextBoolean()) {
 					dec.setClassification("clarif");
 					des[j].setContent("Content" + j
 							+ " is clarification related.");
@@ -90,7 +92,7 @@ public class AbstractKFoldCrossEvaluationTest {
 				}
 				// rater is hard coded...
 				dec.setClassifiedby("eric1");
-				dec.setConfidence(r.nextDouble());
+				dec.setConfidence(Util.getRandom().nextDouble());
 				dec.setWorkitemcommentid(des[j].getID());
 				des[j].insertOrUpdateClassification(dec);
 			}

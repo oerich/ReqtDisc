@@ -17,7 +17,6 @@ import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -41,6 +40,7 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import org.computer.knauss.reqtDiscussion.Util;
 import org.computer.knauss.reqtDiscussion.model.Discussion;
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
 import org.computer.knauss.reqtDiscussion.model.DiscussionFactory;
@@ -458,14 +458,14 @@ public class NetworkFrame extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Random r = new Random();
 				int actorNumber = 15;
 				DiscussionEvent[] wcs = new DiscussionEvent[20];
 				for (int i = 0; i < wcs.length; i++) {
 					wcs[i] = new DiscussionEvent();
-					wcs[i].setCreator("user" + r.nextInt(actorNumber));
+					wcs[i].setCreator("user"
+							+ Util.getRandom().nextInt(actorNumber));
 					wcs[i].setCreationDate(new Date(System.currentTimeMillis()
-							- r.nextInt(40)
+							- Util.getRandom().nextInt(40)
 							* TimeIntervalPartition.MILLIS_PER_DAY));
 				}
 

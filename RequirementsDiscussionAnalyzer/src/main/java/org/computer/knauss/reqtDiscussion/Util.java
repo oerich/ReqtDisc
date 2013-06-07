@@ -3,11 +3,13 @@ package org.computer.knauss.reqtDiscussion;
 import java.sql.Date;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Random;
 
 import org.computer.knauss.reqtDiscussion.io.util.DateParser;
 import org.computer.knauss.reqtDiscussion.model.Discussion;
 
 public class Util {
+	private static Random random;
 
 	public static Date parseDate(String dateString) {
 		return DateParser.getInstance().parseDate(dateString);
@@ -41,5 +43,19 @@ public class Util {
 			}
 
 		});
+	}
+
+	public synchronized static Random getRandom() {
+		if (random == null) {
+			long currentTimeMillis = System.currentTimeMillis();
+			random = new Random(currentTimeMillis);
+			System.out.println("Random seed: " + currentTimeMillis);
+		}
+		return random;
+	}
+
+	public static void useSeed(long seed) {
+		getRandom().setSeed(seed);
+		System.out.println("Random seed: " + seed);
 	}
 }

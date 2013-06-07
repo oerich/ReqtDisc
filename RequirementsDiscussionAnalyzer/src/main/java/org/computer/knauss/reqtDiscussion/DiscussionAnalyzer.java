@@ -28,6 +28,7 @@ import org.computer.knauss.reqtDiscussion.ui.ctrl.LoadDiscussions;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.LoadMoreDiscussions;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.LoadTrainingDataCmd;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.PrintTrajectoryFeatures;
+import org.computer.knauss.reqtDiscussion.ui.ctrl.SetRandomSeed;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.SetReferenceClassifierName;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.ShowStatistics;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.StoreDiscussionEventClassifications;
@@ -154,6 +155,8 @@ public class DiscussionAnalyzer {
 					configureCommand(new ClearClassifierCmd()));
 			daFrame.addAction(DiscussionAnalyzerFrame.ACTION_MENU,
 					configureCommand(new ExplainClassification()));
+			daFrame.addAction(DiscussionAnalyzerFrame.ACTION_MENU,
+					configureCommand(new SetRandomSeed()));
 
 			IClassificationFilter.NAME_FILTER.setName("no rater name set");
 
