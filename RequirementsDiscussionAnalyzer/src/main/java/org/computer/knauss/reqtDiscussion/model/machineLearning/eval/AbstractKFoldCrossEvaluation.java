@@ -55,6 +55,8 @@ public abstract class AbstractKFoldCrossEvaluation {
 					}
 				}
 			}
+			// Reset the name of the reference rater
+			IClassificationFilter.NAME_FILTER.setName(getReferenceRaterName());
 			return confusionMatrix;
 		}
 	};
@@ -90,7 +92,9 @@ public abstract class AbstractKFoldCrossEvaluation {
 					// System.out.println(line.toString());
 				}
 			}
-
+			// Reset the name of the reference rater
+			IClassificationFilter.NAME_FILTER.setName(getReferenceRaterName());
+			
 			return cm;
 		}
 	};
@@ -157,6 +161,8 @@ public abstract class AbstractKFoldCrossEvaluation {
 	}
 
 	public void setReferenceRaterName(String raterName) {
+		System.out.println(getClass().getSimpleName()
+				+ ".setReferenceRaterName(" + raterName + ")");
 		this.referenceRaterName = raterName;
 	}
 
