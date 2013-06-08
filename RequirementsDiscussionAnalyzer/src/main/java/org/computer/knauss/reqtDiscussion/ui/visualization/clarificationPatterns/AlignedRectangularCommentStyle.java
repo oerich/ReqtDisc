@@ -17,8 +17,10 @@ public class AlignedRectangularCommentStyle extends AbstractVisualizationStyle
 	public static final int VERTICAL_COMMENT_GAP = 5;
 	public static final int HORIZONTAL_COMMENT_GAP = 5;
 
-	private static final Color IN_CLASS_COLOR = new Color(0x9A0008);
-	private static final Color NOT_IN_CLASS_COLOR = new Color(0x00569A);
+	// private static final Color IN_CLASS_COLOR = new Color(0x9A0008);
+	// private static final Color NOT_IN_CLASS_COLOR = new Color(0x00569A);
+	private static final Color IN_CLASS_COLOR = new Color(215, 25, 28);
+	private static final Color NOT_IN_CLASS_COLOR = new Color(43, 131, 186);
 	private static final Color NOT_CLASSIFIED_COLOR = Color.GRAY;
 
 	private IDiscussionOverTimePartition partition;
