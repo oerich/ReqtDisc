@@ -1,0 +1,26 @@
+EXISTS_TABLE = SELECT c.oid FROM pg_catalog.pg_class c LEFT JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace WHERE c.relname ~ ? AND pg_catalog.pg_table_is_visible(c.oid);
+
+DISCUSSION_TABLE = discussion
+SELECT_DISCUSSION_BY_ID = SELECT * FROM discussion WHERE ID = ?;
+SELECT_ALL_DISCUSSIONS = SELECT * FROM discussion;
+NUMBER_OF_ALL_DISCUSSIONS = SELECT count(*) FROM discussion;
+CREATE_DISCUSSION_TABLE = CREATE TABLE discussion (id INTEGER PRIMARY KEY, topic TEXT, description TEXT, type TEXT, date DATE, status TEXT, creator TEXT);
+INSERT_DISCUSSION = INSERT INTO discussion values (?,?,?,?,?,?,?);
+UPDATE_DISCUSSION = UPDATE discussion SET topic = ?, description = ?, type = ?, date = ?, status = ?, creator = ? WHERE id = ?;
+DROP_DISCUSSION_TABLE = DROP TABLE discussion;
+
+DISCUSSION_EVENT_TABLE_NAME = discussionevent
+SELECT_DISCUSSION_EVENT_BY_DISCUSSION_ID = SELECT * FROM discussionevent WHERE discussionId = ?;
+SELECT_NEW_DISCUSSION_EVENT_ID = SELECT max(id) from discussionEvent WHERE discussionId = ?;
+INSERT_DISCUSSION_EVENT = INSERT INTO discussionevent (id, discussionId, content, creationDate, creator) VALUES (?,?,?,?,?);
+DELETE_DISCUSSION_EVENT_OF_DISCUSSION = DELETE FROM discussionevent WHERE discussionId = ?;
+CREATE_DISCUSSION_EVENT_TABLE = CREATE TABLE discussionevent (id INTEGER, discussionId INTEGER, content TEXT, creationDate DATE, creator TEXT, CONSTRAINT discussionEvent_pk PRIMARY KEY (id, discussionId), CONSTRAINT discussionEvent_discussion_fkey FOREIGN KEY (discussionId) REFERENCES discussion (id));
+DROP_DISCUSSION_EVENT_TABLE = DROP TABLE discussionevent;
+
+DISCUSSION_EVENT_CLASSIFICATION_TABLE_NAME = discussioneventclassification
+SELECT_DISCUSSION_EVENT_CLASSIFICATION_BY_DISCUSSION_EVENT_ID = SELECT discussionEventId, classifiedBy, classification, confidence, comment FROM discussioneventclassification WHERE discussionId = ? AND discussionEventId = ?;
+INSERT_DISCUSSION_EVENT_CLASSIFICATION = INSERT INTO discussioneventclassification values (?,?,?,?,?,?);
+UPDATE_DISCUSSION_EVENT_CLASSIFICATION = UPDATE discussioneventclassification SET classification=?, confidence=?, comment=? WHERE discussionId=? AND discussionEventId=? AND classifiedBy=?;
+EXISTS_DISCUSSION_EVENT_CLASSIFICATION = SELECT count(*) FROM discussioneventclassification WHERE discussionId = ? AND discussionEventId = ? AND classifiedBy = ?;
+CREATE_DISCUSSION_EVENT_CLASSIFICATION_TABLE = CREATE TABLE discussioneventclassification (discussionId INTEGER, discussionEventId INTEGER, classifiedBy TEXT, classification TEXT, confidence FLOAT, comment TEXT, CONSTRAINT discussioneventclassification_pkey PRIMARY KEY (discussionId, discussionEventId, classifiedBy));
+DROP_DISCUSSION_EVENT_CLASSIFICATION_TABLE = DROP TABLE discussioneventclassification;

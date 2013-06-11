@@ -11,6 +11,7 @@ import java.util.Properties;
 
 import org.computer.knauss.reqtDiscussion.io.DAOException;
 import org.computer.knauss.reqtDiscussion.io.IDiscussionEventClassificationDAO;
+import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
 import org.computer.knauss.reqtDiscussion.model.DiscussionEventClassification;
 
 /**
@@ -33,7 +34,7 @@ public class SQLDiscussionEventClassificationDAO extends AbstractSQLDAO
 
 	@Override
 	public DiscussionEventClassification[] getClassificationsForDiscussionEvent(
-			int discEventID) throws DAOException {
+			DiscussionEvent de) throws DAOException {
 		try {
 			if (!existsTable(getConfiguration().getProperty(
 					DISCUSSION_EVENT_CLASSIFICATION_TABLE_NAME)))
@@ -42,11 +43,20 @@ public class SQLDiscussionEventClassificationDAO extends AbstractSQLDAO
 					.getProperty(
 							SELECT_DISCUSSION_EVENT_CLASSIFICATION_BY_DISCUSSION_EVENT_ID));
 			List<DiscussionEventClassification> res = new LinkedList<DiscussionEventClassification>();
-			stat.setInt(1, discEventID);
+			if (stat.getParameterMetaData().getParameterCount() == 1) {
+				stat.setInt(1, de.getID());
+			} else if (stat.getParameterMetaData().getParameterCount() == 2) {
+				stat.setInt(1, de.getDiscussionID());
+				stat.setInt(2, de.getID());
+			} else {
+				throw new DAOException("Statement '" + stat.toString()
+						+ "' has wrong number of parameters.");
+			}
 			ResultSet rs = stat.executeQuery();
 			while (rs.next()) {
 				DiscussionEventClassification dec = new DiscussionEventClassification();
-				dec.setWorkitemcommentid(rs.getInt("discussionEventId"));
+				dec.setDiscussionID(de.getDiscussionID());
+				dec.setDiscussionEventID(rs.getInt("discussionEventId"));
 				dec.setClassifiedby(rs.getString("classifiedBy"));
 				dec.setClassification(rs.getString("classification"));
 				dec.setConfidence(rs.getDouble("confidence"));
@@ -70,8 +80,17 @@ public class SQLDiscussionEventClassificationDAO extends AbstractSQLDAO
 
 			PreparedStatement stat = getPreparedStatement(getConfiguration()
 					.getProperty(EXISTS_DISCUSSION_EVENT_CLASSIFICATION));
-			stat.setInt(1, classification.getDiscussionEventID());
-			stat.setString(2, classification.getClassifiedby());
+			if (stat.getParameterMetaData().getParameterCount() == 2) {
+				stat.setInt(1, classification.getDiscussionEventID());
+				stat.setString(2, classification.getClassifiedby());
+			} else if (stat.getParameterMetaData().getParameterCount() == 3) {
+				stat.setInt(1, classification.getDiscussionID());
+				stat.setInt(2, classification.getDiscussionEventID());
+				stat.setString(3, classification.getClassifiedby());
+			} else {
+				throw new DAOException("Statement '" + stat.toString()
+						+ "' has wrong number of parameters.");
+			}
 			ResultSet rs = stat.executeQuery();
 			int rows = 0;
 			if (rs.next()) {
@@ -82,20 +101,45 @@ public class SQLDiscussionEventClassificationDAO extends AbstractSQLDAO
 				System.out.println("UPDATE");
 				stat = getPreparedStatement(getConfiguration().getProperty(
 						UPDATE_DISCUSSION_EVENT_CLASSIFICATION));
-				stat.setString(1, classification.getClassification());
-				stat.setDouble(2, classification.getConfidence());
-				stat.setString(3, classification.getComment());
-				stat.setInt(4, classification.getDiscussionEventID());
-				stat.setString(5, classification.getClassifiedby());
+				if (stat.getParameterMetaData().getParameterCount() == 5) {
+					stat.setString(1, classification.getClassification());
+					stat.setDouble(2, classification.getConfidence());
+					stat.setString(3, classification.getComment());
+					stat.setInt(4, classification.getDiscussionEventID());
+					stat.setString(5, classification.getClassifiedby());
+				} else if (stat.getParameterMetaData().getParameterCount() == 6) {
+					stat.setString(1, classification.getClassification());
+					stat.setDouble(2, classification.getConfidence());
+					stat.setString(3, classification.getComment());
+					stat.setInt(4, classification.getDiscussionID());
+					stat.setInt(5, classification.getDiscussionEventID());
+					stat.setString(6, classification.getClassifiedby());
+				} else {
+					throw new DAOException("Statement '" + stat.toString()
+							+ "' has wrong number of parameters.");
+				}
 			} else {
 				System.out.println("INSERT");
 				stat = getPreparedStatement(getConfiguration().getProperty(
 						INSERT_DISCUSSION_EVENT_CLASSIFICATION));
-				stat.setInt(1, classification.getDiscussionEventID());
-				stat.setString(2, classification.getClassifiedby());
-				stat.setString(3, classification.getClassification());
-				stat.setDouble(4, classification.getConfidence());
-				stat.setString(5, classification.getComment());
+				if (stat.getParameterMetaData().getParameterCount() == 5) {
+					stat.setInt(1, classification.getDiscussionEventID());
+					stat.setString(2, classification.getClassifiedby());
+					stat.setString(3, classification.getClassification());
+					stat.setDouble(4, classification.getConfidence());
+					stat.setString(5, classification.getComment());
+				} else if (stat.getParameterMetaData().getParameterCount() == 6) {
+					stat.setInt(1, classification.getDiscussionID());
+					stat.setInt(2, classification.getDiscussionEventID());
+					stat.setString(3, classification.getClassifiedby());
+					stat.setString(4, classification.getClassification());
+					stat.setDouble(5, classification.getConfidence());
+					stat.setString(6, classification.getComment());
+
+				} else {
+					throw new DAOException("Statement '" + stat.toString()
+							+ "' has wrong number of parameters.");
+				}
 			}
 			int executeUpdate = stat.executeUpdate();
 			if (1 != executeUpdate) {
