@@ -201,7 +201,7 @@ public class EditClassificationFrame extends JFrame implements
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
 					// put all data in the classification object
-					classification.setWorkitemcommentid(discussionEvent.getID());
+					classification.setDiscussionEventID(discussionEvent.getID());
 					classification
 							.setClassifiedby(IClassificationFilter.NAME_FILTER
 									.getName());

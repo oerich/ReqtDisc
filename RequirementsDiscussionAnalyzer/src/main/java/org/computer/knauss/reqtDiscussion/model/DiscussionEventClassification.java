@@ -36,7 +36,7 @@ public class DiscussionEventClassification {
 		return discussionEventID;
 	}
 
-	public void setWorkitemcommentid(int discussionEventID) {
+	public void setDiscussionEventID(int discussionEventID) {
 		this.discussionEventID = discussionEventID;
 	}
 
@@ -47,5 +47,5 @@ public class DiscussionEventClassification {
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
-	
+
 }
