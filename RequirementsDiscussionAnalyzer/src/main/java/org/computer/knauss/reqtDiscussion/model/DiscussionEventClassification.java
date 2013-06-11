@@ -5,6 +5,7 @@ public class DiscussionEventClassification {
 	private String classification = "no classification found";
 	private double confidence = 0;
 	private String classifiedby = "";
+	private int discussionID = -1;
 	private int discussionEventID = -1;
 	private String comment = "";
 
@@ -34,6 +35,14 @@ public class DiscussionEventClassification {
 
 	public int getDiscussionEventID() {
 		return discussionEventID;
+	}
+
+	public int getDiscussionID() {
+		return discussionID;
+	}
+
+	public void setDiscussionID(int discussionID) {
+		this.discussionID = discussionID;
 	}
 
 	public void setDiscussionEventID(int discussionEventID) {

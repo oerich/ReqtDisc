@@ -7,6 +7,7 @@ import java.util.Random;
 
 import org.computer.knauss.reqtDiscussion.io.util.DateParser;
 import org.computer.knauss.reqtDiscussion.model.Discussion;
+import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
 
 public class Util {
 	private static Random random;
@@ -42,6 +43,15 @@ public class Util {
 				return ((Integer) o1.getID()).compareTo(o2.getID());
 			}
 
+		});
+	}
+
+	public static void sortByDate(DiscussionEvent[] des) {
+		Arrays.sort(des, new Comparator<DiscussionEvent>() {
+			@Override
+			public int compare(DiscussionEvent o1, DiscussionEvent o2) {
+				return o1.getCreationDate().compareTo(o2.getCreationDate());
+			}
 		});
 	}
 

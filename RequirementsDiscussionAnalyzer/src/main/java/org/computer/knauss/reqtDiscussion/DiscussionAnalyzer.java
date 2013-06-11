@@ -36,6 +36,7 @@ import org.computer.knauss.reqtDiscussion.ui.ctrl.StoreDiscussions;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.StoreTrainingDataCmd;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.SysoutCommentStatistics;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.TrainClassifierCmd;
+import org.computer.knauss.reqtDiscussion.ui.ctrl.UpdateToNewSchema;
 import org.computer.knauss.reqtDiscussion.ui.uiModel.DiscussionTableModel;
 
 public class DiscussionAnalyzer {
@@ -76,6 +77,9 @@ public class DiscussionAnalyzer {
 			daoRegistry.register("MySQL (trento)", new SQLDAOManager(
 					new String[] { "/mysql-default-schema-queries.txt",
 							"/trento-mysql-properties.txt" }));
+			daoRegistry.register("V:Issue:lizer", new SQLDAOManager(
+					new String[] { "/vissuelizer-postgres-properties.txt",
+							"/vissuelizer-postgres-schema.txt" }));
 
 			// add the commands
 			daFrame.addAction(
@@ -112,6 +116,10 @@ public class DiscussionAnalyzer {
 					configureCommand(new StoreDiscussionEventClassifications()));
 			daFrame.addAction(DiscussionAnalyzerFrame.DATA_MENU,
 					configureCommand(new ExportDiscussionEvents()));
+			daFrame.addSeperator(DiscussionAnalyzerFrame.DATA_MENU,
+					"clean or destroy data");
+			daFrame.addAction(DiscussionAnalyzerFrame.DATA_MENU,
+					configureCommand(new UpdateToNewSchema()));
 
 			daFrame.addSeperator(DiscussionAnalyzerFrame.EDIT_MENU,
 					"configure classification");
