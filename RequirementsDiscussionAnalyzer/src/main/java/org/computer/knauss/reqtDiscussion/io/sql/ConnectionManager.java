@@ -22,7 +22,7 @@ public class ConnectionManager implements IConfigurable {
 		// This is a Singleton
 	}
 
-	public static ConnectionManager getInstance() {
+	public synchronized static ConnectionManager getInstance() {
 		if (INSTANCE == null)
 			INSTANCE = new ConnectionManager();
 		return INSTANCE;
