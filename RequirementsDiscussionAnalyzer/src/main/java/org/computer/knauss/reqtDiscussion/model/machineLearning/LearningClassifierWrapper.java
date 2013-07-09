@@ -90,13 +90,14 @@ public class LearningClassifierWrapper implements IDiscussionEventClassifier {
 
 	@Override
 	public void storeToFile() {
-		if (this.delegate instanceof NewBayesianClassifier)
-			try {
+		try {
+			if (this.delegate instanceof NewBayesianClassifier)
 				((NewBayesianClassifier) this.delegate).storeToFile();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			if (this.delegate instanceof HybridBayesianClassifier)
+				((HybridBayesianClassifier) this.delegate).storeToFile();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override

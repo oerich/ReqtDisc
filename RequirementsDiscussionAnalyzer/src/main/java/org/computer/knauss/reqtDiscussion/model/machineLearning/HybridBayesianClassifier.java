@@ -27,28 +27,37 @@ public class HybridBayesianClassifier implements ILearningClassifier {
 	private ILearningClassifier getInClassDelegate() {
 		if (this.inClassDelegate == null)
 			try {
-				this.inClassDelegate = new NewBayesianClassifier();
-				((NewBayesianClassifier) this.inClassDelegate)
-						.setAutosave(false);
+				this.inClassDelegate = constructClassifier();
 			} catch (IOException e) {
 				e.printStackTrace();
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-		;
 		return this.inClassDelegate;
 	}
 
 	private ILearningClassifier getNotInClassDelegate() {
 		if (this.notinClassDelegate == null)
 			try {
-				this.notinClassDelegate = new NewBayesianClassifier();
-
-				((NewBayesianClassifier) this.notinClassDelegate)
-						.setAutosave(false);
+				NewBayesianClassifier classifier = constructClassifier();
+				classifier.setProClassBias(2);
+				// classifier.setUnknownWordValue(0.6);
+				this.notinClassDelegate = classifier;
 			} catch (IOException e) {
 				e.printStackTrace();
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-		;
 		return this.notinClassDelegate;
+	}
+
+	private NewBayesianClassifier constructClassifier() throws IOException {
+		NewBayesianClassifier classifier = new NewBayesianClassifier();
+		classifier.setAutosave(false);
+		// set default values
+		classifier.setProClassBias(1);
+		classifier.setUnknownWordValue(0.5);
+		return classifier;
 	}
 
 	@Override
@@ -136,6 +145,19 @@ public class HybridBayesianClassifier implements ILearningClassifier {
 	public void clear() throws Exception {
 		getInClassDelegate().clear();
 		getNotInClassDelegate().clear();
+	}
+
+	public void storeToFile() {
+		ILearningClassifier[] classifiers = new ILearningClassifier[] {
+				inClassDelegate, notinClassDelegate };
+		for (ILearningClassifier classifier : classifiers)
+			if (classifier instanceof NewBayesianClassifier)
+				try {
+					NewBayesianClassifier nbc = (NewBayesianClassifier) classifier;
+					nbc.storeToFile();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 	}
 
 }
