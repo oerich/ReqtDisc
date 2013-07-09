@@ -23,6 +23,8 @@ public class ChooseDAOManager extends AbstractCommand {
 				"Available datasources:", "Choose data source",
 				JOptionPane.QUESTION_MESSAGE, null, sources, current);
 		DAORegistry.getInstance().selectDAOManager(choice);
+		// Probably a good idea to close everything and start with fresh connections:
+		DAORegistry.getInstance().closeAllConnections();
 	}
 
 }

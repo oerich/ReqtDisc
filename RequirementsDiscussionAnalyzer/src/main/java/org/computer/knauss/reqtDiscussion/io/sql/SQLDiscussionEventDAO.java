@@ -68,7 +68,7 @@ public class SQLDiscussionEventDAO extends AbstractSQLDAO implements
 				de.setCreationDate(rs.getDate("creationDate"));
 				de.setCreator(rs.getString("creator"));
 				de.setDiscussionEventClassifications(this.discEventClassDAO
-						.getClassificationsForDiscussionEvent(de.getID()));
+						.getClassificationsForDiscussionEvent(de));
 				res.add(de);
 			}
 			return res.toArray(new DiscussionEvent[0]);
@@ -127,7 +127,7 @@ public class SQLDiscussionEventDAO extends AbstractSQLDAO implements
 					int id = de.getID();
 
 					if (id < 0)
-						id = getNextDiscussionEventID();
+						id = getNextDiscussionEventID(de.getDiscussionID());
 					stat.setInt(1, id);
 					stat.setInt(2, de.getDiscussionID());
 					stat.setString(3, de.getContent());
@@ -179,9 +179,21 @@ public class SQLDiscussionEventDAO extends AbstractSQLDAO implements
 		return rs.next();
 	}
 
-	private int getNextDiscussionEventID() throws SQLException {
+	/**
+	 * 
+	 * @param discussionID
+	 *            - will only be used if we are on the new schema.
+	 * @return
+	 * @throws SQLException
+	 */
+	private int getNextDiscussionEventID(int discussionID) throws SQLException {
 		PreparedStatement ps = getPreparedStatement(getConfiguration()
 				.getProperty(SELECT_NEW_DISCUSSION_EVENT_ID));
+		if (ps.getParameterMetaData().getParameterCount() == 1) {
+			// We are using the new schema with id and discussionID as primary
+			// key
+			ps.setInt(1, discussionID);
+		}
 		ResultSet rs = ps.executeQuery();
 		if (!rs.next())
 			return 1;

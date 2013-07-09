@@ -173,7 +173,7 @@ public abstract class AbstractKFoldCrossEvaluation {
 			double confidence = classifier.classify(de);
 			dec.setClassifiedby(classifier.getClass().getSimpleName());
 			dec.setConfidence(confidence);
-			dec.setWorkitemcommentid(de.getID());
+			dec.setDiscussionEventID(de.getID());
 
 			if (classifier.getMatchValue() < confidence) {
 				dec.setClassification("clarif");

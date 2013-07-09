@@ -93,7 +93,7 @@ public class AbstractKFoldCrossEvaluationTest {
 				// rater is hard coded...
 				dec.setClassifiedby("eric1");
 				dec.setConfidence(Util.getRandom().nextDouble());
-				dec.setWorkitemcommentid(des[j].getID());
+				dec.setDiscussionEventID(des[j].getID());
 				des[j].insertOrUpdateClassification(dec);
 			}
 			ret[i] = DiscussionFactory.getInstance().getDiscussion(i);
