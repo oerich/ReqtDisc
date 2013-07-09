@@ -1,5 +1,7 @@
 package org.computer.knauss.reqtDiscussion.ui.ctrl;
 
+import javax.swing.JOptionPane;
+
 import org.computer.knauss.reqtDiscussion.model.Discussion;
 import org.computer.knauss.reqtDiscussion.model.DiscussionEvent;
 import org.computer.knauss.reqtDiscussion.model.machineLearning.ClassifierManager;
@@ -16,7 +18,18 @@ public class TrainClassifierCmd extends AbstractDiscussionIterationCommand {
 
 	@Override
 	protected void preProcessingHook() {
-		classifier = ClassifierManager.getInstance().getClassifier();
+		// Which classifier to use?
+		IDiscussionEventClassifier[] options = ClassifierManager.getInstance()
+				.getAvailableClassifiers();
+		IDiscussionEventClassifier classifier = (IDiscussionEventClassifier) JOptionPane
+				.showInputDialog(null,
+						"Please select the classifier for evaluation.",
+						"Classifier", JOptionPane.QUESTION_MESSAGE, null,
+						options, options[0]);
+		if (classifier == null)
+			return;
+
+		this.classifier = classifier;
 	}
 
 	@Override
@@ -28,7 +41,7 @@ public class TrainClassifierCmd extends AbstractDiscussionIterationCommand {
 			this.classifier.trainDiscussionEvent(de);
 		}
 		classifier.storeToFile();
-		System.out.println();
+//		System.out.println();
 	}
 
 }
