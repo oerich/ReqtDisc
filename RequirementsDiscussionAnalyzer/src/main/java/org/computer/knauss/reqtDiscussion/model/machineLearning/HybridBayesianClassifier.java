@@ -8,6 +8,7 @@ import javax.swing.table.TableModel;
 import oerich.nlputils.NLPInitializationException;
 import oerich.nlputils.classifier.machinelearning.ILearningClassifier;
 import oerich.nlputils.classifier.machinelearning.NewBayesianClassifier;
+import oerich.nlputils.text.DuplicateFilter;
 
 public class HybridBayesianClassifier implements ILearningClassifier {
 
@@ -57,6 +58,8 @@ public class HybridBayesianClassifier implements ILearningClassifier {
 		// set default values
 		classifier.setProClassBias(1);
 		classifier.setUnknownWordValue(0.5);
+		// Count each word only once per discussion event
+		classifier.setStopWordFilter(new DuplicateFilter());
 		return classifier;
 	}
 
