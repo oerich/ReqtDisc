@@ -9,6 +9,7 @@ import javax.imageio.ImageIO;
 
 import org.computer.knauss.reqtDiscussion.Util;
 import org.computer.knauss.reqtDiscussion.model.Discussion;
+import org.computer.knauss.reqtDiscussion.model.IClassificationFilter;
 import org.computer.knauss.reqtDiscussion.model.metric.PatternMetric;
 import org.computer.knauss.reqtDiscussion.ui.DiscussionVisualizationPanel;
 
@@ -50,7 +51,11 @@ public class ExportAllVisualizations extends AbstractDiscussionIterationCommand 
 				filename += wi.getID() + "-";
 		else
 			filename = "empty-";
-		File f = new File(filename.substring(0, filename.length() - 1) + ".png");
+
+		String ratername = IClassificationFilter.NAME_FILTER.getName()
+				.replaceAll(",", "-");
+
+		File f = new File(filename + ratername + ".png");
 		f.mkdirs();
 		try {
 			ImageIO.write(bi, "png", f);
