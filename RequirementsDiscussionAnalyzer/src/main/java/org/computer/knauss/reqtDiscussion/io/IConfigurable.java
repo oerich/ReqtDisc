@@ -4,6 +4,11 @@ import java.util.Map;
 import java.util.Properties;
 
 public interface IConfigurable {
+	
+	public static final String PROP_URL = "url";
+	public static final String PROP_USER = "user";
+	public static final String PROP_PASS = "pass";
+	
 	public void configure(Properties properties) throws DAOException;
 
 	/**
