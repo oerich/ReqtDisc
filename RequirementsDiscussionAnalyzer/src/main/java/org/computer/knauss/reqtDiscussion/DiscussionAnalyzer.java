@@ -5,6 +5,8 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
 
+import oerich.nlputils.NLPProperties;
+
 import org.computer.knauss.reqtDiscussion.io.DAORegistry;
 import org.computer.knauss.reqtDiscussion.io.jazz.JazzDAOManager;
 import org.computer.knauss.reqtDiscussion.io.sql.SQLDAOManager;
@@ -15,6 +17,7 @@ import org.computer.knauss.reqtDiscussion.ui.ctrl.AbstractCommand;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.ChooseDAOManager;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.ClassifyDataCmd;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.ClearClassifierCmd;
+import org.computer.knauss.reqtDiscussion.ui.ctrl.ComputeConfusionMatrix;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.ConfigureJazzDAO;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.EditDatasourceCommand;
 import org.computer.knauss.reqtDiscussion.ui.ctrl.ExplainClassification;
@@ -47,6 +50,7 @@ public class DiscussionAnalyzer {
 	private static VisualizationConfiguration configuration;
 
 	public static void main(String[] args) {
+		NLPProperties.getInstance().setResourcePath("/");
 
 		// create the model:
 		tableModel = new DiscussionTableModel();
@@ -158,6 +162,8 @@ public class DiscussionAnalyzer {
 			// daFrame.addAction(
 			// DiscussionAnalyzerFrame.ACTION_MENU,
 			// configureCommand(new SimpleDiscussionClassifierEvaluationCmd()));
+			daFrame.addAction(DiscussionAnalyzerFrame.ACTION_MENU,
+					configureCommand(new ComputeConfusionMatrix()));
 			daFrame.addAction(DiscussionAnalyzerFrame.ACTION_MENU,
 					configureCommand(new KFoldCrossDiscussionEvaluationCmd()));
 
