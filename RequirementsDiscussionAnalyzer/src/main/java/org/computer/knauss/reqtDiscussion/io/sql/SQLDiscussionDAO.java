@@ -150,7 +150,7 @@ public class SQLDiscussionDAO extends AbstractSQLDAO implements IDiscussionDAO {
 			storeDiscussion(d);
 	}
 
-	private boolean existsDiscussion(int ID) throws SQLException {
+	private boolean existsDiscussion(int ID) throws SQLException, DAOException {
 		PreparedStatement ps = getPreparedStatement(getConfiguration()
 				.getProperty(SELECT_DISCUSSION_BY_ID));
 		ps.setInt(1, ID);
@@ -161,7 +161,7 @@ public class SQLDiscussionDAO extends AbstractSQLDAO implements IDiscussionDAO {
 
 	}
 
-	void createSchema() throws SQLException {
+	void createSchema() throws SQLException, DAOException {
 		getPreparedStatement(
 				getConfiguration().getProperty(CREATE_DISCUSSION_TABLE))
 				.executeUpdate();
@@ -169,7 +169,7 @@ public class SQLDiscussionDAO extends AbstractSQLDAO implements IDiscussionDAO {
 				+ getConfiguration().getProperty(DISCUSSION_TABLE) + ".");
 	}
 
-	public void dropSchema() throws SQLException {
+	public void dropSchema() throws SQLException, DAOException {
 		getPreparedStatement(
 				getConfiguration().getProperty(DROP_DISCUSSION_TABLE))
 				.execute();
@@ -214,7 +214,7 @@ public class SQLDiscussionDAO extends AbstractSQLDAO implements IDiscussionDAO {
 		}
 	}
 
-	private int numberOfAllDiscussions() throws SQLException {
+	private int numberOfAllDiscussions() throws SQLException, DAOException {
 		if (!existsTable(getConfiguration().getProperty(DISCUSSION_TABLE)))
 			return 0;
 		String numberQuery = getConfiguration().getProperty(

@@ -157,7 +157,7 @@ public class SQLDiscussionEventClassificationDAO extends AbstractSQLDAO
 		}
 	}
 
-	public void createSchema() throws SQLException {
+	public void createSchema() throws SQLException, DAOException {
 		getPreparedStatement(
 				getConfiguration().getProperty(
 						CREATE_DISCUSSION_EVENT_CLASSIFICATION_TABLE))
@@ -167,7 +167,7 @@ public class SQLDiscussionEventClassificationDAO extends AbstractSQLDAO
 						DISCUSSION_EVENT_CLASSIFICATION_TABLE_NAME) + ".");
 	}
 
-	public void dropSchema() throws SQLException {
+	public void dropSchema() throws SQLException, DAOException {
 		getPreparedStatement(
 				getConfiguration().getProperty(
 						DROP_DISCUSSION_EVENT_CLASSIFICATION_TABLE)).execute();

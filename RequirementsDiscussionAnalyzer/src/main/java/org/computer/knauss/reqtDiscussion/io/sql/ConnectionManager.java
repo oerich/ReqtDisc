@@ -7,13 +7,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+import org.computer.knauss.reqtDiscussion.io.DAOException;
 import org.computer.knauss.reqtDiscussion.io.IConfigurable;
 
 public class ConnectionManager implements IConfigurable {
 
-	private static final String PROP_URL = "url";
-	private static final String PROP_USER = "user";
-	private static final String PROP_PASS = "pass";
 	private static ConnectionManager INSTANCE = null;
 	private Connection connection;
 	private Properties properties;
@@ -28,7 +26,7 @@ public class ConnectionManager implements IConfigurable {
 		return INSTANCE;
 	}
 
-	public Connection getConnection() {
+	public Connection getConnection() throws DAOException {
 		if (this.connection == null) {
 			String url = this.properties.getProperty(PROP_URL);
 			try {
@@ -67,10 +65,9 @@ public class ConnectionManager implements IConfigurable {
 							pass);
 				}
 			} catch (SQLException e) {
-				System.err
-						.println("Connection Failed! Check output console. You might want to connect to the database: ssh -L 5432:localhost:5432 ballroom.segal.uvic.ca");
-				e.printStackTrace();
-				return null;
+				throw new DAOException(
+						"Connection Failed! Check output console. You might want to connect to the database: ssh -L 5432:localhost:5432 ballroom.segal.uvic.ca",
+						e);
 
 			}
 		}

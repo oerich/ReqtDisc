@@ -30,7 +30,7 @@ public abstract class AbstractSQLDAO implements IConfigurable {
 
 	protected abstract Properties getDefaultProperties();
 
-	protected boolean existsTable(String tableName) throws SQLException {
+	protected boolean existsTable(String tableName) throws SQLException, DAOException {
 		if (tableName == null || "".equals(tableName))
 			return false;
 
@@ -45,7 +45,7 @@ public abstract class AbstractSQLDAO implements IConfigurable {
 	}
 
 	protected PreparedStatement getPreparedStatement(String name)
-			throws SQLException {
+			throws SQLException, DAOException {
 		// Connection still valid?
 		Connection c = ConnectionManager.getInstance().getConnection();
 		if (c.isClosed()) {

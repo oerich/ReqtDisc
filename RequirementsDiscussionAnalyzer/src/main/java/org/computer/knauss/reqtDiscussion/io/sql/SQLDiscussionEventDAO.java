@@ -152,7 +152,7 @@ public class SQLDiscussionEventDAO extends AbstractSQLDAO implements
 		}
 	}
 
-	void createSchema() throws SQLException {
+	void createSchema() throws SQLException, DAOException {
 		getPreparedStatement(
 				getConfiguration().getProperty(CREATE_DISCUSSION_EVENT_TABLE))
 				.executeUpdate();
@@ -161,7 +161,7 @@ public class SQLDiscussionEventDAO extends AbstractSQLDAO implements
 				+ ".");
 	}
 
-	public void dropSchema() throws SQLException {
+	public void dropSchema() throws SQLException, DAOException {
 		getPreparedStatement(
 				getConfiguration().getProperty(DROP_DISCUSSION_EVENT_TABLE))
 				.execute();
@@ -170,7 +170,7 @@ public class SQLDiscussionEventDAO extends AbstractSQLDAO implements
 				+ ".");
 	}
 
-	private boolean existsDiscussion(int ID) throws SQLException {
+	private boolean existsDiscussion(int ID) throws SQLException, DAOException {
 		PreparedStatement ps = getPreparedStatement(getConfiguration()
 				.getProperty(SELECT_DISCUSSION_EVENT_BY_DISCUSSION_ID));
 		ps.setInt(1, ID);
@@ -185,8 +185,9 @@ public class SQLDiscussionEventDAO extends AbstractSQLDAO implements
 	 *            - will only be used if we are on the new schema.
 	 * @return
 	 * @throws SQLException
+	 * @throws DAOException 
 	 */
-	private int getNextDiscussionEventID(int discussionID) throws SQLException {
+	private int getNextDiscussionEventID(int discussionID) throws SQLException, DAOException {
 		PreparedStatement ps = getPreparedStatement(getConfiguration()
 				.getProperty(SELECT_NEW_DISCUSSION_EVENT_ID));
 		if (ps.getParameterMetaData().getParameterCount() == 1) {
