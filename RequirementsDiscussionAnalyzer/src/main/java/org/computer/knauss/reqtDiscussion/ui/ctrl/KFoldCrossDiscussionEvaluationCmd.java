@@ -22,9 +22,11 @@ public class KFoldCrossDiscussionEvaluationCmd extends AbstractCommand {
 	public static final int LATEX_STYLE = 0;
 	public static final int TAB_SEPARATED_STYLE = 1;
 	private static final long serialVersionUID = 1L;
+	private ExportVisualization visualizationExporter;
 
-	public KFoldCrossDiscussionEvaluationCmd() {
+	public KFoldCrossDiscussionEvaluationCmd(ExportVisualization visualizationExporter) {
 		super("K-fold cross evaluation");
+		this.visualizationExporter = visualizationExporter;
 	}
 
 	@Override
@@ -44,6 +46,9 @@ public class KFoldCrossDiscussionEvaluationCmd extends AbstractCommand {
 		else
 			eval = AbstractKFoldCrossEvaluation.DISCUSSION_LEVEL;
 
+		// Allow debugging
+		eval.setVisualizationExporter(this.visualizationExporter);
+		
 		// Which classifier to use?
 		options = ClassifierManager.getInstance().getAvailableClassifiers();
 		IDiscussionEventClassifier classifier = (IDiscussionEventClassifier) JOptionPane

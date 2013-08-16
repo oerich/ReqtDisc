@@ -9,6 +9,7 @@ import org.computer.knauss.reqtDiscussion.model.IDiscussionFilter;
 import org.computer.knauss.reqtDiscussion.model.machineLearning.IDiscussionEventClassifier;
 import org.computer.knauss.reqtDiscussion.model.machineLearning.ITrainingStrategy;
 import org.computer.knauss.reqtDiscussion.model.metric.PatternMetric;
+import org.computer.knauss.reqtDiscussion.ui.ctrl.ExportVisualization;
 
 public abstract class AbstractKFoldCrossEvaluation {
 
@@ -25,7 +26,6 @@ public abstract class AbstractKFoldCrossEvaluation {
 			for (int b = 0; b < buckets.getNumberOfBuckets(); b++) {
 				for (Discussion discussion : buckets.getDiscussionsForBucket(b)) {
 					if (getDiscussionFilter().accept(discussion)) {
-						System.out.print('.');
 						// workaround until the composite discussion has made it
 						// through the whole system
 						Discussion[] ds = new Discussion[] { discussion };
@@ -40,9 +40,15 @@ public abstract class AbstractKFoldCrossEvaluation {
 						int classification = getPatternMetric()
 								.considerDiscussions(ds).intValue();
 
-						confusionMatrix.report(
-								getPatternMetric().decode(reference),
-								getPatternMetric().decode(classification));
+						String referencePattern = getPatternMetric().decode(
+								reference);
+						String classifiedPattern = getPatternMetric().decode(
+								classification);
+						confusionMatrix.report(referencePattern,
+								classifiedPattern);
+						
+						if(this.exporter != null && !referencePattern.equals(classifiedPattern))
+							exporter.export(ds, referencePattern + "-" + classifiedPattern);
 
 						// StringBuffer line = new StringBuffer();
 						// line.append(discussion.getID());
@@ -94,7 +100,7 @@ public abstract class AbstractKFoldCrossEvaluation {
 			}
 			// Reset the name of the reference rater
 			IClassificationFilter.NAME_FILTER.setName(getReferenceRaterName());
-			
+
 			return cm;
 		}
 	};
@@ -114,6 +120,7 @@ public abstract class AbstractKFoldCrossEvaluation {
 		}
 	};
 	private ITrainingStrategy trainingStrat = ITrainingStrategy.DEFAULT_STRAT;
+	protected ExportVisualization exporter;
 
 	public ConfusionMatrix evaluate(int k, Discussion[] discussions,
 			IDAOProgressMonitor progressMonitor) {
@@ -161,7 +168,7 @@ public abstract class AbstractKFoldCrossEvaluation {
 	}
 
 	public void setReferenceRaterName(String raterName) {
-		System.out.println(getClass().getSimpleName()
+		System.out.println(getClass().getName()
 				+ ".setReferenceRaterName(" + raterName + ")");
 		this.referenceRaterName = raterName;
 	}
@@ -236,5 +243,15 @@ public abstract class AbstractKFoldCrossEvaluation {
 
 	public void setTrainingStrategy(ITrainingStrategy trainingStrat) {
 		this.trainingStrat = trainingStrat;
+	}
+
+	/**
+	 * If no null, this exporter will be used for storing automatically created
+	 * trajectories during evaluation to compare them later.
+	 * 
+	 * @param exporter
+	 */
+	public void setVisualizationExporter(ExportVisualization exporter) {
+		this.exporter = exporter;
 	}
 }

@@ -87,10 +87,10 @@ public class DiscussionAnalyzer {
 							"/vissuelizer-postgres-schema.txt" }));
 
 			// add the commands
-			daFrame.addAction(
-					DiscussionAnalyzerFrame.DATA_MENU,
-					configureCommand(new ExportVisualization(daFrame
-							.getDiscussionVisualizationPanel())));
+			ExportVisualization visualizationExporter = new ExportVisualization(
+					daFrame.getDiscussionVisualizationPanel());
+			daFrame.addAction(DiscussionAnalyzerFrame.DATA_MENU,
+					configureCommand(visualizationExporter));
 			daFrame.addAction(
 					DiscussionAnalyzerFrame.DATA_MENU,
 					configureCommand(new ExportAllVisualizations(daFrame
@@ -165,7 +165,8 @@ public class DiscussionAnalyzer {
 			daFrame.addAction(DiscussionAnalyzerFrame.ACTION_MENU,
 					configureCommand(new ComputeConfusionMatrix()));
 			daFrame.addAction(DiscussionAnalyzerFrame.ACTION_MENU,
-					configureCommand(new KFoldCrossDiscussionEvaluationCmd()));
+					configureCommand(new KFoldCrossDiscussionEvaluationCmd(
+							visualizationExporter)));
 
 			daFrame.addSeperator(DiscussionAnalyzerFrame.ACTION_MENU,
 					"reset automatic classifier");

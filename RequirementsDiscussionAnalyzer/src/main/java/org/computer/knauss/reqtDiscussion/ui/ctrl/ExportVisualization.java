@@ -26,7 +26,12 @@ public class ExportVisualization extends AbstractCommand {
 
 	@Override
 	public void actionPerformed(ActionEvent event) {
-		Discussion[] discussions = getDiscussionTableModel().getSelectedDiscussions();
+		Discussion[] discussions = getDiscussionTableModel()
+				.getSelectedDiscussions();
+		export(discussions);
+	}
+
+	public void export(Discussion[] discussions, String postfix) {
 		Util.sortByID(discussions);
 
 		// Create the picture
@@ -37,7 +42,7 @@ public class ExportVisualization extends AbstractCommand {
 				BufferedImage.TYPE_INT_RGB);
 		Graphics2D g2 = bi.createGraphics();
 		this.discussionVisualization.paint(g2);
-		
+
 		// Save it
 		String filename = "";
 		if (discussions != null && discussions.length > 0)
@@ -45,12 +50,21 @@ public class ExportVisualization extends AbstractCommand {
 				filename += d.getID() + "-";
 		else
 			filename = "empty-";
-		File f = new File(filename.substring(0, filename.length() - 1) + ".png");
+		if (postfix.length() > 0)
+			filename = postfix + filename;
+		else
+			filename = filename.substring(0, filename.length() - 1);
+		File f = new File(filename + ".png");
 		try {
 			ImageIO.write(bi, "png", f);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
+	}
+
+	public void export(Discussion[] discussions) {
+		export(discussions, "");
 	}
 
 }
