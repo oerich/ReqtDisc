@@ -112,5 +112,9 @@ public abstract class AbstractBucketBalancingStrategy {
 	}
 
 	public abstract int getNumberOfBuckets();
+	
+	public String toString() {
+		return getClass().getSimpleName();
+	}
 
 }
