@@ -10,6 +10,7 @@ public class ComplexDiscussion extends Discussion {
 
 	private Discussion[] discussions;
 	private DiscussionEvent[] events;
+	private Incident[] incidentCache;
 
 	public ComplexDiscussion(Discussion[] discussions) {
 		this.discussions = discussions;
@@ -127,7 +128,17 @@ public class ComplexDiscussion extends Discussion {
 
 	@Override
 	public Incident[] getIncidents() {
-		throw new RuntimeException("Not implemented yet");
+		if (this.incidentCache == null) {
+			List<Incident> tmp = new LinkedList<Incident>();
+
+			for (Discussion d : this.discussions) {
+				for (Incident de : d.getIncidents()) {
+					tmp.add(de);
+				}
+			}
+			this.incidentCache = tmp.toArray(new Incident[0]);
+		}
+		return this.incidentCache;
 	}
 
 	@Override
