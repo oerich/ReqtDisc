@@ -2,6 +2,7 @@ package org.computer.knauss.reqtDiscussion.io.jazz.rest;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -195,8 +196,8 @@ public class JazzJDOMDAO implements IJazzDAO, IDiscussionEventDAO,
 		String simpleQueryURI = ((Element) this.xpathHelper.select(
 				"//simpleQuery/url").get(0)).getValue();
 		simpleQueryURI = simpleQueryURI.trim() + query;
-		// System.out.println("Query URL: "
-		// + URLDecoder.decode(simpleQueryURI, "UTF-8"));
+		System.out.println("Query URL: "
+				+ URLDecoder.decode(simpleQueryURI, "UTF-8"));
 
 		// 3. make sense of the result and return it
 		String[] ret = getWorkitemsForQuery(simpleQueryURI);
